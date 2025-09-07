@@ -1,16 +1,17 @@
 import Hero from '@/components/sections/Hero';
 import PopularCourses from '@/components/sections/PopularCourses';
-import Features from '@/components/sections/Features';
+import TrustedByFamilies from '@/components/sections/TrustedByFamilies';
+// Removed Features section per request
 import About from '@/components/sections/About';
 import Testimonials from '@/components/sections/Testimonials';
 import Contact from '@/components/sections/Contact';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
       <Hero />
       <PopularCourses />
-      <Features />
+      <TrustedByFamilies />
       <About />
       <Testimonials />
       <Contact />

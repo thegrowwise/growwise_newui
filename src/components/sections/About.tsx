@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Users, BookMarked, ThumbsUp, Star, Award, Clock, DollarSign, HeartHandshake } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import ClientOnly from '@/components/providers/ClientOnly';
 
 // Statistics Data
 const statisticsData = [
@@ -162,6 +163,22 @@ const StatCard = ({ stat, IconComponent, index, startAnimation }: StatCardProps)
   );
 };
 
+function StatCardStatic({ stat, IconComponent }: { stat: any; IconComponent: any }) {
+  return (
+    <Card className="text-center p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 rounded-2xl">
+      <CardContent className="p-0">
+        <div className={`w-16 h-16 ${stat.bgColor} rounded-full flex items-center justify-center mx-auto mb-4`}>
+          <IconComponent className={`w-8 h-8 ${stat.color}`} />
+        </div>
+        <div className={`text-3xl font-bold ${stat.color} mb-2`}>
+          0
+        </div>
+        <p className="text-gray-600 font-medium">{stat.label}</p>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function About() {
   const [startAnimation, setStartAnimation] = useState(false);
 
@@ -199,18 +216,31 @@ export default function About() {
         {/* Statistics Section */}
         <div id="stats-section" className="mb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {statisticsData.map((stat, index) => {
-              const IconComponent = stat.icon;
-              return (
-                <StatCard
-                  key={stat.id}
-                  stat={stat}
-                  IconComponent={IconComponent}
-                  index={index}
-                  startAnimation={startAnimation}
-                />
-              );
-            })}
+            <ClientOnly fallback={
+              statisticsData.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <StatCardStatic
+                    key={stat.id}
+                    stat={stat}
+                    IconComponent={IconComponent}
+                  />
+                );
+              })
+            }>
+              {statisticsData.map((stat, index) => {
+                const IconComponent = stat.icon;
+                return (
+                  <StatCard
+                    key={stat.id}
+                    stat={stat}
+                    IconComponent={IconComponent}
+                    index={index}
+                    startAnimation={startAnimation}
+                  />
+                );
+              })}
+            </ClientOnly>
           </div>
         </div>
 

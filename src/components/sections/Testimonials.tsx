@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import ClientOnly from '@/components/providers/ClientOnly';
 
 const testimonials = [
   {
@@ -93,25 +94,9 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonials Carousel */}
-        <div className="relative">
-          {/* Navigation Arrows */}
-          <button
-            onClick={prevSet}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 p-3 rounded-full shadow-lg border transition-all duration-200"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={nextSet}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 p-3 rounded-full shadow-lg border transition-all duration-200"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
-          {/* Testimonials Grid */}
+        <ClientOnly fallback={
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
-            {getCurrentTestimonials().map((testimonial) => (
+            {testimonials.slice(0, 3).map((testimonial) => (
               <Card key={testimonial.id} className="bg-white shadow-xl border-0 hover:shadow-2xl transition-all duration-300 rounded-2xl">
                 <CardContent className="p-6 lg:p-8">
                   <div className="text-center">
@@ -153,24 +138,86 @@ export default function Testimonials() {
               </Card>
             ))}
           </div>
+        }>
+          <div className="relative">
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSet}
+              className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 p-3 rounded-full shadow-lg border transition-all duration-200"
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
 
-          {/* Carousel Indicators */}
-          {totalSets > 1 && (
-            <div className="flex justify-center mt-8 space-x-2">
-              {Array.from({ length: totalSets }, (_, index) => (
-                <button
-                  key={index}
-                  onClick={() => goToSet(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    index === currentSet 
-                      ? 'bg-[#1F396D] scale-125' 
-                      : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
-                />
+            <button
+              onClick={nextSet}
+              className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 p-3 rounded-full shadow-lg border transition-all duration-200"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+
+            {/* Testimonials Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
+              {getCurrentTestimonials().map((testimonial) => (
+                <Card key={testimonial.id} className="bg-white shadow-xl border-0 hover:shadow-2xl transition-all duration-300 rounded-2xl">
+                  <CardContent className="p-6 lg:p-8">
+                    <div className="text-center">
+                      {/* Quote Icon */}
+                      <div className="w-12 h-12 bg-[#1F396D]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Quote className="w-6 h-6 text-[#1F396D]" />
+                      </div>
+
+                      {/* Rating */}
+                      <div className="flex justify-center mb-4">
+                        {[...Array(testimonial.rating)].map((_, index) => (
+                          <Star key={index} className="w-4 h-4 text-[#F16112] fill-current" />
+                        ))}
+                      </div>
+
+                      {/* Testimonial Content */}
+                      <blockquote className="text-sm lg:text-base text-gray-700 leading-relaxed mb-6 italic line-clamp-4">
+                        &ldquo;{testimonial.content}&rdquo;
+                      </blockquote>
+
+                      {/* Author Info */}
+                      <div className="flex items-center justify-center gap-3">
+                        <img
+                          src={testimonial.avatar}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
+                        />
+                        <div className="text-left">
+                          <h4 className="font-semibold text-gray-900 text-sm">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-gray-600 text-xs">
+                            {testimonial.role}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-          )}
-        </div>
+
+            {/* Carousel Indicators */}
+            {totalSets > 1 && (
+              <div className="flex justify-center mt-8 space-x-2">
+                {Array.from({ length: totalSets }, (_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSet(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-200 ${
+                      index === currentSet 
+                        ? 'bg-[#1F396D] scale-125' 
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </ClientOnly>
       </div>
     </section>
   );
