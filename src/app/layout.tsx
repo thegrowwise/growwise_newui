@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ContentProvider from "@/components/providers/ContentProvider";
-import { CartProvider } from "@/components/CartContext";
+import { CartProvider } from "@/components/gw/CartContext";
 
 export const metadata: Metadata = {
   title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
