@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calculator, BookOpen, Brain, Gamepad2, ChevronRight } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calculator, BookOpen, Brain, Gamepad2, ChevronRight, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/components/gw/CartContext';
 
@@ -103,11 +103,11 @@ export default function Header() {
   return (
     <header className="bg-white/80 backdrop-blur-3xl shadow-[0px_8px_32px_rgba(31,57,109,0.12)] sticky top-0 z-50 border-b border-white/50 ring-1 ring-white/20">
       {/* Top Header Bar */}
-      <div className="bg-[#1F396D] text-white py-2">
+      <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white/90">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center justify-between py-2 text-sm">
             {/* Contact Info */}
-            <div className="flex items-center space-x-6">
+            <div className="hidden md:flex items-center space-x-6">
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4" />
                 <span>(925) 456-4606</span>
@@ -118,37 +118,18 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Social Media */}
-            <div className="hidden md:flex items-center space-x-4">
-              <span>Follow us:</span>
-              <div className="flex items-center space-x-2">
-                <Link href="#" className="hover:text-[#F16112] transition-colors">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </Link>
-                <Link href="#" className="hover:text-[#F16112] transition-colors">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                  </svg>
-                </Link>
-                <Link href="#" className="hover:text-[#F16112] transition-colors">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
-                  </svg>
-                </Link>
-                <Link href="#" className="hover:text-[#F16112] transition-colors">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
-                </Link>
+            {/* Social Media + Address */}
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-3">
+                <span className="text-white/70 text-xs">Follow us:</span>
+                <div className="flex space-x-2">
+                  <Link href="https://www.facebook.com/people/GrowWise/61561059687164/" target="_blank" className="text-white/70 hover:text-white transition-colors"><Facebook className="w-4 h-4" /></Link>
+                  <Link href="#" className="text-white/70 hover:text-white transition-colors"><Twitter className="w-4 h-4" /></Link>
+                  <Link href="https://www.instagram.com/growwise.dublin/" target="_blank" className="text-white/70 hover:text-white transition-colors"><Instagram className="w-4 h-4" /></Link>
+                  <Link href="https://www.linkedin.com/company/thegrowwise/" target="_blank" className="text-white/70 hover:text-white transition-colors"><Linkedin className="w-4 h-4" /></Link>
+                </div>
               </div>
-            </div>
-
-            {/* Address */}
-            <div className="hidden lg:flex items-center space-x-2">
-              <MapPin className="w-4 h-4" />
-              <span>4564 Dublin Blvd, Dublin, CA</span>
+              <div className="text-white/90 text-xs hidden lg:block">📍 4564 Dublin Blvd, Dublin, CA</div>
             </div>
           </div>
         </div>
@@ -159,20 +140,8 @@ export default function Header() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-[#1F396D] rounded-full flex items-center justify-center">
-                  <div className="w-4 h-4 bg-white rounded-sm flex flex-col justify-between p-0.5">
-                    <div className="w-full h-0.5 bg-[#1F396D] rounded-full"></div>
-                    <div className="w-full h-0.5 bg-[#1F396D] rounded-full"></div>
-                    <div className="w-full h-0.5 bg-[#1F396D] rounded-full"></div>
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-2xl font-bold text-[#1F396D]">GrowWise</span>
-                  <span className="text-xs text-[#F16112] font-medium">UNBOX POTENTIAL</span>
-                </div>
-              </div>
+            <Link href="/" className="cursor-pointer" aria-label="GrowWise home">
+              <div className="bg-center bg-contain bg-no-repeat h-[64px] w-[160px]" style={{ backgroundImage: "url('/assets/growwise-logo.png')" }} />
             </Link>
           </div>
 
@@ -425,17 +394,8 @@ export default function Header() {
 
           {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <Button 
-                variant="outline" 
-                className="border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white rounded-full px-6"
-              >
-                Log in
-            </Button>
-              <Button 
-                className="bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full px-6"
-              >
-              Enroll Now
-            </Button>
+              <Button variant="ghost" className="text-gray-700 hover:text-[#1F396D] hover:bg-gray-100 rounded-full px-6">Log in</Button>
+              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">Enroll Now</Button>
             </div>
           </div>
 

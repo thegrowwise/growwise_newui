@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import ImageWithFallback from '@/components/gw/ImageWithFallback';
+import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -493,7 +493,7 @@ const STEAMPage: React.FC = () => {
 
       {/* Explore Programs Modal */}
       <Dialog open={isExploreModalOpen} onOpenChange={setIsExploreModalOpen}>
-        <DialogContent className="bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl p-0 overflow-hidden ring-1 ring-white/30">
+        <DialogContent className="bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_0px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl p-0 overflow-hidden ring-1 ring-white/30">
           {/* Enhanced Background gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8"></div>
           <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5"></div>

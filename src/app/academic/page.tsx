@@ -2,11 +2,17 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import ImageWithFallback from '@/components/gw/ImageWithFallback';
+import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+} from '@/components/ui/alert-dialog';
 import {
   BookOpen,
   Calculator,
@@ -628,18 +634,29 @@ const AcademicPage: React.FC = () => {
       </section>
 
       {/* Learn More Modal */}
-      <Dialog open={isLearnMoreModalOpen} onOpenChange={setIsLearnMoreModalOpen}>
-        <DialogContent className="bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl p-0 overflow-hidden ring-1 ring-white/30">
+      <AlertDialog open={isLearnMoreModalOpen} onOpenChange={setIsLearnMoreModalOpen}>
+        <AlertDialogContent className="bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl p-0 overflow-hidden ring-1 ring-white/30">
+          {/* Enhanced Background gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8"></div>
           <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5"></div>
-          <button onClick={() => setIsLearnMoreModalOpen(false)} className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/60 group">
+          
+          {/* Custom Close Button */}
+          <button
+            onClick={() => setIsLearnMoreModalOpen(false)}
+            className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/60 group"
+          >
             <X className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
           </button>
+          
           <div className="relative z-10 p-8">
-            <DialogHeader className="text-center mb-8">
-              <DialogTitle className="text-3xl font-bold text-gray-900 mb-4">Choose Your <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">Academic Path</span></DialogTitle>
-              <DialogDescription className="text-lg text-gray-600 leading-relaxed">Select the subject that matches your learning goals and start your academic journey</DialogDescription>
-            </DialogHeader>
+            <AlertDialogHeader className="text-center mb-8">
+              <AlertDialogTitle className="text-3xl font-bold text-gray-900 mb-4">
+                Choose Your <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">Academic Path</span>
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-lg text-gray-600 leading-relaxed">
+                Select the subject that matches your learning goals and start your academic journey
+              </AlertDialogDescription>
+            </AlertDialogHeader>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card onClick={() => { router.push('/math-courses'); setIsLearnMoreModalOpen(false); }} className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full">
@@ -696,12 +713,13 @@ const AcademicPage: React.FC = () => {
               <p className="text-sm text-gray-500">Not sure which path to choose? <Button variant="ghost" className="text-[#1F396D] font-medium hover:underline p-0 h-auto" onClick={() => setIsLearnMoreModalOpen(false)}>Contact us for guidance</Button></p>
             </div>
           </div>
-        </DialogContent>
-      </Dialog>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
 
 export default AcademicPage;
+
 
 

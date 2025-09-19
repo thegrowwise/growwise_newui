@@ -13,10 +13,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div>
             <div className="flex items-center space-x-2 mb-6">
-              <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">G</span>
-              </div>
-              <span className="text-2xl font-bold">GrowWise</span>
+              <div className="bg-center bg-contain bg-no-repeat h-[48px] w-[180px]" style={{ backgroundImage: "url('/assets/growwise-logo.png')" }} />
             </div>
             <p className="text-white/80 leading-relaxed mb-6">
               Dublin's premier K-12 academic support center, serving the Tri-Valley community with excellence.
