@@ -3,20 +3,20 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
+import { useChatbot } from '../../contexts/ChatbotContext';
+import ContactForm, { ContactFormData } from './ContactForm';
+import { contactService } from '../../lib/contactService';
 
 interface Message {
   id: string;
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+  showContactForm?: boolean;
 }
 
-interface ChatbotProps {
-  onStartChat?: () => void;
-}
-
-export default function Chatbot({ onStartChat }: ChatbotProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Chatbot() {
+  const { isOpen, openChatbot, closeChatbot } = useChatbot();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -29,6 +29,8 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmittingContact, setIsSubmittingContact] = useState(false);
+  const [contactError, setContactError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -40,13 +42,58 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
   }, [messages]);
 
   const handleStartChat = () => {
-    setIsOpen(true);
-    onStartChat?.();
+    openChatbot();
   };
 
   const handleCloseChat = () => {
-    setIsOpen(false);
+    closeChatbot();
   };
+
+  const handleContactFormSubmit = async (data: ContactFormData) => {
+    setIsSubmittingContact(true);
+    setContactError('');
+
+    try {
+      const result = await contactService.submitContactForm(data);
+      
+      if (result.success) {
+        // Add success message
+        const successMessage: Message = {
+          id: Date.now().toString(),
+          text: `Thank you, ${data.name}! We've received your information and will contact you within 24 hours with personalized details about our programs. 📧`,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        
+        setMessages(prev => [...prev, successMessage]);
+        
+        // Remove the contact form from the last message
+        setMessages(prev => prev.map(msg => 
+          msg.id === prev[prev.length - 1].id 
+            ? { ...msg, showContactForm: false }
+            : msg
+        ));
+      } else {
+        setContactError(result.error || 'Failed to submit contact information');
+      }
+    } catch (error) {
+      console.error('Contact form submission error:', error);
+      setContactError('Failed to submit contact information. Please try again.');
+    } finally {
+      setIsSubmittingContact(false);
+    }
+  };
+
+  const handleContactFormCancel = () => {
+    // Remove the contact form from the last message
+    setMessages(prev => prev.map(msg => 
+      msg.id === prev[prev.length - 1].id 
+        ? { ...msg, showContactForm: false }
+        : msg
+    ));
+    setContactError('');
+  };
+
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -65,6 +112,25 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
     setIsError(false);
     setErrorMessage('');
 
+    // First check if this should trigger a contact form
+    const botResponse = getBotResponse(currentInput);
+    
+    if (botResponse.showContactForm) {
+      // Use rule-based response with contact form
+      const response: Message = {
+        id: (Date.now() + 1).toString(),
+        text: botResponse.text,
+        sender: 'bot',
+        timestamp: new Date(),
+        showContactForm: true
+      };
+      
+      setMessages(prev => [...prev, response]);
+      setIsTyping(false);
+      return;
+    }
+
+    // Otherwise, try LLM API
     try {
       // Prepare conversation history for the API
       const conversationHistory = messages.map(msg => ({
@@ -89,14 +155,14 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
 
       const data = await response.json();
       
-      const botResponse: Message = {
+      const llmResponse: Message = {
         id: (Date.now() + 1).toString(),
         text: data.message,
         sender: 'bot',
         timestamp: new Date()
       };
       
-      setMessages(prev => [...prev, botResponse]);
+      setMessages(prev => [...prev, llmResponse]);
     } catch (error) {
       console.error('Error sending message:', error);
       setIsError(true);
@@ -105,9 +171,10 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
       // Fallback to rule-based response
       const fallbackResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: getBotResponse(currentInput),
+        text: botResponse.text,
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        showContactForm: botResponse.showContactForm
       };
       
       setMessages(prev => [...prev, fallbackResponse]);
@@ -116,76 +183,93 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
     }
   };
 
-  const getBotResponse = (userInput: string): string => {
+  const getBotResponse = (userInput: string): { text: string; showContactForm?: boolean } => {
     const input = userInput.toLowerCase();
     
     // Greeting responses
     if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
-      return "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. I'm here to help you learn about our programs, courses, and how we can support your child's learning journey. What would you like to know?";
+      return { text: "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. I'm here to help you learn about our programs, courses, and how we can support your child's learning journey. What would you like to know?" };
     }
     
     // K-12 Academic Programs
     if (input.includes('k-12') || input.includes('academic') || input.includes('math') || input.includes('english') || input.includes('ela') || input.includes('writing') || input.includes('sat') || input.includes('act')) {
-      return "Our K-12 Academic Programs include:\n\n📚 **Math Courses**: Elementary Math, Middle School Math, DUSD Accelerated Math, and High School Math (including Calculus)\n\n📖 **ELA Courses**: English Mastery K-12, Reading Enrichment, and Grammar Boost\n\n✏️ **Writing Lab**: Creative Writing, Essay Writing, and Create & Reflect programs\n\n🎯 **SAT/ACT Prep**: Math Test Prep, Online SAT Test Prep, and Online ACT Test Prep\n\nWe offer personalized 1:1 attention and small group learning. Would you like details about any specific program?";
+      return { text: "Our K-12 Academic Programs include:\n\n📚 **Math Courses**: Elementary Math, Middle School Math, DUSD Accelerated Math, and High School Math (including Calculus)\n\n📖 **ELA Courses**: English Mastery K-12, Reading Enrichment, and Grammar Boost\n\n✏️ **Writing Lab**: Creative Writing, Essay Writing, and Create & Reflect programs\n\n🎯 **SAT/ACT Prep**: Math Test Prep, Online SAT Test Prep, and Online ACT Test Prep\n\nWe offer personalized 1:1 attention and small group learning. Would you like details about any specific program?" };
     }
     
     // STEAM Programs
     if (input.includes('steam') || input.includes('coding') || input.includes('python') || input.includes('game') || input.includes('roblox') || input.includes('scratch') || input.includes('ai') || input.includes('ml') || input.includes('entrepreneur')) {
-      return "Our STEAM Programs include:\n\n🎮 **Game Development**: Roblox Studio, Scratch visual programming, and Minecraft coding\n\n🐍 **Python Programming**: Python Kickstart (beginner), Python Power Up (intermediate), and Python Pro (advanced)\n\n💡 **Young Founders**: Youth CEO leadership program and I Am Brand personal branding\n\n🤖 **ML/Gen AI**: Prompt Engineering, AI for Everyone, and ML/AI for Highschoolers\n\nAll programs are hands-on and project-based. Which STEAM program interests you most?";
+      return { text: "Our STEAM Programs include:\n\n🎮 **Game Development**: Roblox Studio, Scratch visual programming, and Minecraft coding\n\n🐍 **Python Programming**: Python Kickstart (beginner), Python Power Up (intermediate), and Python Pro (advanced)\n\n💡 **Young Founders**: Youth CEO leadership program and I Am Brand personal branding\n\n🤖 **ML/Gen AI**: Prompt Engineering, AI for Everyone, and ML/AI for Highschoolers\n\nAll programs are hands-on and project-based. Which STEAM program interests you most?" };
     }
     
     // Popular Courses
     if (input.includes('popular') || input.includes('course') || input.includes('program')) {
-      return "Our most popular courses are:\n\n🐍 **Python Coding** - Project-based learning\n🧮 **Math Mastery** - 1:1 attention\n🤖 **AI Explorer** - Future-ready skills\n📚 **Reading Mastery** - Accelerated growth\n\nWe also offer comprehensive K-12 academic programs and exciting STEAM courses. Would you like to know more about any specific course or program?";
+      return { text: "Our most popular courses are:\n\n🐍 **Python Coding** - Project-based learning\n🧮 **Math Mastery** - 1:1 attention\n🤖 **AI Explorer** - Future-ready skills\n📚 **Reading Mastery** - Accelerated growth\n\nWe also offer comprehensive K-12 academic programs and exciting STEAM courses. Would you like to know more about any specific course or program?" };
     }
     
     // Assessment and Trial Information
-    if (input.includes('assessment') || input.includes('trial') || input.includes('demo') || input.includes('free')) {
-      return "We offer FREE assessments and trial classes:\n\n🎓 **K-12 Programs**: 60-minute FREE assessment to evaluate your child's needs\n\n🚀 **STEAM Courses**: 30-minute trial class to experience our hands-on learning\n\nThese help us create a personalized learning plan for your child. Would you like to book a free assessment or trial class?";
+    if (input.includes('assessment') || input.includes('trial') || input.includes('demo') || input.includes('free') || input.includes('evaluate') || input.includes('test')) {
+      return { 
+        text: "We offer FREE assessments and trial classes:\n\n🎓 **K-12 Programs**: 60-minute FREE assessment to evaluate your child's needs\n\n🚀 **STEAM Courses**: 30-minute trial class to experience our hands-on learning\n\nThese help us create a personalized learning plan for your child. To get started, I'll need some contact information to schedule your free assessment or trial class.",
+        showContactForm: true
+      };
     }
     
     // Statistics and Trust
     if (input.includes('statistics') || input.includes('students') || input.includes('families') || input.includes('satisfaction') || input.includes('enrolled')) {
-      return "GrowWise is trusted by Tri-Valley families:\n\n👥 **300+ Students Enrolled**\n📚 **25+ Courses Offered**\n👍 **98% Student Satisfaction**\n\nWe're proud to serve the Tri-Valley community with proven results and expert instruction. Our students show measurable improvement within the first semester!";
+      return { text: "GrowWise is trusted by Tri-Valley families:\n\n👥 **300+ Students Enrolled**\n📚 **25+ Courses Offered**\n👍 **98% Student Satisfaction**\n\nWe're proud to serve the Tri-Valley community with proven results and expert instruction. Our students show measurable improvement within the first semester!" };
     }
     
     // Why Choose Us
     if (input.includes('why') || input.includes('choose') || input.includes('benefit') || input.includes('advantage')) {
-      return "Why choose GrowWise?\n\n👨‍🏫 **Expert Instructors**: Certified teachers with years of K-12 and STEAM experience\n\n📈 **Proven Results**: 95% of students show measurable improvement in the first semester\n\n📋 **Comprehensive Curriculum**: Aligned with state standards and modern learning needs\n\n🔬 **Hands-on Learning**: Interactive labs and projects that make learning engaging\n\nWe provide personalized attention and innovative teaching methods that make us stand out!";
+      return { text: "Why choose GrowWise?\n\n👨‍🏫 **Expert Instructors**: Certified teachers with years of K-12 and STEAM experience\n\n📈 **Proven Results**: 95% of students show measurable improvement in the first semester\n\n📋 **Comprehensive Curriculum**: Aligned with state standards and modern learning needs\n\n🔬 **Hands-on Learning**: Interactive labs and projects that make learning engaging\n\nWe provide personalized attention and innovative teaching methods that make us stand out!" };
     }
     
     // Pricing
     if (input.includes('price') || input.includes('cost') || input.includes('fee') || input.includes('payment')) {
-      return "We offer competitive pricing for all our programs. For the most accurate pricing information, I'd recommend booking a free assessment where our team can provide detailed information based on your specific needs and program selection. Would you like to schedule a free assessment to get personalized pricing?";
+      return { 
+        text: "We offer competitive pricing for all our programs. For the most accurate pricing information, I'd recommend booking a free assessment where our team can provide detailed information based on your specific needs and program selection. To get personalized pricing, I'll need some contact information to schedule your free assessment.",
+        showContactForm: true
+      };
     }
     
     // Scheduling and Booking
     if (input.includes('schedule') || input.includes('book') || input.includes('appointment') || input.includes('register') || input.includes('enroll')) {
-      return "I'd be happy to help you schedule an assessment or trial class! You can:\n\n📞 Contact us directly through our website\n💻 Book online through our platform\n📧 Email us for more information\n\nOur team will get back to you within 24 hours to confirm your appointment and answer any questions you have.";
+      return { 
+        text: "I'd be happy to help you schedule an assessment or trial class! To get started, I'll need some contact information to book your appointment and send you personalized details about our programs.",
+        showContactForm: true
+      };
     }
     
     // Contact Information
     if (input.includes('contact') || input.includes('phone') || input.includes('email') || input.includes('address') || input.includes('location')) {
-      return "You can reach us through:\n\n🌐 Our website contact form\n📞 Direct phone contact\n📧 Email support\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.";
+      return { text: "You can reach us through:\n\n🌐 Our website contact form\n📞 Direct phone contact\n📧 Email support\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours." };
     }
     
     // Testimonials
     if (input.includes('testimonial') || input.includes('review') || input.includes('feedback') || input.includes('parent') || input.includes('student')) {
-      return "Here's what our families say:\n\n👩‍👧 **Sarah Johnson (Parent)**: 'GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.'\n\n👨‍🎓 **Michael Chen (Student)**: 'The STEAM programs opened up a whole new world. I'm now pursuing computer science in college!'\n\n👩‍👦 **Lisa Rodriguez (Parent)**: 'The personalized attention and innovative teaching methods make GrowWise stand out.'\n\nAll our families give us 5-star ratings!";
+      return { text: "Here's what our families say:\n\n👩‍👧 **Sarah Johnson (Parent)**: 'GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.'\n\n👨‍🎓 **Michael Chen (Student)**: 'The STEAM programs opened up a whole new world. I'm now pursuing computer science in college!'\n\n👩‍👦 **Lisa Rodriguez (Parent)**: 'The personalized attention and innovative teaching methods make GrowWise stand out.'\n\nAll our families give us 5-star ratings!" };
     }
     
     // Age/Grade Information
     if (input.includes('age') || input.includes('grade') || input.includes('elementary') || input.includes('middle') || input.includes('high school')) {
-      return "We serve students across all grade levels:\n\n🏫 **Elementary**: Basic arithmetic, reading enrichment, creative writing\n\n🏫 **Middle School**: Algebra foundations, grammar boost, essay writing\n\n🏫 **High School**: Advanced math, SAT/ACT prep, ML/AI programs\n\nOur programs are designed to meet students where they are and help them excel at every level. What grade is your child in?";
+      return { text: "We serve students across all grade levels:\n\n🏫 **Elementary**: Basic arithmetic, reading enrichment, creative writing\n\n🏫 **Middle School**: Algebra foundations, grammar boost, essay writing\n\n🏫 **High School**: Advanced math, SAT/ACT prep, ML/AI programs\n\nOur programs are designed to meet students where they are and help them excel at every level. What grade is your child in?" };
     }
     
     // Learning Style
     if (input.includes('learning') || input.includes('style') || input.includes('personalized') || input.includes('individual') || input.includes('group')) {
-      return "We offer flexible learning options:\n\n👤 **1:1 Personal Attention**: Specially designed for homework help and targeted learning\n\n👥 **Small Group Learning**: Personalized instruction in small groups\n\n🎯 **Project-Based Learning**: Hands-on STEAM courses with real-world applications\n\nOur expert instructors adapt to your child's learning style and pace. We believe every child learns differently!";
+      return { text: "We offer flexible learning options:\n\n👤 **1:1 Personal Attention**: Specially designed for homework help and targeted learning\n\n👥 **Small Group Learning**: Personalized instruction in small groups\n\n🎯 **Project-Based Learning**: Hands-on STEAM courses with real-world applications\n\nOur expert instructors adapt to your child's learning style and pace. We believe every child learns differently!" };
     }
     
+    // Interest in getting started
+    if (input.includes('start') || input.includes('begin') || input.includes('join') || input.includes('sign up') || input.includes('get started') || input.includes('interested')) {
+      return { 
+        text: "That's wonderful! I'd love to help you get started with GrowWise. To provide you with the most personalized information about our programs and create a learning plan for your child, I'll need some contact information.",
+        showContactForm: true
+      };
+    }
+
     // Default response
-    return "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for? I can help with course details, scheduling assessments, pricing, or any other questions about our programs!";
+    return { text: "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for? I can help with course details, scheduling assessments, pricing, or any other questions about our programs!" };
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -212,7 +296,7 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[500px]">
+        <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px]">
           <Card className="bg-white/95 backdrop-blur-3xl rounded-2xl shadow-2xl border-2 border-white/50 ring-1 ring-white/30 h-full flex flex-col">
             {/* Header */}
             <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white p-4 rounded-t-2xl flex items-center justify-between">
@@ -238,39 +322,52 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
             </div>
 
             {/* Messages */}
-            <CardContent className="flex-1 p-4 overflow-y-auto space-y-4">
+            <CardContent className="flex-1 p-4 overflow-y-auto space-y-4 max-h-[400px]">
               {messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+                <div key={message.id} className="space-y-2">
                   <div
-                    className={`max-w-[80%] rounded-2xl p-3 ${
-                      message.sender === 'user'
-                        ? 'bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}
+                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className="flex items-start gap-2">
-                      {message.sender === 'bot' && (
-                        <Bot className="w-4 h-4 mt-1 text-[#1F396D] flex-shrink-0" />
-                      )}
-                      {message.sender === 'user' && (
-                        <User className="w-4 h-4 mt-1 text-white flex-shrink-0" />
-                      )}
-                      <div className="flex-1">
-                        <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
-                        <p className={`text-xs mt-1 ${
-                          message.sender === 'user' ? 'text-white/70' : 'text-gray-500'
-                        }`}>
-                          {message.timestamp.toLocaleTimeString([], { 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
-                          })}
-                        </p>
+                    <div
+                      className={`max-w-[80%] rounded-2xl p-3 ${
+                        message.sender === 'user'
+                          ? 'bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      <div className="flex items-start gap-2">
+                        {message.sender === 'bot' && (
+                          <Bot className="w-4 h-4 mt-1 text-[#1F396D] flex-shrink-0" />
+                        )}
+                        {message.sender === 'user' && (
+                          <User className="w-4 h-4 mt-1 text-white flex-shrink-0" />
+                        )}
+                        <div className="flex-1">
+                          <p className="text-sm leading-relaxed whitespace-pre-line">{message.text}</p>
+                          <p className={`text-xs mt-1 ${
+                            message.sender === 'user' ? 'text-white/70' : 'text-gray-500'
+                          }`}>
+                            {message.timestamp.toLocaleTimeString([], { 
+                              hour: '2-digit', 
+                              minute: '2-digit' 
+                            })}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  
+                  {/* Contact Form - appears below the message */}
+                  {message.sender === 'bot' && message.showContactForm && (
+                    <div className="w-full">
+                      <ContactForm
+                        onSubmit={handleContactFormSubmit}
+                        onCancel={handleContactFormCancel}
+                        isLoading={isSubmittingContact}
+                        error={contactError}
+                      />
+                    </div>
+                  )}
                 </div>
               ))}
               
@@ -283,7 +380,8 @@ export default function Chatbot({ onStartChat }: ChatbotProps) {
                       "What K-12 programs do you offer?",
                       "Tell me about STEAM courses",
                       "How do I book a free assessment?",
-                      "What are your prices?"
+                      "What are your prices?",
+                      "I want to get started"
                     ].map((suggestion, index) => (
                       <button
                         key={index}

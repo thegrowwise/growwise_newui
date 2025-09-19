@@ -4,6 +4,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ContentProvider from "@/components/providers/ContentProvider";
 import { CartProvider } from "@/components/gw/CartContext";
+import { ChatbotProvider } from "@/contexts/ChatbotContext";
+import Chatbot from "@/components/chatbot/Chatbot";
 
 export const metadata: Metadata = {
   title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
@@ -23,13 +25,16 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <CartProvider>
-          <ContentProvider>
-            <Header />
-            <main>
-              {children}
-            </main>
-            <Footer />
-          </ContentProvider>
+          <ChatbotProvider>
+            <ContentProvider>
+              <Header />
+              <main>
+                {children}
+              </main>
+              <Footer />
+              <Chatbot />
+            </ContentProvider>
+          </ChatbotProvider>
         </CartProvider>
       </body>
     </html>

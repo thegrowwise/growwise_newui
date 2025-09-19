@@ -7,11 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { BookOpen, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Award, Target, GraduationCap, TrendingUp, Shield, ChevronRight, DollarSign, Eye, Sparkles, ArrowRight, HelpCircle, MessageCircle, Phone, Mail, Calendar, X, PenTool, BookMarked } from "lucide-react";
 import { englishCourses } from '@/data/englishCourses';
 import { useCart } from '@/components/gw/CartContext';
+import { useChatbot } from '@/contexts/ChatbotContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 
 const EnglishCoursesPage: React.FC = () => {
   const { addItem } = useCart();
+  const { openChatbot } = useChatbot();
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
   const [selectedAlignments, setSelectedAlignments] = useState<string[]>([]);
@@ -733,6 +735,7 @@ const EnglishCoursesPage: React.FC = () => {
               Get Started
             </Button>
             <Button 
+              onClick={openChatbot}
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
               size="lg"
             >

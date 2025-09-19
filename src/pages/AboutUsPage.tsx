@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useChatbot } from '../contexts/ChatbotContext';
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
@@ -40,6 +41,7 @@ import {
 } from "lucide-react";
 
 const AboutUsPage: React.FC = () => {
+  const { openChatbot } = useChatbot();
   const [activeTeamMember, setActiveTeamMember] = useState(0);
 
   // Mission, Vision, Values data
@@ -304,7 +306,10 @@ const AboutUsPage: React.FC = () => {
               </div>
               
               <div className="mt-8">
-                <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3">
+                <Button 
+                  onClick={openChatbot}
+                  className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3"
+                >
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Get to Know Us
                 </Button>
@@ -585,7 +590,10 @@ const AboutUsPage: React.FC = () => {
               <Calendar className="w-5 h-5 mr-2" />
               Schedule a Tour
             </Button>
-            <Button className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3">
+            <Button 
+              onClick={openChatbot}
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3"
+            >
               <MessageCircle className="w-5 h-5 mr-2" />
               Contact Us
             </Button>

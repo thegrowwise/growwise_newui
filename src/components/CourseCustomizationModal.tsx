@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Label } from "./ui/label";
 import { X, Plus, Minus, ShoppingCart, Calculator, Clock, Users } from "lucide-react";
-import { useCart } from './CartContext';
+import { useCart } from './gw/CartContext';
 
 interface CourseCustomizationModalProps {
   isOpen: boolean;

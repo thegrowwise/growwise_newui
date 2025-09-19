@@ -7,8 +7,8 @@ import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ChevronLeft, ChevronRight, ChevronDown, Users, BookOpen, Code, Calculator, Bot, Book, BookMarked, ThumbsUp, Award, PenTool, GraduationCap, Rocket, Gamepad2, Lightbulb, Brain, Microscope, Shield, Sparkles, Star } from 'lucide-react';
 import CourseCustomizationModal from '../components/gw/CourseCustomizationModal';
-import Chatbot from '../components/chatbot/Chatbot';
 import StartChatButton from '../components/chatbot/StartChatButton';
+import { useChatbot } from '../contexts/ChatbotContext';
 
 export default function Home() {
   // --- Homepage logic, state, and data arrays ---
@@ -18,8 +18,7 @@ export default function Home() {
   const closeAssessmentModal = () => setIsAssessmentModalOpen(false);
   
   // Chatbot state
-  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
-  const handleStartChat = () => setIsChatbotOpen(true);
+  const { openChatbot } = useChatbot();
   // Dummy course and handler for modal
   const dummyCourse = { id: 'demo', name: 'Demo Course', image: '', category: 'Demo' };
   const handleAddToCart = (item: any) => {};
@@ -265,7 +264,7 @@ export default function Home() {
                               <ChevronRight className="ml-2 w-5 h-5" />
                             </Button>
                             <StartChatButton 
-                              onStartChat={handleStartChat}
+                              onStartChat={openChatbot}
                               variant="hero"
                               className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
                             />
@@ -574,11 +573,15 @@ export default function Home() {
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
             <StartChatButton 
-              onStartChat={handleStartChat}
+              onStartChat={openChatbot}
               variant="hero"
               className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold"
             />
-            <Button onClick={() => {}} className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" size="lg">
+            <Button 
+              onClick={openChatbot}
+              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" 
+              size="lg"
+            >
               Contact Us
             </Button>
           </div>
@@ -587,9 +590,6 @@ export default function Home() {
 
       {/* Modal */}
       <CourseCustomizationModal isOpen={isAssessmentModalOpen} onClose={closeAssessmentModal} course={dummyCourse} onAddToCart={handleAddToCart} />
-      
-      {/* Chatbot */}
-      <Chatbot onStartChat={handleStartChat} />
     </div>
   );
 }
