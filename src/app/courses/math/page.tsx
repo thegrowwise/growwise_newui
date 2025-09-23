@@ -7,11 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Calculator, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Award, BookOpen, Target, GraduationCap, TrendingUp, Shield, ChevronRight, DollarSign, Eye, Sparkles, ArrowRight, HelpCircle, MessageCircle, Phone, Mail, Calendar, X, Smartphone } from "lucide-react";
 import { mathCourses } from '@/data/mathCourses';
 import { useCart } from '@/components/gw/CartContext';
-import ImageWithFallback from '@/components/gw/ImageWithFallback';
+import { useChatbot } from '@/contexts/ChatbotContext';
+import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 
 const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
+  const { openChatbot } = useChatbot();
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
   const [selectedAlignments, setSelectedAlignments] = useState<string[]>([]);
@@ -797,7 +799,10 @@ const MathCoursesPage: React.FC = () => {
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                <Button 
+                  onClick={openChatbot}
+                  className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+                >
                   <Calendar className="mr-2 w-5 h-5" />
                   Schedule Free Assessment
                 </Button>
@@ -845,6 +850,7 @@ const MathCoursesPage: React.FC = () => {
               Get Started
             </Button>
             <Button 
+              onClick={openChatbot}
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
               size="lg"
             >

@@ -8,6 +8,9 @@ import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ChevronLeft, ChevronRight, ChevronDown, Users, BookOpen, Code, Calculator, Bot, Book, BookMarked, ThumbsUp, Award, PenTool, GraduationCap, Rocket, Gamepad2, Lightbulb, Brain, Microscope, Shield, Sparkles, Star } from 'lucide-react';
 import FreeAssessmentModal from '../components/FreeAssessmentModal';
+import CourseCustomizationModal from '../components/gw/CourseCustomizationModal';
+import StartChatButton from '../components/chatbot/StartChatButton';
+import { useChatbot } from '../contexts/ChatbotContext';
 
 export default function Home() {
   // --- Homepage logic, state, and data arrays ---
@@ -15,6 +18,12 @@ export default function Home() {
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const openAssessmentModal = () => setIsAssessmentModalOpen(true);
   const closeAssessmentModal = () => setIsAssessmentModalOpen(false);
+  
+  // Chatbot state
+  const { openChatbot } = useChatbot();
+  // Dummy course and handler for modal
+  const dummyCourse = { id: 'demo', name: 'Demo Course', image: '', category: 'Demo' };
+  const handleAddToCart = (item: any) => {};
 
   // Hero carousel data
   const heroSlides = [
@@ -253,10 +262,17 @@ export default function Home() {
                           <h1 className="text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight">{slide.title}</h1>
                           <h2 className="text-xl lg:text-2xl mb-6 text-white/95 font-semibold">{slide.subtitle}</h2>
                           <p className="text-base lg:text-lg mb-8 text-white/85 leading-relaxed">{slide.description}</p>
-                          <Button onClick={slide.onClick} className={`${slide.ctaColor} rounded-full px-8 py-4 font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 text-base lg:text-lg backdrop-blur-sm border border-white/20`}>
-                            {slide.cta}
-                            <ChevronRight className="ml-2 w-5 h-5" />
-                          </Button>
+                          <div className="flex flex-col sm:flex-row gap-4">
+                            <Button onClick={slide.onClick} className={`${slide.ctaColor} rounded-full px-8 py-4 font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 text-base lg:text-lg backdrop-blur-sm border border-white/20`}>
+                              {slide.cta}
+                              <ChevronRight className="ml-2 w-5 h-5" />
+                            </Button>
+                            <StartChatButton 
+                              onStartChat={openChatbot}
+                              variant="hero"
+                              className="bg-white/20 hover:bg-white/30 text-white border border-white/30"
+                            />
+                          </div>
                         </div>
                       </div>
                       <div className="flex-1 flex justify-center lg:justify-end items-center p-10 lg:p-16 relative z-10">
@@ -569,7 +585,16 @@ export default function Home() {
               Get Started
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button onClick={() => {}} className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" size="lg">
+            <StartChatButton 
+              onStartChat={openChatbot}
+              variant="hero"
+              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold"
+            />
+            <Button 
+              onClick={openChatbot}
+              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" 
+              size="lg"
+            >
               Contact Us
             </Button>
           </div>

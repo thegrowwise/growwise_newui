@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Gamepad2, Code, Monitor, Joystick, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Award, BookOpen, Target, GraduationCap, TrendingUp, Shield, ChevronRight, DollarSign, Eye, Sparkles, ArrowRight, HelpCircle, MessageCircle, Phone, Mail, Calendar, X, Smartphone, Zap, Lightbulb, Rocket, Palette, Music, Bot, Brain, Cpu, Database, Network } from "lucide-react";
 import { useCart } from '@/components/gw/CartContext';
+import { useChatbot } from '@/contexts/ChatbotContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 
@@ -116,6 +117,7 @@ const gameDevCourses: GameDevCourse[] = [
 
 const GameDevelopmentPage: React.FC = () => {
   const { addItem } = useCart();
+  const { openChatbot } = useChatbot();
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
@@ -810,7 +812,10 @@ const GameDevelopmentPage: React.FC = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105">
+            <Button 
+              onClick={openChatbot}
+              className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105"
+            >
               <MessageCircle className="w-5 h-5 mr-2" />
               Start Free Consultation
             </Button>

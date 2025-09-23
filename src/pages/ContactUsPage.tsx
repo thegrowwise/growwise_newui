@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useChatbot } from '../contexts/ChatbotContext';
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
 import { Input } from "../components/ui/input";
@@ -34,6 +35,7 @@ import {
 } from "lucide-react";
 
 const ContactUsPage: React.FC = () => {
+  const { openChatbot } = useChatbot();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -206,7 +208,11 @@ const ContactUsPage: React.FC = () => {
               <Phone className="w-5 h-5 mr-2" />
               Call Now
             </Button>
-            <Button variant="outline" className="border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white px-6 py-3">
+            <Button 
+              onClick={openChatbot}
+              variant="outline" 
+              className="border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white px-6 py-3"
+            >
               <MessageCircle className="w-5 h-5 mr-2" />
               Start Chat
             </Button>
@@ -674,7 +680,10 @@ const ContactUsPage: React.FC = () => {
 
           <div className="mt-8 text-center">
             <p className="text-gray-600 mb-4">Still have questions?</p>
-            <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-2">
+            <Button 
+              onClick={openChatbot}
+              className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-2"
+            >
               <MessageCircle className="w-4 h-4 mr-2" />
               Contact Our Team
             </Button>
@@ -694,7 +703,10 @@ const ContactUsPage: React.FC = () => {
               <Phone className="w-5 h-5 mr-2" />
               Call (925) 456-4606
             </Button>
-            <Button className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 text-lg">
+            <Button 
+              onClick={openChatbot}
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 text-lg"
+            >
               <MessageCircle className="w-5 h-5 mr-2" />
               Schedule Free Assessment
             </Button>
