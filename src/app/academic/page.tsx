@@ -384,7 +384,7 @@ const AcademicPage: React.FC = () => {
 
       {/* Strong Writers */}
       <section className="py-20 px-4 lg:px-8 bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/5">
-        <div className="max-w-7xl mx_auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-[#1F396D] mb-6">Strong Writers. Strong Thinkers.</h2>
           </div>

@@ -141,7 +141,7 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="cursor-pointer" aria-label="GrowWise home">
-              <div className="bg-center bg-contain bg-no-repeat h-[64px] w-[160px]" style={{ backgroundImage: "url('/assets/growwise-logo.png')" }} />
+              <div className="bg-center bg-contain bg-no-repeat h-[80px] w-[200px]" style={{ backgroundImage: "url('/assets/growwise-logo.png')" }} />
             </Link>
           </div>
 
@@ -394,8 +394,9 @@ export default function Header() {
 
           {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="text-gray-700 hover:text-[#1F396D] hover:bg-gray-100 rounded-full px-6">Log in</Button>
-              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">Enroll Now</Button>
+              <Button asChild className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">
+                <Link href="/enroll">Enroll Now</Link>
+              </Button>
             </div>
           </div>
 
@@ -435,11 +436,8 @@ export default function Header() {
               </Link>
             ))}
             <div className="pt-4 space-y-3">
-              <Button variant="outline" className="w-full border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white rounded-full">
-                Log in
-              </Button>
-              <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full">
-                Enroll Now
+              <Button asChild className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full">
+                <Link href="/enroll">Enroll Now</Link>
               </Button>
             </div>
           </div>

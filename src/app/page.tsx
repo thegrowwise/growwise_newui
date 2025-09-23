@@ -1,12 +1,13 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '../components/layout/Header';
 import { ImageWithFallback } from '../components/gw/ImageWithFallback';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { ChevronLeft, ChevronRight, ChevronDown, Users, BookOpen, Code, Calculator, Bot, Book, BookMarked, ThumbsUp, Award, PenTool, GraduationCap, Rocket, Gamepad2, Lightbulb, Brain, Microscope, Shield, Sparkles, Star } from 'lucide-react';
-import CourseCustomizationModal from '../components/gw/CourseCustomizationModal';
+import FreeAssessmentModal from '../components/FreeAssessmentModal';
 
 export default function Home() {
   // --- Homepage logic, state, and data arrays ---
@@ -14,9 +15,6 @@ export default function Home() {
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const openAssessmentModal = () => setIsAssessmentModalOpen(true);
   const closeAssessmentModal = () => setIsAssessmentModalOpen(false);
-  // Dummy course and handler for modal
-  const dummyCourse = { id: 'demo', name: 'Demo Course', image: '', category: 'Demo' };
-  const handleAddToCart = (item: any) => {};
 
   // Hero carousel data
   const heroSlides = [
@@ -43,7 +41,8 @@ export default function Home() {
       bgGradient: "bg-gradient-to-br from-[#F16112] via-[#F1894F] to-[#d54f0a]",
       iconColor: "text-white",
       ctaColor: "bg-[#1F396D] hover:bg-[#29335C] text-white",
-      bgImage: "https://images.unsplash.com/photo-1548686304-89d188a80029?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraWRzJTIwY29kaW5nJTIwY29tcHV0ZXIlMjBwcm9ncmFtbWluZyUyMFNURUFNfGVufDF8fHx8MTc1NzQ4Mjg3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      bgImage: "https://images.unsplash.com/photo-1548686304-89d188a80029?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraWRzJTIwY29kaW5nJTIwY29tcHV0ZXIlMjBwcm9ncmFtbWluZyUyMFNURUFNfGVufDF8fHx8MTc1NzQ4Mjg3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      onClick: openAssessmentModal
     },
     {
       id: 3,
@@ -55,7 +54,8 @@ export default function Home() {
       bgGradient: "bg-gradient-to-br from-[#1F396D] via-[#F16112] to-[#F1894F]",
       iconColor: "text-white",
       ctaColor: "bg-white hover:bg-gray-100 text-[#1F396D]",
-      bgImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=800&fit=crop"
+      bgImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=800&fit=crop",
+      onClick: openAssessmentModal
     }
   ];
 
@@ -76,13 +76,13 @@ export default function Home() {
 
   // K-12 Programs
   const k12Programs = [
-    { id: 1, title: 'Math Courses', description: 'Build strong mathematical foundations from elementary to advanced levels', icon: Calculator, gradient: 'from-[#1F396D] to-[#29335C]', bgGradient: 'bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10', iconColor: 'text-[#1F396D]', onClick: () => {}, subItems: [
+    { id: 1, title: 'Math Courses', description: 'Build strong mathematical foundations from elementary to advanced levels', icon: Calculator, gradient: 'from-[#1F396D] to-[#29335C]', bgGradient: 'bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10', iconColor: 'text-[#1F396D]', href: '/courses/math', subItems: [
       { name: 'Elementary Math', icon: '🔢', description: 'Basic arithmetic and number sense' },
       { name: 'Middle School Math', icon: '📊', description: 'Algebra and geometry foundations' },
       { name: 'DUSD Accelerated Math', icon: '🚀', description: 'Advanced placement preparation' },
       { name: 'High School Math', icon: '🎯', description: 'Calculus and advanced topics' }
     ] },
-    { id: 2, title: 'ELA Courses', description: 'Develop comprehensive English language arts skills', icon: BookOpen, gradient: 'from-[#F16112] to-[#F1894F]', bgGradient: 'bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10', iconColor: 'text-[#F16112]', subItems: [
+    { id: 2, title: 'ELA Courses', description: 'Develop comprehensive English language arts skills', icon: BookOpen, gradient: 'from-[#F16112] to-[#F1894F]', bgGradient: 'bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10', iconColor: 'text-[#F16112]', href: '/courses/english', subItems: [
       { name: 'English Mastery: K-12', icon: '📚', description: 'Complete language arts curriculum' },
       { name: 'Reading Enrichment', icon: '📖', description: 'Improve reading comprehension' },
       { name: 'Grammar Boost', icon: '✏️', description: 'Master grammar and mechanics' }
@@ -429,10 +429,19 @@ export default function Home() {
                         ))}
                       </div>
                       <div className="mt-8 pt-6">
-                        <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${isHovered ? 'scale-105 shadow-xl' : ''} backdrop-blur-sm border border-white/20`}>
-                          Enroll Now
-                          <GraduationCap className="ml-2 w-5 h-5" />
-                        </Button>
+                        {program.href ? (
+                          <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${isHovered ? 'scale-105 shadow-xl' : ''} backdrop-blur-sm border border-white/20`}>
+                            <Link href={program.href}>
+                              Enroll Now
+                              <GraduationCap className="ml-2 w-5 h-5" />
+                            </Link>
+                          </Button>
+                        ) : (
+                          <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${isHovered ? 'scale-105 shadow-xl' : ''} backdrop-blur-sm border border-white/20`}>
+                            Enroll Now
+                            <GraduationCap className="ml-2 w-5 h-5" />
+                          </Button>
+                        )}
                       </div>
                       <div className={`absolute -top-12 -right-12 w-24 h-24 bg-gradient-to-br ${program.gradient} rounded-full opacity-10 transition-all duration-700 ${isHovered ? 'scale-150 opacity-20' : ''}`} />
                       <div className={`absolute -bottom-8 -left-8 w-20 h-20 bg-gradient-to-br ${program.gradient} rounded-full opacity-5 transition-all duration-700 ${isHovered ? 'scale-125 opacity-15' : ''}`} />
@@ -568,7 +577,7 @@ export default function Home() {
       </section>
 
       {/* Modal */}
-      <CourseCustomizationModal isOpen={isAssessmentModalOpen} onClose={closeAssessmentModal} course={dummyCourse} onAddToCart={handleAddToCart} />
+      <FreeAssessmentModal isOpen={isAssessmentModalOpen} onClose={closeAssessmentModal} />
     </div>
   );
 }
