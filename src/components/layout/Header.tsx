@@ -394,9 +394,8 @@ export default function Header() {
 
           {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <Button asChild className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">
-                <Link href="/enroll">Enroll Now</Link>
-              </Button>
+              <Button variant="ghost" className="text-gray-700 hover:text-[#1F396D] hover:bg-gray-100 rounded-full px-6">Log in</Button>
+              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">Enroll Now</Button>
             </div>
           </div>
 
@@ -436,8 +435,11 @@ export default function Header() {
               </Link>
             ))}
             <div className="pt-4 space-y-3">
-              <Button asChild className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full">
-                <Link href="/enroll">Enroll Now</Link>
+              <Button variant="outline" className="w-full border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white rounded-full">
+                Log in
+              </Button>
+              <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full">
+                Enroll Now
               </Button>
             </div>
           </div>
