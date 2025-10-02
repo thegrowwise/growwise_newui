@@ -363,8 +363,81 @@
         "secondaryCta": "View Projects"
       }
     }
-  }
-  ,
+  },
+  "academic": {
+    "programs": {
+      "titlePrefix": "Academic ",
+      "titleHighlight": "Programs",
+      "subtitle": "Personalized learning for K-12 students in Math and English",
+      "mathSessionTitle": "Math Session",
+      "mathSessionDesc": "Practice math problems and concepts with step-by-step guidance and instant feedback.",
+      "englishSessionTitle": "English Session",
+      "englishSessionDesc": "Writing practice and grammar editing with real-time feedback to strengthen clarity and structure.",
+      "pricingTitle": "Session Pricing",
+      "pricingFree": "FREE",
+      "pricingFreeNote": "for GrowWisers",
+      "pricingPaid": "$8",
+      "pricingPaidNote": "for non-GrowWisers",
+      "pricingDesc": "Helps build speed, accuracy, and confidence under pressure.",
+      "registerCta": "Register for Practice Sessions"
+    },
+    "why": {
+      "title": "Why Choose Our Academic Programs?",
+      "subtitle": "Comprehensive support designed for K-12 academic excellence"
+    },
+    "stories": {
+      "title": "Student Success Stories",
+      "subtitle": "Real results from our academic programs"
+    },
+    "whyGrowwise": {
+      "badge": "WHY CHOOSE US",
+      "title": "Why Choose GrowWise for Education Courses?",
+      "personalizedAttention": {
+        "title": "Personalized Attention",
+        "desc": "We provide individualized support to ensure each student reaches their maximum potential and academic goals."
+      },
+      "engagingCurriculum": {
+        "title": "Engaging Curriculum",
+        "desc": "Innovative and interactive curriculum and engaging thinking learning experience for each student."
+      },
+      "expertInstructors": {
+        "title": "Expert Instructors",
+        "desc": "Our courses are taught by experienced educators who are passionate about teaching and dedicated to student success."
+      },
+      "comprehensiveSupport": {
+        "title": "Comprehensive Support",
+        "desc": "We offer resources and support to help students excel in their studies and achieve sustained success."
+      }
+    },
+    "cta": {
+      "title": "Ready to Excel in Academics?",
+      "subtitle": "Join hundreds of students who have improved their academic performance with our personalized programs.",
+      "primary": "Book Free Assessment",
+      "secondary": "Learn More"
+    },
+    "modal": {
+      "titlePrefix": "Choose Your ",
+      "titleHighlight": "Academic Path",
+      "subtitle": "Select the subject that matches your learning goals and start your academic journey",
+      "mathTitle": "Math Courses",
+      "mathDesc": "Master mathematics from basics to advanced levels with personalized instruction",
+      "englishTitle": "English Language Arts",
+      "englishDesc": "Comprehensive English language arts skills from reading to writing excellence",
+      "features": {
+        "aligned": "DUSD & PUSD Aligned",
+        "grade": "Grade-Level & Accelerated",
+        "oneOnOne": "One-on-One Support",
+        "reading": "Reading Comprehension",
+        "writing": "Essay Writing",
+        "grammar": "Grammar & Vocabulary"
+      },
+      "viewMore": "View More",
+      "guidance": {
+        "prompt": "Not sure which path to choose?",
+        "cta": "Contact us for guidance"
+      }
+    }
+  },
   "about": {
     "hero": {
       "title": "About GrowWise",

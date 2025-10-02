@@ -4,6 +4,7 @@ import contentReducer from './slices/contentSlice';
 import homeReducer from './slices/homeSlice';
 import headerReducer from './slices/headerSlice';
 import contactReducer from './slices/contactSlice';
+import academicReducer from './slices/academicSlice';
 import aboutReducer from './slices/aboutSlice';
 import rootSaga from './sagas';
 
@@ -16,6 +17,7 @@ export const store = configureStore({
     header: headerReducer,
     about: aboutReducer,
     contact: contactReducer,
+    academic: academicReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

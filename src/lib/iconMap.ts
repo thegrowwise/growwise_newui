@@ -29,6 +29,9 @@ import {
   Quote,
   UserCheck,
   Clock,
+  CheckCircle,
+  ChevronRight,
+  HeartHandshake,
 } from 'lucide-react';
 
 const map: Record<string, any> = {
@@ -62,6 +65,9 @@ const map: Record<string, any> = {
   Quote,
   UserCheck,
   Clock,
+  CheckCircle,
+  ChevronRight,
+  HeartHandshake,
 };
 
 export function getIconComponent(name: string): any {
