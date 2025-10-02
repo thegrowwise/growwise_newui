@@ -18,6 +18,17 @@ import {
   Shield,
   Sparkles,
   Star,
+  Target,
+  Heart,
+  TrendingUp,
+  Building,
+  Globe,
+  MapPin,
+  Phone,
+  Mail,
+  Quote,
+  UserCheck,
+  Clock,
 } from 'lucide-react';
 
 const map: Record<string, any> = {
@@ -40,6 +51,17 @@ const map: Record<string, any> = {
   Shield,
   Sparkles,
   Star,
+  Target,
+  Heart,
+  TrendingUp,
+  Building,
+  Globe,
+  MapPin,
+  Phone,
+  Mail,
+  Quote,
+  UserCheck,
+  Clock,
 };
 
 export function getIconComponent(name: string): any {

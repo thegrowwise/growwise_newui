@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
@@ -16,11 +17,12 @@ interface Message {
 }
 
 export default function Chatbot() {
+  const t = useTranslations();
   const { isOpen, openChatbot, closeChatbot } = useChatbot();
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: "Hi! I'm your GrowWise assistant! 🎓 I can help you learn about our K-12 academic programs, STEAM courses, free assessments, pricing, and more. What would you like to know?",
+      text: t('chatbot.responses.welcome'),
       sender: 'bot',
       timestamp: new Date()
     }
@@ -377,11 +379,11 @@ export default function Chatbot() {
                   <p className="text-xs text-gray-500 text-center">Try asking:</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {[
-                      "What K-12 programs do you offer?",
-                      "Tell me about STEAM courses",
-                      "How do I book a free assessment?",
-                      "What are your prices?",
-                      "I want to get started"
+                      t('chatbot.suggestions.k12Programs'),
+                      t('chatbot.suggestions.steamCourses'),
+                      t('chatbot.suggestions.bookAssessment'),
+                      t('chatbot.suggestions.pricing'),
+                      t('chatbot.suggestions.getStarted')
                     ].map((suggestion, index) => (
                       <button
                         key={index}
@@ -428,7 +430,7 @@ export default function Chatbot() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
-                  placeholder="Type your message..."
+                  placeholder={t('chatbot.placeholder')}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#F16112] focus:border-transparent"
                 />
                 <Button

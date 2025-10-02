@@ -155,6 +155,101 @@ html {
 
 /* 3D Flip Animation Classes for Math Course Cards */
 @layer utilities {
+  /* Generic section/layout utilities */
+  .section-base { @apply py-16 px-4 sm:px-6 lg:px-8; }
+  .section-white { @apply bg-white; }
+  .section-gray { @apply bg-gray-50; }
+  .center-text { @apply text-center; }
+  .title-hero { @apply text-4xl md:text-5xl font-bold text-gray-900; }
+  .title-section { @apply text-3xl font-bold text-gray-900; }
+  .subtitle { @apply text-xl text-gray-600; }
+  .subtitle-sm { @apply text-lg text-gray-600; }
+  .highlight-orange { @apply text-[#F16112]; }
+  /* Contact section utilities */
+  .contact-section { @apply py-16 lg:py-24 bg-white; }
+  .container-7xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .contact-header { @apply text-center mb-16; }
+  .contact-title { @apply text-3xl lg:text-4xl font-bold text-gray-900 mb-4; }
+  .contact-subtitle { @apply text-lg text-gray-600 max-w-2xl mx-auto; }
+  .contact-grid { @apply grid grid-cols-1 lg:grid-cols-2 gap-12; }
+  .contact-card { @apply bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 border-2 border-gray-200; }
+  .contact-card-content { @apply p-6; }
+  .contact-info-title { @apply text-2xl font-semibold text-gray-900 mb-8; }
+  .contact-info-item { @apply flex items-start gap-4; }
+  .contact-info-iconwrap { @apply w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0; }
+  .contact-info-label { @apply font-semibold text-gray-900 mb-1; }
+  .contact-info-text { @apply text-gray-600; }
+  .contact-form-title { @apply text-2xl font-semibold text-gray-900 mb-8; }
+  .contact-success-card { @apply bg-green-50 border-green-200; }
+  .contact-success-content { @apply p-8 text-center; }
+  .contact-success-iconwrap { @apply w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4; }
+  .contact-success-title { @apply text-xl font-semibold text-green-900 mb-2; }
+  .contact-success-desc { @apply text-green-700; }
+  .contact-form-card { @apply bg-gray-50 border-2 border-gray-200; }
+  .contact-form-content { @apply p-8; }
+  .contact-input { @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1F396D] focus:border-transparent transition-colors; }
+  .contact-textarea { @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1F396D] focus:border-transparent transition-colors resize-none; }
+  .contact-submit { @apply w-full bg-[#F16112] hover:bg-[#d54f0a] text-white py-3 text-lg font-semibold; }
+
+  /* Cards and content */
+  .card-base { @apply bg-white shadow-lg transition-all duration-300; }
+  .card-hover { @apply hover:shadow-xl; }
+  .card-xl { @apply shadow-xl; }
+  .card-2xl { @apply shadow-2xl; }
+  .card-padding { @apply p-8; }
+  .card-padding-sm { @apply p-6; }
+
+  /* Icon badge/container */
+  .icon-badge { @apply w-16 h-16 rounded-xl flex items-center justify-center mx-auto; }
+  .icon-badge-hover { @apply group-hover:scale-110 transition-transform duration-300; }
+  .icon-md-white { @apply w-8 h-8 text-white; }
+  .icon-md-orange { @apply w-8 h-8 text-[#F16112]; }
+
+  /* Text helpers */
+  .text-muted { @apply text-gray-600; }
+  .text-muted-sm { @apply text-sm text-gray-600; }
+  .text-strong { @apply text-gray-900; }
+  .stat-number { @apply text-3xl font-bold; }
+  /* Header global utility classes extracted from Header.module.css */
+  .header-root { @apply bg-white/80 backdrop-blur-3xl shadow-[0px_8px_32px_rgba(31,57,109,0.12)] sticky top-0 z-50 border-b border-white/50 ring-1 ring-white/20; }
+  .header-topbar { @apply bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white/90; }
+  .container-7xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
+  .header-toprow { @apply flex items-center justify-between py-2 text-sm; }
+  .header-contact-group { @apply hidden md:flex items-center space-x-6; }
+  .header-contact-item { @apply flex items-center space-x-2; }
+  .header-social-row { @apply flex items-center space-x-4; }
+  .header-social-group { @apply hidden md:flex items-center space-x-3; }
+  .header-social-label { @apply text-white/70 text-xs; }
+  .header-social-links { @apply flex space-x-2; }
+  .header-social-link { @apply text-white/70 hover:text-white transition-colors; }
+  .header-address { @apply text-white/90 text-xs hidden lg:block; }
+
+  .header-mainrow { @apply flex items-center justify-between h-20; }
+  .header-logo { @apply bg-center bg-contain bg-no-repeat h-[80px] w-[200px]; }
+  .header-desktop-nav { @apply hidden lg:flex items-center space-x-1; }
+  .header-navlink { @apply px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative; }
+  .header-nav-neutral { @apply text-gray-700 hover:bg-gray-100; }
+  .header-indicator-base { @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300; }
+  .header-dropdown-panel { @apply absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-3xl border-2 border-white/70 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden transition-all duration-300 z-50 ring-1 ring-white/40; }
+  .header-dropdown-header { @apply px-6 py-4 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100; }
+  .header-dropdown-items { @apply py-2; }
+  .header-dropdown-link { @apply mx-2 my-1 rounded-xl transition-all duration-300 cursor-pointer w-full; }
+  .header-dropdown-row { @apply flex items-center gap-4 px-4 py-4 w-full; }
+  .header-dropdown-iconwrap { @apply relative p-2.5 rounded-xl transition-all duration-300; }
+  .header-dropdown-title-row { @apply flex items-center justify-between; }
+  .header-dropdown-desc { @apply text-sm mt-1; }
+  .header-dropdown-divider { @apply mx-6 border-b border-gray-100; }
+  .header-dropdown-footer { @apply px-6 py-4 bg-gradient-to-r from-gray-50 to-gray-100/50 border-t border-gray-100; }
+  .header-dropdown-footer-text { @apply text-xs text-gray-500 text-center; }
+  .header-dropdown-active { @apply bg-gradient-to-r from-[#1F396D]/10 to-[#F16112]/10 text-[#1F396D] shadow-inner; }
+  .header-dropdown-neutral { @apply hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50 text-gray-700; }
+  .header-text-neutral { @apply text-gray-900 group-hover:text-gray-900; }
+  .header-text-muted { @apply text-gray-500 group-hover:text-gray-600; }
+  .header-mobile { @apply lg:hidden bg-white border-t border-gray-200; }
+  .header-mobile-inner { @apply px-4 py-6 space-y-4; }
+  .header-mobile-link { @apply block font-medium py-2 transition-colors duration-200; }
+  .show { @apply opacity-100 visible translate-y-0; }
+  .hide { @apply opacity-0 invisible -translate-y-2; }
   .perspective-1000 {
     perspective: 1000px;
   }

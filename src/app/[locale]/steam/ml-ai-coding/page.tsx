@@ -7,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Code, Bot, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Award, BookOpen, Target, GraduationCap, TrendingUp, Shield, ChevronRight, DollarSign, Eye, Sparkles, ArrowRight, HelpCircle, MessageCircle, Phone, Mail, Calendar, X, Smartphone, Cpu, Database, Network, Zap, Lightbulb, Gamepad2, Monitor, Rocket } from "lucide-react";
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
-import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 
 // ML/AI Programming Course Data

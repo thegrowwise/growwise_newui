@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { X, CheckCircle, User, GraduationCap, BookOpen, Users, MessageSquare } from 'lucide-react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -31,6 +32,7 @@ interface FormData {
 }
 
 const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClose }) => {
+  const t = useTranslations();
   const [formData, setFormData] = useState<FormData>({
     parentName: '',
     email: '',
@@ -48,16 +50,19 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const grades = [
-    'Kindergarten', 'Grade 1', 'Grade 2', 'Grade 3', 'Grade 4', 'Grade 5',
-    'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'
+    t('assessment.grades.kindergarten'), t('assessment.grades.grade1'), t('assessment.grades.grade2'), 
+    t('assessment.grades.grade3'), t('assessment.grades.grade4'), t('assessment.grades.grade5'),
+    t('assessment.grades.grade6'), t('assessment.grades.grade7'), t('assessment.grades.grade8'), 
+    t('assessment.grades.grade9'), t('assessment.grades.grade10'), t('assessment.grades.grade11'), t('assessment.grades.grade12')
   ];
 
   const availableSubjects = [
-    'Math', 'English', 'Coding', 'AI/ML', 'Game Development', 'Robotics', 'SAT/ACT'
+    t('assessment.subjects.math'), t('assessment.subjects.english'), t('assessment.subjects.coding'), 
+    t('assessment.subjects.ai'), t('assessment.subjects.gameDev'), t('assessment.subjects.robotics'), t('assessment.subjects.sat')
   ];
 
   const scheduleOptions = [
-    'Weekdays After School', 'Weekends Morning', 'Weekends Afternoon'
+    t('assessment.schedule.weekdaysAfterSchool'), t('assessment.schedule.weekendsMorning'), t('assessment.schedule.weekendsAfternoon')
   ];
 
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -124,10 +129,10 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                       <GraduationCap className="w-8 h-8 text-white" />
                     </div>
                     <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
-                      Free Assessment
+                      {t('assessment.title')}
                     </h2>
                     <p className="text-gray-600 text-base lg:text-lg">
-                      Get personalized learning recommendations for your child
+                      {t('assessment.subtitle')}
                     </p>
                   </div>
 
@@ -135,12 +140,12 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                     <div className="space-y-4">
                       <h3 className="text-xl font-semibold text-[#1F396D] flex items-center gap-2">
                         <User className="w-5 h-5" />
-                        Parent Information
+                        {t('assessment.form.parentName')}
                       </h3>
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="parentName">Parent Name *</Label>
+                          <Label htmlFor="parentName">{t('assessment.form.parentName')} *</Label>
                           <Input
                             id="parentName"
                             type="text"
@@ -152,7 +157,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="email">Email Address *</Label>
+                          <Label htmlFor="email">{t('assessment.form.email')} *</Label>
                           <Input
                             id="email"
                             type="email"
@@ -165,7 +170,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                       </div>
 
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number *</Label>
+                        <Label htmlFor="phone">{t('assessment.form.phone')} *</Label>
                         <div className="flex items-stretch relative">
                           <CountryCodeSelector
                             value={formData.countryCode}
@@ -194,7 +199,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="studentName">Student Name *</Label>
+                          <Label htmlFor="studentName">{t('assessment.form.studentName')} *</Label>
                           <Input
                             id="studentName"
                             type="text"
@@ -206,10 +211,10 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                         </div>
 
                         <div className="space-y-2">
-                          <Label htmlFor="grade">Grade / Level *</Label>
+                          <Label htmlFor="grade">{t('assessment.form.grade')} *</Label>
                           <Select onValueChange={(value) => handleInputChange('grade', value)} required>
                             <SelectTrigger className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors">
-                              <SelectValue placeholder="Select grade" />
+                              <SelectValue placeholder={t('assessment.form.grade')} />
                             </SelectTrigger>
                             <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl">
                               {grades.map((grade) => (
@@ -231,7 +236,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
                       <div className="space-y-4">
                         <div>
-                          <Label className="text-base font-medium mb-3 block">Preferred Subject(s) *</Label>
+                          <Label className="text-base font-medium mb-3 block">{t('assessment.form.subjects')} *</Label>
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                             {availableSubjects.map((subject) => (
                               <div key={subject} className="flex items-center space-x-2">

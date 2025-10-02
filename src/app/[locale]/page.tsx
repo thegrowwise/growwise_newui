@@ -1,20 +1,22 @@
 "use client";
 import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import FreeAssessmentModal from '../components/FreeAssessmentModal';
-import { RootState } from '../store';
-import { fetchHomeStart } from '../store/slices/homeSlice';
-import { getIconComponent } from '../lib/iconMap';
-import { useChatbot } from '../contexts/ChatbotContext';
-import { HeroSection } from '../components/sections/home/HeroSection';
-import { PopularCoursesSection } from '../components/sections/home/PopularCoursesSection';
-import { StatisticsSection } from '../components/sections/home/StatisticsSection';
-import { ProgramsSection } from '../components/sections/home/ProgramsSection';
-import { WhyChooseSection } from '../components/sections/home/WhyChooseSection';
-import { TestimonialsSection } from '../components/sections/home/TestimonialsSection';
-import { CtaSection } from '../components/sections/home/CtaSection';
+import { useTranslations } from 'next-intl';
+import FreeAssessmentModal from '../../components/FreeAssessmentModal';
+import { RootState } from '../../store';
+import { fetchHomeStart } from '../../store/slices/homeSlice';
+import { getIconComponent } from '../../lib/iconMap';
+import { useChatbot } from '../../contexts/ChatbotContext';
+import { HeroSection } from '../../components/sections/home/HeroSection';
+import { PopularCoursesSection } from '../../components/sections/home/PopularCoursesSection';
+import { StatisticsSection } from '../../components/sections/home/StatisticsSection';
+import { ProgramsSection } from '../../components/sections/home/ProgramsSection';
+import { WhyChooseSection } from '../../components/sections/home/WhyChooseSection';
+import { TestimonialsSection } from '../../components/sections/home/TestimonialsSection';
+import { CtaSection } from '../../components/sections/home/CtaSection';
 
 export default function Home() {
+  const t = useTranslations();
   const dispatch = useDispatch();
   const { data } = useSelector((s: RootState) => s.home);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
@@ -88,8 +90,15 @@ export default function Home() {
       <PopularCoursesSection courses={popularCourses as any} />
 
       <StatisticsSection
-        title={<span>Trusted by <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Tri-Valley Families</span></span>}
-        subtitle="Join hundreds of families who have chosen GrowWise for their children's educational journey"
+        title={
+          <span>
+            {t('home.statistics.titlePrefix')}
+            <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">
+              {t('home.statistics.titleHighlight')}
+            </span>
+          </span>
+        }
+        subtitle={t('home.statistics.subtitle')}
         stats={statisticsData as any}
       />
 
@@ -100,10 +109,10 @@ export default function Home() {
       <TestimonialsSection testimonials={testimonials as any} />
 
       <CtaSection
-        title={data?.cta?.title || ''}
-        subtitle={data?.cta?.subtitle || ''}
-        primaryText={data?.cta?.primaryCta || 'Get Started'}
-        secondaryText={data?.cta?.secondaryCta || 'Contact Us'}
+        title={data?.cta?.title || t('home.cta.title')}
+        subtitle={data?.cta?.subtitle || t('home.cta.subtitle')}
+        primaryText={data?.cta?.primaryCta || t('home.cta.primaryCta')}
+        secondaryText={data?.cta?.secondaryCta || t('home.cta.secondaryCta')}
         onPrimary={openAssessmentModal}
         onSecondary={openChatbot}
       />

@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import ContentProvider from "@/components/providers/ContentProvider";
-import { CartProvider } from "@/components/gw/CartContext";
-import { ChatbotProvider } from "@/contexts/ChatbotContext";
-import Chatbot from "@/components/chatbot/Chatbot";
 
 export const metadata: Metadata = {
   title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
@@ -15,27 +9,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
-      <body 
-        className="min-h-screen bg-background font-sans antialiased"
-        suppressHydrationWarning={true}
-      >
-        <CartProvider>
-          <ChatbotProvider>
-            <ContentProvider>
-              <Header />
-              <main>
-                {children}
-              </main>
-              <Footer />
-              <Chatbot />
-            </ContentProvider>
-          </ChatbotProvider>
-        </CartProvider>
+    <html>
+      <body className="min-h-screen bg-background font-sans antialiased">
+        {children}
       </body>
     </html>
   );

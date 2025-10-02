@@ -1,0 +1,48 @@
+{
+  "hero": {
+    "title": "About GrowWise",
+    "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed.",
+    "stats": [
+      { "label": "Founded", "value": "2019", "color": "text-[#1F396D]" },
+      { "label": "Students Served", "value": "300+", "color": "text-[#F16112]" },
+      { "label": "Courses Offered", "value": "25+", "color": "text-[#F1894F]" },
+      { "label": "Satisfaction Rate", "value": "98%", "color": "text-[#29335C]" }
+    ]
+  }
+  ,
+  "coreValues": [
+    { "icon": "Target", "title": "Our Mission", "description": "To empower every student with personalized education that builds strong academic foundations while fostering creativity, critical thinking, and a lifelong love of learning.", "gradient": "from-[#1F396D] to-[#29335C]", "bgColor": "bg-[#1F396D]/10" },
+    { "icon": "Heart", "title": "Our Vision", "description": "To be the leading educational center in the Tri-Valley area, transforming students into confident, capable learners ready for future academic and career success.", "gradient": "from-[#F16112] to-[#F1894F]", "bgColor": "bg-[#F16112]/10" },
+    { "icon": "Award", "title": "Our Values", "description": "Excellence in education, personalized attention, innovative teaching methods, strong community partnerships, and unwavering commitment to student success.", "gradient": "from-[#F1894F] to-[#F16112]", "bgColor": "bg-[#F1894F]/10" }
+  ],
+  "achievements": [
+    { "icon": "Users", "title": "300+ Students Served", "description": "Since 2019, we've helped over 300 students achieve their academic goals", "value": "300+", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
+    { "icon": "Star", "title": "98% Satisfaction Rate", "description": "Consistently high parent and student satisfaction scores", "value": "98%", "color": "text-[#F16112]", "bgColor": "bg-[#F16112]/10" },
+    { "icon": "TrendingUp", "title": "95% Improvement Rate", "description": "95% of students show measurable improvement within first semester", "value": "95%", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" },
+    { "icon": "Award", "title": "5+ Years of Excellence", "description": "Recognized as a leading educational center in Dublin and Tri-Valley area", "value": "2019", "color": "text-[#29335C]", "bgColor": "bg-[#29335C]/10" }
+  ],
+  "educationalApproach": [
+    { "icon": "UserCheck", "title": "Personalized Learning", "description": "Every student receives instruction tailored to their unique learning style, pace, and academic goals through individualized assessment and customized lesson plans.", "benefits": ["Individual assessment", "Custom lesson plans", "Progress tracking"] },
+    { "icon": "Users", "title": "Small Class Sizes", "description": "With maximum 6 students per K-12 class and 4 per STEAM class, every student receives the attention and support they need to succeed.", "benefits": ["Max 6:1 ratio for K-12", "Max 4:1 ratio for STEAM", "Individual attention"] },
+    { "icon": "Lightbulb", "title": "Innovative Methods", "description": "We combine proven traditional teaching methods with cutting-edge educational technology and hands-on learning experiences.", "benefits": ["Latest EdTech tools", "Interactive learning", "Real-world applications"] },
+    { "icon": "Target", "title": "Goal-Oriented Approach", "description": "We set clear, measurable goals for each student and track progress regularly to ensure continuous improvement and success.", "benefits": ["SMART goal setting", "Regular assessments", "Parent communication"] }
+  ],
+  "communityImpact": [
+    { "icon": "Building", "title": "Local School Partnerships", "description": "Collaborating with Dublin Unified School District and surrounding schools to support student success" },
+    { "icon": "Users", "title": "Parent Workshops", "description": "Regular workshops helping parents support their children's learning journey at home" },
+    { "icon": "Globe", "title": "STEM Outreach", "description": "Community events and coding workshops to inspire the next generation of innovators" }
+  ],
+  "testimonials": [
+    { "name": "Jennifer Martinez", "role": "Parent of Sofia (Grade 7)", "content": "GrowWise has been transformational for Sofia. She went from struggling with math to being excited about algebra. The personalized approach really works!", "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face", "rating": 5 },
+    { "name": "Alex Chen", "role": "High School Senior", "content": "The Python programming course at GrowWise opened up a whole new world for me. I'm now pursuing computer science in college thanks to the foundation I built here.", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face", "rating": 5 },
+    { "name": "Robert Johnson", "role": "Parent of Emma (Grade 4)", "content": "The reading enrichment program helped Emma develop a genuine love for books. Her confidence and comprehension have improved dramatically.", "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face", "rating": 5 }
+  ],
+  "teamMembers": [
+    { "name": "Dr. Sarah Chen", "role": "Founder & Director", "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face", "bio": "With over 15 years in education, Dr. Chen founded GrowWise to provide personalized learning experiences that help every student reach their full potential.", "expertise": ["Educational Leadership", "Curriculum Development", "Student Assessment"], "education": "Ph.D. in Education, Stanford University" },
+    { "name": "Michael Rodriguez", "role": "Lead Math Instructor", "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face", "bio": "A passionate mathematics educator who believes every student can excel in math with the right approach and support.", "expertise": ["Advanced Mathematics", "DUSD Accelerated Programs", "SAT/ACT Prep"], "education": "M.S. in Mathematics, UC Berkeley" },
+    { "name": "Lisa Thompson", "role": "English & Writing Specialist", "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face", "bio": "An award-winning educator specializing in reading comprehension, creative writing, and helping students find their unique voice.", "expertise": ["Reading Enrichment", "Creative Writing", "ESL Support"], "education": "M.A. in English Literature, UCLA" },
+    { "name": "David Kim", "role": "STEAM Program Director", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face", "bio": "A tech industry veteran turned educator, passionate about introducing young minds to coding, robotics, and entrepreneurship.", "expertise": ["Python Programming", "AI/ML Education", "Young Entrepreneurship"], "education": "B.S. Computer Science, MIT" }
+  ]
+}
+
+
