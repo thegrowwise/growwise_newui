@@ -1,11 +1,12 @@
 # GrowWise School Landing Page
 
-A modern, responsive landing page for GrowWise School built with Next.js, React, Redux-Saga, and Tailwind CSS.
+A modern, responsive landing page for GrowWise School built with Next.js, React, Redux-Saga, Tailwind CSS, and next-intl i18n.
 
 ## Features
 
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Dynamic Content**: All content is loaded from Redux store via Redux-Saga
+- **Internationalization (i18n)**: Locale-aware routes using `next-intl` with `app/[locale]` and middleware
 - **SEO Optimized**: Complete meta tags, sitemap, robots.txt, and structured data
 - **PWA Ready**: Web app manifest and service worker support
 - **TypeScript**: Full type safety throughout the application
@@ -25,9 +26,14 @@ A modern, responsive landing page for GrowWise School built with Next.js, React,
 ```
 src/
 ├── app/                    # Next.js App Router
-│   ├── layout.tsx         # Root layout with providers
-│   ├── page.tsx           # Home page
-│   └── globals.css        # Global styles
+│   ├── layout.tsx          # Root layout with providers
+│   ├── globals.css         # Global styles and utilities (@layer)
+│   └── [locale]/           # Locale-scoped routes
+│       ├── layout.tsx      # Per-locale provider via next-intl
+│       ├── page.tsx        # Home page (localized)
+│       ├── about/          # About page (localized entry)
+│       ├── academic/       # Academic page (localized entry)
+│       └── steam/...       # STEAM routes (localized entries)
 ├── components/            # React components
 │   ├── layout/           # Layout components (Header, Footer)
 │   ├── sections/         # Page sections (Hero, Features, etc.)
@@ -37,11 +43,10 @@ src/
 │   ├── hooks.ts          # Typed Redux hooks
 │   ├── slices/           # Redux Toolkit slices
 │   └── sagas/            # Redux-Saga effects
-└── types/                # TypeScript type definitions
+└── lib/                  # Utilities (e.g., iconMap)
 
 public/
-├── api/mock/             # Mock API endpoints
-│   └── content.json      # Dynamic content payload
+├── api/mock/             # Mock API endpoints (JSON files consumed by Redux-Saga)
 ├── manifest.json         # PWA manifest
 ├── robots.txt           # SEO robots file
 └── sitemap.xml          # SEO sitemap
@@ -74,11 +79,24 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Content Management
+## Content & Data Management
 
-### Dynamic Content Structure
+### Redux-Saga Data Flow
 
-All dynamic content is managed through Redux and loaded from a JSON payload. The content structure includes:
+All dynamic/page-configurable content is fetched via Redux-Saga from JSON under `public/api/mock`. Each feature has:
+
+- A slice in `src/store/slices/*Slice.ts`
+- A saga in `src/store/sagas/*Saga.ts` that fetches `/api/mock/*.json`
+- Registration in `src/store/sagas/index.ts` and `src/store/index.ts`
+
+Typical pattern:
+
+- Create a slice in `src/store/slices` exposing `fetchXRequested/succeeded/failed`
+- Create a saga in `src/store/sagas` that fetches `/api/mock/x.json`
+- Register saga and reducer in `src/store/sagas/index.ts` and `src/store/index.ts`
+- Dispatch `fetchXRequested` from the component and read `state.x.data`
+
+All dynamic content is managed through Redux and loaded from JSON. The content includes:
 
 - **Hero Section**: Title, subtitle, description, CTA
 - **Features**: Array of feature cards with icons and descriptions
@@ -129,9 +147,10 @@ async function fetchContentAPI(): Promise<ContentData> {
 
 ### Styling
 
-The project uses Tailwind CSS for styling. Custom styles can be added in:
-- `src/app/globals.css` for global styles
-- Component-specific classes in each component
+The project uses Tailwind CSS. Styling approach:
+- Small, one-off styles inline with Tailwind classes
+- Reusable utilities via `@layer utilities` in `src/app/globals.css` (e.g., `header-*`, `contact-*`, `section-*`)
+- Component variants handled in JSX via data/props (e.g., Header `variant`)
 
 ### Components
 
@@ -178,3 +197,36 @@ This project is licensed under the MIT License.
 ## Support
 
 For support and questions, please contact the development team.
+
+---
+
+## Internationalization (next-intl)
+
+- Messages live in `src/i18n/messages/{en,es,hi,zh}.json`.
+- Config/provider in `src/i18n/config.ts` and `app/[locale]/layout.tsx`.
+- Middleware in `src/middleware.ts` enables locale prefixes and default locale redirect.
+- Use in components:
+
+```tsx
+import { useTranslations } from 'next-intl';
+
+const t = useTranslations('about');
+return <h1>{t('hero.title')}</h1>;
+```
+
+When adding keys, update all locale files. If messages don’t update during dev: stop Next, `rm -rf .next`, then `npm run dev`.
+
+### Usage in Components
+
+- Use `useTranslations('<namespace>')` for localized strings
+- Use Redux state selectors for data; trigger fetch with `fetchXRequested`
+- Keep styles maintainable: small inline Tailwind for one-offs, shared utilities in `globals.css` via `@layer`
+
+---
+
+## Development Tips
+
+- Kill stray dev servers: `pkill -f "next dev"`
+- Clear Next build cache: `rm -rf .next`
+- Restart dev: `npm run dev`
+
