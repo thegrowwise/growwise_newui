@@ -1,0 +1,114 @@
+{
+  "heroSlides": [
+    {
+      "id": 1,
+      "title": "Master the Core",
+      "subtitle": "Personalized and small group learning",
+      "description": "Build strong academic foundations with expert K-12 instruction tailored to your child's learning style.",
+      "cta": "Book 60 minutes Free Assessment",
+      "icon": "BookOpen",
+      "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#2a4a7c]",
+      "iconColor": "text-white",
+      "ctaColor": "bg-[#F1894F] hover:bg-[#F16112] text-white",
+      "bgImage": "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1200&h=800&fit=crop"
+    },
+    {
+      "id": 2,
+      "title": "Build. Code, Create",
+      "subtitle": "STEAM courses",
+      "description": "Hands-on STEAM learning with Roblox, Scratch, Python, ML/AI, and Young Entrepreneurship programs.",
+      "cta": "Book 30 minutes trial class",
+      "icon": "Code",
+      "bgGradient": "bg-gradient-to-br from-[#F16112] via-[#F1894F] to-[#d54f0a]",
+      "iconColor": "text-white",
+      "ctaColor": "bg-[#1F396D] hover:bg-[#29335C] text-white",
+      "bgImage": "https://images.unsplash.com/photo-1548686304-89d188a80029?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraWRzJTIwY29kaW5nJTIwY29tcHV0ZXIlMjBwcm9ncmFtbWluZyUyMFNURUFNfGVufDF8fHx8MTc1NzQ4Mjg3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    },
+    {
+      "id": 3,
+      "title": "One-on-One Tuition",
+      "subtitle": "100% personal attention",
+      "description": "Specially designed for specific homework help and targeted learning support for kids who need focused attention.",
+      "cta": "Register Now",
+      "icon": "Users",
+      "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#F16112] to-[#F1894F]",
+      "iconColor": "text-white",
+      "ctaColor": "bg-white hover:bg-gray-100 text-[#1F396D]",
+      "bgImage": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=800&fit=crop"
+    }
+  ],
+  "popularCourses": [
+    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "Free Assessment" },
+    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "Free Assessment" },
+    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "Free Assessment" },
+    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "Free Assessment" }
+  ],
+  "statisticsData": [
+    { "id": 1, "value": "300+", "label": "Students Enrolled", "icon": "Users", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
+    { "id": 2, "value": "25+", "label": "Courses Offered", "icon": "BookMarked", "color": "text-[#F16112]", "bgColor": "bg-[#F16112]/10" },
+    { "id": 3, "value": "98%", "label": "Students Satisfaction", "icon": "ThumbsUp", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" }
+  ],
+  "k12Programs": [
+    { "id": 1, "title": "Math Courses", "description": "Build strong mathematical foundations from elementary to advanced levels", "icon": "Calculator", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "href": "/courses/math", "subItems": [
+      { "name": "Elementary Math", "icon": "🔢", "description": "Basic arithmetic and number sense" },
+      { "name": "Middle School Math", "icon": "📊", "description": "Algebra and geometry foundations" },
+      { "name": "DUSD Accelerated Math", "icon": "🚀", "description": "Advanced placement preparation" },
+      { "name": "High School Math", "icon": "🎯", "description": "Calculus and advanced topics" }
+    ] },
+    { "id": 2, "title": "ELA Courses", "description": "Develop comprehensive English language arts skills", "icon": "BookOpen", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "href": "/courses/english", "subItems": [
+      { "name": "English Mastery: K-12", "icon": "📚", "description": "Complete language arts curriculum" },
+      { "name": "Reading Enrichment", "icon": "📖", "description": "Improve reading comprehension" },
+      { "name": "Grammar Boost", "icon": "✏️", "description": "Master grammar and mechanics" }
+    ] },
+    { "id": 3, "title": "Writing Lab", "description": "Master the art of effective written communication", "icon": "PenTool", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+      { "name": "Creative Writing", "icon": "✨", "description": "Unleash your creative potential" },
+      { "name": "Essay Writing", "icon": "📝", "description": "Academic and persuasive writing" },
+      { "name": "Create & Reflect", "icon": "🤔", "description": "Develop critical thinking skills" }
+    ] },
+    { "id": 4, "title": "SAT/ACT", "description": "Achieve your best scores with comprehensive test preparation", "icon": "Award", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-gray-50 to-gray-100", "iconColor": "text-[#1F396D]", "subItems": [
+      { "name": "Math Test Prep", "icon": "🧮", "description": "Master SAT/ACT math sections" },
+      { "name": "Online SAT Test Prep", "icon": "💻", "description": "Comprehensive SAT preparation" },
+      { "name": "Online ACT Test Prep", "icon": "🎯", "description": "Complete ACT test strategy" }
+    ] }
+  ],
+  "steamPrograms": [
+    { "id": 1, "title": "Game Development", "description": "Create immersive games and interactive experiences", "icon": "Gamepad2", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "subItems": [
+      { "name": "Roblox Studio", "icon": "🎮", "description": "Create games in Roblox platform" },
+      { "name": "Scratch", "icon": "🐱", "description": "Visual programming for beginners" },
+      { "name": "Minecraft", "icon": "⛏️", "description": "Build and code in Minecraft" }
+    ] },
+    { "id": 2, "title": "Python Programming", "description": "Master the world's most popular programming language", "icon": "Code", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "subItems": [
+      { "name": "Python Kickstart", "icon": "🚀", "description": "Begin your Python journey" },
+      { "name": "Python Power Up", "icon": "⚡", "description": "Intermediate Python skills" },
+      { "name": "Python Pro", "icon": "🏆", "description": "Advanced Python mastery" }
+    ] },
+    { "id": 3, "title": "Young Founders", "description": "Develop entrepreneurial skills and business mindset", "icon": "Lightbulb", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+      { "name": "Youth CEO", "icon": "👑", "description": "Learn leadership and management" },
+      { "name": "I Am Brand", "icon": "🎯", "description": "Build your personal brand" }
+    ] },
+    { "id": 4, "title": "ML/Gen AI", "description": "Explore artificial intelligence and machine learning", "icon": "Brain", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10", "iconColor": "text-[#1F396D]", "subItems": [
+      { "name": "Prompt Engineering", "icon": "🤖", "description": "Master AI prompt techniques" },
+      { "name": "AI for Everyone", "icon": "🧠", "description": "AI fundamentals for all ages" },
+      { "name": "ML/AI for Highschoolers", "icon": "🎓", "description": "Advanced AI concepts" }
+    ] }
+  ],
+  "testimonials": [
+    { "name": "Sarah Johnson", "role": "Parent", "content": "GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.", "rating": 5, "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face" },
+    { "name": "Michael Chen", "role": "Student", "content": "The STEAM programs at GrowWise opened up a whole new world of possibilities. I'm now pursuing computer science in college!", "rating": 5, "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" },
+    { "name": "Lisa Rodriguez", "role": "Parent", "content": "The personalized attention and innovative teaching methods make GrowWise stand out from other programs.", "rating": 5, "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" }
+  ],
+  "whyChooseUs": [
+    { "icon": "Users", "title": "Expert Instructors", "description": "Learn from certified teachers with years of experience in K-12 and STEAM education" },
+    { "icon": "Award", "title": "Proven Results", "description": "95% of our students show measurable improvement within the first semester" },
+    { "icon": "BookOpen", "title": "Comprehensive Curriculum", "description": "Aligned with state standards and designed for modern learning needs" },
+    { "icon": "Microscope", "title": "Hands-on Learning", "description": "Interactive labs and projects that make learning engaging and memorable" }
+  ],
+  "cta": {
+    "title": "Ready to Start Your Learning Journey?",
+    "subtitle": "Join thousands of students who have transformed their academic future with GrowWise.",
+    "primaryCta": "Get Started",
+    "secondaryCta": "Contact Us"
+  }
+}
+
+

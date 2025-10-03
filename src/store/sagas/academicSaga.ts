@@ -1,11 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchAcademicFailed, fetchAcademicRequested, fetchAcademicSucceeded, AcademicData } from '../slices/academicSlice';
+import { fetchJsonWithLocale } from '@/lib/api';
 
-function fetchAcademicApi(): Promise<AcademicData> {
-  return fetch('/api/mock/academic.json').then((res) => {
-    if (!res.ok) throw new Error('Failed to fetch academic');
-    return res.json();
-  });
+async function fetchAcademicApi(): Promise<AcademicData> {
+  return fetchJsonWithLocale<AcademicData>('academic.json', '/academic');
 }
 
 function* fetchAcademicWorker() {
