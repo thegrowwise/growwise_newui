@@ -2,6 +2,8 @@
 import React from 'react';
 import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
+import { SectionError } from '../../ui/SectionError';
+import { ItemError } from '../../ui/ItemError';
 
 export interface PopularCourseVM {
   id: number;
@@ -15,7 +17,9 @@ export interface PopularCourseVM {
   onClick: () => void;
 }
 
-export function PopularCoursesSection({ courses }: { courses: PopularCourseVM[] }) {
+export function PopularCoursesSection({ courses, error, onRetry }: { courses: PopularCourseVM[] | null; error?: string | null; onRetry?: () => void }) {
+  if (error) return <SectionError title="Popular Courses unavailable" message={error} onRetry={onRetry} />;
+  if (!courses || courses.length === 0) return <SectionError title="No popular courses" message="Please check back later." onRetry={onRetry} />;
   return (
     <section className="relative -mt-24 px-4 lg:px-8 pb-20">
       <div className="max-w-5xl mx-auto relative z-20">
@@ -29,6 +33,11 @@ export function PopularCoursesSection({ courses }: { courses: PopularCourseVM[] 
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {courses.map((course) => {
+                if (!course || !course.IconComponent) {
+                  return (
+                    <ItemError key={`err-${Math.random()}`} title="Course unavailable" message="Failed to load this course." />
+                  );
+                }
                 const Icon = course.IconComponent as any;
                 const isBlue = course.iconColor.includes('#1F396D');
                 return (

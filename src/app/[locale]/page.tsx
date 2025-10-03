@@ -18,7 +18,7 @@ import { CtaSection } from '../../components/sections/home/CtaSection';
 export default function Home() {
   const t = useTranslations();
   const dispatch = useDispatch();
-  const { data } = useSelector((s: RootState) => s.home);
+  const { data, loading, error } = useSelector((s: RootState) => s.home);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const openAssessmentModal = () => setIsAssessmentModalOpen(true);
   const closeAssessmentModal = () => setIsAssessmentModalOpen(false);
@@ -85,9 +85,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
-      <HeroSection slides={heroSlides as any} currentIndex={currentHeroSlide} onPrev={prevHeroSlide} onNext={nextHeroSlide} onGoTo={goToHeroSlide} />
+      <HeroSection slides={heroSlides as any} currentIndex={currentHeroSlide} onPrev={prevHeroSlide} onNext={nextHeroSlide} onGoTo={goToHeroSlide} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <PopularCoursesSection courses={popularCourses as any} />
+      <PopularCoursesSection courses={popularCourses as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
       <StatisticsSection
         title={
@@ -100,13 +100,15 @@ export default function Home() {
         }
         subtitle={t('home.statistics.subtitle')}
         stats={statisticsData as any}
+        error={error}
+        onRetry={() => dispatch(fetchHomeStart())}
       />
 
-      <ProgramsSection k12={k12Programs as any} steam={steamPrograms as any} />
+      <ProgramsSection k12={k12Programs as any} steam={steamPrograms as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <WhyChooseSection items={whyChooseUs as any} />
+      <WhyChooseSection items={whyChooseUs as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <TestimonialsSection testimonials={testimonials as any} />
+      <TestimonialsSection testimonials={testimonials as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
       <CtaSection
         title={data?.cta?.title || t('home.cta.title')}

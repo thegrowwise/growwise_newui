@@ -1,9 +1,12 @@
 "use client";
 import React from 'react';
+import { SectionError } from '../../ui/SectionError';
 
 export interface WhyItemVM { title: string; description: string; IconComponent: React.ComponentType<any> }
 
-export function WhyChooseSection({ items }: { items: WhyItemVM[] }) {
+export function WhyChooseSection({ items, error, onRetry }: { items: WhyItemVM[] | null; error?: string | null; onRetry?: () => void }) {
+  if (error) return <SectionError title="Why Choose data unavailable" message={error} onRetry={onRetry} />;
+  if (!items || items.length === 0) return <SectionError title="No reasons available" message="Please check back later." onRetry={onRetry} />;
   return (
     <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-[#1F396D]/8 to-[#F16112]/8 backdrop-blur-[1px]"></div>

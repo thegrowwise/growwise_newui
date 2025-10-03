@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { Card, CardContent } from '../../ui/card';
+import { SectionError } from '../../ui/SectionError';
 import { ImageWithFallback } from '../../gw/ImageWithFallback';
 import { Star } from 'lucide-react';
 
@@ -12,7 +13,9 @@ export interface TestimonialVM {
   image: string;
 }
 
-export function TestimonialsSection({ testimonials }: { testimonials: TestimonialVM[] }) {
+export function TestimonialsSection({ testimonials, error, onRetry }: { testimonials: TestimonialVM[] | null; error?: string | null; onRetry?: () => void }) {
+  if (error) return <SectionError title="Testimonials unavailable" message={error} onRetry={onRetry} />;
+  if (!testimonials || testimonials.length === 0) return <SectionError title="No testimonials yet" message="Check back later." onRetry={onRetry} />;
   return (
     <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">

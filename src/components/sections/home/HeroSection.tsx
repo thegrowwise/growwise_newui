@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { Button } from '../../ui/button';
+import { SectionError } from '../../ui/SectionError';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallback } from '../../gw/ImageWithFallback';
 
@@ -24,13 +25,19 @@ export function HeroSection({
   onPrev,
   onNext,
   onGoTo,
+  error,
+  onRetry,
 }: {
-  slides: HeroSlideVM[];
+  slides: HeroSlideVM[] | null;
   currentIndex: number;
   onPrev: () => void;
   onNext: () => void;
   onGoTo: (index: number) => void;
+  error?: string | null;
+  onRetry?: () => void;
 }) {
+  if (error) return <SectionError title="Hero unavailable" message={error} onRetry={onRetry} />;
+  if (!slides || slides.length === 0) return <SectionError title="No hero slides" message="Please check back later." onRetry={onRetry} />;
   return (
     <section className="relative py-16 px-4 lg:px-8 overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">

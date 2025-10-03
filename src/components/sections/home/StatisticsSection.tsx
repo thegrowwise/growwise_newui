@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import { Card, CardContent } from '../../ui/card';
+import { SectionError } from '../../ui/SectionError';
 
 export interface StatVM {
   id: number;
@@ -11,7 +12,9 @@ export interface StatVM {
   IconComponent: React.ComponentType<any>;
 }
 
-export function StatisticsSection({ title, subtitle, stats }: { title: React.ReactNode; subtitle: string; stats: StatVM[] }) {
+export function StatisticsSection({ title, subtitle, stats, error, onRetry }: { title: React.ReactNode; subtitle: string; stats: StatVM[] | null; error?: string | null; onRetry?: () => void }) {
+  if (error) return <SectionError title="Statistics unavailable" message={error} onRetry={onRetry} />;
+  if (!stats || stats.length === 0) return <SectionError title="No statistics" message="Please check back later." onRetry={onRetry} />;
   return (
     <section id="stats-section" className="py-20 px-4 lg:px-8 relative overflow-hidden">
       <div className="absolute inset-0">
