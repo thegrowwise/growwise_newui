@@ -1,0 +1,183 @@
+{
+  "topBar": {
+    "phone": "(925) 456-4606",
+    "email": "connect@thegrowwise.com",
+    "address": "📍 4564 Dublin Blvd, Dublin, CA",
+    "followLabel": "Follow us:",
+    "social": {
+      "facebook": "https://www.facebook.com/people/GrowWise/61561059687164/",
+      "twitter": "#",
+      "instagram": "https://www.instagram.com/growwise.dublin/",
+      "linkedin": "https://www.linkedin.com/company/thegrowwise/"
+    }
+  },
+  "nav": {
+    "resourcesLabel": "Resources"
+  },
+  "menuItems": [
+    {
+      "key": "home",
+      "label": "Home",
+      "href": "/",
+      "type": "simple",
+      "active": true,
+      "variant": "blue"
+    },
+    {
+      "key": "academic",
+      "label": "Academic",
+      "href": "/academic",
+      "type": "dropdown",
+      "variant": "blue",
+      "dropdown": {
+        "title": "Academic Programs",
+        "subtitle": "Choose your learning path",
+        "items": [
+          {
+            "key": "math",
+            "title": "Mathematics",
+            "description": "Master mathematics from basics to advanced",
+            "icon": "Calculator",
+            "href": "/courses/math",
+            "gradient": "from-[#1F396D] to-[#29335C]"
+          },
+          {
+            "key": "english",
+            "title": "English",
+            "description": "Comprehensive English language arts",
+            "icon": "BookOpen",
+            "href": "/courses/english",
+            "gradient": "from-[#F16112] to-[#F1894F]"
+          }
+        ]
+      }
+    },
+    {
+      "key": "steam",
+      "label": "STEAM",
+      "href": "/steam",
+      "type": "dropdown",
+      "variant": "orange",
+      "dropdown": {
+        "title": "STEAM Programs",
+        "subtitle": "Explore science, technology, and creativity",
+        "items": [
+          {
+            "key": "mlAi",
+            "title": "ML/AI Coding",
+            "description": "Explore artificial intelligence and machine learning",
+            "icon": "Brain",
+            "href": "/steam/ml-ai-coding",
+            "gradient": "from-[#1F396D] to-[#F16112]"
+          },
+          {
+            "key": "gameDev",
+            "title": "Game Development",
+            "description": "Create games with Roblox, Scratch, and Unity",
+            "icon": "Gamepad2",
+            "href": "/steam/game-development",
+            "gradient": "from-[#F16112] to-[#F1894F]"
+          }
+        ]
+      }
+    },
+    {
+      "key": "resources",
+      "label": "Resources",
+      "href": "#",
+      "type": "simple",
+      "variant": "orange"
+    },
+    {
+      "key": "about",
+      "label": "About Us",
+      "href": "/about",
+      "type": "simple",
+      "variant": "orange"
+    },
+    {
+      "key": "contact",
+      "label": "Contact Us",
+      "href": "/contact",
+      "type": "simple",
+      "variant": "orange"
+    },
+    {
+      "key": "programs",
+      "label": "Programs",
+      "href": "/programs",
+      "type": "dropdown",
+      "variant": "blue",
+      "dropdown": {
+        "title": "All Programs",
+        "subtitle": "Discover our comprehensive learning programs",
+        "items": [
+          {
+            "key": "summer",
+            "title": "Summer Camp",
+            "description": "Fun and educational summer programs",
+            "icon": "Calculator",
+            "href": "/programs/summer",
+            "gradient": "from-[#1F396D] to-[#F16112]"
+          },
+          {
+            "key": "afterSchool",
+            "title": "After School",
+            "description": "Extended learning opportunities",
+            "icon": "BookOpen",
+            "href": "/programs/after-school",
+            "gradient": "from-[#F16112] to-[#F1894F]"
+          }
+        ]
+      }
+    }
+  ],
+  "academic": {
+    "dropdownTitle": "Academic Programs",
+    "dropdownSubtitle": "Choose your learning path",
+    "items": [
+      {
+        "key": "math",
+        "title": "Mathematics",
+        "description": "Master mathematics from basics to advanced",
+        "icon": "Calculator",
+        "href": "/courses/math",
+        "gradient": "from-[#1F396D] to-[#29335C]"
+      },
+      {
+        "key": "english",
+        "title": "English",
+        "description": "Comprehensive English language arts",
+        "icon": "BookOpen",
+        "href": "/courses/english",
+        "gradient": "from-[#F16112] to-[#F1894F]"
+      }
+    ]
+  },
+  "steam": {
+    "dropdownTitle": "STEAM Programs",
+    "dropdownSubtitle": "Explore science, technology, and creativity",
+    "items": [
+      {
+        "key": "mlAi",
+        "title": "ML/AI Coding",
+        "description": "Explore artificial intelligence and machine learning",
+        "icon": "Brain",
+        "href": "/steam/ml-ai-coding",
+        "gradient": "from-[#1F396D] to-[#F16112]"
+      },
+      {
+        "key": "gameDev",
+        "title": "Game Development",
+        "description": "Create games with Roblox, Scratch, and Unity",
+        "icon": "Gamepad2",
+        "href": "/steam/game-development",
+        "gradient": "from-[#F16112] to-[#F1894F]"
+      }
+    ]
+  },
+  "footerHelper": "Need help choosing?",
+  "footerContactCta": "Contact us"
+}
+
+

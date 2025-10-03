@@ -10,8 +10,6 @@ import { RootState } from '@/store';
 import { fetchContactRequested } from '@/store/slices/contactSlice';
 import { getIconComponent } from '@/lib/iconMap';
 
-// All contact data comes from Redux via Saga; no local fallback
-
 export default function Contact() {
   const t = useTranslations('contact');
   const dispatch = useDispatch();
@@ -78,6 +76,7 @@ export default function Contact() {
             
             <div className="space-y-6">
               {items.map((info) => {
+                const labelKey = (info.titleKey || '').replace(/^contact\./, '');
                 const IconComponent = getIconComponent(info.icon);
                 return (
                   <div key={info.id} className="contact-info-item">
@@ -85,7 +84,7 @@ export default function Contact() {
                       <IconComponent className={`w-6 h-6 ${info.color}`} />
                     </div>
                     <div>
-                      <h4 className="contact-info-label">{t(info.titleKey as any)}</h4>
+                      <h4 className="contact-info-label">{t(labelKey as any)}</h4>
                       <p className="contact-info-text">
                         {info.value}
                       </p>

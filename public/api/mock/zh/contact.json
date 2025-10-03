@@ -1,0 +1,10 @@
+{
+  "contactInfo": [
+    { "id": 1, "titleKey": "contact.info.phone", "value": "+1 (555) 123-4567", "icon": "Phone", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
+    { "id": 2, "titleKey": "contact.info.email", "value": "info@growwise.com", "icon": "Mail", "color": "text-[#F16112]", "bgColor": "bg-[#F16112]/10" },
+    { "id": 3, "titleKey": "contact.info.address", "value": "123 Education St, Learning City, LC 12345", "icon": "MapPin", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" },
+    { "id": 4, "titleKey": "contact.info.hours", "value": "Mon-Sat: 8AM-8PM, Sun: 10AM-6PM", "icon": "Clock", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" }
+  ]
+}
+
+

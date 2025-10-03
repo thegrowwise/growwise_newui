@@ -1,0 +1,121 @@
+{
+  "hero": {
+    "title": "Sobre GrowWise",
+    "subtitle": "Desde 2019, GrowWise ha estado transformando la educación en Dublín, CA, mediante instrucción K-12 personalizada y programas STEAM innovadores. Empoderamos a cada estudiante con las habilidades, el conocimiento y la confianza que necesita para tener éxito.",
+    "stats": [
+      { "label": "Founded", "value": "2019", "color": "text-[#1F396D]" },
+      { "label": "Students Served", "value": "300+", "color": "text-[#F16112]" },
+      { "label": "Courses Offered", "value": "25+", "color": "text-[#F1894F]" },
+      { "label": "Satisfaction Rate", "value": "98%", "color": "text-[#29335C]" }
+    ]
+  }
+  ,
+  "discover": {
+    "sectionTitle": "Descubre GrowWise",
+    "lead": "GrowWise: Excelencia en Educación y Tecnología en Dublín, CA",
+    "paragraphs": [
+      "GrowWise, fundada por la innovadora educativa Anshika Verma, es el lugar donde la educación y la tecnología se unen para empoderar a los jóvenes. Inspirada por sus padres —ambos educadores de toda la vida— y con más de una década de experiencia en ingeniería de software, Anshika imaginó GrowWise como una plataforma dedicada a conectar la excelencia académica con herramientas digitales modernas.",
+      "En GrowWise creamos entornos de aprendizaje personalizados usando analítica impulsada por IA, soluciones de enseñanza a medida y programas de formación basados en habilidades. Nuestros programas, diseñados para estudiantes K–12 en Dublín, CA, se centran en tutoría académica, enriquecimiento STEM, cursos de programación y desarrollo del pensamiento crítico.",
+      "Creemos en un aprendizaje interactivo, atractivo y alineado con la industria, garantizando que cada estudiante desarrolle las habilidades técnicas y la mentalidad de resolución de problemas necesarias para el éxito futuro. Nuestra misión es empoderar tanto a educadores como a estudiantes mediante tecnología educativa de vanguardia."
+    ],
+    "cta": { "label": "Saber más", "href": "/programs" },
+    "images": [
+      { "src": "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png", "alt": "Classroom Q&A", "style": "tilt" },
+      { "src": "/assets/0fb554c814973287034758481cdce9617220c706.png", "alt": "Students Group", "style": "tilt-small" },
+      { "src": "/assets/f67b000f9bfa025e565ea4296e99a888a2ea5a33.png", "alt": "Founder", "style": "large" }
+    ]
+  },
+  "mission": {
+    "items": [
+      {
+        "title": "Nuestra Misión",
+        "content": "En GrowWise nos dedicamos a avanzar en la educación y fomentar un entorno de aprendizaje de apoyo. Nuestra misión es empoderar a educadores y estudiantes mediante recursos integrales, apoyo efectivo y una comunidad vibrante. Nos esforzamos por mejorar las prácticas docentes y el rendimiento académico, asegurando que cada aprendiz alcance su máximo potencial."
+      },
+      {
+        "title": "Excelencia Educativa en Dublín",
+        "content": "Con sede en Dublín, CA, GrowWise está comprometido a brindar apoyo educativo de alta calidad adaptado a las necesidades de nuestra comunidad local. Nuestros programas y servicios están diseñados para atender los desafíos únicos que enfrentan educadores y estudiantes, asegurando que cuenten con las herramientas y recursos necesarios para el éxito."
+      }
+    ],
+    "heroImage": "/assets/4d5f8738dc90c959ab8bf4453a752c35ebcfde0b.png"
+  },
+  "support": {
+    "title": "Apoyando a Educadores y Estudiantes",
+    "teacher": {
+      "title": "Soporte para Docentes",
+      "content": "Creemos que una gran enseñanza comienza con grandes docentes. Nuestros programas de apoyo al profesorado proporcionan la formación, los recursos y la comunidad que necesitan para destacar en su profesión, mediante desarrollo profesional continuo y acceso a metodologías innovadoras."
+    },
+    "student": {
+      "title": "Soporte para Estudiantes",
+      "content": "Para los estudiantes, ofrecemos asistencia personalizada que complementa su aprendizaje en el aula. Nuestros programas incluyen tutorías individuales, ayuda con tareas y cursos de enriquecimiento, todos diseñados para apoyar el rendimiento académico y fomentar el amor por el aprendizaje. Estamos dedicados a ayudar a los estudiantes a superar desafíos y alcanzar sus metas educativas."
+    },
+    "gallery": [
+      "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png"
+    ]
+  },
+  "approach": {
+    "title": "Nuestro Enfoque Educativo",
+    "subtitle": "Innovador, Inclusivo e Impactante",
+    "pillars": [
+      {
+        "title": "Desarrollo Holístico",
+        "content": "Nos enfocamos en el desarrollo integral de educadores y estudiantes, enfatizando no solo la excelencia académica sino también el crecimiento personal y el bienestar.",
+        "icon": "Heart"
+      },
+      {
+        "title": "Compromiso con la Innovación",
+        "content": "Nuestros programas incorporan la investigación más reciente y las mejores prácticas de enseñanza y aprendizaje, garantizando un apoyo efectivo y actualizado.",
+        "icon": "Lightbulb"
+      },
+      {
+        "title": "Participación Comunitaria",
+        "content": "GrowWise valora la importancia de la comunidad en el proceso educativo. Colaboramos activamente con escuelas locales, familias y organizaciones para asegurar que nuestros programas sean relevantes y de impacto.",
+        "icon": "Users"
+      },
+      {
+        "title": "Aprendizaje Personalizado",
+        "content": "Reconocemos que cada aprendiz es único. Nuestro enfoque incluye estrategias personalizadas para atender necesidades individuales y optimizar los resultados educativos.",
+        "icon": "UserCheck"
+      }
+    ],
+    "heroImage": "/assets/growwise-logo.png"
+  },
+  "cta": {
+    "title": "¡Inscríbete hoy y libera el potencial de tu hijo!",
+    "primaryCta": { "label": "Inscribirse Ahora", "href": "/enroll" }
+  },
+  "coreValues": [
+    { "icon": "Target", "title": "Nuestra Misión", "description": "Empoderar a cada estudiante con una educación personalizada que construya bases académicas sólidas mientras fomenta la creatividad, el pensamiento crítico y el amor por el aprendizaje.", "gradient": "from-[#1F396D] to-[#29335C]", "bgColor": "bg-[#1F396D]/10" },
+    { "icon": "Heart", "title": "Nuestra Visión", "description": "Ser el centro educativo líder en el área de Tri‑Valley, transformando a los estudiantes en aprendices seguros y capaces, preparados para el éxito académico y profesional.", "gradient": "from-[#F16112] to-[#F1894F]", "bgColor": "bg-[#F16112]/10" },
+    { "icon": "Award", "title": "Nuestros Valores", "description": "Excelencia educativa, atención personalizada, métodos de enseñanza innovadores, sólidas alianzas comunitarias y un compromiso inquebrantable con el éxito estudiantil.", "gradient": "from-[#F1894F] to-[#F16112]", "bgColor": "bg-[#F1894F]/10" }
+  ],
+  "achievements": [
+    { "icon": "Users", "title": "300+ Estudiantes Atendidos", "description": "Desde 2019, hemos ayudado a más de 300 estudiantes a alcanzar sus metas académicas", "value": "300+", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
+    { "icon": "Star", "title": "98% de Satisfacción", "description": "Satisfacción consistentemente alta de padres y estudiantes", "value": "98%", "color": "text-[#F16112]", "bgColor": "bg-[#F16112]/10" },
+    { "icon": "TrendingUp", "title": "95% de Mejora", "description": "El 95% de los estudiantes muestra una mejora medible en el primer semestre", "value": "95%", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" },
+    { "icon": "Award", "title": "+5 Años de Excelencia", "description": "Reconocidos como un centro educativo líder en Dublín y el área de Tri‑Valley", "value": "2019", "color": "text-[#29335C]", "bgColor": "bg-[#29335C]/10" }
+  ],
+  "educationalApproach": [
+    { "icon": "UserCheck", "title": "Aprendizaje Personalizado", "description": "Cada estudiante recibe instrucción adaptada a su estilo de aprendizaje, ritmo y metas académicas mediante evaluación individual y planes de estudio personalizados.", "benefits": ["Evaluación individual", "Planes de estudio a medida", "Seguimiento del progreso"] },
+    { "icon": "Users", "title": "Clases Reducidas", "description": "Máximo 6 estudiantes por clase K‑12 y 4 por clase STEAM, para garantizar la atención y el apoyo que cada alumno necesita.", "benefits": ["Máximo 6:1 en K‑12", "Máximo 4:1 en STEAM", "Atención individual"] },
+    { "icon": "Lightbulb", "title": "Métodos Innovadores", "description": "Combinamos métodos tradicionales probados con tecnología educativa de vanguardia y experiencias prácticas.", "benefits": ["Últimas herramientas EdTech", "Aprendizaje interactivo", "Aplicaciones del mundo real"] },
+    { "icon": "Target", "title": "Enfoque Orientado a Metas", "description": "Establecemos objetivos claros y medibles para cada estudiante y monitoreamos el progreso regularmente para asegurar una mejora continua.", "benefits": ["Metas SMART", "Evaluaciones periódicas", "Comunicación con familias"] }
+  ],
+  "communityImpact": [
+    { "icon": "Building", "title": "Alianzas con Escuelas Locales", "description": "Colaboración con el Distrito Escolar Unificado de Dublín y escuelas vecinas para apoyar el éxito estudiantil" },
+    { "icon": "Users", "title": "Talleres para Padres", "description": "Talleres periódicos que ayudan a las familias a apoyar el aprendizaje de sus hijos en casa" },
+    { "icon": "Globe", "title": "Divulgación STEM", "description": "Eventos comunitarios y talleres de programación para inspirar a la próxima generación de innovadores" }
+  ],
+  "testimonials": [
+    { "name": "Jennifer Martinez", "role": "Madre de Sofía (7.º grado)", "content": "GrowWise ha sido transformador para Sofía. Pasó de tener dificultades en matemáticas a entusiasmarse con álgebra. ¡El enfoque personalizado realmente funciona!", "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face", "rating": 5 },
+    { "name": "Alex Chen", "role": "Estudiante de Secundaria", "content": "El curso de programación en Python de GrowWise me abrió un mundo nuevo. Ahora estudio informática en la universidad gracias a la base que construí aquí.", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face", "rating": 5 },
+    { "name": "Robert Johnson", "role": "Padre de Emma (4.º grado)", "content": "El programa de lectura enriquecida ayudó a Emma a desarrollar un genuino amor por los libros. Su confianza y comprensión han mejorado notablemente.", "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face", "rating": 5 }
+  ],
+  "teamMembers": [
+    { "name": "Dra. Sarah Chen", "role": "Fundadora y Directora", "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face", "bio": "Con más de 15 años en educación, la Dra. Chen fundó GrowWise para ofrecer experiencias de aprendizaje personalizadas que ayuden a cada estudiante a alcanzar su máximo potencial.", "expertise": ["Liderazgo Educativo", "Desarrollo Curricular", "Evaluación del Estudiante"], "education": "Doctorado en Educación, Universidad de Stanford" },
+    { "name": "Michael Rodríguez", "role": "Instructor Principal de Matemáticas", "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face", "bio": "Educador apasionado de matemáticas que cree que todo estudiante puede destacarse con el apoyo y el enfoque adecuados.", "expertise": ["Matemáticas Avanzadas", "Programas Acelerados DUSD", "Preparación SAT/ACT"], "education": "Maestría en Matemáticas, UC Berkeley" },
+    { "name": "Lisa Thompson", "role": "Especialista en Inglés y Escritura", "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face", "bio": "Educadora galardonada, especializada en comprensión lectora, escritura creativa y en ayudar a los estudiantes a encontrar su propia voz.", "expertise": ["Enriquecimiento de Lectura", "Escritura Creativa", "Apoyo ESL"], "education": "Maestría en Literatura Inglesa, UCLA" },
+    { "name": "David Kim", "role": "Director de Programas STEAM", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face", "bio": "Veterano de la industria tecnológica convertido en educador, apasionado por introducir a mentes jóvenes en la programación, la robótica y el emprendimiento.", "expertise": ["Programación en Python", "Educación en IA/ML", "Emprendimiento Juvenil"], "education": "Licenciatura en Ciencias de la Computación, MIT" }
+  ]
+}
+
+

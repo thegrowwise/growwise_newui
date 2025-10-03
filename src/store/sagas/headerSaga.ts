@@ -1,11 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchHeaderRequested, fetchHeaderSucceeded, fetchHeaderFailed } from '../slices/headerSlice';
+import { fetchJsonWithLocale } from '@/lib/api';
 
-function fetchHeaderApi() {
-  return fetch('/api/mock/header.json', { cache: 'no-store' }).then((res) => {
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  });
+async function fetchHeaderApi() {
+  return fetchJsonWithLocale<any>('header.json', '/header');
 }
 
 function* handleFetchHeader() {

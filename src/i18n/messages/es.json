@@ -290,5 +290,13 @@
       "secondaryCta": "Contáctanos"
     }
   }
+  ,
+  "aboutPage": {
+    "discover": { "title": "Descubre GrowWise", "cta": "Saber Más" },
+    "mission": { "title1": "Nuestra Misión", "title2": "Excelencia Educativa en Dublín" },
+    "support": { "title": "Apoyando a Educadores y Estudiantes", "teacher": "Soporte para Docentes", "student": "Soporte para Estudiantes" },
+    "approach": { "title": "Nuestro Enfoque Educativo", "subtitle": "Innovador, Inclusivo e Impactante" },
+    "cta": { "title": "¡Inscríbete Hoy y Libera el Potencial de tu Hijo!", "primary": "Inscribirse Ahora" }
+  }
 }
 

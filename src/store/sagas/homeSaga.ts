@@ -1,10 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchHomeStart, fetchHomeSuccess, fetchHomeFailure, HomeContentData } from '../slices/homeSlice';
+import { fetchJsonWithLocale } from '@/lib/api';
 
 async function fetchHomeAPI(): Promise<HomeContentData> {
-  const res = await fetch('/api/mock/home.json', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch home content');
-  return res.json();
+  return fetchJsonWithLocale<HomeContentData>('home.json', '/home');
 }
 
 function* fetchHomeSaga() {

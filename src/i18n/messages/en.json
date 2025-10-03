@@ -489,5 +489,29 @@
       "email": "Email"
     }
   }
+  ,
+  "aboutPage": {
+    "discover": {
+      "title": "Discover GrowWise",
+      "cta": "Learn more"
+    },
+    "mission": {
+      "title1": "Our Mission",
+      "title2": "Educational Excellence in Dublin"
+    },
+    "support": {
+      "title": "Supporting Educators and Students",
+      "teacher": "Teacher Support",
+      "student": "Student Support"
+    },
+    "approach": {
+      "title": "Our Approach to Education",
+      "subtitle": "Innovative, Inclusive, and Impactful"
+    },
+    "cta": {
+      "title": "Enroll Today and Unlock Your Kid's Potential!",
+      "primary": "Enroll Now"
+    }
+  }
 }
 
