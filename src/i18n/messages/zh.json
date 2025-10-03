@@ -290,5 +290,13 @@
       "secondaryCta": "联系我们"
     }
   }
+  ,
+  "aboutPage": {
+    "discover": { "title": "了解 GrowWise", "cta": "了解更多" },
+    "mission": { "title1": "我们的使命", "title2": "都柏林的教育卓越" },
+    "support": { "title": "支持教育者与学生", "teacher": "教师支持", "student": "学生支持" },
+    "approach": { "title": "我们的教育方法", "subtitle": "创新、包容且有影响力" },
+    "cta": { "title": "今天报名，释放孩子的潜能！", "primary": "立即报名" }
+  }
 }
 

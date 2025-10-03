@@ -1,11 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchAboutRequested, fetchAboutSucceeded, fetchAboutFailed } from '../slices/aboutSlice';
+import { fetchJsonWithLocale } from '@/lib/api';
 
-function fetchAboutApi() {
-  return fetch('/api/mock/about.json', { cache: 'no-store' }).then((res) => {
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  });
+async function fetchAboutApi() {
+  return fetchJsonWithLocale<any>('about.json', '/about');
 }
 
 function* handleFetchAbout() {
