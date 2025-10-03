@@ -1,0 +1,294 @@
+{
+  "common": {
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "cancel": "取消",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "close": "关闭",
+    "submit": "提交",
+    "next": "下一步",
+    "previous": "上一步",
+    "getStarted": "开始",
+    "contactUs": "联系我们",
+    "learnMore": "了解更多",
+    "bookNow": "立即预订",
+    "freeAssessment": "免费评估",
+    "trialClass": "试听课程"
+  },
+  "navigation": {
+    "home": "首页",
+    "about": "关于",
+    "courses": "课程",
+    "programs": "项目",
+    "contact": "联系",
+    "academic": "学术",
+    "steam": "STEAM",
+    "math": "数学",
+    "english": "英语",
+    "enroll": "报名"
+  },
+  "home": {
+    "hero": {
+      "title": "为明天赋能年轻心灵",
+      "subtitle": "全面的K-12教育和STEAM项目",
+      "description": "加入300多名学生，在我们的个性化学习之旅中，满意度达98%",
+      "cta": "开始您的旅程"
+    },
+    "statistics": {
+      "titlePrefix": "",
+      "titleHighlight": "三谷家庭",
+      "subtitle": "加入数百个选择GrowWise为孩子教育之旅的家庭"
+    },
+    "programs": {
+      "k12": {
+        "title": "K-12学术项目",
+        "subtitle": "为所有年级提供全面的学术支持"
+      },
+      "steam": {
+        "title": "STEAM项目",
+        "subtitle": "通过科学、技术、工程、艺术和数学培养面向未来的技能"
+      }
+    },
+    "whyChoose": {
+      "title": "为什么选择GrowWise？",
+      "subtitle": "了解是什么让我们成为三谷家庭的首选"
+    },
+    "testimonials": {
+      "title": "家庭评价",
+      "subtitle": "来自我们社区的真实故事"
+    },
+    "cta": {
+      "title": "准备好改变您孩子的学习了吗？",
+      "subtitle": "预约免费评估，发现个性化学习机会",
+      "primaryCta": "开始",
+      "secondaryCta": "联系我们"
+    }
+  },
+  "assessment": {
+    "title": "免费评估",
+    "subtitle": "为您的孩子获得个性化学习建议",
+    "form": {
+      "parentName": "家长/监护人姓名",
+      "email": "电子邮件地址",
+      "phone": "电话号码",
+      "studentName": "学生姓名",
+      "grade": "年级",
+      "subjects": "感兴趣的科目",
+      "mode": "首选学习模式",
+      "schedule": "首选时间安排",
+      "notes": "其他备注",
+      "submit": "提交评估",
+      "submitting": "提交中...",
+      "success": "评估提交成功！我们将在24小时内联系您。"
+    },
+    "grades": {
+      "kindergarten": "幼儿园",
+      "grade1": "一年级",
+      "grade2": "二年级",
+      "grade3": "三年级",
+      "grade4": "四年级",
+      "grade5": "五年级",
+      "grade6": "六年级",
+      "grade7": "七年级",
+      "grade8": "八年级",
+      "grade9": "九年级",
+      "grade10": "十年级",
+      "grade11": "十一年级",
+      "grade12": "十二年级"
+    },
+    "subjects": {
+      "math": "数学",
+      "english": "英语",
+      "coding": "编程",
+      "ai": "AI/ML",
+      "gameDev": "游戏开发",
+      "robotics": "机器人",
+      "sat": "SAT/ACT"
+    },
+    "schedule": {
+      "weekdaysAfterSchool": "工作日下午放学后",
+      "weekendsMorning": "周末上午",
+      "weekendsAfternoon": "周末下午"
+    }
+  },
+  "chatbot": {
+    "title": "GrowWise助手",
+    "placeholder": "询问我们项目的任何问题...",
+    "suggestions": {
+      "k12Programs": "你们提供什么K-12项目？",
+      "steamCourses": "告诉我STEAM课程",
+      "bookAssessment": "如何预约免费评估？",
+      "pricing": "你们的费用是多少？",
+      "getStarted": "我想开始"
+    },
+    "responses": {
+      "welcome": "您好！欢迎来到GrowWise！🎓 我们是领先的教育平台，为三谷家庭提供全面的K-12学术项目和令人兴奋的STEAM课程。今天我能为您做些什么？",
+      "courses": "我们提供全面的K-12学术项目和令人兴奋的STEAM课程！我们的K-12项目包括数学、ELA、写作实验室和SAT/ACT备考。对于STEAM，我们有游戏开发、Python编程、青年创始人计划和ML/AI课程。您想了解任何特定项目的更多信息吗？",
+      "assessment": "我们提供免费评估和试听课程！🎓 K-12项目：60分钟免费评估。🚀 STEAM课程：30分钟试听课程。这些帮助我们为您的孩子创建个性化学习计划。您想预约一个吗？",
+      "pricing": "我们为所有项目提供有竞争力的价格。为了获得最准确的价格信息，我建议预约免费评估，我们的团队可以根据您的具体需求提供详细信息。您想安排免费评估吗？",
+      "contact": "您可以通过我们网站的联系表单、电话或电子邮件联系我们。我们在这里回答有关我们项目的任何问题，并帮助您开始学习之旅！我们的团队反应迅速，将在24小时内回复您。",
+      "fallback": "这是一个很好的问题！我很乐意帮助您。GrowWise提供全面的K-12学术项目和令人兴奋的STEAM课程。您能提供更多关于您正在寻找的具体信息的细节吗？"
+    }
+  },
+  "courses": {
+    "math": {
+      "title": "数学课程",
+      "subtitle": "从基础到高级水平的全面数学教育"
+    },
+    "english": {
+      "title": "英语课程",
+      "subtitle": "掌握阅读、写作和沟通技能"
+    },
+    "steam": {
+      "title": "STEAM项目",
+      "subtitle": "通过实践学习培养面向未来的技能"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "关于 GrowWise",
+      "subtitle": "自 2019 年以来，GrowWise 通过个性化的 K-12 教学和创新的 STEAM 项目改变了加州都柏林的教育。我们为每位学生提供成功所需的技能、知识和信心。"
+    },
+    "foundation": { 
+      "title": "我们的基础",
+      "subtitle": "我们所做的一切都以学生成功为中心的使命、愿景和价值观为指导。"
+    },
+    "story": { 
+      "title": "我们的故事",
+      "p1": "GrowWise 成立于 2019 年，加州都柏林市中心。我们坚信每个孩子都应获得个性化教育，以帮助他们发挥全部潜力。",
+      "p2": "从一个小型辅导中心发展为服务整个三谷地区家庭的综合教育机构。",
+      "p3": "如今，GrowWise 见证了热情的教育者如何将成熟的教学方法与创新技术和对学生成功的真诚关怀相结合。"
+    },
+    "achievements": { 
+      "title": "我们的成就",
+      "subtitle": "这些数字体现了我们对学生成功和教育卓越的承诺。"
+    },
+    "approach": { 
+      "title": "我们的教育方法",
+      "subtitle": "我们相信有效教育不仅仅是传递内容。我们的方式基于原则，确保每位学生都能获得所需支持。"
+    },
+    "team": { 
+      "title": "我们的团队",
+      "subtitle": "我们的教师拥有多年经验，并真诚关心学生的成功。"
+    },
+    "community": { 
+      "title": "社区影响",
+      "subtitle": "我们回馈支持我们的社区，为所有学生创造机会。"
+    },
+    "testimonials": { 
+      "title": "家长怎么说",
+      "subtitle": "来自我们社区的真实故事。"
+    },
+    "location": {
+      "title": "参观我们的都柏林中心",
+      "subtitle": "我们的现代化设施位于都柏林市中心，为学习与成长提供理想环境。"
+    },
+    "buttons": {
+      "getToKnowUs": "了解我们",
+      "scheduleTour": "预约参观",
+      "contactUs": "联系我们"
+    },
+    "labels": {
+      "expertise": "专长：",
+      "address": "地址",
+      "phone": "电话",
+      "email": "邮箱"
+    }
+  },
+  "contact": {
+    "title": "联系我们",
+    "subtitle": "准备开始您孩子的学习之旅了吗？立即联系我们获取免费咨询。",
+    "info": {
+      "title": "联系信息",
+      "phone": "电话",
+      "email": "邮箱",
+      "address": "地址",
+      "hours": "时间"
+    },
+    "visit": {
+      "title": "参观我们的中心",
+      "description": "参观我们的先进学习设施并与我们的资深导师见面。",
+      "cta": "预约参观"
+    },
+    "formSection": {
+      "title": "给我们留言"
+    },
+    "success": {
+      "title": "消息发送成功！",
+      "description": "感谢您的联系。我们将在24小时内回复您。"
+    },
+    "form": {
+      "name": "姓名 *",
+      "email": "电子邮件地址 *",
+      "phone": "电话号码",
+      "subject": "主题 *",
+      "message": "消息 *",
+      "submit": "发送消息",
+      "placeholders": {
+        "name": "请输入您的全名",
+        "email": "请输入您的电子邮件",
+        "phone": "请输入您的电话号码",
+        "message": "请告诉我们您孩子的学习需求..."
+      },
+      "subjectOptions": {
+        "placeholder": "选择一个主题",
+        "general": "一般咨询",
+        "enrollment": "报名信息",
+        "trial": "免费试听课",
+        "assessment": "免费评估",
+        "pricing": "价格信息",
+        "other": "其他"
+      }
+    }
+  },
+  "steam": {
+    "hero": {
+      "title": "STEAM项目",
+      "subtitle": "通过前沿的科学、技术、工程、艺术和数学项目为您的孩子准备未来"
+    },
+    "programs": {
+      "title": "我们的STEAM项目",
+      "subtitle": "旨在发展批判性思维、创造力和问题解决技能的综合项目",
+      "mlAi": {
+        "title": "ML/AI编程",
+        "description": "通过实践项目和实际应用深入人工智能和机器学习的世界。",
+        "features": {
+          "python": "Python编程",
+          "machineLearning": "机器学习算法",
+          "dataScience": "数据科学与分析"
+        },
+        "cta": "了解更多"
+      },
+      "gameDev": {
+        "title": "游戏开发",
+        "description": "使用Roblox、Scratch和Unity等行业标准工具创建互动游戏和应用程序。",
+        "features": {
+          "roblox": "Roblox Studio",
+          "scratch": "Scratch编程",
+          "unity": "Unity游戏引擎"
+        },
+        "cta": "开始创作"
+      },
+      "robotics": {
+        "title": "机器人技术与自动化",
+        "description": "在了解自动化、传感器和现实世界工程挑战的同时构建和编程机器人。",
+        "features": {
+          "arduino": "Arduino编程",
+          "programming": "机器人编程",
+          "automation": "自动化系统"
+        },
+        "cta": "构建机器人"
+      }
+    },
+    "cta": {
+      "title": "准备好开始您的STEAM之旅了吗？",
+      "subtitle": "加入数百名已经在用我们的创新项目构建未来的学生",
+      "primaryCta": "开始",
+      "secondaryCta": "联系我们"
+    }
+  }
+}
+

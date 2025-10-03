@@ -65,6 +65,40 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "float-gentle": "float-gentle 8s ease-in-out infinite",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "float-gentle": {
+          "0%, 100%": {
+            transform: "translateY(0px)",
+            opacity: "0.25",
+          },
+          "50%": {
+            transform: "translateY(-3px)",
+            opacity: "0.35",
+          },
+        },
+      },
+      perspective: {
+        "1000": "1000px",
+      },
+      transformStyle: {
+        "preserve-3d": "preserve-3d",
+      },
+      backfaceVisibility: {
+        hidden: "hidden",
+      },
     },
   },
   plugins: [],

@@ -1,0 +1,294 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "close": "Cerrar",
+    "submit": "Enviar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "getStarted": "Comenzar",
+    "contactUs": "Contáctanos",
+    "learnMore": "Saber Más",
+    "bookNow": "Reservar Ahora",
+    "freeAssessment": "Evaluación Gratuita",
+    "trialClass": "Clase de Prueba"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "courses": "Cursos",
+    "programs": "Programas",
+    "contact": "Contacto",
+    "academic": "Académico",
+    "steam": "STEAM",
+    "math": "Matemáticas",
+    "english": "Inglés",
+    "enroll": "Inscribirse"
+  },
+  "home": {
+    "hero": {
+      "title": "Empoderando Mentes Jóvenes para el Mañana",
+      "subtitle": "Educación K-12 Integral y Programas STEAM",
+      "description": "Únete a más de 300 estudiantes en nuestro viaje de aprendizaje personalizado con 98% de satisfacción",
+      "cta": "Comienza tu Viaje"
+    },
+    "statistics": {
+      "titlePrefix": "Confiado por ",
+      "titleHighlight": "Familias del Tri-Valley",
+      "subtitle": "Únete a cientos de familias que han elegido GrowWise para el viaje educativo de sus hijos"
+    },
+    "programs": {
+      "k12": {
+        "title": "Programas Académicos K-12",
+        "subtitle": "Apoyo académico integral para todos los niveles de grado"
+      },
+      "steam": {
+        "title": "Programas STEAM",
+        "subtitle": "Habilidades preparadas para el futuro a través de Ciencia, Tecnología, Ingeniería, Artes y Matemáticas"
+      }
+    },
+    "whyChoose": {
+      "title": "¿Por qué Elegir GrowWise?",
+      "subtitle": "Descubre lo que nos convierte en la opción preferida para las familias del Tri-Valley"
+    },
+    "testimonials": {
+      "title": "Lo que Dicen las Familias",
+      "subtitle": "Historias reales de nuestra comunidad"
+    },
+    "cta": {
+      "title": "¿Listo para Transformar el Aprendizaje de tu Hijo?",
+      "subtitle": "Reserva una evaluación gratuita y descubre oportunidades de aprendizaje personalizadas",
+      "primaryCta": "Comenzar",
+      "secondaryCta": "Contáctanos"
+    }
+  },
+  "assessment": {
+    "title": "Evaluación Gratuita",
+    "subtitle": "Obtén recomendaciones de aprendizaje personalizadas para tu hijo",
+    "form": {
+      "parentName": "Nombre del Padre/Tutor",
+      "email": "Dirección de Correo",
+      "phone": "Número de Teléfono",
+      "studentName": "Nombre del Estudiante",
+      "grade": "Nivel de Grado",
+      "subjects": "Materias de Interés",
+      "mode": "Modo de Aprendizaje Preferido",
+      "schedule": "Horario Preferido",
+      "notes": "Notas Adicionales",
+      "submit": "Enviar Evaluación",
+      "submitting": "Enviando...",
+      "success": "¡Evaluación enviada exitosamente! Te contactaremos dentro de 24 horas."
+    },
+    "grades": {
+      "kindergarten": "Jardín de Infantes",
+      "grade1": "Grado 1",
+      "grade2": "Grado 2",
+      "grade3": "Grado 3",
+      "grade4": "Grado 4",
+      "grade5": "Grado 5",
+      "grade6": "Grado 6",
+      "grade7": "Grado 7",
+      "grade8": "Grado 8",
+      "grade9": "Grado 9",
+      "grade10": "Grado 10",
+      "grade11": "Grado 11",
+      "grade12": "Grado 12"
+    },
+    "subjects": {
+      "math": "Matemáticas",
+      "english": "Inglés",
+      "coding": "Programación",
+      "ai": "IA/ML",
+      "gameDev": "Desarrollo de Juegos",
+      "robotics": "Robótica",
+      "sat": "SAT/ACT"
+    },
+    "schedule": {
+      "weekdaysAfterSchool": "Días de Semana Después de la Escuela",
+      "weekendsMorning": "Fines de Semana por la Mañana",
+      "weekendsAfternoon": "Fines de Semana por la Tarde"
+    }
+  },
+  "chatbot": {
+    "title": "Asistente GrowWise",
+    "placeholder": "Pregúntame cualquier cosa sobre nuestros programas...",
+    "suggestions": {
+      "k12Programs": "¿Qué programas K-12 ofrecen?",
+      "steamCourses": "Cuéntame sobre los cursos STEAM",
+      "bookAssessment": "¿Cómo reservo una evaluación gratuita?",
+      "pricing": "¿Cuáles son sus precios?",
+      "getStarted": "Quiero comenzar"
+    },
+    "responses": {
+      "welcome": "¡Hola! ¡Bienvenido a GrowWise! 🎓 Somos una plataforma educativa líder que sirve a familias del Tri-Valley con programas académicos K-12 integrales y emocionantes cursos STEAM. ¿Cómo puedo ayudarte hoy?",
+      "courses": "¡Ofrecemos programas académicos K-12 integrales y emocionantes cursos STEAM! Nuestros programas K-12 incluyen Matemáticas, ELA, Laboratorio de Escritura y preparación SAT/ACT. Para STEAM, tenemos Desarrollo de Juegos, Programación Python, Jóvenes Fundadores y cursos ML/IA. ¿Te gustaría saber más sobre algún programa específico?",
+      "assessment": "¡Ofrecemos evaluaciones y clases de prueba GRATUITAS! 🎓 Programas K-12: Evaluación GRATUITA de 60 minutos. 🚀 Cursos STEAM: Clase de prueba de 30 minutos. Estos nos ayudan a crear un plan de aprendizaje personalizado para tu hijo. ¿Te gustaría reservar una?",
+      "pricing": "Ofrecemos precios competitivos para todos nuestros programas. Para la información de precios más precisa, recomiendo reservar una evaluación gratuita donde nuestro equipo puede proporcionar información detallada basada en tus necesidades específicas. ¿Te gustaría programar una evaluación gratuita?",
+      "contact": "Puedes contactarnos a través del formulario de contacto de nuestro sitio web, teléfono o correo electrónico. ¡Estamos aquí para responder cualquier pregunta sobre nuestros programas y ayudarte a comenzar tu viaje de aprendizaje! Nuestro equipo es receptivo y te responderá dentro de 24 horas.",
+      "fallback": "¡Esa es una gran pregunta! Me encantaría ayudarte con eso. GrowWise ofrece programas académicos K-12 integrales y emocionantes cursos STEAM. ¿Podrías proporcionar un poco más de detalle sobre qué información específica estás buscando?"
+    }
+  },
+  "courses": {
+    "math": {
+      "title": "Cursos de Matemáticas",
+      "subtitle": "Educación matemática integral desde niveles elementales hasta avanzados"
+    },
+    "english": {
+      "title": "Cursos de Inglés",
+      "subtitle": "Domina las habilidades de lectura, escritura y comunicación"
+    },
+    "steam": {
+      "title": "Programas STEAM",
+      "subtitle": "Habilidades preparadas para el futuro a través del aprendizaje práctico"
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Sobre GrowWise",
+      "subtitle": "Desde 2019, GrowWise ha transformado la educación en Dublín, CA, con instrucción K-12 personalizada y programas STEAM innovadores. Empoderamos a cada estudiante con las habilidades, el conocimiento y la confianza para tener éxito."
+    },
+    "foundation": { 
+      "title": "Nuestra Fundación",
+      "subtitle": "Todo lo que hacemos está guiado por nuestra misión, visión y valores que ponen el éxito del estudiante en el centro."
+    },
+    "story": { 
+      "title": "Nuestra Historia",
+      "p1": "Fundada en 2019 en el corazón de Dublín, California, GrowWise nació de una visión: cada niño merece una educación personalizada que le ayude a alcanzar su máximo potencial.",
+      "p2": "Lo que comenzó como un pequeño centro de tutoría se ha convertido en una institución educativa que sirve a familias en todo el Tri-Valle.",
+      "p3": "Hoy, GrowWise demuestra lo que es posible cuando educadores apasionados combinan métodos probados con tecnología innovadora y un cuidado genuino por el éxito de cada estudiante."
+    },
+    "achievements": { 
+      "title": "Nuestros Logros",
+      "subtitle": "Números que reflejan nuestro compromiso con el éxito estudiantil y la excelencia educativa."
+    },
+    "approach": { 
+      "title": "Nuestro Enfoque Educativo",
+      "subtitle": "Creemos que la educación efectiva requiere más que impartir contenido. Nuestro enfoque se basa en principios que aseguran el apoyo que cada estudiante necesita para tener éxito."
+    },
+    "team": { 
+      "title": "Nuestro Equipo",
+      "subtitle": "Nuestros educadores aportan años de experiencia y un genuino cuidado por el éxito estudiantil."
+    },
+    "community": { 
+      "title": "Impacto Comunitario",
+      "subtitle": "Creemos en retribuir a la comunidad que nos apoya, creando oportunidades para todos los estudiantes."
+    },
+    "testimonials": { 
+      "title": "Lo Que Dicen las Familias",
+      "subtitle": "Historias reales de nuestra comunidad."
+    },
+    "location": {
+      "title": "Visita Nuestro Centro en Dublín",
+      "subtitle": "Ubicado en el corazón de Dublín, CA, nuestro centro moderno ofrece el ambiente perfecto para aprender y crecer."
+    },
+    "buttons": {
+      "getToKnowUs": "Conócenos",
+      "scheduleTour": "Agenda un Recorrido",
+      "contactUs": "Contáctanos"
+    },
+    "labels": {
+      "expertise": "Experiencia:",
+      "address": "Dirección",
+      "phone": "Teléfono",
+      "email": "Correo"
+    }
+  },
+  "contact": {
+    "title": "Ponte en Contacto",
+    "subtitle": "¿Listo para comenzar el viaje de aprendizaje de tu hijo? Contáctanos hoy para una consulta gratuita.",
+    "info": {
+      "title": "Información de Contacto",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "address": "Dirección",
+      "hours": "Horario"
+    },
+    "visit": {
+      "title": "Visita Nuestro Centro",
+      "description": "Ven a conocer nuestras instalaciones de aprendizaje de última generación y a nuestros instructores expertos.",
+      "cta": "Programar una Visita"
+    },
+    "formSection": {
+      "title": "Envíanos un Mensaje"
+    },
+    "success": {
+      "title": "¡Mensaje Enviado con Éxito!",
+      "description": "Gracias por contactarnos. Te responderemos dentro de 24 horas."
+    },
+    "form": {
+      "name": "Nombre Completo *",
+      "email": "Dirección de Correo *",
+      "phone": "Número de Teléfono",
+      "subject": "Asunto *",
+      "message": "Mensaje *",
+      "submit": "Enviar Mensaje",
+      "placeholders": {
+        "name": "Ingresa tu nombre completo",
+        "email": "Ingresa tu correo",
+        "phone": "Ingresa tu teléfono",
+        "message": "Cuéntanos sobre las necesidades de aprendizaje de tu hijo..."
+      },
+      "subjectOptions": {
+        "placeholder": "Selecciona un asunto",
+        "general": "Consulta General",
+        "enrollment": "Información de Inscripción",
+        "trial": "Clase de Prueba Gratuita",
+        "assessment": "Evaluación Gratuita",
+        "pricing": "Información de Precios",
+        "other": "Otro"
+      }
+    }
+  },
+  "steam": {
+    "hero": {
+      "title": "Programas STEAM",
+      "subtitle": "Prepara a tu hijo para el futuro con programas de vanguardia en ciencia, tecnología, ingeniería, artes y matemáticas"
+    },
+    "programs": {
+      "title": "Nuestros Programas STEAM",
+      "subtitle": "Programas integrales diseñados para desarrollar pensamiento crítico, creatividad y habilidades de resolución de problemas",
+      "mlAi": {
+        "title": "Programación ML/IA",
+        "description": "Sumérgete en el mundo de la inteligencia artificial y el aprendizaje automático con proyectos prácticos y aplicaciones del mundo real.",
+        "features": {
+          "python": "Programación en Python",
+          "machineLearning": "Algoritmos de Aprendizaje Automático",
+          "dataScience": "Ciencia de Datos y Análisis"
+        },
+        "cta": "Saber Más"
+      },
+      "gameDev": {
+        "title": "Desarrollo de Juegos",
+        "description": "Crea juegos interactivos y aplicaciones usando herramientas estándar de la industria como Roblox, Scratch y Unity.",
+        "features": {
+          "roblox": "Roblox Studio",
+          "scratch": "Programación en Scratch",
+          "unity": "Motor de Juegos Unity"
+        },
+        "cta": "Comenzar a Crear"
+      },
+      "robotics": {
+        "title": "Robótica y Automatización",
+        "description": "Construye y programa robots mientras aprendes sobre automatización, sensores y desafíos de ingeniería del mundo real.",
+        "features": {
+          "arduino": "Programación Arduino",
+          "programming": "Programación de Robots",
+          "automation": "Sistemas de Automatización"
+        },
+        "cta": "Construir Robots"
+      }
+    },
+    "cta": {
+      "title": "¿Listo para Comenzar tu Viaje STEAM?",
+      "subtitle": "Únete a cientos de estudiantes que ya están construyendo el futuro con nuestros programas innovadores",
+      "primaryCta": "Comenzar",
+      "secondaryCta": "Contáctanos"
+    }
+  }
+}
+

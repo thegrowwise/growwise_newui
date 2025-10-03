@@ -183,10 +183,13 @@ export default function Features() {
   return (
     <>
       {/* Our Programs Header */}
-      <section className="py-16 px-4 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-5xl text-black">
-            Our <span className="text-[#F16112]">Programs</span>
+      <section className="py-16 px-4 lg:px-8 relative overflow-hidden">
+        {/* Glassmorphism background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-[#1F396D]/8 to-[#F16112]/8 backdrop-blur-[2px] pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5 pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <h2 className="text-5xl font-bold text-black mb-12">
+            Our <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Programs</span>
           </h2>
         </div>
       </section>
@@ -389,4 +392,4 @@ export default function Features() {
       </section>
     </>
   );
-} 
+}

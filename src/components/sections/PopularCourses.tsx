@@ -1,153 +1,118 @@
 'use client';
 
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Code, Calculator, Bot, Book } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-// Updated Popular Courses Data with GrowWise Brand Colors
 const popularCourses = [
   {
-    id: 1,
-    name: "Python Coding",
-    benefit: "Project-based",
-    icon: Code,
-    bgColor: "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20",
-    iconColor: "text-[#1F396D]",
-    borderColor: "border-[#1F396D]/30",
-    cta: "Book Trial"
+    title: "Python Coding",
+    caption: "Project-based",
+    primaryCta: "Book Trial",
+    primaryCtaType: "primary",
+    secondaryCta: "Learn More",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+      </svg>
+    )
   },
   {
-    id: 2,
-    name: "Math Mastery",
-    benefit: "1:1 attention",
-    icon: Calculator,
-    bgColor: "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20",
-    iconColor: "text-[#F16112]",
-    borderColor: "border-[#F16112]/30",
-    cta: "Free Assessment"
+    title: "Math Mastery",
+    caption: "1:1 attention",
+    primaryCta: "Free Assessment",
+    primaryCtaType: "primary",
+    secondaryCta: "Learn More",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+    )
   },
   {
-    id: 3,
-    name: "AI Explorer",
-    benefit: "Future-ready",
-    icon: Bot,
-    bgColor: "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20",
-    iconColor: "text-[#1F396D]",
-    borderColor: "border-[#F1894F]/30",
-    cta: "Book Trial"
+    title: "AI Explorer",
+    caption: "Future-ready",
+    primaryCta: "Book Trial",
+    primaryCtaType: "primary",
+    secondaryCta: "Learn More",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+      </svg>
+    )
   },
   {
-    id: 4,
-    name: "Reading Rockets",
-    benefit: "Accelerated growth",
-    icon: Book,
-    bgColor: "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20",
-    iconColor: "text-[#F16112]",
-    borderColor: "border-[#29335C]/30",
-    cta: "Free Assessment"
+    title: "Reading Rockets",
+    caption: "Accelerated growth",
+    primaryCta: "Free Assessment",
+    primaryCtaType: "primary",
+    secondaryCta: "Learn More",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+    )
   }
 ];
 
 export default function PopularCourses() {
-  const [currentSet, setCurrentSet] = useState(0);
-  const coursesPerSet = 3;
-  const totalSets = Math.ceil(popularCourses.length / coursesPerSet);
-
-  const nextCourses = () => {
-    setCurrentSet((prev) => (prev + 1) % totalSets);
-  };
-
-  const prevCourses = () => {
-    setCurrentSet((prev) => (prev - 1 + totalSets) % totalSets);
-  };
-
-  const goToCourseSet = (index: number) => {
-    setCurrentSet(index);
-  };
-
-  const startIndex = currentSet * coursesPerSet;
-  const endIndex = startIndex + coursesPerSet;
-  const currentCourses = popularCourses.slice(startIndex, endIndex);
-
   return (
-    <section className="py-16 lg:py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-            Popular Courses
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our most sought-after programs designed to accelerate your child&apos;s learning journey
-          </p>
-        </div>
+    <section className="relative -mt-24 px-4 lg:px-8 pb-20">
+      <div className="max-w-5xl mx-auto relative z-20">
+        <div className="bg-white/80 backdrop-blur-xl rounded-[32px] shadow-[0px_30px_80px_0px_rgba(31,57,109,0.15)] border border-white/40 overflow-hidden">
+          {/* Background gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/5 via-transparent to-[#F16112]/5"></div>
+          
+          <div className="p-8 lg:p-12 relative z-10">
+            {/* Enhanced Title */}
+            <div className="mb-10 text-center">
+              <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
+                Popular Courses
+              </h3>
+              <p className="text-gray-600">Start your learning journey with our most sought-after programs</p>
+            </div>
 
-        {/* Courses Carousel */}
-        <div className="relative">
-          {/* Navigation Arrows */}
-          <button
-            onClick={prevCourses}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 p-3 rounded-full shadow-lg border transition-all duration-200"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={nextCourses}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-white hover:bg-gray-50 text-gray-600 hover:text-gray-900 p-3 rounded-full shadow-lg border transition-all duration-200"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
-
-          {/* Courses Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
-            {currentCourses.map((course) => {
-              const IconComponent = course.icon;
-              return (
-                <Card
-                  key={course.id}
-                  className={`${course.bgColor} ${course.borderColor} border-2 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 rounded-2xl`}
+            {/* Enhanced Course Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {popularCourses.map((course, index) => (
+                <div
+                  key={index}
+                  className={`bg-white/70 backdrop-blur-lg border-2 ${course.title === "Python Coding" || course.title === "AI Explorer" ? "border-[#1F396D]/30" : "border-[#F16112]/30"} rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative`}
                 >
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={`p-3 rounded-lg ${course.iconColor} bg-white/50`}>
-                        <IconComponent className="w-8 h-8" />
+                  {/* Background gradient */}
+                  <div className={`absolute inset-0 ${course.title === "Python Coding" || course.title === "AI Explorer" ? "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20" : "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20"} opacity-50`}></div>
+                  
+                  <div className="p-6 text-center flex flex-col items-center relative z-10">
+                    {/* Enhanced Icon */}
+                    <div className={`${course.title === "Python Coding" || course.title === "AI Explorer" ? "text-[#1F396D]" : "text-[#F16112]"} mb-4 flex justify-center`}>
+                      <div className="w-14 h-14 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg border border-white/50 group-hover:scale-110 transition-transform duration-300">
+                        <div className="w-7 h-7">
+                          {course.icon}
+                        </div>
                       </div>
-                      <Badge variant="outline" className="text-xs">
-                        {course.benefit}
-                      </Badge>
                     </div>
 
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                      {course.name}
-                    </h3>
+                    {/* Course Name */}
+                    <h4 className="font-bold text-sm text-gray-900 mb-2 leading-tight text-center group-hover:text-gray-800 transition-colors">
+                      {course.title}
+                    </h4>
 
+                    {/* Benefit */}
+                    <p className="text-xs text-gray-600 mb-4 group-hover:text-gray-700 transition-colors">{course.caption}</p>
+
+                    {/* Enhanced CTA Button */}
                     <Button 
-                      className={`w-full ${course.iconColor.replace('text-', 'bg-')} hover:opacity-90 text-white font-medium rounded-xl`}
+                      className={`w-full ${course.title === "Python Coding" || course.title === "AI Explorer" ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`}
                     >
-                      {course.cta}
+                      {course.primaryCta}
                     </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+                  </div>
+                </div>
+              ))}
+            </div>
 
-          {/* Course Set Indicators */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {Array.from({ length: totalSets }, (_, index) => (
-              <button
-                key={index}
-                onClick={() => goToCourseSet(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                  index === currentSet 
-                    ? 'bg-[#1F396D] scale-125' 
-                    : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-              />
-            ))}
+            {/* Enhanced Navigation Indicator */}
+            <div className="flex justify-center mt-8">
+              <div className="h-2 w-8 bg-gradient-to-r from-[#1F396D] to-[#F16112] rounded-full shadow-lg"></div>
+            </div>
           </div>
         </div>
       </div>
