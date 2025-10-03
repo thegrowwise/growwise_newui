@@ -91,14 +91,14 @@
     {
       "key": "about",
       "label": "About Us",
-      "href": "/about-us",
+      "href": "/about",
       "type": "simple",
       "variant": "orange"
     },
     {
       "key": "contact",
       "label": "Contact Us",
-      "href": "/contact-us",
+      "href": "/contact",
       "type": "simple",
       "variant": "orange"
     },
