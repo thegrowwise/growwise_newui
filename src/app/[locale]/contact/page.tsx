@@ -1,7 +1,9 @@
-import ContactUsPage from "@/pages/ContactUsPage";
+"use client";
 
-export default function Contact() {
-  return <ContactUsPage />;
+import Contact from '@/components/sections/Contact'
+
+export default function ContactPage() {
+  return <Contact />
 }
 
 

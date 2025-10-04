@@ -46,10 +46,6 @@
       "k12": {
         "title": "K-12 Academic Programs",
         "subtitle": "Comprehensive academic support for all grade levels"
-      },
-      "steam": {
-        "title": "STEAM Programs",
-        "subtitle": "Future-ready skills through Science, Technology, Engineering, Arts, and Math"
       }
     },
     "whyChoose": {
@@ -141,16 +137,16 @@
     "english": {
       "title": "English Courses",
       "subtitle": "Master reading, writing, and communication skills"
-    },
-    "steam": {
-      "title": "STEAM Programs",
-      "subtitle": "Future-ready skills through hands-on learning"
     }
   },
   
   "contact": {
     "title": "Get in Touch",
     "subtitle": "Ready to start your child's learning journey? Contact us today for a free consultation.",
+    "contactMethods": {
+      "title": "Multiple Ways to Connect",
+      "subtitle": "Choose the method that works best for you"
+    },
     "info": {
       "title": "Contact Information",
       "phone": "Phone",
@@ -164,11 +160,16 @@
       "cta": "Schedule a Visit"
     },
     "formSection": {
-      "title": "Send us a Message"
+      "title": "Send us a Message",
+      "subtitle": "Fill out the form below and we'll get back to you within 24 hours with personalized recommendations."
     },
     "success": {
-      "title": "Message Sent Successfully!",
-      "description": "Thank you for contacting us. We'll get back to you within 24 hours."
+      "title": "Thank You!",
+      "description": "We've received your message and will get back to you within 24 hours."
+    },
+    "buttons": {
+      "callNow": "Call Now",
+      "startChat": "Start Chat"
     },
     "form": {
       "name": "Full Name *",
@@ -487,6 +488,118 @@
       "address": "Address",
       "phone": "Phone",
       "email": "Email"
+    }
+  }
+  ,
+  "aboutPage": {
+    "discover": {
+      "title": "Discover GrowWise",
+      "cta": "Learn more"
+    },
+    "mission": {
+      "title1": "Our Mission",
+      "title2": "Educational Excellence in Dublin"
+    },
+    "support": {
+      "title": "Supporting Educators and Students",
+      "teacher": "Teacher Support",
+      "student": "Student Support"
+    },
+    "approach": {
+      "title": "Our Approach to Education",
+      "subtitle": "Innovative, Inclusive, and Impactful"
+    },
+    "cta": {
+      "title": "Enroll Today and Unlock Your Kid's Potential!",
+      "primary": "Enroll Now"
+    }
+  },
+  "englishCourses": {
+    "hero": {
+      "title": "Excel in English Arts",
+      "subtitle": "Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
+      "badge": "Master English with Excellence"
+    },
+    "cta": {
+      "title": "Ready to Excel in English?",
+      "subtitle": "Join hundreds of students who have transformed their writing and reading skills with GrowWise English programs.",
+      "primaryButton": "Get Started",
+      "secondaryButton": "Contact Us"
+    }
+  },
+  "mathCourses": {
+    "hero": {
+      "title": "Master Mathematics with Confidence",
+      "subtitle": "Comprehensive math programs for students in Grades K–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
+      "badge": "Master Math with Excellence"
+    },
+    "whyChoose": {
+      "title": "Why Choose Our Math Programs?",
+      "subtitle": "Comprehensive math education designed specifically for Tri-Valley students with curriculum alignments and proven teaching methodologies."
+    },
+    "notSure": {
+      "title": "Not Sure Which Course is Right?",
+      "subtitle": "Our education experts will assess your child's current level and recommend the perfect math program to accelerate their learning journey.",
+      "cta": {
+        "primary": "Schedule Free Assessment",
+        "secondary": "Call (925) 456-4606"
+      }
+    },
+    "cta": {
+      "title": "Ready to Master Math?",
+      "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
+      "primaryButton": "Get Started",
+      "secondaryButton": "Contact Us"
+    }
+  },
+  "steam": {
+    "hero": {
+      "title": "Science, Technology, Engineering,",
+      "titleHighlight": "Arts & Mathematics",
+      "subtitle": "Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, our programs combine creativity with cutting-edge technology.",
+      "explorePrograms": "Explore Programs",
+      "bookFreeTrial": "Book Free Trial"
+    },
+    "programs": {
+      "title": "Our STEAM Programs",
+      "subtitle": "Comprehensive programs designed to prepare students for the digital future",
+      "startLearning": "Start Learning"
+    },
+    "gameDevelopment": {
+      "title": "Game Development",
+      "titleHighlight": "Mastery",
+      "subtitle": "Master game creation with industry-standard tools and platforms"
+    },
+    "technologies": {
+      "title": "Technologies & Tools",
+      "titleHighlight": "We Teach",
+      "subtitle": "Industry-standard tools and technologies for future-ready skills"
+    },
+    "aiMachineLearning": {
+      "title": "AI & Machine Learning",
+      "titleHighlight": "Programs",
+      "subtitle": "Explore the future of technology with AI and machine learning"
+    },
+    "youngEntrepreneurs": {
+      "title": "Young Entrepreneurs",
+      "titleHighlight": "Program",
+      "subtitle": "Develop entrepreneurial skills and business mindset for future leaders"
+    },
+    "successStories": {
+      "title": "Student Success",
+      "titleHighlight": "Stories",
+      "subtitle": "Real achievements from our STEAM program students"
+    },
+    "whyChoose": {
+      "title": "Why Choose Our",
+      "titleHighlight": "STEAM Program",
+      "subtitle": "Comprehensive education that prepares students for the future"
+    },
+    "cta": {
+      "title": "Ready to Start Your STEAM Journey?",
+      "subtitle": "Join thousands of students learning cutting-edge technology skills",
+      "primaryCta": "Get Started Today",
+      "secondaryCta": "Schedule a Call"
     }
   }
 }

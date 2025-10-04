@@ -1,0 +1,100 @@
+{
+  "hero": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to start your child's learning journey? We're here to help you find the perfect program and answer any questions you may have."
+  },
+  "contactMethods": {
+    "title": "Multiple Ways to Connect",
+    "subtitle": "Choose the method that works best for you"
+  },
+  "form": {
+    "title": "Send us a Message",
+    "subtitle": "Fill out the form below and we'll get back to you within 24 hours with personalized recommendations."
+  },
+  "programs": [
+    { "value": "math-courses", "label": "Math Courses" },
+    { "value": "english-courses", "label": "English Courses" },
+    { "value": "steam-programs", "label": "STEAM Programs" },
+    { "value": "test-prep", "label": "SAT/ACT Test Prep" },
+    { "value": "summer-programs", "label": "Summer Programs" },
+    { "value": "tutoring", "label": "One-on-One Tutoring" }
+  ],
+  "contactInfo": [
+    {
+      "icon": "Phone",
+      "title": "Call Us",
+      "primary": "(925) 456-4606",
+      "secondary": "Mon-Fri 9AM-7PM",
+      "description": "Speak directly with our education consultants",
+      "bgColor": "bg-[#1F396D]"
+    },
+    {
+      "icon": "Mail",
+      "title": "Email Us",
+      "primary": "connect@thegrowwise.com",
+      "secondary": "Response within 24 hours",
+      "description": "Get detailed information about our programs",
+      "bgColor": "bg-[#F16112]"
+    },
+    {
+      "icon": "MapPin",
+      "title": "Visit Us",
+      "primary": "4564 Dublin Blvd",
+      "secondary": "Dublin, CA 94568",
+      "description": "Come see our learning center in person",
+      "bgColor": "bg-[#F1894F]"
+    },
+    {
+      "icon": "MessageCircle",
+      "title": "Live Chat",
+      "primary": "Instant Support",
+      "secondary": "Available during business hours",
+      "description": "Quick answers to your questions",
+      "bgColor": "bg-[#29335C]"
+    }
+  ],
+  "officeHours": [
+    { "day": "Monday - Friday", "hours": "9:00 AM - 7:00 PM", "isOpen": true },
+    { "day": "Saturday", "hours": "10:00 AM - 4:00 PM", "isOpen": false },
+    { "day": "Sunday", "hours": "Closed", "isOpen": false }
+  ],
+  "faqs": [
+    {
+      "question": "What makes GrowWise different from other educational centers?",
+      "answer": "GrowWise combines personalized K-12 instruction with cutting-edge STEAM programs. We maintain small class sizes (max 6 students for K-12, 4 for STEAM) and use innovative teaching methods that make learning engaging and effective."
+    },
+    {
+      "question": "What age groups and grade levels do you serve?",
+      "answer": "We serve students from Kindergarten through 12th grade (ages 5-18). Our programs are specifically designed for different developmental stages, ensuring age-appropriate learning experiences."
+    },
+    {
+      "question": "Do you offer both in-person and online classes?",
+      "answer": "Yes! We offer both in-person classes at our Dublin, CA location and online classes with the same quality instruction and personalized attention. Many families choose a hybrid approach."
+    },
+    {
+      "question": "How do you assess my child's learning needs?",
+      "answer": "We provide free 60-minute assessments for K-12 subjects and 30-minute trial classes for STEAM programs. This helps us understand your child's current level, learning style, and goals."
+    },
+    {
+      "question": "What are your class sizes and teacher-to-student ratios?",
+      "answer": "We maintain small class sizes with maximum 6 students per K-12 class and 4 students per STEAM class. For one-on-one tutoring, it's complete individual attention."
+    },
+    {
+      "question": "What payment options and financial assistance do you offer?",
+      "answer": "We accept credit cards, bank transfers, and offer flexible payment plans. We provide sibling discounts, early bird pricing, and need-based scholarships for qualifying families."
+    }
+  ],
+  "socialLinks": [
+    { "icon": "Facebook", "url": "https://www.facebook.com/people/GrowWise/61561059687164/", "label": "Facebook" },
+    { "icon": "Instagram", "url": "https://www.instagram.com/growwise.dublin/", "label": "Instagram" },
+    { "icon": "Linkedin", "url": "https://www.linkedin.com/company/thegrowwise/", "label": "LinkedIn" },
+    { "icon": "Twitter", "url": "#", "label": "Twitter" }
+  ],
+  "locationDetails": {
+    "address": "4564 Dublin Blvd, Dublin, CA 94568",
+    "phone": "(925) 456-4606",
+    "email": "connect@thegrowwise.com",
+    "googleMapsUrl": "https://www.google.com/maps/place/4564+Dublin+Blvd,+Dublin,+CA+94568",
+    "directionsUrl": "https://www.google.com/maps/dir//4564+Dublin+Blvd,+Dublin,+CA+94568"
+  }
+}

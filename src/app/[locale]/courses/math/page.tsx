@@ -10,10 +10,19 @@ import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import { useTranslations } from 'next-intl';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
+import { getIconComponent } from '@/lib/iconMap';
 
 const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
+  const t = useTranslations('mathCourses');
+  const dispatch = useAppDispatch();
+  const mathCoursesData = useAppSelector((s) => s.mathCourses.data);
+  const mathCoursesLoading = useAppSelector((s) => s.mathCourses.loading);
+  
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
   const [selectedAlignments, setSelectedAlignments] = useState<string[]>([]);
@@ -23,6 +32,13 @@ const MathCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Fetch Math courses data
+  useEffect(() => {
+    if (!mathCoursesData && !mathCoursesLoading) {
+      dispatch(fetchMathCoursesRequested());
+    }
+  }, [mathCoursesData, mathCoursesLoading, dispatch]);
 
   // Detect touch device and disable hover effects on mobile
   useEffect(() => {
@@ -51,23 +67,10 @@ const MathCoursesPage: React.FC = () => {
   }, []);
 
   // Filter categories
-  const gradeLevelFilters = [
-    { value: 'Elementary', label: 'Elementary', icon: '🔢', color: 'bg-blue-100 text-blue-800 border-blue-200' },
-    { value: 'Middle School', label: 'Middle School', icon: '📊', color: 'bg-green-100 text-green-800 border-green-200' },
-    { value: 'High School', label: 'High School', icon: '🎯', color: 'bg-purple-100 text-purple-800 border-purple-200' }
-  ];
-
-  const courseTypeFilters = [
-    { value: 'Core Math', label: 'Core Math', icon: '📚', color: 'bg-orange-100 text-orange-800 border-orange-200' },
-    { value: 'Accelerated', label: 'Accelerated', icon: '⚡', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
-    { value: 'Double Accelerated', label: 'Double Accelerated', icon: '🚀', color: 'bg-red-100 text-red-800 border-red-200' }
-  ];
-
-  const alignmentFilters = [
-    { value: 'California Standards', label: 'California Standards', icon: '🏛️', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
-    { value: 'DUSD Aligned', label: 'DUSD Aligned', icon: '🏫', color: 'bg-teal-100 text-teal-800 border-teal-200' },
-    { value: 'PUSD Aligned', label: 'PUSD Aligned', icon: '🎓', color: 'bg-pink-100 text-pink-800 border-pink-200' }
-  ];
+  // Filter categories from Redux data
+  const gradeLevelFilters = mathCoursesData?.filters?.gradeLevels ?? [];
+  const courseTypeFilters = mathCoursesData?.filters?.courseTypes ?? [];
+  const alignmentFilters = mathCoursesData?.filters?.alignments ?? [];
 
   // Course gradients based on level
   const getCourseGradients = (course: any) => {
@@ -206,41 +209,8 @@ const MathCoursesPage: React.FC = () => {
     return filter ? filter.icon : '•';
   };
 
-  // Enhanced Program Features for the Header
-  const enhancedProgramFeatures = [
-    {
-      icon: Shield,
-      title: 'DUSD & PUSD Aligned',
-      description: 'Perfectly synchronized with Dublin and Pleasanton Unified School Districts curriculum standards',
-      color: 'text-[#1F396D]',
-      bgColor: 'bg-[#1F396D]/10',
-      delay: '0ms'
-    },
-    {
-      icon: GraduationCap,
-      title: 'Comprehensive Coverage',
-      description: 'Complete math education from elementary foundations through advanced calculus',
-      color: 'text-[#F16112]',
-      bgColor: 'bg-[#F16112]/10',
-      delay: '100ms'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Progress Tracking',
-      description: 'Regular assessments with detailed progress reports and personalized feedback',
-      color: 'text-[#F1894F]',
-      bgColor: 'bg-[#F1894F]/10',
-      delay: '200ms'
-    },
-    {
-      icon: Users,
-      title: 'Flexible Learning',
-      description: 'Choose between small group sessions or personalized 1-on-1 instruction',
-      color: 'text-[#1F396D]',
-      bgColor: 'bg-[#1F396D]/10',
-      delay: '300ms'
-    }
-  ];
+  // Enhanced Program Features from Redux data
+  const enhancedProgramFeatures = mathCoursesData?.features ?? [];
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -279,19 +249,16 @@ const MathCoursesPage: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
               <Calculator className="w-5 h-5 text-[#F1894F]" />
-              <span className="text-gray-700 font-medium">Master Math with Confidence</span>
+              <span className="text-gray-700 font-medium">{mathCoursesData?.hero?.badge || t('hero.badge')}</span>
               <Sparkles className="w-5 h-5 text-[#F1894F]" />
             </div>
             
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              Transform Your
-              <span className="block bg-gradient-to-r from-[#F1894F] to-[#F16112] bg-clip-text text-transparent">
-                Math Journey
-              </span>
+              {mathCoursesData?.hero?.title || t('hero.title')}
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Personalized, grade-aligned math tutoring for students in Grades 1–12. Small groups or 1-on-1 sessions led by expert educators in the heart of Tri-Valley.
+              {mathCoursesData?.hero?.subtitle || t('hero.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -308,7 +275,7 @@ const MathCoursesPage: React.FC = () => {
           </div>
 
           {/* Integrated "Why Choose Our Math Programs" - Updated with Blue Gradient */}
-          <div className="bg-gradient-to-br from-blue-100/30 via-indigo-100/20 to-blue-200/30 backdrop-blur-lg rounded-[32px] border border-blue-200/30 p-8 lg:p-12 shadow-2xl">
+          <div className="bg-gradient-to-br from-orange-100/30 via-amber-100/20 to-orange-200/30 backdrop-blur-lg rounded-[32px] border border-orange-200/30 p-8 lg:p-12 shadow-2xl">
             <div className="text-center mb-12">
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
                 Why Choose Our <span className="text-[#1F396D]">Math Programs</span>?
@@ -321,7 +288,7 @@ const MathCoursesPage: React.FC = () => {
             {/* Enhanced Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {enhancedProgramFeatures.map((feature, index) => {
-                const IconComponent = feature.icon;
+                const IconComponent = getIconComponent(feature.icon);
                 return (
                   <div 
                     key={index} 
@@ -332,7 +299,7 @@ const MathCoursesPage: React.FC = () => {
                       <div className={`${feature.bgColor} w-20 h-20 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition-all duration-500 shadow-xl backdrop-blur-sm border border-white/20`}>
                         <IconComponent className={`w-10 h-10 ${feature.color}`} />
                       </div>
-                      <div className="absolute -inset-2 bg-blue-100/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      <div className="absolute -inset-2 bg-orange-100/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                     <h3 className="font-bold text-gray-800 text-lg mb-3 group-hover:text-[#1F396D] transition-colors duration-300">
                       {feature.title}
@@ -737,12 +704,12 @@ const MathCoursesPage: React.FC = () => {
       {/* "Not Sure Which Course is Right?" Section - Clean Design */}
       <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
         {/* Background with subtle animation */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/5 via-[#F1894F]/5 to-[#F16112]/5"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-100/20 via-amber-100/20 to-orange-200/20"></div>
         
         <div className="absolute inset-0">
           {/* Floating elements for depth */}
-          <div className="absolute top-20 left-1/4 w-32 h-32 bg-[#1F396D]/10 rounded-full blur-2xl animate-pulse"></div>
-          <div className="absolute bottom-20 right-1/4 w-40 h-40 bg-[#F1894F]/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+          <div className="absolute top-20 left-1/4 w-32 h-32 bg-orange-200/20 rounded-full blur-2xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-1/4 w-40 h-40 bg-amber-200/20 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '1s' }}></div>
         </div>
 
         <div className="relative max-w-4xl mx-auto">
@@ -754,41 +721,25 @@ const MathCoursesPage: React.FC = () => {
             <div className="relative z-10 text-center">
               {/* Icon Header */}
               <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6">
-                <HelpCircle className="w-10 h-10 text-[#1F396D]" />
+                <HelpCircle className="w-10 h-10 text-orange-600" />
               </div>
 
               <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
-                Not Sure Which <span className="text-[#F16112]">Course is Right</span>?
+                {mathCoursesData?.notSure?.title || t('notSure.title')}
               </h2>
               
               <p className="text-lg text-gray-700 mb-8 max-w-2xl mx-auto leading-relaxed">
-                Our education experts will assess your child's current level and recommend the perfect math program to accelerate their learning journey.
+                {mathCoursesData?.notSure?.subtitle || t('notSure.subtitle')}
               </p>
 
               {/* Features Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {[
-                  {
-                    icon: Target,
-                    title: 'Personalized Assessment',
-                    description: 'Free 30-minute evaluation'
-                  },
-                  {
-                    icon: MessageCircle,
-                    title: 'Expert Consultation',
-                    description: 'Certified math educators'
-                  },
-                  {
-                    icon: Sparkles,
-                    title: 'Customized Plan',
-                    description: 'Tailored learning roadmap'
-                  }
-                ].map((feature, index) => {
-                  const IconComponent = feature.icon;
+                {(mathCoursesData?.notSure?.steps ?? []).map((feature, index) => {
+                  const IconComponent = getIconComponent(feature.icon);
                   return (
                     <div key={index} className="text-center group">
                       <div className="bg-white/30 backdrop-blur-sm w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-white/20 group-hover:scale-110 transition-transform duration-300">
-                        <IconComponent className="w-8 h-8 text-[#1F396D]" />
+                        <IconComponent className="w-8 h-8 text-orange-600" />
                       </div>
                       <h3 className="font-bold text-gray-900 mb-2">{feature.title}</h3>
                       <p className="text-sm text-gray-600">{feature.description}</p>
@@ -804,11 +755,11 @@ const MathCoursesPage: React.FC = () => {
                   className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 py-4 rounded-full text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                 >
                   <Calendar className="mr-2 w-5 h-5" />
-                  Schedule Free Assessment
+                  {mathCoursesData?.notSure?.cta?.primary || t('notSure.cta.primary')}
                 </Button>
                 <Button variant="outline" className="border-2 border-gray-300 text-gray-700 hover:bg-white hover:text-[#1F396D] px-8 py-4 rounded-full text-lg backdrop-blur-sm transition-all duration-300">
                   <Phone className="mr-2 w-5 h-5" />
-                  Call (925) 456-4606
+                  {mathCoursesData?.notSure?.cta?.secondary || t('notSure.cta.secondary')}
                 </Button>
               </div>
 
@@ -841,20 +792,20 @@ const MathCoursesPage: React.FC = () => {
       {/* CTA Section */}
       <section className="py-16 px-4 lg:px-8 bg-[#1F396D]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl mb-6 text-white">Ready to Master Math?</h2>
+          <h2 className="text-4xl mb-6 text-white">{mathCoursesData?.cta?.title || t('cta.title')}</h2>
           <p className="text-xl mb-8 text-white/90">
-            Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.
+            {mathCoursesData?.cta?.subtitle || t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-[30px]" size="lg">
-              Get Started
+              {mathCoursesData?.cta?.primaryButton || t('cta.primaryButton')}
             </Button>
             <Button 
               onClick={openChatbot}
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
               size="lg"
             >
-              Contact Us
+              {mathCoursesData?.cta?.secondaryButton || t('cta.secondaryButton')}
             </Button>
           </div>
         </div>

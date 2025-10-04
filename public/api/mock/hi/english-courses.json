@@ -1,0 +1,153 @@
+{
+  "hero": {
+    "title": "Excel in English Arts",
+    "subtitle": "Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
+    "badge": "Master English with Excellence"
+  },
+  "filters": {
+    "gradeLevels": [
+      { "value": "Elementary", "label": "Elementary", "icon": "📚", "color": "bg-blue-100 text-blue-800 border-blue-200" },
+      { "value": "Middle School", "label": "Middle School", "icon": "📖", "color": "bg-green-100 text-green-800 border-green-200" },
+      { "value": "High School", "label": "High School", "icon": "🎯", "color": "bg-purple-100 text-purple-800 border-purple-200" }
+    ],
+    "courseTypes": [
+      { "value": "Core English", "label": "Core English", "icon": "📝", "color": "bg-orange-100 text-orange-800 border-orange-200" },
+      { "value": "Grammar", "label": "Grammar", "icon": "✏️", "color": "bg-yellow-100 text-yellow-800 border-yellow-200" },
+      { "value": "Comprehensive", "label": "Comprehensive", "icon": "📚", "color": "bg-red-100 text-red-800 border-red-200" },
+      { "value": "Advanced", "label": "Advanced", "icon": "🚀", "color": "bg-indigo-100 text-indigo-800 border-indigo-200" }
+    ],
+    "alignments": [
+      { "value": "California Standards", "label": "California Standards", "icon": "🏛️", "color": "bg-indigo-100 text-indigo-800 border-indigo-200" },
+      { "value": "DUSD Aligned", "label": "DUSD Aligned", "icon": "🏫", "color": "bg-teal-100 text-teal-800 border-teal-200" },
+      { "value": "PUSD Aligned", "label": "PUSD Aligned", "icon": "🎓", "color": "bg-pink-100 text-pink-800 border-pink-200" }
+    ]
+  },
+  "features": [
+    {
+      "icon": "Shield",
+      "title": "DUSD & PUSD Aligned",
+      "description": "Perfectly synchronized with Dublin and Pleasanton Unified School Districts English curriculum standards",
+      "color": "text-[#1F396D]",
+      "bgColor": "bg-[#1F396D]/10",
+      "delay": "0ms"
+    },
+    {
+      "icon": "GraduationCap",
+      "title": "Comprehensive ELA",
+      "description": "Complete English Language Arts education from reading fundamentals through advanced writing",
+      "color": "text-[#F16112]",
+      "bgColor": "bg-[#F16112]/10",
+      "delay": "100ms"
+    },
+    {
+      "icon": "TrendingUp",
+      "title": "Skills Development",
+      "description": "Progressive skill building with detailed assessments and personalized learning paths",
+      "color": "text-[#F1894F]",
+      "bgColor": "bg-[#F1894F]/10",
+      "delay": "200ms"
+    },
+    {
+      "icon": "Users",
+      "title": "Interactive Learning",
+      "description": "Engaging small group discussions and individual coaching for optimal language development",
+      "color": "text-[#1F396D]",
+      "bgColor": "bg-[#1F396D]/10",
+      "delay": "300ms"
+    }
+  ],
+  "successStories": [
+    {
+      "name": "Emma Martinez",
+      "grade": "7th Grade",
+      "improvement": "Improved writing skills by 85% in one semester",
+      "quote": "The English courses helped me find my voice and express my ideas clearly.",
+      "course": "English Mastery K-12",
+      "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+    },
+    {
+      "name": "Marcus Chen",
+      "grade": "5th Grade", 
+      "improvement": "Reading level increased by 2 grades in 4 months",
+      "quote": "Reading Enrichment made books fun and exciting. Now I love reading every day!",
+      "course": "Reading Enrichment K-5",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    },
+    {
+      "name": "Sofia Johnson",
+      "grade": "11th Grade",
+      "improvement": "SAT Writing score improved by 150 points",
+      "quote": "The grammar and writing courses gave me the confidence to tackle any writing assignment.",
+      "course": "Grammar Boost K-8",
+      "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+    }
+  ],
+  "programHighlights": [
+    {
+      "icon": "BookOpen",
+      "title": "Proven Reading Methods",
+      "description": "Research-based literacy instruction using phonics, guided reading, and comprehension strategies",
+      "stats": "95% reading improvement",
+      "color": "text-[#F16112]"
+    },
+    {
+      "icon": "PenTool",
+      "title": "Writing Excellence",
+      "description": "From creative storytelling to academic essays, master all forms of written communication",
+      "stats": "90% writing confidence boost",
+      "color": "text-[#1F396D]"
+    },
+    {
+      "icon": "BookMarked",
+      "title": "Literature Analysis",
+      "description": "Critical thinking through classic and contemporary literature study",
+      "stats": "98% analytical skills growth",
+      "color": "text-[#F1894F]"
+    },
+    {
+      "icon": "Target",
+      "title": "Test Preparation",
+      "description": "Comprehensive prep for SAT, ACT, AP exams, and standardized testing",
+      "stats": "Average 140pt score increase",
+      "color": "text-[#29335C]"
+    }
+  ],
+  "learningOutcomes": [
+    {
+      "category": "Reading Skills",
+      "outcomes": [
+        "Decode complex texts with confidence",
+        "Analyze themes and literary devices",
+        "Improve reading comprehension by 85%",
+        "Develop critical thinking skills"
+      ],
+      "icon": "📚"
+    },
+    {
+      "category": "Writing Mastery",
+      "outcomes": [
+        "Master essay structure and organization",
+        "Develop persuasive argumentation",
+        "Create engaging creative works",
+        "Perfect grammar and mechanics"
+      ],
+      "icon": "✍️"
+    },
+    {
+      "category": "Communication",
+      "outcomes": [
+        "Express ideas clearly and confidently",
+        "Participate in meaningful discussions",
+        "Present work to peers effectively",
+        "Build vocabulary and language skills"
+      ],
+      "icon": "🗣️"
+    }
+  ],
+  "cta": {
+    "title": "Ready to Excel in English?",
+    "subtitle": "Join hundreds of students who have transformed their writing and reading skills with GrowWise English programs.",
+    "primaryButton": "Get Started",
+    "secondaryButton": "Contact Us"
+  }
+}

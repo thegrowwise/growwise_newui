@@ -1,11 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchContactFailed, fetchContactRequested, fetchContactSucceeded, ContactData } from '../slices/contactSlice';
+import { fetchJsonWithLocale } from '@/lib/api';
 
-function fetchContactApi(): Promise<ContactData> {
-  return fetch('/api/mock/contact.json').then((res) => {
-    if (!res.ok) throw new Error('Failed to fetch contact');
-    return res.json();
-  });
+async function fetchContactApi(): Promise<ContactData> {
+  return fetchJsonWithLocale<ContactData>('contact.json', '/contact');
 }
 
 function* fetchContactWorker() {

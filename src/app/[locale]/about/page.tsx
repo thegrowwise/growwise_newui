@@ -1,8 +1,9 @@
-import AboutUsPage from "@/pages/AboutUsPage";
+"use client";
 
-export default function About() {
-  return <AboutUsPage />;
+import About from '@/components/sections/About'
+
+export default function AboutPage() {
+  return <About />
 }
-
 
 
