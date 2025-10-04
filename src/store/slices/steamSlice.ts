@@ -28,18 +28,22 @@ export interface SteamFeature {
 
 export interface SteamSuccessStory {
   name: string;
-  age: string;
+  age?: string;
+  grade?: string;
   achievement: string;
   quote: string;
   program: string;
-  image: string;
+  image?: string;
 }
 
 export interface SteamProgramHighlight {
   icon: string;
   title: string;
   description: string;
-  stats: string;
+  stats?: Array<{
+    value: string;
+    label: string;
+  }>;
   color: string;
 }
 
@@ -67,8 +71,10 @@ export interface SteamData {
   cta: {
     title: string;
     subtitle: string;
-    primaryButton: string;
-    secondaryButton: string;
+    primaryButton?: string;
+    secondaryButton?: string;
+    primaryCta?: string;
+    secondaryCta?: string;
   };
 }
 

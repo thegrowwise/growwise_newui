@@ -46,10 +46,6 @@
       "k12": {
         "title": "K-12 Academic Programs",
         "subtitle": "Comprehensive academic support for all grade levels"
-      },
-      "steam": {
-        "title": "STEAM Programs",
-        "subtitle": "Future-ready skills through Science, Technology, Engineering, Arts, and Math"
       }
     },
     "whyChoose": {
@@ -141,10 +137,6 @@
     "english": {
       "title": "English Courses",
       "subtitle": "Master reading, writing, and communication skills"
-    },
-    "steam": {
-      "title": "STEAM Programs",
-      "subtitle": "Future-ready skills through hands-on learning"
     }
   },
   
@@ -558,6 +550,56 @@
       "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
       "primaryButton": "Get Started",
       "secondaryButton": "Contact Us"
+    }
+  },
+  "steam": {
+    "hero": {
+      "title": "Science, Technology, Engineering,",
+      "titleHighlight": "Arts & Mathematics",
+      "subtitle": "Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, our programs combine creativity with cutting-edge technology.",
+      "explorePrograms": "Explore Programs",
+      "bookFreeTrial": "Book Free Trial"
+    },
+    "programs": {
+      "title": "Our STEAM Programs",
+      "subtitle": "Comprehensive programs designed to prepare students for the digital future",
+      "startLearning": "Start Learning"
+    },
+    "gameDevelopment": {
+      "title": "Game Development",
+      "titleHighlight": "Mastery",
+      "subtitle": "Master game creation with industry-standard tools and platforms"
+    },
+    "technologies": {
+      "title": "Technologies & Tools",
+      "titleHighlight": "We Teach",
+      "subtitle": "Industry-standard tools and technologies for future-ready skills"
+    },
+    "aiMachineLearning": {
+      "title": "AI & Machine Learning",
+      "titleHighlight": "Programs",
+      "subtitle": "Explore the future of technology with AI and machine learning"
+    },
+    "youngEntrepreneurs": {
+      "title": "Young Entrepreneurs",
+      "titleHighlight": "Program",
+      "subtitle": "Develop entrepreneurial skills and business mindset for future leaders"
+    },
+    "successStories": {
+      "title": "Student Success",
+      "titleHighlight": "Stories",
+      "subtitle": "Real achievements from our STEAM program students"
+    },
+    "whyChoose": {
+      "title": "Why Choose Our",
+      "titleHighlight": "STEAM Program",
+      "subtitle": "Comprehensive education that prepares students for the future"
+    },
+    "cta": {
+      "title": "Ready to Start Your STEAM Journey?",
+      "subtitle": "Join thousands of students learning cutting-edge technology skills",
+      "primaryCta": "Get Started Today",
+      "secondaryCta": "Schedule a Call"
     }
   }
 }
