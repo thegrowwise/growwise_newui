@@ -5,11 +5,7 @@ import { fetchJsonWithLocale } from '@/lib/api';
 function* fetchMathCoursesSaga() {
   try {
     console.log('Fetching Math courses data...');
-    const response = yield call(fetch, '/api/math-courses');
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
-    const data = yield call([response, 'json']);
+    const data = yield call(fetchJsonWithLocale, 'math-courses');
     console.log('Math courses data fetched:', data);
     yield put(fetchMathCoursesSucceeded(data));
   } catch (error) {
