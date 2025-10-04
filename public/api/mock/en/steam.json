@@ -1,0 +1,237 @@
+{
+  "hero": {
+    "title": "Science, Technology, Engineering, Arts & Mathematics",
+    "subtitle": "Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, our programs combine creativity with cutting-edge technology.",
+    "badge": "STEAM PROGRAMS"
+  },
+  "programs": {
+    "title": "Our STEAM Programs",
+    "subtitle": "Comprehensive programs designed to prepare students for the digital future",
+    "items": [
+      {
+        "id": 1,
+        "title": "Game Development",
+        "description": "Create immersive games and interactive experiences using industry-standard tools",
+        "icon": "Gamepad2",
+        "gradient": "from-[#F16112] to-[#F1894F]",
+        "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10",
+        "iconColor": "text-[#F16112]",
+        "features": [
+          "Roblox Studio Development",
+          "Scratch Programming",
+          "Minecraft Modding",
+          "Unity Game Engine",
+          "Game Design Principles",
+          "3D Modeling Basics"
+        ],
+        "subItems": [
+          { "name": "Roblox Studio", "icon": "🎮", "description": "Create games in Roblox platform" },
+          { "name": "Scratch", "icon": "🐱", "description": "Visual programming for beginners" },
+          { "name": "Minecraft", "icon": "⛏️", "description": "Build and code in Minecraft" },
+          { "name": "Unity Basics", "icon": "🎯", "description": "Professional game development" }
+        ],
+        "cta": "Start Learning"
+      },
+      {
+        "id": 2,
+        "title": "Python Programming",
+        "description": "Master the world's most popular programming language from basics to advanced",
+        "icon": "Code",
+        "gradient": "from-[#1F396D] to-[#29335C]",
+        "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10",
+        "iconColor": "text-[#1F396D]",
+        "features": [
+          "Python Fundamentals",
+          "Object-Oriented Programming",
+          "Data Structures & Algorithms",
+          "Web Development with Flask",
+          "API Development",
+          "Project-Based Learning"
+        ],
+        "subItems": [
+          { "name": "Python Kickstart", "icon": "🚀", "description": "Begin your Python journey" },
+          { "name": "Python Power Up", "icon": "⚡", "description": "Intermediate Python skills" },
+          { "name": "Python Pro", "icon": "🏆", "description": "Advanced Python mastery" },
+          { "name": "Web Development", "icon": "🌐", "description": "Build web applications" }
+        ],
+        "cta": "Start Learning"
+      },
+      {
+        "id": 3,
+        "title": "AI & Machine Learning",
+        "description": "Explore artificial intelligence and machine learning concepts for the future",
+        "icon": "Brain",
+        "gradient": "from-[#1F396D] to-[#F16112]",
+        "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/10",
+        "iconColor": "text-[#1F396D]",
+        "features": [
+          "AI Fundamentals",
+          "Machine Learning Basics",
+          "Prompt Engineering",
+          "Computer Vision",
+          "Natural Language Processing",
+          "Ethics in AI"
+        ],
+        "subItems": [
+          { "name": "AI Fundamentals", "icon": "🧠", "description": "Introduction to AI concepts" },
+          { "name": "Machine Learning", "icon": "🤖", "description": "ML algorithms and models" },
+          { "name": "Prompt Engineering", "icon": "💬", "description": "Master AI communication" },
+          { "name": "Computer Vision", "icon": "👁️", "description": "Image recognition and processing" }
+        ],
+        "cta": "Start Learning"
+      },
+      {
+        "id": 4,
+        "title": "Young Entrepreneurs",
+        "description": "Develop entrepreneurial skills and business mindset for future leaders",
+        "icon": "Lightbulb",
+        "gradient": "from-[#F1894F] to-[#F16112]",
+        "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10",
+        "iconColor": "text-[#F1894F]",
+        "features": [
+          "Business Planning",
+          "Leadership Development",
+          "Brand Building",
+          "Financial Literacy",
+          "Marketing Fundamentals",
+          "Presentation Skills"
+        ],
+        "subItems": [
+          { "name": "Youth CEO", "icon": "👑", "description": "Learn leadership and management" },
+          { "name": "I Am Brand", "icon": "🎯", "description": "Build your personal brand" },
+          { "name": "Startup Basics", "icon": "💡", "description": "Introduction to entrepreneurship" },
+          { "name": "Marketing", "icon": "📢", "description": "Digital marketing strategies" }
+        ],
+        "cta": "Start Learning"
+      }
+    ]
+  },
+  "features": [
+    {
+      "icon": "Shield",
+      "title": "Industry-Aligned Curriculum",
+      "description": "Programs designed with input from tech industry leaders and educators",
+      "color": "text-[#1F396D]",
+      "bgColor": "bg-[#1F396D]/10",
+      "delay": "0ms"
+    },
+    {
+      "icon": "Users",
+      "title": "Small Group Learning",
+      "description": "Personalized attention with small class sizes for optimal learning",
+      "color": "text-[#F16112]",
+      "bgColor": "bg-[#F16112]/10",
+      "delay": "100ms"
+    },
+    {
+      "icon": "TrendingUp",
+      "title": "Project-Based Learning",
+      "description": "Learn by building real projects and solving authentic problems",
+      "color": "text-[#F1894F]",
+      "bgColor": "bg-[#F1894F]/10",
+      "delay": "200ms"
+    },
+    {
+      "icon": "Award",
+      "title": "Certification Programs",
+      "description": "Earn industry-recognized certificates upon program completion",
+      "color": "text-[#29335C]",
+      "bgColor": "bg-[#29335C]/10",
+      "delay": "300ms"
+    }
+  ],
+  "successStories": [
+    {
+      "name": "Alex Chen",
+      "age": "Age 14",
+      "achievement": "Built a web app that tracks homework for his entire school",
+      "quote": "GrowWise taught me that coding isn't just about syntax - it's about solving real problems.",
+      "program": "Python Programming",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    },
+    {
+      "name": "Sophia Rodriguez",
+      "age": "Age 16", 
+      "achievement": "Published her first game on Roblox with 10,000+ plays",
+      "quote": "Creating games taught me creativity, problem-solving, and how to turn ideas into reality.",
+      "program": "Game Development",
+      "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+    },
+    {
+      "name": "Marcus Johnson",
+      "age": "Age 15",
+      "achievement": "Started his own tutoring business helping younger students",
+      "quote": "The entrepreneurship program gave me the confidence to turn my passion into a business.",
+      "program": "Young Entrepreneurs",
+      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    }
+  ],
+  "programHighlights": [
+    {
+      "icon": "Rocket",
+      "title": "Future-Ready Skills",
+      "description": "Learn technologies and concepts that will be essential in tomorrow's job market",
+      "stats": "95% student engagement",
+      "color": "text-[#1F396D]"
+    },
+    {
+      "icon": "Users",
+      "title": "Collaborative Learning",
+      "description": "Work on team projects that mirror real-world development environments",
+      "stats": "90% teamwork skills",
+      "color": "text-[#F16112]"
+    },
+    {
+      "icon": "Target",
+      "title": "Project-Based Approach",
+      "description": "Build real applications and games that showcase your skills",
+      "stats": "100+ projects completed",
+      "color": "text-[#F16112]"
+    },
+    {
+      "icon": "Award",
+      "title": "Industry Recognition",
+      "description": "Earn certificates and build portfolios that impress colleges and employers",
+      "stats": "85% certification rate",
+      "color": "text-[#1F396D]"
+    }
+  ],
+  "learningOutcomes": [
+    {
+      "category": "Technical Skills",
+      "outcomes": [
+        "Master programming languages (Python, JavaScript, C++)",
+        "Build and program robots and IoT devices",
+        "Create games and interactive applications",
+        "Develop AI and machine learning models"
+      ],
+      "icon": "💻"
+    },
+    {
+      "category": "Problem Solving",
+      "outcomes": [
+        "Break down complex problems into manageable parts",
+        "Apply computational thinking to real-world challenges",
+        "Debug and troubleshoot technical issues",
+        "Design efficient algorithms and solutions"
+      ],
+      "icon": "🧩"
+    },
+    {
+      "category": "Creativity & Innovation",
+      "outcomes": [
+        "Think creatively about technology applications",
+        "Prototype and iterate on innovative ideas",
+        "Present and pitch technical solutions",
+        "Collaborate on interdisciplinary projects"
+      ],
+      "icon": "💡"
+    }
+  ],
+  "cta": {
+    "title": "Ready to Build the Future?",
+    "subtitle": "Join thousands of students who are already creating amazing things with technology. Start your STEAM journey today!",
+    "primaryButton": "Explore Programs",
+    "secondaryButton": "Book Free Trial"
+  }
+}

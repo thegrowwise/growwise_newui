@@ -1,302 +1,564 @@
 {
   "common": {
-    "loading": "लोड हो रहा है...",
-    "error": "त्रुटि",
-    "success": "सफलता",
-    "cancel": "रद्द करें",
-    "save": "सहेजें",
-    "edit": "संपादित करें",
-    "delete": "हटाएं",
-    "close": "बंद करें",
-    "submit": "जमा करें",
-    "next": "अगला",
-    "previous": "पिछला",
-    "getStarted": "शुरू करें",
-    "contactUs": "संपर्क करें",
-    "learnMore": "और जानें",
-    "bookNow": "अभी बुक करें",
-    "freeAssessment": "मुफ्त मूल्यांकन",
-    "trialClass": "ट्रायल क्लास"
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "submit": "Submit",
+    "next": "Next",
+    "previous": "Previous",
+    "getStarted": "Get Started",
+    "contactUs": "Contact Us",
+    "learnMore": "Learn More",
+    "bookNow": "Book Now",
+    "freeAssessment": "Free Assessment",
+    "trialClass": "Trial Class"
   },
   "navigation": {
-    "home": "होम",
-    "about": "के बारे में",
-    "courses": "कोर्स",
-    "programs": "कार्यक्रम",
-    "contact": "संपर्क",
-    "academic": "शैक्षणिक",
+    "home": "Home",
+    "about": "About",
+    "courses": "Courses",
+    "programs": "Programs",
+    "contact": "Contact",
+    "academic": "Academic",
     "steam": "STEAM",
-    "math": "गणित",
-    "english": "अंग्रेजी",
-    "enroll": "नामांकन"
+    "math": "Math",
+    "english": "English",
+    "enroll": "Enroll"
   },
   "home": {
     "hero": {
-      "title": "कल के लिए युवा दिमागों को सशक्त बनाना",
-      "subtitle": "व्यापक K-12 शिक्षा और STEAM कार्यक्रम",
-      "description": "300+ छात्रों के साथ हमारी व्यक्तिगत सीखने की यात्रा में शामिल हों, 98% संतुष्टि दर के साथ",
-      "cta": "अपनी यात्रा शुरू करें"
+      "title": "Empowering Young Minds for Tomorrow",
+      "subtitle": "Comprehensive K-12 Education & STEAM Programs",
+      "description": "Join 300+ students in our personalized learning journey with 98% satisfaction rate",
+      "cta": "Start Your Journey"
     },
     "statistics": {
-      "titlePrefix": "",
-      "titleHighlight": "ट्राई-वैली परिवारों",
-      "subtitle": "सैकड़ों परिवारों के साथ जुड़ें जिन्होंने अपने बच्चों की शैक्षणिक यात्रा के लिए GrowWise को चुना है"
+      "titlePrefix": "Trusted by ",
+      "titleHighlight": "Tri-Valley Families",
+      "subtitle": "Join hundreds of families who have chosen GrowWise for their children's educational journey"
     },
     "programs": {
       "k12": {
-        "title": "K-12 शैक्षणिक कार्यक्रम",
-        "subtitle": "सभी ग्रेड स्तरों के लिए व्यापक शैक्षणिक सहायता"
+        "title": "K-12 Academic Programs",
+        "subtitle": "Comprehensive academic support for all grade levels"
       },
       "steam": {
-        "title": "STEAM कार्यक्रम",
-        "subtitle": "विज्ञान, प्रौद्योगिकी, इंजीनियरिंग, कला और गणित के माध्यम से भविष्य-तैयार कौशल"
+        "title": "STEAM Programs",
+        "subtitle": "Future-ready skills through Science, Technology, Engineering, Arts, and Math"
       }
     },
     "whyChoose": {
-      "title": "GrowWise क्यों चुनें?",
-      "subtitle": "जानें कि क्या हमें ट्राई-वैली परिवारों के लिए पसंदीदा विकल्प बनाता है"
+      "title": "Why Choose GrowWise?",
+      "subtitle": "Discover what makes us the preferred choice for Tri-Valley families"
     },
     "testimonials": {
-      "title": "परिवार क्या कहते हैं",
-      "subtitle": "हमारे समुदाय की वास्तविक कहानियां"
+      "title": "What Families Say",
+      "subtitle": "Real stories from our community"
     },
     "cta": {
-      "title": "अपने बच्चे के सीखने को बदलने के लिए तैयार हैं?",
-      "subtitle": "मुफ्त मूल्यांकन बुक करें और व्यक्तिगत सीखने के अवसरों की खोज करें",
-      "primaryCta": "शुरू करें",
-      "secondaryCta": "संपर्क करें"
+      "title": "Ready to Transform Your Child's Learning?",
+      "subtitle": "Book a free assessment and discover personalized learning opportunities",
+      "primaryCta": "Get Started",
+      "secondaryCta": "Contact Us"
     }
   },
   "assessment": {
-    "title": "मुफ्त मूल्यांकन",
-    "subtitle": "अपने बच्चे के लिए व्यक्तिगत सीखने की सिफारिशें प्राप्त करें",
+    "title": "Free Assessment",
+    "subtitle": "Get personalized learning recommendations for your child",
     "form": {
-      "parentName": "माता-पिता/अभिभावक का नाम",
-      "email": "ईमेल पता",
-      "phone": "फोन नंबर",
-      "studentName": "छात्र का नाम",
-      "grade": "ग्रेड स्तर",
-      "subjects": "रुचि के विषय",
-      "mode": "पसंदीदा सीखने का मोड",
-      "schedule": "पसंदीदा समय सारिणी",
-      "notes": "अतिरिक्त नोट्स",
-      "submit": "मूल्यांकन जमा करें",
-      "submitting": "जमा हो रहा है...",
-      "success": "मूल्यांकन सफलतापूर्वक जमा हो गया! हम 24 घंटों के भीतर आपसे संपर्क करेंगे।"
+      "parentName": "Parent/Guardian Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "studentName": "Student Name",
+      "grade": "Grade Level",
+      "subjects": "Subjects of Interest",
+      "mode": "Preferred Learning Mode",
+      "schedule": "Preferred Schedule",
+      "notes": "Additional Notes",
+      "submit": "Submit Assessment",
+      "submitting": "Submitting...",
+      "success": "Assessment submitted successfully! We'll contact you within 24 hours."
     },
     "grades": {
-      "kindergarten": "किंडरगार्टन",
-      "grade1": "ग्रेड 1",
-      "grade2": "ग्रेड 2",
-      "grade3": "ग्रेड 3",
-      "grade4": "ग्रेड 4",
-      "grade5": "ग्रेड 5",
-      "grade6": "ग्रेड 6",
-      "grade7": "ग्रेड 7",
-      "grade8": "ग्रेड 8",
-      "grade9": "ग्रेड 9",
-      "grade10": "ग्रेड 10",
-      "grade11": "ग्रेड 11",
-      "grade12": "ग्रेड 12"
+      "kindergarten": "Kindergarten",
+      "grade1": "Grade 1",
+      "grade2": "Grade 2",
+      "grade3": "Grade 3",
+      "grade4": "Grade 4",
+      "grade5": "Grade 5",
+      "grade6": "Grade 6",
+      "grade7": "Grade 7",
+      "grade8": "Grade 8",
+      "grade9": "Grade 9",
+      "grade10": "Grade 10",
+      "grade11": "Grade 11",
+      "grade12": "Grade 12"
     },
     "subjects": {
-      "math": "गणित",
-      "english": "अंग्रेजी",
-      "coding": "कोडिंग",
+      "math": "Math",
+      "english": "English",
+      "coding": "Coding",
       "ai": "AI/ML",
-      "gameDev": "गेम डेवलपमेंट",
-      "robotics": "रोबोटिक्स",
+      "gameDev": "Game Development",
+      "robotics": "Robotics",
       "sat": "SAT/ACT"
     },
     "schedule": {
-      "weekdaysAfterSchool": "स्कूल के बाद सप्ताह के दिन",
-      "weekendsMorning": "सप्ताहांत सुबह",
-      "weekendsAfternoon": "सप्ताहांत दोपहर"
+      "weekdaysAfterSchool": "Weekdays After School",
+      "weekendsMorning": "Weekends Morning",
+      "weekendsAfternoon": "Weekends Afternoon"
     }
   },
   "chatbot": {
-    "title": "GrowWise सहायक",
-    "placeholder": "हमारे कार्यक्रमों के बारे में कुछ भी पूछें...",
+    "title": "GrowWise Assistant",
+    "placeholder": "Ask me anything about our programs...",
     "suggestions": {
-      "k12Programs": "आप कौन से K-12 कार्यक्रम प्रदान करते हैं?",
-      "steamCourses": "STEAM कोर्स के बारे में बताएं",
-      "bookAssessment": "मैं मुफ्त मूल्यांकन कैसे बुक करूं?",
-      "pricing": "आपकी कीमतें क्या हैं?",
-      "getStarted": "मैं शुरू करना चाहता हूं"
+      "k12Programs": "What K-12 programs do you offer?",
+      "steamCourses": "Tell me about STEAM courses",
+      "bookAssessment": "How do I book a free assessment?",
+      "pricing": "What are your prices?",
+      "getStarted": "I want to get started"
     },
     "responses": {
-      "welcome": "नमस्ते! GrowWise में आपका स्वागत है! 🎓 हम ट्राई-वैली परिवारों की सेवा करने वाले एक अग्रणी शैक्षणिक प्लेटफॉर्म हैं जो व्यापक K-12 शैक्षणिक कार्यक्रम और रोमांचक STEAM कोर्स प्रदान करते हैं। आज मैं आपकी कैसे मदद कर सकता हूं?",
-      "courses": "हम व्यापक K-12 शैक्षणिक कार्यक्रम और रोमांचक STEAM कोर्स प्रदान करते हैं! हमारे K-12 कार्यक्रमों में गणित, ELA, राइटिंग लैब और SAT/ACT तैयारी शामिल है। STEAM के लिए, हमारे पास गेम डेवलपमेंट, पायथन प्रोग्रामिंग, यंग फाउंडर्स और ML/AI कोर्स हैं। क्या आप किसी विशिष्ट कार्यक्रम के बारे में अधिक जानना चाहेंगे?",
-      "assessment": "हम मुफ्त मूल्यांकन और ट्रायल क्लास प्रदान करते हैं! 🎓 K-12 कार्यक्रम: 60-मिनट मुफ्त मूल्यांकन। 🚀 STEAM कोर्स: 30-मिनट ट्रायल क्लास। ये हमें आपके बच्चे के लिए व्यक्तिगत सीखने की योजना बनाने में मदद करते हैं। क्या आप एक बुक करना चाहेंगे?",
-      "pricing": "हम अपने सभी कार्यक्रमों के लिए प्रतिस्पर्धी मूल्य निर्धारण प्रदान करते हैं। सबसे सटीक मूल्य निर्धारण जानकारी के लिए, मैं मुफ्त मूल्यांकन बुक करने की सलाह दूंगा जहां हमारी टीम आपकी विशिष्ट आवश्यकताओं के आधार पर विस्तृत जानकारी प्रदान कर सकती है। क्या आप मुफ्त मूल्यांकन शेड्यूल करना चाहेंगे?",
-      "contact": "आप हमारी वेबसाइट के संपर्क फॉर्म, फोन या ईमेल के माध्यम से हमसे संपर्क कर सकते हैं। हम यहां आपके कार्यक्रमों के बारे में किसी भी प्रश्न का उत्तर देने और आपकी सीखने की यात्रा शुरू करने में मदद करने के लिए हैं! हमारी टीम उत्तरदायी है और 24 घंटों के भीतर आपको वापस संपर्क करेगी।",
-      "fallback": "यह एक बहुत अच्छा प्रश्न है! मैं आपकी इसमें मदद करना चाहूंगा। GrowWise व्यापक K-12 शैक्षणिक कार्यक्रम और रोमांचक STEAM कोर्स प्रदान करता है। क्या आप जिस विशिष्ट जानकारी की तलाश कर रहे हैं उसके बारे में थोड़ा और विस्तार से बता सकते हैं?"
+      "welcome": "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. How can I help you today?",
+      "courses": "We offer comprehensive K-12 academic programs and exciting STEAM courses! Our K-12 programs include Math, ELA, Writing Lab, and SAT/ACT prep. For STEAM, we have Game Development, Python Programming, Young Founders, and ML/AI courses. Would you like to know more about any specific program?",
+      "assessment": "We offer FREE assessments and trial classes! 🎓 K-12 Programs: 60-minute FREE assessment. 🚀 STEAM Courses: 30-minute trial class. These help us create a personalized learning plan for your child. Would you like to book one?",
+      "pricing": "We offer competitive pricing for all our programs. For the most accurate pricing information, I'd recommend booking a free assessment where our team can provide detailed information based on your specific needs. Would you like to schedule a free assessment?",
+      "contact": "You can reach us through our website contact form, phone, or email. We're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.",
+      "fallback": "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?"
     }
   },
   "courses": {
     "math": {
-      "title": "गणित कोर्स",
-      "subtitle": "प्राथमिक से उन्नत स्तर तक व्यापक गणित शिक्षा"
+      "title": "Math Courses",
+      "subtitle": "Comprehensive math education from elementary to advanced levels"
     },
     "english": {
-      "title": "अंग्रेजी कोर्स",
-      "subtitle": "पढ़ने, लिखने और संचार कौशल में महारत हासिल करें"
+      "title": "English Courses",
+      "subtitle": "Master reading, writing, and communication skills"
     },
     "steam": {
-      "title": "STEAM कार्यक्रम",
-      "subtitle": "हाथों से सीखने के माध्यम से भविष्य-तैयार कौशल"
+      "title": "STEAM Programs",
+      "subtitle": "Future-ready skills through hands-on learning"
+    }
+  },
+  
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to start your child's learning journey? Contact us today for a free consultation.",
+    "contactMethods": {
+      "title": "Multiple Ways to Connect",
+      "subtitle": "Choose the method that works best for you"
+    },
+    "info": {
+      "title": "Contact Information",
+      "phone": "Phone",
+      "email": "Email",
+      "address": "Address",
+      "hours": "Hours"
+    },
+    "visit": {
+      "title": "Visit Our Center",
+      "description": "Come see our state-of-the-art learning facilities and meet our expert instructors.",
+      "cta": "Schedule a Visit"
+    },
+    "formSection": {
+      "title": "Send us a Message",
+      "subtitle": "Fill out the form below and we'll get back to you within 24 hours with personalized recommendations."
+    },
+    "success": {
+      "title": "Thank You!",
+      "description": "We've received your message and will get back to you within 24 hours."
+    },
+    "buttons": {
+      "callNow": "Call Now",
+      "startChat": "Start Chat"
+    },
+    "form": {
+      "name": "Full Name *",
+      "email": "Email Address *",
+      "phone": "Phone Number",
+      "subject": "Subject *",
+      "message": "Message *",
+      "submit": "Send Message",
+      "placeholders": {
+        "name": "Enter your full name",
+        "email": "Enter your email",
+        "phone": "Enter your phone number",
+        "message": "Tell us about your child's learning needs..."
+      },
+      "subjectOptions": {
+        "placeholder": "Select a subject",
+        "general": "General Inquiry",
+        "enrollment": "Enrollment Information",
+        "trial": "Free Trial Class",
+        "assessment": "Free Assessment",
+        "pricing": "Pricing Information",
+        "other": "Other"
+      }
+    }
+    },
+  "steam": {
+    "hero": {
+      "title": "STEAM Programs",
+      "subtitle": "Prepare your child for the future with cutting-edge science, technology, engineering, arts, and mathematics programs"
+    },
+    "programs": {
+      "title": "Our STEAM Programs",
+      "subtitle": "Comprehensive programs designed to develop critical thinking, creativity, and problem-solving skills",
+      "mlAi": {
+        "title": "ML/AI Coding",
+        "description": "Dive into the world of artificial intelligence and machine learning with hands-on projects and real-world applications.",
+        "features": {
+          "python": "Python Programming",
+          "machineLearning": "Machine Learning Algorithms",
+          "dataScience": "Data Science & Analytics"
+        },
+        "cta": "Learn More"
+      },
+      "gameDev": {
+        "title": "Game Development",
+        "description": "Create interactive games and applications using industry-standard tools like Roblox, Scratch, and Unity.",
+        "features": {
+          "roblox": "Roblox Studio",
+          "scratch": "Scratch Programming",
+          "unity": "Unity Game Engine"
+        },
+        "cta": "Start Creating"
+      },
+      "robotics": {
+        "title": "Robotics & Automation",
+        "description": "Build and program robots while learning about automation, sensors, and real-world engineering challenges.",
+        "features": {
+          "arduino": "Arduino Programming",
+          "programming": "Robot Programming",
+          "automation": "Automation Systems"
+        },
+        "cta": "Build Robots"
+      }
+    },
+    "cta": {
+      "title": "Ready to Start Your STEAM Journey?",
+      "subtitle": "Join hundreds of students who are already building the future with our innovative programs",
+      "primaryCta": "Get Started",
+      "secondaryCta": "Contact Us"
+    },
+    "mlAi": {
+      "title": "ML/AI Coding",
+      "description": "Dive into the world of artificial intelligence and machine learning with hands-on projects and real-world applications.",
+      "overview": {
+        "title": "Master the Future of Technology",
+        "subtitle": "Learn cutting-edge AI and machine learning concepts through practical, hands-on projects.",
+        "features": {
+          "python": "Python Programming Fundamentals",
+          "machineLearning": "Machine Learning Algorithms",
+          "dataScience": "Data Science & Analytics",
+          "neuralNetworks": "Neural Networks & Deep Learning"
+        }
+      },
+      "curriculum": {
+        "title": "Course Curriculum",
+        "modules": {
+          "basics": "Python Basics & Data Structures",
+          "basicsDesc": "Learn Python syntax, variables, loops, and data structures",
+          "intermediate": "Machine Learning Fundamentals",
+          "intermediateDesc": "Explore supervised and unsupervised learning algorithms",
+          "advanced": "Deep Learning & AI Applications",
+          "advancedDesc": "Build neural networks and real-world AI applications"
+        }
+      },
+      "projects": {
+        "title": "Hands-On Projects",
+        "subtitle": "Build real-world applications that showcase your AI skills",
+        "chatbot": {
+          "title": "AI Chatbot",
+          "description": "Create an intelligent chatbot using natural language processing",
+          "technologies": {
+            "nlp": "Natural Language Processing",
+            "tensorflow": "TensorFlow Framework",
+            "api": "REST API Integration"
+          }
+        },
+        "imageRecognition": {
+          "title": "Image Recognition System",
+          "description": "Build a computer vision system that can identify objects in images",
+          "technologies": {
+            "cnn": "Convolutional Neural Networks",
+            "opencv": "OpenCV Computer Vision",
+            "pytorch": "PyTorch Framework"
+          }
+        },
+        "predictionModel": {
+          "title": "Predictive Analytics Model",
+          "description": "Develop a machine learning model for business predictions",
+          "technologies": {
+            "regression": "Linear & Logistic Regression",
+            "pandas": "Data Manipulation with Pandas",
+            "scikit": "Scikit-learn Library"
+          }
+        }
+      },
+      "cta": {
+        "title": "Ready to Build the Future with AI?",
+        "subtitle": "Start your journey into artificial intelligence and machine learning today",
+        "primaryCta": "Start Learning",
+        "secondaryCta": "View Curriculum"
+      }
+    },
+    "gameDev": {
+      "title": "Game Development",
+      "description": "Create interactive games and applications using industry-standard tools like Roblox, Scratch, and Unity.",
+      "overview": {
+        "title": "Build Your Gaming Empire",
+        "subtitle": "Learn game development from concept to completion using professional tools and best practices.",
+        "features": {
+          "roblox": "Roblox Studio Development",
+          "scratch": "Scratch Visual Programming",
+          "unity": "Unity Game Engine",
+          "gameDesign": "Game Design Principles"
+        }
+      },
+      "curriculum": {
+        "title": "Course Curriculum",
+        "modules": {
+          "basics": "Game Design Fundamentals",
+          "basicsDesc": "Learn game mechanics, storytelling, and player engagement",
+          "intermediate": "Programming & Development",
+          "intermediateDesc": "Master coding for games using Lua, C#, and visual programming",
+          "advanced": "Advanced Game Development",
+          "advancedDesc": "Create complex games with multiplayer and advanced graphics"
+        }
+      },
+      "projects": {
+        "title": "Game Projects",
+        "subtitle": "Create amazing games that showcase your skills",
+        "platformer": {
+          "title": "2D Platformer Game",
+          "description": "Build a classic platformer with character movement and level design",
+          "technologies": {
+            "roblox": "Roblox Studio",
+            "lua": "Lua Programming",
+            "physics": "Game Physics"
+          }
+        },
+        "puzzleGame": {
+          "title": "Puzzle Adventure Game",
+          "description": "Create an engaging puzzle game with multiple levels and challenges",
+          "technologies": {
+            "scratch": "Scratch Programming",
+            "blocks": "Visual Block Coding",
+            "logic": "Game Logic Design"
+          }
+        },
+        "racingGame": {
+          "title": "3D Racing Game",
+          "description": "Develop a 3D racing game with realistic physics and graphics",
+          "technologies": {
+            "unity": "Unity 3D Engine",
+            "csharp": "C# Programming",
+            "animation": "3D Animation"
+          }
+        }
+      },
+      "cta": {
+        "title": "Ready to Create Amazing Games?",
+        "subtitle": "Start building your game development skills and bring ideas to life",
+        "primaryCta": "Start Creating",
+        "secondaryCta": "View Projects"
+      }
+    }
+  },
+  "academic": {
+    "programs": {
+      "titlePrefix": "Academic ",
+      "titleHighlight": "Programs",
+      "subtitle": "Personalized learning for K-12 students in Math and English",
+      "mathSessionTitle": "Math Session",
+      "mathSessionDesc": "Practice math problems and concepts with step-by-step guidance and instant feedback.",
+      "englishSessionTitle": "English Session",
+      "englishSessionDesc": "Writing practice and grammar editing with real-time feedback to strengthen clarity and structure.",
+      "pricingTitle": "Session Pricing",
+      "pricingFree": "FREE",
+      "pricingFreeNote": "for GrowWisers",
+      "pricingPaid": "$8",
+      "pricingPaidNote": "for non-GrowWisers",
+      "pricingDesc": "Helps build speed, accuracy, and confidence under pressure.",
+      "registerCta": "Register for Practice Sessions"
+    },
+    "why": {
+      "title": "Why Choose Our Academic Programs?",
+      "subtitle": "Comprehensive support designed for K-12 academic excellence"
+    },
+    "stories": {
+      "title": "Student Success Stories",
+      "subtitle": "Real results from our academic programs"
+    },
+    "whyGrowwise": {
+      "badge": "WHY CHOOSE US",
+      "title": "Why Choose GrowWise for Education Courses?",
+      "personalizedAttention": {
+        "title": "Personalized Attention",
+        "desc": "We provide individualized support to ensure each student reaches their maximum potential and academic goals."
+      },
+      "engagingCurriculum": {
+        "title": "Engaging Curriculum",
+        "desc": "Innovative and interactive curriculum and engaging thinking learning experience for each student."
+      },
+      "expertInstructors": {
+        "title": "Expert Instructors",
+        "desc": "Our courses are taught by experienced educators who are passionate about teaching and dedicated to student success."
+      },
+      "comprehensiveSupport": {
+        "title": "Comprehensive Support",
+        "desc": "We offer resources and support to help students excel in their studies and achieve sustained success."
+      }
+    },
+    "cta": {
+      "title": "Ready to Excel in Academics?",
+      "subtitle": "Join hundreds of students who have improved their academic performance with our personalized programs.",
+      "primary": "Book Free Assessment",
+      "secondary": "Learn More"
+    },
+    "modal": {
+      "titlePrefix": "Choose Your ",
+      "titleHighlight": "Academic Path",
+      "subtitle": "Select the subject that matches your learning goals and start your academic journey",
+      "mathTitle": "Math Courses",
+      "mathDesc": "Master mathematics from basics to advanced levels with personalized instruction",
+      "englishTitle": "English Language Arts",
+      "englishDesc": "Comprehensive English language arts skills from reading to writing excellence",
+      "features": {
+        "aligned": "DUSD & PUSD Aligned",
+        "grade": "Grade-Level & Accelerated",
+        "oneOnOne": "One-on-One Support",
+        "reading": "Reading Comprehension",
+        "writing": "Essay Writing",
+        "grammar": "Grammar & Vocabulary"
+      },
+      "viewMore": "View More",
+      "guidance": {
+        "prompt": "Not sure which path to choose?",
+        "cta": "Contact us for guidance"
+      }
     }
   },
   "about": {
     "hero": {
-      "title": "GrowWise के बारे में",
-      "subtitle": "2019 से, GrowWise ने डबलिन, CA में व्यक्तिगत K-12 शिक्षण और नवीन STEAM कार्यक्रमों के माध्यम से शिक्षा को बदला है। हम हर छात्र को सफलता के लिए कौशल, ज्ञान और आत्मविश्वास प्रदान करते हैं।"
+      "title": "About GrowWise",
+      "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
     },
     "foundation": { 
-      "title": "हमारी नींव",
-      "subtitle": "हम जो कुछ भी करते हैं वह हमारे मिशन, विजन और मूल्यों द्वारा निर्देशित होता है जो छात्र की सफलता को केंद्र में रखते हैं।"
+      "title": "Our Foundation",
+      "subtitle": "Everything we do is guided by our core mission, vision, and values that put student success at the center."
     },
     "story": { 
-      "title": "हमारी कहानी",
-      "p1": "2019 में डबलिन, कैलिफोर्निया के केंद्र में स्थापित, GrowWise का जन्म एक सरल लेकिन शक्तिशाली दृष्टि से हुआ: हर बच्चे को व्यक्तिगत शिक्षा मिलनी चाहिए जो उन्हें उनकी पूरी क्षमता तक पहुँचने में मदद करे।",
-      "p2": "जो एक छोटे ट्यूटरिंग केंद्र के रूप में शुरू हुआ था, वह अब ट्राई-वैली क्षेत्र में परिवारों की सेवा करने वाला एक व्यापक शैक्षिक संस्थान बन गया है।",
-      "p3": "आज, GrowWise यह दर्शाता है कि जब उत्साही शिक्षक सिद्ध शिक्षण विधियों को नवीन तकनीक और छात्र सफलता के प्रति सच्ची देखभाल के साथ मिलाते हैं, तो क्या संभव है।"
+      "title": "Our Story",
+      "p1": "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
+      "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Dr. Sarah Chen, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
+      "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     },
     "achievements": { 
-      "title": "हमारी उपलब्धियाँ",
-      "subtitle": "संख्याएँ जो छात्र सफलता और शैक्षिक उत्कृष्टता के प्रति हमारी प्रतिबद्धता को दर्शाती हैं।"
+      "title": "Our Achievements",
+      "subtitle": "Numbers that reflect our commitment to student success and educational excellence."
     },
     "approach": { 
-      "title": "हमारा शैक्षिक दृष्टिकोण",
-      "subtitle": "हम मानते हैं कि प्रभावी शिक्षा केवल सामग्री देने से अधिक की मांग करती है। हमारा दृष्टिकोण उन सिद्धांतों पर आधारित है जो हर छात्र को सफलता के लिए आवश्यक समर्थन सुनिश्चित करते हैं।"
+      "title": "Our Educational Approach",
+      "subtitle": "We believe effective education requires more than delivering content. Our approach is built on four core principles that ensure every student receives the support they need to succeed."
     },
     "team": { 
-      "title": "हमारी टीम",
-      "subtitle": "हमारे शिक्षक वर्षों का अनुभव और छात्र सफलता के प्रति सच्ची प्रतिबद्धता लेकर आते हैं।"
+      "title": "Meet Our Team",
+      "subtitle": "Our passionate educators bring years of experience and genuine care for student success to every lesson."
     },
     "community": { 
-      "title": "समुदाय पर प्रभाव",
-      "subtitle": "हम उस समुदाय को वापस देने में विश्वास करते हैं जो हमारा समर्थन करता है, सभी छात्रों के लिए अवसर बनाते हुए।"
+      "title": "Community Impact",
+      "subtitle": "We believe in giving back to the community that supports us, creating opportunities for all students to succeed."
     },
     "testimonials": { 
-      "title": "परिवार क्या कहते हैं",
-      "subtitle": "हमारे समुदाय की वास्तविक कहानियाँ।"
+      "title": "What Our Families Say",
+      "subtitle": "Don't just take our word for it. Here's what parents and students say about their GrowWise experience."
     },
     "location": {
-      "title": "हमारे डबलिन केंद्र का दौरा करें",
-      "subtitle": "डबलिन, CA के केंद्र में स्थित, हमारी आधुनिक सुविधा सीखने और विकास के लिए आदर्श वातावरण प्रदान करती है।"
+      "title": "Visit Our Dublin Center",
+      "subtitle": "Located in the heart of Dublin, CA, our modern facility provides the perfect environment for learning and growth."
     },
     "buttons": {
-      "getToKnowUs": "हमसे मिलें",
-      "scheduleTour": "दौरा शेड्यूल करें",
-      "contactUs": "संपर्क करें"
+      "getToKnowUs": "Get to Know Us",
+      "scheduleTour": "Schedule a Tour",
+      "contactUs": "Contact Us"
     },
     "labels": {
-      "expertise": "विशेषज्ञता:",
-      "address": "पता",
-      "phone": "फ़ोन",
-      "email": "ईमेल"
-    }
-  },
-  "contact": {
-    "title": "हमसे संपर्क करें",
-    "subtitle": "क्या आप अपने बच्चे की सीखने की यात्रा शुरू करने के लिए तैयार हैं? नि:शुल्क परामर्श के लिए आज ही संपर्क करें।",
-    "info": {
-      "title": "संपर्क जानकारी",
-      "phone": "फ़ोन",
-      "email": "ईमेल",
-      "address": "पता",
-      "hours": "समय"
-    },
-    "visit": {
-      "title": "हमारे केंद्र का दौरा करें",
-      "description": "हमारी अत्याधुनिक सीखने की सुविधाएं देखें और हमारे विशेषज्ञ प्रशिक्षकों से मिलें।",
-      "cta": "दौरा शेड्यूल करें"
-    },
-    "formSection": {
-      "title": "हमें संदेश भेजें"
-    },
-    "success": {
-      "title": "संदेश सफलतापूर्वक भेजा गया!",
-      "description": "हमसे संपर्क करने के लिए धन्यवाद। हम 24 घंटों के भीतर आपसे संपर्क करेंगे।"
-    },
-    "form": {
-      "name": "पूरा नाम *",
-      "email": "ईमेल पता *",
-      "phone": "फोन नंबर",
-      "subject": "विषय *",
-      "message": "संदेश *",
-      "submit": "संदेश भेजें",
-      "placeholders": {
-        "name": "अपना पूरा नाम दर्ज करें",
-        "email": "अपना ईमेल दर्ज करें",
-        "phone": "अपना फोन नंबर दर्ज करें",
-        "message": "हमें अपने बच्चे की सीखने की आवश्यकताओं के बारे में बताएं..."
-      },
-      "subjectOptions": {
-        "placeholder": "एक विषय चुनें",
-        "general": "सामान्य पूछताछ",
-        "enrollment": "नामांकन जानकारी",
-        "trial": "मुफ्त ट्रायल क्लास",
-        "assessment": "मुफ्त मूल्यांकन",
-        "pricing": "मूल्य जानकारी",
-        "other": "अन्य"
-      }
-    }
-  },
-  "steam": {
-    "hero": {
-      "title": "STEAM कार्यक्रम",
-      "subtitle": "अत्याधुनिक विज्ञान, प्रौद्योगिकी, इंजीनियरिंग, कला और गणित कार्यक्रमों के साथ अपने बच्चे को भविष्य के लिए तैयार करें"
-    },
-    "programs": {
-      "title": "हमारे STEAM कार्यक्रम",
-      "subtitle": "आलोचनात्मक सोच, रचनात्मकता और समस्या-समाधान कौशल विकसित करने के लिए डिज़ाइन किए गए व्यापक कार्यक्रम",
-      "mlAi": {
-        "title": "ML/AI कोडिंग",
-        "description": "हाथों से काम करने वाले प्रोजेक्ट्स और वास्तविक दुनिया के अनुप्रयोगों के साथ कृत्रिम बुद्धिमत्ता और मशीन लर्निंग की दुनिया में गोता लगाएं।",
-        "features": {
-          "python": "Python प्रोग्रामिंग",
-          "machineLearning": "मशीन लर्निंग एल्गोरिदम",
-          "dataScience": "डेटा साइंस और एनालिटिक्स"
-        },
-        "cta": "और जानें"
-      },
-      "gameDev": {
-        "title": "गेम डेवलपमेंट",
-        "description": "Roblox, Scratch और Unity जैसे उद्योग-मानक उपकरणों का उपयोग करके इंटरैक्टिव गेम्स और एप्लिकेशन बनाएं।",
-        "features": {
-          "roblox": "Roblox Studio",
-          "scratch": "Scratch प्रोग्रामिंग",
-          "unity": "Unity गेम इंजन"
-        },
-        "cta": "बनाना शुरू करें"
-      },
-      "robotics": {
-        "title": "रोबोटिक्स और ऑटोमेशन",
-        "description": "ऑटोमेशन, सेंसर और वास्तविक दुनिया की इंजीनियरिंग चुनौतियों के बारे में सीखते हुए रोबोट बनाएं और प्रोग्राम करें।",
-        "features": {
-          "arduino": "Arduino प्रोग्रामिंग",
-          "programming": "रोबोट प्रोग्रामिंग",
-          "automation": "ऑटोमेशन सिस्टम"
-        },
-        "cta": "रोबोट बनाएं"
-      }
-    },
-    "cta": {
-      "title": "अपनी STEAM यात्रा शुरू करने के लिए तैयार हैं?",
-      "subtitle": "सैकड़ों छात्रों के साथ जुड़ें जो पहले से ही हमारे नवाचारी कार्यक्रमों के साथ भविष्य का निर्माण कर रहे हैं",
-      "primaryCta": "शुरू करें",
-      "secondaryCta": "संपर्क करें"
+      "expertise": "Expertise:",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email"
     }
   }
   ,
   "aboutPage": {
-    "discover": { "title": "GrowWise के बारे में जानें", "cta": "और जानें" },
-    "mission": { "title1": "हमारा मिशन", "title2": "डबलिन में शैक्षिक उत्कृष्टता" },
-    "support": { "title": "शिक्षकों और छात्रों का समर्थन", "teacher": "शिक्षक समर्थन", "student": "छात्र समर्थन" },
-    "approach": { "title": "शिक्षा के लिए हमारा दृष्टिकोण", "subtitle": "नवोन्मेषी, समावेशी और प्रभावशाली" },
-    "cta": { "title": "आज ही नामांकन करें और अपने बच्चे की क्षमता को अनलॉक करें!", "primary": "अभी नामांकन करें" }
+    "discover": {
+      "title": "Discover GrowWise",
+      "cta": "Learn more"
+    },
+    "mission": {
+      "title1": "Our Mission",
+      "title2": "Educational Excellence in Dublin"
+    },
+    "support": {
+      "title": "Supporting Educators and Students",
+      "teacher": "Teacher Support",
+      "student": "Student Support"
+    },
+    "approach": {
+      "title": "Our Approach to Education",
+      "subtitle": "Innovative, Inclusive, and Impactful"
+    },
+    "cta": {
+      "title": "Enroll Today and Unlock Your Kid's Potential!",
+      "primary": "Enroll Now"
+    }
+  },
+  "englishCourses": {
+    "hero": {
+      "title": "Excel in English Arts",
+      "subtitle": "Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
+      "badge": "Master English with Excellence"
+    },
+    "cta": {
+      "title": "Ready to Excel in English?",
+      "subtitle": "Join hundreds of students who have transformed their writing and reading skills with GrowWise English programs.",
+      "primaryButton": "Get Started",
+      "secondaryButton": "Contact Us"
+    }
+  },
+  "mathCourses": {
+    "hero": {
+      "title": "Master Mathematics with Confidence",
+      "subtitle": "Comprehensive math programs for students in Grades K–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
+      "badge": "Master Math with Excellence"
+    },
+    "whyChoose": {
+      "title": "Why Choose Our Math Programs?",
+      "subtitle": "Comprehensive math education designed specifically for Tri-Valley students with curriculum alignments and proven teaching methodologies."
+    },
+    "notSure": {
+      "title": "Not Sure Which Course is Right?",
+      "subtitle": "Our education experts will assess your child's current level and recommend the perfect math program to accelerate their learning journey.",
+      "cta": {
+        "primary": "Schedule Free Assessment",
+        "secondary": "Call (925) 456-4606"
+      }
+    },
+    "cta": {
+      "title": "Ready to Master Math?",
+      "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
+      "primaryButton": "Get Started",
+      "secondaryButton": "Contact Us"
+    }
   }
 }
 

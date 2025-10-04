@@ -8,6 +8,14 @@
       { "label": "Courses Offered", "value": "25+", "color": "text-[#F1894F]" },
       { "label": "Satisfaction Rate", "value": "98%", "color": "text-[#29335C]" }
     ]
+  },
+  "story": {
+    "title": "Our Story",
+    "paragraphs": [
+      "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
+      "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Dr. Sarah Chen, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
+      "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
+    ]
   }
   ,
   "discover": {
