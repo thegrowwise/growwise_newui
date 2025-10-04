@@ -1,168 +1,390 @@
-"use client";
+'use client';
 
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useTranslations } from 'next-intl'
-import { Card, CardContent } from '@/components/ui/card'
-import { RootState } from '@/store'
-import { fetchAboutRequested } from '@/store/slices/aboutSlice'
-import { getIconComponent } from '@/lib/iconMap'
+import React, { useEffect, useState } from 'react';
+import { useChatbot } from '../../contexts/ChatbotContext';
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { 
+  Star, 
+  CheckCircle, 
+  MapPin, 
+  Phone, 
+  Mail, 
+  Calendar, 
+  MessageCircle,
+  Quote} from "lucide-react";
+import { getIconComponent } from '@/lib/iconMap';
+import { useTranslations } from 'next-intl';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchAboutRequested } from '@/store/slices/aboutSlice';
 
 export default function About() {
-  const t = useTranslations('about')
-  const dispatch = useDispatch()
-  const about = useSelector((s: RootState) => s.about.data)
-  const loading = useSelector((s: RootState) => s.about.loading)
+  const { openChatbot } = useChatbot();
+  const t = useTranslations('about');
+  const dispatch = useAppDispatch();
+  const about = useAppSelector((s) => s.about.data);
+  const aboutLoading = useAppSelector((s) => s.about.loading);
+  const [activeTeamMember, setActiveTeamMember] = useState(0);
 
   useEffect(() => {
-    if (!about && !loading) {
-      dispatch(fetchAboutRequested())
-    }
-  }, [about, loading, dispatch])
+    if (!about && !aboutLoading) dispatch(fetchAboutRequested());
+  }, [about, aboutLoading, dispatch]);
 
-  const stats = about?.hero?.stats ?? []
-  const coreValues = about?.coreValues ?? []
-  const discover = about?.discover
-  const mission = about?.mission
-  const support = about?.support
-  const approach = about?.approach
-  const cta = about?.cta
+  // Data (from API via Redux) with fallbacks
+  const coreValues = about?.coreValues ?? [];
+
+  // Our story and achievements
+  const achievements = about?.achievements ?? [];
+
+  // Team members data
+  const teamMembers = about?.teamMembers ?? [];
+
+  // Educational philosophy
+  const educationalApproach = about?.educationalApproach ?? [];
+
+  // Community involvement - Removed Scholarship Programs
+  const communityImpact = about?.communityImpact ?? [];
+
+  const testimonials = about?.testimonials ?? [];
 
   return (
-    <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-[#1F396D]/8 to-[#F16112]/8 backdrop-blur-[2px] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5 pointer-events-none"></div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            {t('hero.title')}
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            {t('hero.subtitle')}
-          </p>
+    <div className="min-h-screen section-gray">
+      {/* Hero Section */}
+      <section className="section-base section-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h1 className="title-hero mb-6">{about?.hero?.title || t('hero.title')}</h1>
+            <p className="subtitle max-w-4xl mx-auto mb-8">{about?.hero?.subtitle || t('hero.subtitle')}</p>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+            {about?.hero?.stats?.map((stat: any, i: number) => (
+              <div key={i} className="text-center">
+                <div className={`text-3xl font-bold ${stat.color} mb-2`}>{stat.value}</div>
+                <div className="text-sm text-gray-600">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Statistics Section */}
-        {stats.length > 0 && (
-          <div className="mb-20">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              {stats.map((s: any, idx: number) => (
-                <Card key={idx} className="text-center p-6 rounded-2xl">
-                  <CardContent className="p-0">
-                    <div className={`text-3xl font-bold ${s.color} mb-2`}>{s.value}</div>
-                    <p className="text-gray-600 font-medium">{s.label}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+      {/* Mission, Vision, Values Section */}
+      <section className="section-base section-gray">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h2 className="title-section mb-4">{t('foundation.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('foundation.subtitle')}</p>
           </div>
-        )}
-
-        {/* Discover GrowWise */}
-        {discover && (
-          <div className="bg-[#f5f2ef] rounded-3xl p-6 md:p-10 mb-16">
-            <h3 className="text-3xl font-bold text-[#1F396D] mb-4">{discover.sectionTitle}</h3>
-            <p className="text-[#29335C] font-semibold mb-4">{discover.lead}</p>
-            <div className="space-y-4 text-gray-700 mb-6">
-              {discover.paragraphs?.map((p: string, i: number) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-            {discover.cta && (
-              <a href={discover.cta.href} className="inline-flex items-center bg-[#1F396D] text-white px-6 py-3 rounded-full">{discover.cta.label} →</a>
-            )}
-          </div>
-        )}
-
-        {/* Mission and Excellence */}
-        {mission?.items?.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 items-start">
-            <div>
-              <img src={mission.heroImage} alt="GrowWise" className="rounded-3xl w-full object-cover" />
-            </div>
-            <div className="space-y-10">
-              {mission.items.map((m: any, idx: number) => (
-                <div key={idx}>
-                  <h4 className="text-3xl font-extrabold text-gray-900 mb-3">{m.title}</h4>
-                  <p className="text-gray-600 leading-relaxed">{m.content}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Supporting Educators and Students */}
-        {support && (
-          <div className="mb-16">
-            <h3 className="text-4xl font-extrabold text-[#1F396D] text-center mb-10">{support.title}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-[#1F396D] text-white rounded-3xl p-8">
-                <h4 className="text-2xl font-semibold mb-3">{support.teacher.title}</h4>
-                <p className="text-white/90">{support.teacher.content}</p>
-              </div>
-              <div className="rounded-3xl p-8 border border-[#F16112]/30">
-                <h4 className="text-2xl font-semibold mb-3">{support.student.title}</h4>
-                <p className="text-gray-700">{support.student.content}</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Approach Pillars */}
-        {approach && (
-          <div className="mb-16">
-            <div className="text-center mb-6">
-              <div className="text-[#F1894F] uppercase tracking-wider text-sm font-semibold">{approach.subtitle}</div>
-              <h3 className="text-4xl font-extrabold text-gray-900 mt-2">{approach.title}</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {approach.pillars?.map((p: any, idx: number) => {
-                const Icon = getIconComponent(p.icon)
-                return (
-                  <div key={idx} className="rounded-3xl p-6 bg-white shadow-sm border">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#F16112]/20 to-[#1F396D]/20 flex items-center justify-center mb-4">
-                      <Icon className="w-6 h-6 text-[#1F396D]" />
-                    </div>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-2">{p.title}</h4>
-                    <p className="text-gray-600">{p.content}</p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* CTA */}
-        {cta && (
-          <div className="bg-gradient-to-br from-[#1F396D] to-[#29335C] text-white rounded-3xl p-10 mt-10">
-            <div className="flex items-center justify-between flex-col md:flex-row gap-6">
-              <h3 className="text-3xl font-extrabold text-center md:text-left">{cta.title}</h3>
-              <a href={cta.primaryCta.href} className="bg-white text-[#1F396D] font-semibold px-6 py-3 rounded-full">{cta.primaryCta.label}</a>
-            </div>
-          </div>
-        )}
-
-        {/* Core Values */}
-        {coreValues.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {coreValues.map((item: any, idx: number) => {
-              const IconComponent = getIconComponent(item.icon)
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {coreValues.map((value, index) => {
+              const IconComponent = getIconComponent(value.icon);
               return (
-                <Card key={idx} className="p-6 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 rounded-2xl">
-                  <CardContent className="p-0">
-                    <div className={`w-12 h-12 ${item.bgColor ?? 'bg-gray-100'} rounded-xl flex items-center justify-center mb-4`}>
-                      <IconComponent className={`w-6 h-6 ${item.color ?? 'text-[#1F396D]'}`} />
+                <Card key={index} className="card-xl hover:card-2xl transition-all duration-300 group">
+                  <CardContent className="card-padding text-center">
+                    <div className={`icon-badge bg-gradient-to-r ${value.gradient} mx-auto mb-6 icon-badge-hover`}>
+                      <IconComponent className="icon-md-white" />
                     </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">{item.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{item.description}</p>
+                    <h3 className="text-2xl font-bold text-strong mb-4">{value.title}</h3>
+                    <p className="text-muted leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
-              )
+              );
             })}
           </div>
-        )}
-      </div>
-    </section>
-  )
+        </div>
+      </section>
+
+      {/* Our Story Section */}
+      <section className="section-base section-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="title-section mb-6">{about?.story?.title || t('story.title')}</h2>
+              <div className="space-y-6 text-muted leading-relaxed">
+                {about?.story?.paragraphs?.map((paragraph: string, index: number) => (
+                  <p key={index}>{paragraph}</p>
+                )) || (
+                  <>
+                    <p>{t('story.p1')}</p>
+                    <p>{t('story.p2')}</p>
+                    <p>{t('story.p3')}</p>
+                  </>
+                )}
+              </div>
+              
+              <div className="mt-8">
+                <Button 
+                  onClick={openChatbot}
+                  className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3"
+                >
+                  <MessageCircle className="w-5 h-5 mr-2" />
+                  {t('buttons.getToKnowUs')}
+                </Button>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="grid grid-cols-2 gap-4">
+                <img
+                  src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=300&fit=crop"
+                  alt="Students learning in classroom"
+                  className="w-full h-48 object-cover rounded-xl shadow-lg"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1515378791036-0648a814a05f?w=300&h=300&fit=crop"
+                  alt="STEAM learning activities"
+                  className="w-full h-48 object-cover rounded-xl shadow-lg mt-8"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=300&fit=crop"
+                  alt="One-on-one tutoring session"
+                  className="w-full h-48 object-cover rounded-xl shadow-lg -mt-8"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=300&fit=crop"
+                  alt="Modern learning environment"
+                  className="w-full h-48 object-cover rounded-xl shadow-lg"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Achievements Section */}
+      <section className="section-base section-gray">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h2 className="title-section mb-4">{t('achievements.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('achievements.subtitle')}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {achievements.map((achievement, index) => {
+              const IconComponent = getIconComponent(achievement.icon);
+              return (
+                <Card key={index} className="card-base card-hover group text-center">
+                  <CardContent className="card-padding">
+                    <div className={`${achievement.bgColor} icon-badge mx-auto mb-4 icon-badge-hover`}>
+                      <IconComponent className={`w-8 h-8 ${achievement.color}`} />
+                    </div>
+                    <div className={`stat-number ${achievement.color} mb-2`}>
+                      {achievement.value}
+                    </div>
+                    <h3 className="text-lg font-bold text-strong mb-2">{achievement.title}</h3>
+                    <p className="text-muted-sm">{achievement.description}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Educational Approach Section */}
+      <section className="section-base section-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h2 className="title-section mb-4">{t('approach.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('approach.subtitle')}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {educationalApproach.map((approach, index) => {
+              const IconComponent = getIconComponent(approach.icon);
+              return (
+                <Card key={index} className="card-base card-hover group">
+                  <CardContent className="card-padding">
+                    <div className="flex items-start gap-4">
+                      <div className="bg-[#F16112]/10 icon-badge icon-badge-hover">
+                        <IconComponent className="icon-md-orange" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-strong mb-3">{approach.title}</h3>
+                        <p className="text-muted mb-4 leading-relaxed">{approach.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {approach.benefits.map((benefit, benefitIndex) => (
+                            <Badge key={benefitIndex} className="bg-[#1F396D]/10 text-[#1F396D] hover:bg-[#1F396D]/20">
+                              {benefit}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Meet Our Team Section */}
+      <section className="section-base section-gray">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h2 className="title-section mb-4">{t('team.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('team.subtitle')}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {teamMembers.map((member, index) => (
+              <Card 
+                key={index} 
+                className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                onClick={() => setActiveTeamMember(index)}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="relative mb-6">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300"
+                    />
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-[#F16112] rounded-full flex items-center justify-center">
+                      <CheckCircle className="w-4 h-4 text-white" />
+                    </div>
+                  </div>
+                  
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{member.name}</h3>
+                  <p className="text-[#F16112] font-semibold mb-3">{member.role}</p>
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{member.bio}</p>
+                  
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-gray-700 mb-1">Expertise:</div>
+                    <div className="flex flex-wrap gap-1 justify-center">
+                      {member.expertise.slice(0, 2).map((skill, skillIndex) => (
+                        <Badge key={skillIndex} className="bg-[#1F396D]/10 text-[#1F396D] text-xs">
+                          {skill}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Community Impact Section - Now with 3 items */}
+      <section className="section-base section-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h2 className="title-section mb-4">{t('community.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('community.subtitle')}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {communityImpact.map((impact, index) => {
+              const IconComponent = getIconComponent(impact.icon);
+              return (
+                <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-all duration-300 group">
+                  <CardContent className="p-6">
+                    <div className="w-16 h-16 bg-[#F16112]/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <IconComponent className="w-8 h-8 text-[#F16112]" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-3">{impact.title}</h3>
+                    <p className="text-sm text-gray-600 leading-relaxed">{impact.description}</p>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="section-base section-gray">
+        <div className="max-w-7xl mx-auto">
+          <div className="center-text mb-12">
+            <h2 className="title-section mb-4">{t('testimonials.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('testimonials.subtitle')}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <Card key={index} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-1 mb-4">
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 fill-[#F16112] text-[#F16112]" />
+                    ))}
+                  </div>
+                  
+                  <div className="relative mb-6">
+                    <Quote className="w-8 h-8 text-[#F16112]/20 absolute -top-2 -left-2" />
+                    <p className="text-gray-700 italic leading-relaxed pl-6">
+                      "{testimonial.content}"
+                    </p>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div>
+                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
+                      <p className="text-sm text-gray-600">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Location & Contact Info */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#1F396D]">
+        <div className="max-w-4xl mx-auto text-center text-white">
+          <h2 className="text-3xl font-bold mb-6">{t('location.title')}</h2>
+          <p className="text-xl mb-8 text-white/90">{t('location.subtitle')}</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <div className="flex items-center justify-center gap-3">
+              <MapPin className="w-6 h-6 text-[#F1894F]" />
+              <div>
+                <div className="font-semibold">{t('labels.address')}</div>
+                <div className="text-sm text-white/80">4564 Dublin Blvd, Dublin, CA</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-3">
+              <Phone className="w-6 h-6 text-[#F1894F]" />
+              <div>
+                <div className="font-semibold">{t('labels.phone')}</div>
+                <div className="text-sm text-white/80">(925) 456-4606</div>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-3">
+              <Mail className="w-6 h-6 text-[#F1894F]" />
+              <div>
+                <div className="font-semibold">{t('labels.email')}</div>
+                <div className="text-sm text-white/80">connect@thegrowwise.com</div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3">
+              <Calendar className="w-5 h-5 mr-2" />
+              {t('buttons.scheduleTour')}
+            </Button>
+            <Button 
+              onClick={openChatbot}
+              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3"
+            >
+              <MessageCircle className="w-5 h-5 mr-2" />
+              {t('buttons.contactUs')}
+            </Button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
 }

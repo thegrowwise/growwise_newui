@@ -32,6 +32,11 @@ import {
   CheckCircle,
   ChevronRight,
   HeartHandshake,
+  MessageCircle,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
 } from 'lucide-react';
 
 const map: Record<string, any> = {
@@ -68,6 +73,11 @@ const map: Record<string, any> = {
   CheckCircle,
   ChevronRight,
   HeartHandshake,
+  MessageCircle,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
 };
 
 export function getIconComponent(name: string): any {

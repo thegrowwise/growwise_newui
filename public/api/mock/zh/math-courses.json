@@ -1,0 +1,94 @@
+{
+  "hero": {
+    "title": "Master Mathematics with Confidence",
+    "subtitle": "Comprehensive math programs for students in Grades K–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
+    "badge": "Master Math with Excellence"
+  },
+  "filters": {
+    "gradeLevels": [
+      { "value": "Elementary", "label": "Elementary", "icon": "🔢", "color": "bg-blue-100 text-blue-800 border-blue-200" },
+      { "value": "Middle School", "label": "Middle School", "icon": "📊", "color": "bg-green-100 text-green-800 border-green-200" },
+      { "value": "High School", "label": "High School", "icon": "📈", "color": "bg-purple-100 text-purple-800 border-purple-200" }
+    ],
+    "courseTypes": [
+      { "value": "Core Math", "label": "Core Math", "icon": "🧮", "color": "bg-orange-100 text-orange-800 border-orange-200" },
+      { "value": "Algebra", "label": "Algebra", "icon": "📐", "color": "bg-yellow-100 text-yellow-800 border-yellow-200" },
+      { "value": "Geometry", "label": "Geometry", "icon": "📏", "color": "bg-red-100 text-red-800 border-red-200" },
+      { "value": "Calculus", "label": "Calculus", "icon": "📊", "color": "bg-indigo-100 text-indigo-800 border-indigo-200" }
+    ],
+    "alignments": [
+      { "value": "California Standards", "label": "California Standards", "icon": "🏛️", "color": "bg-indigo-100 text-indigo-800 border-indigo-200" },
+      { "value": "DUSD Aligned", "label": "DUSD Aligned", "icon": "🏫", "color": "bg-teal-100 text-teal-800 border-teal-200" },
+      { "value": "PUSD Aligned", "label": "PUSD Aligned", "icon": "🎓", "color": "bg-pink-100 text-pink-800 border-pink-200" }
+    ]
+  },
+  "features": [
+    {
+      "icon": "Shield",
+      "title": "DUSD & PUSD Aligned",
+      "description": "Perfectly synchronized with Dublin and Pleasanton Unified School Districts curriculum standards",
+      "color": "text-[#1F396D]",
+      "bgColor": "bg-[#1F396D]/10",
+      "delay": "0ms"
+    },
+    {
+      "icon": "GraduationCap",
+      "title": "Comprehensive Coverage",
+      "description": "Complete math education from elementary foundations through advanced calculus",
+      "color": "text-[#F16112]",
+      "bgColor": "bg-[#F16112]/10",
+      "delay": "100ms"
+    },
+    {
+      "icon": "TrendingUp",
+      "title": "Progress Tracking",
+      "description": "Regular assessments with detailed progress reports and personalized feedback",
+      "color": "text-[#F1894F]",
+      "bgColor": "bg-[#F1894F]/10",
+      "delay": "200ms"
+    },
+    {
+      "icon": "Users",
+      "title": "Flexible Learning",
+      "description": "Choose between small group sessions or personalized 1-on-1 instruction",
+      "color": "text-[#1F396D]",
+      "bgColor": "bg-[#1F396D]/10",
+      "delay": "300ms"
+    }
+  ],
+  "whyChoose": {
+    "title": "Why Choose Our Math Programs?",
+    "subtitle": "Comprehensive math education designed specifically for Tri-Valley students with curriculum alignments and proven teaching methodologies."
+  },
+  "notSure": {
+    "title": "Not Sure Which Course is Right?",
+    "subtitle": "Our education experts will assess your child's current level and recommend the perfect math program to accelerate their learning journey.",
+    "steps": [
+      {
+        "icon": "Target",
+        "title": "Personalized Assessment",
+        "description": "We evaluate your child's current math level and learning style"
+      },
+      {
+        "icon": "MessageCircle",
+        "title": "Expert Consultation", 
+        "description": "Our educators provide personalized recommendations"
+      },
+      {
+        "icon": "Sparkles",
+        "title": "Customized Plan",
+        "description": "A tailored learning path designed for success"
+      }
+    ],
+    "cta": {
+      "primary": "Schedule Free Assessment",
+      "secondary": "Call (925) 456-4606"
+    }
+  },
+  "cta": {
+    "title": "Ready to Master Math?",
+    "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
+    "primaryButton": "Get Started",
+    "secondaryButton": "Contact Us"
+  }
+}
