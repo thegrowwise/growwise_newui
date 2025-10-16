@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchHeaderRequested } from '@/store/slices/headerSlice';
-import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calculator, BookOpen, Brain, Gamepad2, ChevronRight, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calculator, BookOpen, Brain, Gamepad2, ChevronRight, Facebook, Twitter, Instagram, Linkedin, GraduationCap, Target, BookMarked, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/components/gw/CartContext';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
@@ -16,7 +16,11 @@ const iconMap: { [key: string]: any } = {
   Calculator,
   BookOpen,
   Brain,
-  Gamepad2
+  Gamepad2,
+  GraduationCap,
+  Target,
+  BookMarked,
+  UserCheck
 };
 
 export default function Header() {
@@ -27,6 +31,7 @@ export default function Header() {
   const header = useAppSelector((s) => s.header.data);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
+  const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>({});
 
   // Get menu items from Redux store with fallbacks
   const menuItems = header?.menuItems || [];
@@ -52,7 +57,16 @@ export default function Header() {
     clearTimeoutRef(key);
     dropdownTimeouts.current[key] = window.setTimeout(() => {
       setOpenDropdowns(prev => ({ ...prev, [key]: false }));
+      setOpenSubmenus(prev => ({ ...prev, [key]: false }));
     }, 180);
+  };
+
+  const openSubmenu = (key: string) => {
+    setOpenSubmenus(prev => ({ ...prev, [key]: true }));
+  };
+
+  const closeSubmenu = (key: string) => {
+    setOpenSubmenus(prev => ({ ...prev, [key]: false }));
   };
 
   useEffect(() => {
@@ -103,8 +117,349 @@ export default function Header() {
 
   const getVariant = (variant?: string) => variantStyles[(variant as keyof typeof variantStyles) || 'blue'] || variantStyles.blue;
 
-  // Generic dropdown component
+  // Exact Academic dropdown component copied from first project
+  const renderAcademicDropdown = (item: any) => {
+    const v = getVariant(item.variant);
+    const isOpen = openDropdowns[item.key];
+    const isActive = isMenuItemActive(item);
+    
+    return (
+      <div
+        key={item.key}
+        className="relative"
+        onMouseEnter={() => openDropdown(item.key)}
+        onMouseLeave={() => {
+          scheduleCloseDropdown(item.key);
+          setOpenSubmenus(prev => ({ ...prev, [item.key]: false }));
+        }}
+      >
+        <Link
+          href={item.href}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group ${
+            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
+          }`}
+          onClick={() => {
+            setOpenDropdowns(prev => ({ ...prev, [item.key]: !prev[item.key] }));
+          }}
+        >
+          {item.label}
+          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
+            isOpen ? 'rotate-180' : ''
+          }`} />
+          
+          {/* Subtle highlight indicator */}
+          <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#F16112] to-[#F1894F] rounded-full transition-all duration-300 ${
+            isOpen ? 'w-8' : 'group-hover:w-4'
+          }`}></div>
+        </Link>
+
+        {/* Dropdown Content - Exact styling from first project */}
+        <div className={`absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-white/30 overflow-visible ${
+          isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+        }`}>
+          {/* Header Section */}
+          <div className="px-6 py-4 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
+            <h3 className="font-semibold text-gray-900 text-base">{item.dropdown.title}</h3>
+            <p className="text-sm text-gray-600 mt-1">{item.dropdown.subtitle}</p>
+          </div>
+
+          {/* Menu Items */}
+          <div className="py-1 overflow-visible">
+            {item.dropdown.items.map((dropdownItem: any, index: number) => {
+              const IconComponent = iconMap[dropdownItem.icon] || Calculator;
+              const isDropdownItemActive = pathname?.startsWith(dropdownItem.href);
+              const hasSubmenu = dropdownItem.hasSubmenu && dropdownItem.submenuItems;
+              const isSubmenuOpen = openSubmenus[dropdownItem.key];
+              
+              return (
+                <div 
+                  key={dropdownItem.title} 
+                  className="relative"
+                >
+                  <Link
+                    href={hasSubmenu ? '#' : dropdownItem.href}
+                    onMouseEnter={() => {
+                      if (hasSubmenu) {
+                        setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: true }));
+                      }
+                    }}
+                    onClick={(e) => {
+                      if (hasSubmenu) {
+                        e.preventDefault();
+                        setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: !prev[dropdownItem.key] }));
+                      } else {
+                        setOpenDropdowns(prev => ({ ...prev, [item.key]: false }));
+                        setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }));
+                      }
+                    }}
+                    className={`group mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer border-0 outline-none w-full ${
+                      isDropdownItemActive || (hasSubmenu && isSubmenuOpen)
+                        ? 'bg-gradient-to-r from-[#1F396D]/10 to-[#F16112]/10 text-[#1F396D] shadow-inner' 
+                        : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50 text-gray-700'
+                    }`}
+                  >
+                    <div className="flex items-center gap-4 px-4 py-2 w-full">
+                      {/* Icon with animated background */}
+                      <div className={`relative p-2.5 rounded-xl transition-all duration-300 ${
+                        isDropdownItemActive || (hasSubmenu && isSubmenuOpen)
+                          ? `bg-gradient-to-r ${dropdownItem.gradient} shadow-lg` 
+                          : 'bg-gray-100 group-hover:bg-gradient-to-r group-hover:from-gray-200 group-hover:to-gray-100'
+                      }`}>
+                        <IconComponent className={`w-5 h-5 transition-colors duration-300 ${
+                          isDropdownItemActive || (hasSubmenu && isSubmenuOpen) ? 'text-white' : 'text-gray-600 group-hover:text-gray-700'
+                        }`} />
+                        
+                        {/* Subtle glow effect for active state */}
+                        {(isDropdownItemActive || (hasSubmenu && isSubmenuOpen)) && (
+                          <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${dropdownItem.gradient} opacity-20 blur-sm`}></div>
+                        )}
+                      </div>
+                      
+                      {/* Text Content */}
+                      <div className="flex-1 text-left">
+                        <div className="flex items-center justify-between">
+                          <span className={`font-semibold text-base transition-colors duration-300 ${
+                            isDropdownItemActive ? 'text-[#1F396D]' : 'text-gray-900 group-hover:text-gray-900'
+                          }`}>
+                            {dropdownItem.title}
+                          </span>
+                          
+                          {/* Active indicator */}
+                          {isDropdownItemActive && (
+                            <div className="w-2 h-2 bg-[#F16112] rounded-full animate-pulse"></div>
+                          )}
+                        </div>
+                        
+                        <p className={`text-sm mt-1 transition-colors duration-300 ${
+                          isDropdownItemActive ? 'text-[#1F396D]/70' : 'text-gray-500 group-hover:text-gray-600'
+                        }`}>
+                          {dropdownItem.description}
+                        </p>
+                      </div>
+                      
+                      {/* Arrow indicator - chevron right for submenu */}
+                      <ChevronRight className={`w-4 h-4 transition-all duration-300 ${
+                        isDropdownItemActive || (hasSubmenu && isSubmenuOpen)
+                          ? 'text-[#1F396D] transform translate-x-1' 
+                          : 'text-gray-400 group-hover:text-gray-600 group-hover:transform group-hover:translate-x-1'
+                      }`} />
+                    </div>
+                  </Link>
+                  
+                  {/* Submenu for Courses - Appears on the right side */}
+                  {hasSubmenu && dropdownItem.submenuItems && isSubmenuOpen && (
+                    <div 
+                      className="absolute left-full top-0 ml-2 w-72 bg-white/95 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-white/30 z-50"
+                      onMouseEnter={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: true }))}
+                      onMouseLeave={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }))}
+                    >
+                      {/* Submenu Header */}
+                      <div className="px-4 py-3 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
+                        <h4 className="font-semibold text-gray-900 text-sm">Courses</h4>
+                        <p className="text-xs text-gray-600 mt-0.5">Select your subject</p>
+                      </div>
+                      
+                      {/* Submenu Items */}
+                      <div className="py-1">
+                        {dropdownItem.submenuItems.map((subItem: any, subIndex: number) => {
+                          const SubIconComponent = iconMap[subItem.icon] || Calculator;
+                          const isSubActive = pathname?.startsWith(subItem.href);
+                          
+                          return (
+                            <Link
+                              key={subItem.title}
+                              href={subItem.href}
+                              onClick={() => {
+                                setOpenDropdowns(prev => ({ ...prev, [item.key]: false }));
+                                setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }));
+                              }}
+                              className={`group mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer border-0 outline-none w-full ${
+                                isSubActive 
+                                  ? 'bg-gradient-to-r from-[#1F396D]/10 to-[#F16112]/10 shadow-inner' 
+                                  : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3 px-4 py-2 w-full">
+                                <div className={`p-2 rounded-lg transition-all duration-300 ${
+                                  isSubActive 
+                                    ? `bg-gradient-to-r ${subItem.gradient} shadow-md` 
+                                    : 'bg-gray-100 group-hover:bg-gradient-to-r group-hover:from-gray-200 group-hover:to-gray-100'
+                                }`}>
+                                  <SubIconComponent className={`w-4 h-4 transition-colors duration-300 ${
+                                    isSubActive ? 'text-white' : 'text-gray-600'
+                                  }`} />
+                                </div>
+                                
+                                <div className="flex-1 text-left">
+                                  <span className={`font-semibold text-sm block ${
+                                    isSubActive ? 'text-[#1F396D]' : 'text-gray-900 group-hover:text-gray-900'
+                                  }`}>
+                                    {subItem.title}
+                                  </span>
+                                  <p className={`text-xs mt-0.5 ${
+                                    isSubActive ? 'text-[#1F396D]/70' : 'text-gray-500 group-hover:text-gray-600'
+                                  }`}>
+                                    {subItem.description}
+                                  </p>
+                                </div>
+                                
+                                {isSubActive && (
+                                  <div className="w-2 h-2 bg-[#F16112] rounded-full animate-pulse"></div>
+                                )}
+                              </div>
+                              {subIndex < dropdownItem.submenuItems.length - 1 && (
+                                <div className="mx-4 border-b border-gray-100"></div>
+                              )}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Subtle bottom border for separation */}
+                  {index < item.dropdown.items.length - 1 && (
+                    <div className="mx-6 border-b border-gray-100"></div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Exact STEAM dropdown component copied from first project
+  const renderSTEAMDropdown = (item: any) => {
+    const v = getVariant(item.variant);
+    const isOpen = openDropdowns[item.key];
+    const isActive = isMenuItemActive(item);
+    
+    return (
+      <div
+        key={item.key}
+        className="relative"
+        onMouseEnter={() => openDropdown(item.key)}
+        onMouseLeave={() => scheduleCloseDropdown(item.key)}
+      >
+        <Link
+          href={item.href}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group ${
+            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
+          }`}
+          onClick={() => {
+            setOpenDropdowns(prev => ({ ...prev, [item.key]: !prev[item.key] }));
+          }}
+        >
+          {item.label}
+          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
+            isOpen ? 'rotate-180' : ''
+          }`} />
+          
+          {/* Subtle highlight indicator */}
+          <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-[#1F396D] to-[#F16112] rounded-full transition-all duration-300 ${
+            isOpen ? 'w-8' : 'group-hover:w-4'
+          }`}></div>
+        </Link>
+
+        {/* Dropdown Content - Exact styling from first project */}
+        <div className={`absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden transition-all duration-300 ring-1 ring-white/30 ${
+          isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
+        }`}>
+          {/* Header Section */}
+          <div className="px-6 py-4 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
+            <h3 className="font-semibold text-gray-900 text-base">{item.dropdown.title}</h3>
+            <p className="text-sm text-gray-600 mt-1">{item.dropdown.subtitle}</p>
+          </div>
+
+          {/* Menu Items */}
+          <div className="py-1">
+            {item.dropdown.items.map((dropdownItem: any, index: number) => {
+              const IconComponent = iconMap[dropdownItem.icon] || Calculator;
+              const isDropdownItemActive = pathname?.startsWith(dropdownItem.href);
+              
+              return (
+                <Link
+                  key={dropdownItem.title}
+                  href={dropdownItem.href}
+                  onClick={() => setOpenDropdowns(prev => ({ ...prev, [item.key]: false }))}
+                  className={`group mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer border-0 outline-none w-full ${
+                    isDropdownItemActive 
+                      ? 'bg-gradient-to-r from-[#F16112]/10 to-[#1F396D]/10 text-[#F16112] shadow-inner' 
+                      : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50 text-gray-700'
+                  }`}
+                >
+                  <div className="flex items-center gap-4 px-4 py-2 w-full">
+                    {/* Icon with animated background */}
+                    <div className={`relative p-2.5 rounded-xl transition-all duration-300 ${
+                      isDropdownItemActive 
+                        ? `bg-gradient-to-r ${dropdownItem.gradient} shadow-lg` 
+                        : 'bg-gray-100 group-hover:bg-gradient-to-r group-hover:from-gray-200 group-hover:to-gray-100'
+                    }`}>
+                      <IconComponent className={`w-5 h-5 transition-colors duration-300 ${
+                        isDropdownItemActive ? 'text-white' : 'text-gray-600 group-hover:text-gray-700'
+                      }`} />
+                      
+                      {/* Subtle glow effect for active state */}
+                      {isDropdownItemActive && (
+                        <div className={`absolute inset-0 rounded-xl bg-gradient-to-r ${dropdownItem.gradient} opacity-20 blur-sm`}></div>
+                      )}
+                    </div>
+                    
+                    {/* Text Content */}
+                    <div className="flex-1 text-left">
+                      <div className="flex items-center justify-between">
+                        <span className={`font-semibold text-base transition-colors duration-300 ${
+                          isDropdownItemActive ? 'text-[#F16112]' : 'text-gray-900 group-hover:text-gray-900'
+                        }`}>
+                          {dropdownItem.title}
+                        </span>
+                        
+                        {/* Active indicator */}
+                        {isDropdownItemActive && (
+                          <div className="w-2 h-2 bg-[#1F396D] rounded-full animate-pulse"></div>
+                        )}
+                      </div>
+                      
+                      <p className={`text-sm mt-1 transition-colors duration-300 ${
+                        isDropdownItemActive ? 'text-[#F16112]/70' : 'text-gray-500 group-hover:text-gray-600'
+                      }`}>
+                        {dropdownItem.description}
+                      </p>
+                    </div>
+                    
+                    {/* Arrow indicator */}
+                    <ChevronRight className={`w-4 h-4 transition-all duration-300 ${
+                      isDropdownItemActive 
+                        ? 'text-[#F16112] transform translate-x-1' 
+                        : 'text-gray-400 group-hover:text-gray-600 group-hover:transform group-hover:translate-x-1'
+                    }`} />
+                  </div>
+                  
+                  {/* Subtle bottom border for separation */}
+                  {index < item.dropdown.items.length - 1 && (
+                    <div className="mx-6 border-b border-gray-100"></div>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Generic dropdown component for other dropdowns
   const renderDropdown = (item: any) => {
+    if (item.key === 'academic') {
+      return renderAcademicDropdown(item);
+    }
+    
+    if (item.key === 'steam') {
+      return renderSTEAMDropdown(item);
+    }
+    
     const v = getVariant(item.variant);
     const isOpen = openDropdowns[item.key];
     const isActive = isMenuItemActive(item);

@@ -34,20 +34,63 @@
         "subtitle": "Choose your learning path",
         "items": [
           {
-            "key": "math",
-            "title": "Mathematics",
-            "description": "Master mathematics from basics to advanced",
-            "icon": "Calculator",
-            "href": "/courses/math",
-            "gradient": "from-[#1F396D] to-[#29335C]"
+            "key": "courses",
+            "title": "Courses",
+            "description": "Browse our academic courses",
+            "icon": "BookOpen",
+            "href": "/courses",
+            "gradient": "from-[#1F396D] to-[#F16112]",
+            "hasSubmenu": true,
+            "submenuItems": [
+              {
+                "key": "math",
+                "title": "Math Courses",
+                "description": "Master mathematics from basics to advanced",
+                "icon": "Calculator",
+                "href": "/courses/math",
+                "gradient": "from-[#1F396D] to-[#29335C]"
+              },
+              {
+                "key": "english",
+                "title": "English Courses",
+                "description": "Comprehensive English language arts",
+                "icon": "BookOpen",
+                "href": "/courses/english",
+                "gradient": "from-[#F16112] to-[#F1894F]"
+              }
+            ]
           },
           {
-            "key": "english",
-            "title": "English",
-            "description": "Comprehensive English language arts",
-            "icon": "BookOpen",
-            "href": "/courses/english",
-            "gradient": "from-[#F16112] to-[#F1894F]"
+            "key": "highSchoolMath",
+            "title": "High School Math",
+            "description": "Advanced mathematics for high school students",
+            "icon": "GraduationCap",
+            "href": "/courses/high-school-math",
+            "gradient": "from-[#29335C] to-[#1F396D]"
+          },
+          {
+            "key": "satPrep",
+            "title": "SAT Prep",
+            "description": "Comprehensive SAT test preparation",
+            "icon": "Target",
+            "href": "/courses/sat-prep",
+            "gradient": "from-[#29335C] to-[#F16112]"
+          },
+          {
+            "key": "bookAssessment",
+            "title": "Book Assessment",
+            "description": "Schedule academic evaluation and get insights",
+            "icon": "BookMarked",
+            "href": "/book-assessment",
+            "gradient": "from-[#F16112] to-[#1F396D]"
+          },
+          {
+            "key": "enrollAcademic",
+            "title": "Enroll Now - Academic",
+            "description": "Register for academic programs today",
+            "icon": "UserCheck",
+            "href": "/enroll-academic",
+            "gradient": "from-[#1F396D] to-[#F16112]"
           }
         ]
       }
@@ -137,20 +180,44 @@
     "dropdownSubtitle": "Choose your learning path",
     "items": [
       {
-        "key": "math",
-        "title": "Mathematics",
-        "description": "Master mathematics from basics to advanced",
-        "icon": "Calculator",
-        "href": "/courses/math",
-        "gradient": "from-[#1F396D] to-[#29335C]"
+        "key": "courses",
+        "title": "Courses",
+        "description": "Browse our academic courses",
+        "icon": "BookOpen",
+        "href": "/courses",
+        "gradient": "from-[#1F396D] to-[#F16112]"
       },
       {
-        "key": "english",
-        "title": "English",
-        "description": "Comprehensive English language arts",
-        "icon": "BookOpen",
-        "href": "/courses/english",
-        "gradient": "from-[#F16112] to-[#F1894F]"
+        "key": "highSchoolMath",
+        "title": "High School Math",
+        "description": "Advanced mathematics for high school students",
+        "icon": "GraduationCap",
+        "href": "/courses/high-school-math",
+        "gradient": "from-[#29335C] to-[#1F396D]"
+      },
+      {
+        "key": "satPrep",
+        "title": "SAT Prep",
+        "description": "Comprehensive SAT test preparation",
+        "icon": "Target",
+        "href": "/courses/sat-prep",
+        "gradient": "from-[#29335C] to-[#F16112]"
+      },
+      {
+        "key": "bookAssessment",
+        "title": "Book Assessment",
+        "description": "Schedule academic evaluation and get insights",
+        "icon": "BookMarked",
+        "href": "/book-assessment",
+        "gradient": "from-[#F16112] to-[#1F396D]"
+      },
+      {
+        "key": "enrollAcademic",
+        "title": "Enroll Now - Academic",
+        "description": "Register for academic programs today",
+        "icon": "UserCheck",
+        "href": "/enroll-academic",
+        "gradient": "from-[#1F396D] to-[#F16112]"
       }
     ]
   },

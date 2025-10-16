@@ -232,9 +232,9 @@ html {
   .header-indicator-base { @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300; }
   .header-dropdown-panel { @apply absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-3xl border-2 border-white/70 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden transition-all duration-300 z-50 ring-1 ring-white/40; }
   .header-dropdown-header { @apply px-6 py-4 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100; }
-  .header-dropdown-items { @apply py-2; }
-  .header-dropdown-link { @apply mx-2 my-1 rounded-xl transition-all duration-300 cursor-pointer w-full; }
-  .header-dropdown-row { @apply flex items-center gap-4 px-4 py-4 w-full; }
+  .header-dropdown-items { @apply py-1; }
+  .header-dropdown-link { @apply mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer w-full; }
+  .header-dropdown-row { @apply flex items-center gap-4 px-4 py-2 w-full; }
   .header-dropdown-iconwrap { @apply relative p-2.5 rounded-xl transition-all duration-300; }
   .header-dropdown-title-row { @apply flex items-center justify-between; }
   .header-dropdown-desc { @apply text-sm mt-1; }
@@ -283,4 +283,16 @@ html {
   .animate-float-gentle {
     animation: float-gentle 8s ease-in-out infinite;
   }
+}
+
+/* Suppress hydration warnings for browser extension attributes */
+[data-suppress-hydration-warning] {
+  /* This class can be used to suppress hydration warnings for specific elements */
+}
+
+/* Hide browser extension attributes that cause hydration mismatches */
+[data-bis_skin_checked],
+[data-bis_register],
+[data-__processed_ab1c173e-84db-4b69-af27-621307447383__] {
+  display: none !important;
 }

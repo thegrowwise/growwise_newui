@@ -10,6 +10,12 @@ import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import ClientOnly from '@/components/providers/ClientOnly';
+import HydrationBoundary from '@/components/HydrationBoundary';
+import DynamicWrapper from '@/components/DynamicWrapper';
+import MathSymbolsBackground from '@/components/MathSymbolsBackground';
+import CourseCard from '@/components/CourseCard';
+import { useTouchDetection } from '@/hooks/useHydration';
 
 const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
@@ -18,30 +24,12 @@ const MathCoursesPage: React.FC = () => {
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
   const [selectedAlignments, setSelectedAlignments] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>('price-low');
-  const [hoveredCourse, setHoveredCourse] = useState<string | null>(null);
+  // hoveredCourse state moved to CourseCard component
   const [scrollY, setScrollY] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  // Detect touch device and disable hover effects on mobile
-  useEffect(() => {
-    const checkTouchDevice = () => {
-      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-      const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
-      const hasHover = window.matchMedia('(hover: hover)').matches;
-      
-      // Consider it a touch device if it has touch AND (small screen OR no hover capability)
-      setIsTouchDevice(hasTouch && (isSmallScreen || !hasHover));
-    };
-
-    checkTouchDevice();
-    window.addEventListener('resize', checkTouchDevice);
-    
-    return () => {
-      window.removeEventListener('resize', checkTouchDevice);
-    };
-  }, []);
+  // Use the better touch detection hook
+  const { isTouchDevice } = useTouchDetection();
 
   // Scroll effect for header animations
   useEffect(() => {
@@ -139,18 +127,7 @@ const MathCoursesPage: React.FC = () => {
     setSelectedCourse(null);
   };
 
-  // Modified hover handlers to respect touch device detection
-  const handleMouseEnter = (courseId: string) => {
-    if (!isTouchDevice) {
-      setHoveredCourse(courseId);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isTouchDevice) {
-      setHoveredCourse(null);
-    }
-  };
+  // Hover handlers are now handled in the CourseCard component
 
   // Toggle filter functions
   const toggleGradeLevel = (grade: string) => {
@@ -243,31 +220,15 @@ const MathCoursesPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+    <HydrationBoundary>
+      <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">
         {/* Animated Background - Updated with Very Light, Soothing Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 via-orange-50 to-amber-50">
-          {/* Floating mathematical symbols - More Visible Animation */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(15)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute text-gray-500/60 animate-float-gentle font-semibold"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  transform: `translateY(${scrollY * 0.05}px)`,
-                  animationDelay: `${i * 1.2}s`,
-                  animationDuration: `${8 + Math.random() * 4}s`,
-                  fontSize: `${Math.random() * 15 + 18}px`
-                }}
-              >
-                {['∑', '∞', 'π', '√', '∫', '∆', 'α', 'β', '≠', '±', '÷', '×', '²', '³', '°'][Math.floor(Math.random() * 15)]}
-              </div>
-            ))}
-          </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-amber-50">
+          {/* Floating mathematical symbols - Server-safe animation */}
+          <MathSymbolsBackground scrollY={scrollY} seed={12345} />
           
           {/* Gradient overlay circles - Much softer */}
           <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100/30 rounded-full blur-3xl animate-pulse"></div>
@@ -481,230 +442,27 @@ const MathCoursesPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Course Cards Grid - Updated with Touch Device Awareness */}
+          {/* Course Cards Grid - Better Architecture */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredCourses.map((course) => {
-              const isHovered = hoveredCourse === course.id;
-              const courseGradients = getCourseGradients(course);
-
-              return (
-                <div
-                  key={course.id}
-                  className={`relative h-[420px] cursor-pointer group ${!isTouchDevice ? 'perspective-1000' : ''}`}
-                  onMouseEnter={() => handleMouseEnter(course.id)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {/* Card Container with Conditional 3D Flip */}
-                  <div className={`relative w-full h-full transition-transform duration-700 ${
-                    !isTouchDevice ? 'transform-style-preserve-3d' : ''
-                  } ${
-                    !isTouchDevice && isHovered ? 'rotate-y-180' : ''
-                  }`}>
-                    
-                    {/* Front Side - Clean Layout */}
-                    <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} group-hover:scale-105 transition-all duration-300`}>
-                      <CardContent className="p-5 relative flex flex-col h-full justify-between">
-                        {/* Top Section - Course Header */}
-                        <div className="flex-shrink-0">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className={`p-2.5 rounded-2xl bg-gradient-to-br ${courseGradients.gradient} shadow-lg`}>
-                              <Calculator className="w-5 h-5 text-white" />
-                            </div>
-                            <div className="flex-1">
-                              <h4 className={`font-bold text-base ${courseGradients.iconColor} leading-tight`}>{course.name}</h4>
-                              <Badge className="bg-white/80 text-gray-700 text-xs mt-1">
-                                {course.level}
-                              </Badge>
-                            </div>
-                            {/* Hover Indicator - Only show on non-touch devices */}
-                            {!isTouchDevice && (
-                              <div className="opacity-60 group-hover:opacity-100 transition-opacity duration-300">
-                                <Eye className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
-                              </div>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Course Description */}
-                        <div className="flex-grow">
-                          <p className="text-gray-600 text-sm mb-4 leading-relaxed">{course.description}</p>
-                          
-                          {/* Course Tags/Chips */}
-                          <div className="mb-4 space-y-2">
-                            <div className="flex flex-wrap gap-1">
-                              {course.gradeLevel.map((grade) => (
-                                <span
-                                  key={grade}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getChipColor(grade, 'grade')}`}
-                                >
-                                  <span>{getChipIcon(grade, 'grade')}</span>
-                                  {grade}
-                                </span>
-                              ))}
-                              {course.courseType.map((type) => (
-                                <span
-                                  key={type}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getChipColor(type, 'courseType')}`}
-                                >
-                                  <span>{getChipIcon(type, 'courseType')}</span>
-                                  {type}
-                                </span>
-                              ))}
-                            </div>
-                            <div className="flex flex-wrap gap-1">
-                              {course.alignment.map((align) => (
-                                <span
-                                  key={align}
-                                  className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border ${getChipColor(align, 'alignment')}`}
-                                >
-                                  <span>{getChipIcon(align, 'alignment')}</span>
-                                  {align}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* Pricing & Rating - Updated: Removed Duration */}
-                          <div className="mb-3 p-3 bg-white/70 backdrop-blur-sm border border-white/50 rounded-xl">
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm text-gray-600">💰</span>
-                                <span className="font-bold text-lg text-[#1F396D]">{course.priceRange}</span>
-                              </div>
-                              <div className="flex items-center gap-1">
-                                <Star className="w-4 h-4 fill-[#F1894F] text-[#F1894F]" />
-                                <span className="text-sm font-semibold text-gray-700">4.9</span>
-                              </div>
-                            </div>
-                            <div className="flex items-center mt-2 text-xs text-gray-600">
-                              <span>📦 Quantity: 1</span>
-                            </div>
-                          </div>
-
-                          {/* Mobile/Desktop Responsive Interaction Hint - Only for non-touch devices */}
-                          {!isTouchDevice && (
-                            <div className="mb-3 p-2.5 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border border-gray-200 group-hover:from-blue-50 group-hover:to-indigo-50 group-hover:border-blue-200 transition-all duration-300">
-                              <div className="flex items-center gap-2 text-gray-600 group-hover:text-blue-600">
-                                <Eye className="w-3.5 h-3.5" />
-                                <span className="text-xs font-medium">Hover to flip card</span>
-                                <ArrowRight className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </div>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Bottom Section - CTA */}
-                        <div className="flex-shrink-0">
-                          <Button 
-                            onClick={() => handleAddToCart(course)}
-                            className={`w-full bg-gradient-to-r ${courseGradients.gradient} text-white rounded-xl py-2.5 text-sm transition-all duration-300 shadow-md hover:shadow-lg group-hover:scale-105`}
-                          >
-                            {/* Desktop button text - Only for non-touch devices */}
-                            {!isTouchDevice && (
-                              <div className="hidden md:flex items-center justify-center">
-                                <Eye className="mr-2 w-4 h-4" />
-                                Hover to reveal information
-                              </div>
-                            )}
-                            {/* Mobile button text or fallback for touch devices */}
-                            <div className={`${!isTouchDevice ? 'flex md:hidden' : 'flex'} items-center justify-center`}>
-                              <ShoppingCart className="mr-2 w-4 h-4" />
-                              Add to Cart
-                            </div>
-                          </Button>
-                        </div>
-
-                        {/* Decorative background elements */}
-                        <div className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-10 transition-all duration-500 group-hover:scale-150 group-hover:opacity-20`} />
-                        <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-5 transition-all duration-500 group-hover:scale-125 group-hover:opacity-10`} />
-                      </CardContent>
-                    </Card>
-
-                    {/* Back Side - Enhanced Hover State - Only for non-touch devices */}
-                    {!isTouchDevice && (
-                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180 scale-105`}>
-                        <CardContent className="p-4 relative flex flex-col h-full justify-between overflow-hidden">
-                          {/* Top Section - Course Header */}
-                          <div className="flex-shrink-0">
-                            <div className="flex items-center gap-2 mb-2">
-                              <div className={`p-2 rounded-xl bg-gradient-to-br ${courseGradients.gradient} shadow-lg`}>
-                                <Calculator className="w-4 h-4 text-white" />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h4 className={`font-bold text-sm ${courseGradients.iconColor} leading-tight truncate`}>{course.name}</h4>
-                                <div className="flex items-center gap-1 mt-1">
-                                  <Badge className="bg-white/80 text-gray-700 text-xs">{course.level}</Badge>
-                                  <Badge className="bg-white/80 text-gray-700 text-xs">{course.duration}</Badge>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          {/* Middle Section - Features */}
-                          <div className="flex-grow overflow-hidden">
-                            {/* Description */}
-                            <p className="text-gray-600 text-xs mb-2 leading-relaxed line-clamp-2">{course.description}</p>
-                            
-                            {/* Pricing */}
-                            <div className="mb-2 p-2 bg-white/70 backdrop-blur-sm border border-white/50 rounded-lg">
-                              <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-1">
-                                  <span className="font-bold text-base text-[#1F396D]">{course.priceRange}</span>
-                                </div>
-                                <div className="flex items-center gap-1">
-                                  <Star className="w-3 h-3 fill-[#F1894F] text-[#F1894F]" />
-                                  <span className="text-xs text-gray-600">4.9/5</span>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Key Features - Limited to 3 items */}
-                            <div className="space-y-1">
-                              {course.features.slice(0, 3).map((feature, featureIndex) => (
-                                <div 
-                                  key={featureIndex}
-                                  className="flex items-center gap-2 p-1.5 rounded-lg bg-white/70 backdrop-blur-sm border border-white/50"
-                                  style={{
-                                    transitionDelay: `${featureIndex * 100}ms`
-                                  }}
-                                >
-                                  <span className="text-sm">✅</span>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="font-semibold text-gray-800 text-xs truncate">{feature}</p>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          {/* Bottom Section - CTA Buttons */}
-                          <div className="flex-shrink-0 space-y-1.5 mt-2">
-                            <Button 
-                              onClick={() => handleAddToCart(course)}
-                              className={`w-full bg-gradient-to-r ${courseGradients.gradient} hover:shadow-lg text-white rounded-xl py-2 text-xs transition-all duration-300 transform scale-105 shadow-lg`}
-                            >
-                              <ShoppingCart className="mr-1 w-3 h-3" />
-                              Add to Cart • {course.priceRange}
-                            </Button>
-                            <Button 
-                              variant="outline"
-                              className={`w-full border ${courseGradients.iconColor} hover:bg-gray-50 rounded-xl py-1.5 text-xs transition-all duration-300`}
-                            >
-                              Learn More
-                              <ChevronRight className="ml-1 w-3 h-3" />
-                            </Button>
-                          </div>
-
-                          {/* Fixed Decorative background elements - Properly positioned within card bounds */}
-                          <div className={`absolute top-2 right-2 w-12 h-12 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-20 scale-150`} />
-                          <div className={`absolute bottom-2 left-2 w-8 h-8 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-10 scale-125`} />
-                        </CardContent>
-                      </Card>
-                    )}
-                  </div>
+            <DynamicWrapper fallback={
+              <div className="col-span-full text-center py-8">
+                <div className="animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded w-1/4 mx-auto mb-4"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto"></div>
                 </div>
-              );
-            })}
+              </div>
+            }>
+              {filteredCourses.map((course) => (
+                <CourseCard
+                  key={course.id}
+                  course={course}
+                  onAddToCart={handleAddToCart}
+                  getCourseGradients={getCourseGradients}
+                  getChipColor={getChipColor}
+                  getChipIcon={getChipIcon}
+                />
+              ))}
+            </DynamicWrapper>
           </div>
 
           {/* No Results */}
@@ -859,7 +617,8 @@ const MathCoursesPage: React.FC = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </HydrationBoundary>
   );
 };
 
