@@ -35,8 +35,6 @@ export default function Header() {
 
   // Get menu items from Redux store with fallbacks
   const menuItems = header?.menuItems || [];
-  const academicItems = header?.academic.items || [];
-  const steamItems = header?.steam.items || [];
 
   // Hover intent timers to prevent flicker when moving between trigger and dropdown
   const dropdownTimeouts = useRef<{ [key: string]: number | null }>({});
@@ -538,7 +536,7 @@ export default function Header() {
           {/* Footer Section */}
           <div className="header-dropdown-footer">
             <p className="header-dropdown-footer-text">
-              {footerHelper} <Link href="/contact-us" className="text-[#1F396D] font-medium hover:underline">{footerContactCta}</Link>
+              {footerHelper} <Link href="/contact" className="text-[#1F396D] font-medium hover:underline">{footerContactCta}</Link>
             </p>
           </div>
         </div>

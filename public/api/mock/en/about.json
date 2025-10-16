@@ -8,8 +8,89 @@
       { "label": "Courses Offered", "value": "25+", "color": "text-[#F1894F]" },
       { "label": "Satisfaction Rate", "value": "98%", "color": "text-[#29335C]" }
     ]
+  },
+  "story": {
+    "title": "Our Story",
+    "paragraphs": [
+      "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
+      "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Dr. Sarah Chen, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
+      "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
+    ]
   }
   ,
+  "discover": {
+    "sectionTitle": "Discover GrowWise",
+    "lead": "GrowWise: Leading Education & Technology Excellence in Dublin, CA",
+    "paragraphs": [
+      "GrowWise, founded by education innovator Anshika Verma, is where education and technology meet to empower young learners. Inspired by her parents—both lifelong educators—and with over a decade of software engineering experience, Anshika envisioned GrowWise as a platform dedicated to bridging academic excellence with modern digital tools.",
+      "At GrowWise, we create personalized learning environments using AI-driven analytics, customized teaching solutions, and skill-based training programs. Our programs, designed for K–12 students in Dublin, CA, focus on academic tutoring, STEM enrichment, coding courses, and critical thinking development.",
+      "We believe in making learning interactive, engaging, and industry-aligned, ensuring every student develops the technical skills and problem-solving mindset needed for future success. Our mission is to empower educators and students alike through cutting-edge educational technology."
+    ],
+    "cta": { "label": "Learn more", "href": "/programs" },
+    "images": [
+      { "src": "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png", "alt": "Classroom Q&A", "style": "tilt" },
+      { "src": "/assets/0fb554c814973287034758481cdce9617220c706.png", "alt": "Students Group", "style": "tilt-small" },
+      { "src": "/assets/f67b000f9bfa025e565ea4296e99a888a2ea5a33.png", "alt": "Founder", "style": "large" }
+    ]
+  },
+  "mission": {
+    "items": [
+      {
+        "title": "Our Mission",
+        "content": "At GrowWise, we are dedicated to advancing education and fostering a supportive learning environment. Our mission is to empower educators and students through comprehensive resources, effective support, and a vibrant community. We strive to enhance teaching practices and academic performance, ensuring that every learner reaches their full potential."
+      },
+      {
+        "title": "Educational Excellence in Dublin",
+        "content": "Based in Dublin, CA, GrowWise is committed to providing high-quality educational support tailored to the needs of our local community. Our programs and services are designed to address the unique challenges faced by educators and students, ensuring that they have the tools and resources necessary for success."
+      }
+    ],
+    "heroImage": "/assets/students_growwise.webp"
+  },
+  "support": {
+    "title": "Supporting Educators and Students",
+    "teacher": {
+      "title": "Teacher Support",
+      "content": "We believe that great teaching starts with great teachers. Our teacher support programs are designed to provide educators with the training, resources, and community they need to excel in their profession. Through ongoing professional development and access to innovative teaching."
+    },
+    "student": {
+      "title": "Student Support",
+      "content": "For students, we offer personalized assistance that complements their classroom learning. Our programs include one-on-one tutoring, homework help, and enrichment courses, all designed to support academic achievement and foster a love for learning. We are dedicated to helping students overcome challenges and achieve their educational goals."
+    },
+    "gallery": [
+      "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png"
+    ]
+  },
+  "approach": {
+    "title": "Our Approach to Education",
+    "subtitle": "Innovative, Inclusive, and Impactful",
+    "pillars": [
+      {
+        "title": "Holistic Development",
+        "content": "We focus on the holistic development of both educators and students, emphasizing not only academic excellence but also personal growth and well-being.",
+        "icon": "Heart"
+      },
+      {
+        "title": "Commitment to Innovation",
+        "content": "Our programs incorporate the latest research and best practices in teaching and learning, ensuring that we provide the most effective and up-to-date support available.",
+        "icon": "Lightbulb"
+      },
+      {
+        "title": "Community Engagement",
+        "content": "GrowWise values the importance of community in the educational process. We actively engage with local schools, parents, and organizations to ensure that our programs are relevant and impactful.",
+        "icon": "Users"
+      },
+      {
+        "title": "Personalized Learning",
+        "content": "We recognize that every learner is unique. Our approach includes personalized learning strategies to meet individual needs and optimize educational outcomes.",
+        "icon": "UserCheck"
+      }
+    ],
+    "heroImage": "/assets/growwise-logo.png"
+  },
+  "cta": {
+    "title": "Enroll Today and Unlock Your Kid's Potential!",
+    "primaryCta": { "label": "Enroll Now", "href": "/enroll" }
+  },
   "coreValues": [
     { "icon": "Target", "title": "Our Mission", "description": "To empower every student with personalized education that builds strong academic foundations while fostering creativity, critical thinking, and a lifelong love of learning.", "gradient": "from-[#1F396D] to-[#29335C]", "bgColor": "bg-[#1F396D]/10" },
     { "icon": "Heart", "title": "Our Vision", "description": "To be the leading educational center in the Tri-Valley area, transforming students into confident, capable learners ready for future academic and career success.", "gradient": "from-[#F16112] to-[#F1894F]", "bgColor": "bg-[#F16112]/10" },

@@ -114,20 +114,32 @@ All dynamic content is managed through Redux and loaded from JSON. The content i
 
 ### Replacing Mock API
 
-To replace the mock API with a real endpoint:
+This project can switch between local mock JSON and real server APIs via environment variables.
 
-1. Update the `fetchContentAPI` function in `src/store/sagas/contentSaga.ts`
-2. Replace the mock data with a real API call:
+#### Environment Variables
 
-```typescript
-async function fetchContentAPI(): Promise<ContentData> {
-  const response = await fetch('/api/content');
-  if (!response.ok) {
-    throw new Error('Failed to fetch content');
-  }
-  return response.json();
-}
+Create a `.env.local` file in the project root (not committed) and set:
+
 ```
+NEXT_PUBLIC_USE_MOCK=true
+NEXT_PUBLIC_API_BASE=https://api.example.com
+```
+
+- `NEXT_PUBLIC_USE_MOCK`
+  - `true` (default): load locale-aware mock JSON from `public/api/mock/{locale}/*.json` with fallback to `public/api/mock/*.json`.
+  - `false`: call the real server at `NEXT_PUBLIC_API_BASE`.
+- `NEXT_PUBLIC_API_BASE`
+  - Base URL for your backend (only used when `NEXT_PUBLIC_USE_MOCK=false`).
+
+After changing env vars, restart dev server.
+
+#### How it works
+
+- Sagas call a single helper `fetchJsonWithLocale(file, serverPath)` defined in `src/lib/api.ts`.
+- When mocking, it loads `/api/mock/{locale}/{file}` → `/api/mock/{file}`.
+- When not mocking, it requests `${NEXT_PUBLIC_API_BASE}${serverPath}`.
+
+Sagas already use this helper for: header, home, about, contact, and academic.
 
 ## SEO Features
 

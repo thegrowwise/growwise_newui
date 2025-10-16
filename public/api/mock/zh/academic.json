@@ -1,0 +1,60 @@
+{
+  "whyChooseAcademic": [
+    {
+      "icon": "Calculator",
+      "title": "Math Mastery",
+      "description": "Personalized math instruction for all levels, aligned with DUSD & PUSD curriculum.",
+      "bgColor": "bg-gradient-to-br from-[#1F396D] to-[#29335C]",
+      "color": "text-[#1F396D]"
+    },
+    {
+      "icon": "BookOpen",
+      "title": "English Excellence",
+      "description": "Comprehensive English language arts skills from reading to writing.",
+      "bgColor": "bg-gradient-to-br from-[#F16112] to-[#F1894F]",
+      "color": "text-[#F16112]"
+    },
+    {
+      "icon": "UserCheck",
+      "title": "Personalized Support",
+      "description": "One-on-one guidance to help students excel academically.",
+      "bgColor": "bg-gradient-to-br from-[#F1894F] to-[#F16112]",
+      "color": "text-[#F1894F]"
+    },
+    {
+      "icon": "Lightbulb",
+      "title": "Engaging Curriculum",
+      "description": "Innovative and interactive curriculum for deeper learning.",
+      "bgColor": "bg-gradient-to-br from-[#1F396D] to-[#F16112]",
+      "color": "text-[#1F396D]"
+    }
+  ],
+  "successStories": [
+    {
+      "name": "Ava Patel",
+      "grade": "Grade 7",
+      "subject": "Math",
+      "improvement": "+30% Improvement",
+      "quote": "GrowWise helped me understand math concepts I struggled with for years!",
+      "image": "/assets/0fb554c814973287034758481cdce9617220c706.png"
+    },
+    {
+      "name": "Liam Chen",
+      "grade": "Grade 9",
+      "subject": "English",
+      "improvement": "+2 Grade Levels",
+      "quote": "My writing and grammar improved so much thanks to GrowWise!",
+      "image": "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png"
+    },
+    {
+      "name": "Sophia Kim",
+      "grade": "Grade 5",
+      "subject": "Math & English",
+      "improvement": "Top 5% in Class",
+      "quote": "I love the fun lessons and friendly teachers at GrowWise!",
+      "image": "/assets/4d5f8738dc90c959ab8bf4453a752c35ebcfde0b.png"
+    }
+  ]
+}
+
+

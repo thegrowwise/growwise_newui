@@ -10,10 +10,19 @@ import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import { useTranslations } from 'next-intl';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
+import { getIconComponent } from '@/lib/iconMap';
 
 const EnglishCoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
+  const t = useTranslations('englishCourses');
+  const dispatch = useAppDispatch();
+  const englishCoursesData = useAppSelector((s) => s.englishCourses.data);
+  const englishCoursesLoading = useAppSelector((s) => s.englishCourses.loading);
+  
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
   const [selectedAlignments, setSelectedAlignments] = useState<string[]>([]);
@@ -23,6 +32,19 @@ const EnglishCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Fetch English courses data
+  useEffect(() => {
+    if (!englishCoursesData && !englishCoursesLoading) {
+      dispatch(fetchEnglishCoursesRequested());
+    }
+  }, [englishCoursesData, englishCoursesLoading, dispatch]);
+
+  // Debug logging
+  useEffect(() => {
+    console.log('English Courses Data:', englishCoursesData);
+    console.log('English Courses Loading:', englishCoursesLoading);
+  }, [englishCoursesData, englishCoursesLoading]);
 
   // Detect touch device and disable hover effects on mobile
   useEffect(() => {
@@ -49,25 +71,10 @@ const EnglishCoursesPage: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Filter categories
-  const gradeLevelFilters = [
-    { value: 'Elementary', label: 'Elementary', icon: '📚', color: 'bg-blue-100 text-blue-800 border-blue-200' },
-    { value: 'Middle School', label: 'Middle School', icon: '📖', color: 'bg-green-100 text-green-800 border-green-200' },
-    { value: 'High School', label: 'High School', icon: '🎯', color: 'bg-purple-100 text-purple-800 border-purple-200' }
-  ];
-
-  const courseTypeFilters = [
-    { value: 'Core English', label: 'Core English', icon: '📝', color: 'bg-orange-100 text-orange-800 border-orange-200' },
-    { value: 'Grammar', label: 'Grammar', icon: '✏️', color: 'bg-yellow-100 text-yellow-800 border-yellow-200' },
-    { value: 'Comprehensive', label: 'Comprehensive', icon: '📚', color: 'bg-red-100 text-red-800 border-red-200' },
-    { value: 'Advanced', label: 'Advanced', icon: '🚀', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' }
-  ];
-
-  const alignmentFilters = [
-    { value: 'California Standards', label: 'California Standards', icon: '🏛️', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
-    { value: 'DUSD Aligned', label: 'DUSD Aligned', icon: '🏫', color: 'bg-teal-100 text-teal-800 border-teal-200' },
-    { value: 'PUSD Aligned', label: 'PUSD Aligned', icon: '🎓', color: 'bg-pink-100 text-pink-800 border-pink-200' }
-  ];
+  // Filter categories from Redux data
+  const gradeLevelFilters = englishCoursesData?.filters?.gradeLevels ?? [];
+  const courseTypeFilters = englishCoursesData?.filters?.courseTypes ?? [];
+  const alignmentFilters = englishCoursesData?.filters?.alignments ?? [];
 
   // Course gradients based on level
   const getCourseGradients = (course: any) => {
@@ -206,41 +213,8 @@ const EnglishCoursesPage: React.FC = () => {
     return filter ? filter.icon : '•';
   };
 
-  // Enhanced Program Features for the Header
-  const enhancedProgramFeatures = [
-    {
-      icon: Shield,
-      title: 'DUSD & PUSD Aligned',
-      description: 'Perfectly synchronized with Dublin and Pleasanton Unified School Districts English curriculum standards',
-      color: 'text-[#1F396D]',
-      bgColor: 'bg-[#1F396D]/10',
-      delay: '0ms'
-    },
-    {
-      icon: GraduationCap,
-      title: 'Comprehensive ELA',
-      description: 'Complete English Language Arts education from reading fundamentals through advanced writing',
-      color: 'text-[#F16112]',
-      bgColor: 'bg-[#F16112]/10',
-      delay: '100ms'
-    },
-    {
-      icon: TrendingUp,
-      title: 'Skills Development',
-      description: 'Progressive skill building with detailed assessments and personalized learning paths',
-      color: 'text-[#F1894F]',
-      bgColor: 'bg-[#F1894F]/10',
-      delay: '200ms'
-    },
-    {
-      icon: Users,
-      title: 'Interactive Learning',
-      description: 'Engaging small group discussions and individual coaching for optimal language development',
-      color: 'text-[#1F396D]',
-      bgColor: 'bg-[#1F396D]/10',
-      delay: '300ms'
-    }
-  ];
+  // Enhanced Program Features from Redux data
+  const enhancedProgramFeatures = englishCoursesData?.features ?? [];
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -279,19 +253,16 @@ const EnglishCoursesPage: React.FC = () => {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
               <BookOpen className="w-5 h-5 text-[#F1894F]" />
-              <span className="text-gray-700 font-medium">Master English with Excellence</span>
+              <span className="text-gray-700 font-medium">{englishCoursesData?.hero?.badge || t('hero.badge')}</span>
               <Sparkles className="w-5 h-5 text-[#F1894F]" />
             </div>
             
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              Excel in
-              <span className="block bg-gradient-to-r from-[#F1894F] to-[#F16112] bg-clip-text text-transparent">
-                English Arts
-              </span>
+              {englishCoursesData?.hero?.title || t('hero.title')}
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.
+              {englishCoursesData?.hero?.subtitle || t('hero.subtitle')}
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -320,7 +291,7 @@ const EnglishCoursesPage: React.FC = () => {
             {/* Enhanced Features Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {enhancedProgramFeatures.map((feature, index) => {
-                const IconComponent = feature.icon;
+                const IconComponent = getIconComponent(feature.icon);
                 return (
                   <div 
                     key={index} 
@@ -723,23 +694,166 @@ const EnglishCoursesPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Success Stories Section */}
+      <section className="py-16 px-4 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Student <span className="text-orange-600">Success Stories</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Real results from our English programs - see how students have transformed their skills
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {englishCoursesLoading ? (
+              <div className="col-span-full text-center py-8">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#F16112]"></div>
+                <p className="mt-2 text-gray-600">Loading success stories...</p>
+              </div>
+            ) : (englishCoursesData?.successStories ?? []).length > 0 ? (englishCoursesData?.successStories?.map((story, index) => (
+              <Card key={index} className="bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-100 hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <img
+                      src={story.image}
+                      alt={story.name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-lg"
+                    />
+                    <div>
+                      <h3 className="font-bold text-gray-900">{story.name}</h3>
+                      <p className="text-sm text-gray-600">{story.grade}</p>
+                      <p className="text-xs text-orange-600 font-semibold">{story.course}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="mb-4">
+                    <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold mb-3">
+                      <CheckCircle className="w-4 h-4" />
+                      {story.improvement}
+                    </div>
+                  </div>
+                  
+                  <blockquote className="text-gray-700 italic leading-relaxed">
+                    "{story.quote}"
+                  </blockquote>
+                </CardContent>
+              </Card>
+            ))) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-gray-600">No success stories available at the moment.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Program Highlights Section */}
+      <section className="py-16 px-4 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Program <span className="text-orange-600">Highlights</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Discover what makes our English programs so effective
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {englishCoursesLoading ? (
+              <div className="col-span-full text-center py-8">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#F16112]"></div>
+                <p className="mt-2 text-gray-600">Loading program highlights...</p>
+              </div>
+            ) : (englishCoursesData?.programHighlights ?? []).length > 0 ? (englishCoursesData?.programHighlights?.map((highlight, index) => {
+              const IconComponent = getIconComponent(highlight.icon);
+              return (
+                <Card key={index} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 group">
+                  <CardContent className="p-6 text-center">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 ${highlight.color.replace('text-', 'bg-').replace('text-', 'bg-')}/10`}>
+                      <IconComponent className={`w-8 h-8 ${highlight.color}`} />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{highlight.title}</h3>
+                    <p className="text-gray-600 mb-4 leading-relaxed">{highlight.description}</p>
+                    <div className="bg-gradient-to-r from-orange-100 to-amber-100 rounded-lg p-3">
+                      <p className="text-sm font-semibold text-gray-800">{highlight.stats}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-gray-600">No program highlights available at the moment.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Outcomes Section */}
+      <section className="py-16 px-4 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Learning <span className="text-orange-600">Outcomes</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              What students will achieve through our comprehensive English programs
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {englishCoursesLoading ? (
+              <div className="col-span-full text-center py-8">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#F16112]"></div>
+                <p className="mt-2 text-gray-600">Loading learning outcomes...</p>
+              </div>
+            ) : (englishCoursesData?.learningOutcomes ?? []).length > 0 ? (englishCoursesData?.learningOutcomes.map((outcome, index) => (
+              <Card key={index} className="bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-100 hover:shadow-xl transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="text-center mb-6">
+                    <div className="text-4xl mb-3">{outcome.icon}</div>
+                    <h3 className="text-xl font-bold text-gray-900">{outcome.category}</h3>
+                  </div>
+                  
+                  <ul className="space-y-3">
+                    {outcome.outcomes.map((item, itemIndex) => (
+                      <li key={itemIndex} className="flex items-start gap-3">
+                        <CheckCircle className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))) : (
+              <div className="col-span-full text-center py-8">
+                <p className="text-gray-600">No learning outcomes available at the moment.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 px-4 lg:px-8 bg-[#1F396D]">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl mb-6 text-white">Ready to Excel in English?</h2>
+          <h2 className="text-4xl mb-6 text-white">{englishCoursesData?.cta?.title || t('cta.title')}</h2>
           <p className="text-xl mb-8 text-white/90">
-            Join hundreds of students who have transformed their writing and reading skills with GrowWise English programs.
+            {englishCoursesData?.cta?.subtitle || t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-[30px]" size="lg">
-              Get Started
+              {englishCoursesData?.cta?.primaryButton || t('cta.primaryButton')}
             </Button>
             <Button 
               onClick={openChatbot}
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
               size="lg"
             >
-              Contact Us
+              {englishCoursesData?.cta?.secondaryButton || t('cta.secondaryButton')}
             </Button>
           </div>
         </div>
