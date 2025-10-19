@@ -2,8 +2,6 @@
 import React from 'react';
 import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
-import { SectionError } from '../../ui/SectionError';
-import { ItemError } from '../../ui/ItemError';
 import Link from 'next/link';
 
 export interface ProgramVM {
@@ -21,16 +19,10 @@ export interface ProgramVM {
 export function ProgramsSection({
   k12,
   steam,
-  error,
-  onRetry,
 }: {
-  k12: ProgramVM[] | null;
-  steam: ProgramVM[] | null;
-  error?: string | null;
-  onRetry?: () => void;
+  k12: ProgramVM[];
+  steam: ProgramVM[];
 }) {
-  if (error) return <SectionError title="Programs unavailable" message={error} onRetry={onRetry} />;
-  if (!k12 || !steam) return <SectionError title="Programs not loaded" message="Please try again shortly." onRetry={onRetry} />;
   const ProgramGrid = ({ items, accent }: { items: ProgramVM[]; accent: 'blue' | 'orange' }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       {items.map((program) => {
@@ -50,7 +42,7 @@ export function ProgramsSection({
               </div>
               <p className="text-gray-600 text-sm mb-8 leading-relaxed">{program.description}</p>
               <div className="space-y-4 flex-1">
-                {program.subItems?.length ? program.subItems.map((item) => (
+                {program.subItems.map((item) => (
                   <div key={item.name} className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40`}>
                     <span className="text-3xl">{item.icon}</span>
                     <div className="flex-1">
@@ -58,7 +50,7 @@ export function ProgramsSection({
                       <p className="text-xs text-gray-600">{item.description}</p>
                     </div>
                   </div>
-                )) : <ItemError title="No items" message="No sub-programs available." />}
+                ))}
               </div>
               <div className="mt-8 pt-6">
                 {program.href ? (
