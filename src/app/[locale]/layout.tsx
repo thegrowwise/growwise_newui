@@ -36,7 +36,7 @@ export default async function LocaleLayout({
         <ChatbotProvider>
           <ContentProvider>
             <Header />
-            <main>
+            <main suppressHydrationWarning>
               {children}
             </main>
             <Footer />
