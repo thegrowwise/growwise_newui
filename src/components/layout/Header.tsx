@@ -133,7 +133,7 @@ export default function Header() {
       >
         <Link
           href={item.href}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group ${
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
             isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
           }`}
           onClick={() => {
@@ -343,7 +343,7 @@ export default function Header() {
       >
         <Link
           href={item.href}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group ${
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
             isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
           }`}
           onClick={() => {
@@ -600,7 +600,7 @@ export default function Header() {
                   <div key={item.key} className="relative group">
                     <Link
                       href={item.href}
-                      className={`header-navlink ${
+                      className={`header-navlink whitespace-nowrap ${
                         isActive
                           ? 'bg-[#1F396D] text-white shadow-lg'
                           : `header-nav-neutral hover:text-[#F16112]`
@@ -617,9 +617,6 @@ export default function Header() {
 
           {/* Utility Icons and CTA Buttons */}
           <div className="hidden lg:flex items-center space-x-6">
-            {/* Locale Switcher */}
-            <LocaleSwitcher />
-            
             {/* Utility Icons */}
             <div className="flex items-center space-x-4">
               <button className="text-gray-700 hover:text-[#F16112] transition-colors">
@@ -639,6 +636,11 @@ export default function Header() {
             <div className="flex items-center space-x-4">
               <Button variant="ghost" className="text-gray-700 hover:text-[#1F396D] hover:bg-gray-100 rounded-full px-6">Log in</Button>
               <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">{t('navigation.enroll')}</Button>
+            </div>
+
+            {/* Locale Switcher moved to far right */}
+            <div className="ml-2">
+              <LocaleSwitcher />
             </div>
           </div>
 
