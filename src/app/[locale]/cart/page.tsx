@@ -8,9 +8,12 @@ import { ShoppingCart, Plus, Minus, Trash2, ArrowLeft, CreditCard, CheckCircle, 
 import { useCart } from '@/components/gw/CartContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 
 const CartPage: React.FC = () => {
   const { state, updateQuantity, removeItem, clearCart } = useCart();
+  const locale = useLocale();
+  const createLocaleUrl = (path: string) => `/${locale}${path}`;
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     if (newQuantity <= 0) {
@@ -36,7 +39,7 @@ const CartPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/">
+              <Link href={createLocaleUrl('/')}>
                 <Button variant="outline" className="flex items-center gap-2">
                   <ArrowLeft className="w-4 h-4" />
                   Continue Shopping
@@ -63,7 +66,7 @@ const CartPage: React.FC = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
             <p className="text-gray-600 mb-8">Looks like you haven't added any courses to your cart yet.</p>
-            <Link href="/courses/math">
+            <Link href={createLocaleUrl('/courses/math')}>
               <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-full">
                 Browse Courses
               </Button>

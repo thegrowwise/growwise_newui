@@ -4,14 +4,7 @@ import { Card, CardContent } from '../../ui/card';
 import { SectionError } from '../../ui/SectionError';
 import { ImageWithFallback } from '../../gw/ImageWithFallback';
 import { Star } from 'lucide-react';
-
-export interface TestimonialVM {
-  name: string;
-  role: string;
-  content: string;
-  rating: number;
-  image: string;
-}
+import { TestimonialVM } from '@/lib/testimonialsApi';
 
 export function TestimonialsSection({ testimonials, error, onRetry }: { testimonials: TestimonialVM[] | null; error?: string | null; onRetry?: () => void }) {
   if (error) return <SectionError title="Testimonials unavailable" message={error} onRetry={onRetry} />;

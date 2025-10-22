@@ -12,6 +12,9 @@ const localeNames = {
   hi: 'हिन्दी'
 };
 
+// Temporarily disable other languages - only show English
+const enabledLocales = ['en'];
+
 export default function LocaleSwitcher() {
   const locale = useLocale();
   const router = useRouter();
@@ -74,7 +77,7 @@ export default function LocaleSwitcher() {
           className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           disabled
         >
-          {locales.map((loc) => (
+          {enabledLocales.map((loc) => (
             <option key={loc} value={loc}>
               {localeNames[loc as keyof typeof localeNames]}
             </option>
@@ -96,7 +99,7 @@ export default function LocaleSwitcher() {
         onChange={(e) => handleLocaleChange(e.target.value)}
         className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
-        {locales.map((loc) => (
+        {enabledLocales.map((loc) => (
           <option key={loc} value={loc}>
             {localeNames[loc as keyof typeof localeNames]}
           </option>
