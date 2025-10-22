@@ -8,6 +8,7 @@ import { watchFetchAcademic } from './academicSaga';
 import { watchFetchEnglishCourses } from './englishCoursesSaga';
 import { watchFetchMathCourses } from './mathCoursesSaga';
 import { watchFetchSteam } from './steamSaga';
+import { watchFetchFooter } from './footerSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +21,6 @@ export default function* rootSaga() {
     watchFetchEnglishCourses(),
     watchFetchMathCourses(),
     watchFetchSteam(),
+    watchFetchFooter(),
   ]);
 } 

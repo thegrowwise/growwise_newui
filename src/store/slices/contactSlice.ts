@@ -1,16 +1,37 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface ContactInfoItem {
-  id: number;
-  titleKey: string;
-  value: string;
   icon: string; // icon name from Lucide
-  color: string;
+  title: string;
+  primary: string;
+  secondary: string;
+  description: string;
   bgColor: string;
 }
 
 export interface ContactData {
+  hero?: {
+    title: string;
+    subtitle: string;
+  };
+  contactMethods?: {
+    title: string;
+    subtitle: string;
+  };
+  form?: {
+    title: string;
+    subtitle: string;
+  };
+  programs?: Array<{ value: string; label: string }>;
   contactInfo: ContactInfoItem[];
+  officeHours?: Array<{ day: string; hours: string; isOpen: boolean }>;
+  faqs?: Array<{ question: string; answer: string }>;
+  socialLinks?: Array<{ icon: string; url: string; label: string }>;
+  locationDetails?: {
+    phone: string;
+    googleMapsUrl: string;
+    directionsUrl: string;
+  };
 }
 
 interface ContactState {
