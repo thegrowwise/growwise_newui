@@ -12,7 +12,7 @@ export class ContactService {
   private baseUrl: string;
 
   private constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || '';
+    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   }
 
   public static getInstance(): ContactService {
@@ -27,24 +27,37 @@ export class ContactService {
    */
   async submitContactForm(data: ContactFormData): Promise<ContactSubmissionResult> {
     try {
-      const response = await fetch('/api/contact', {
+      // Transform the data to match backend expectations
+      const backendData = {
+        name: `${data.firstName || ''} ${data.lastName || ''}`.trim(),
+        email: data.email,
+        phone: data.phone || '',
+        subject: data.subject || 'Contact Form Submission',
+        message: data.message,
+        // Additional metadata
+        program: data.program || '',
+        gradeLevel: data.gradeLevel || '',
+        preferredContact: data.preferredContact || 'email'
+      };
+
+      const response = await fetch(`${this.baseUrl}/api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(backendData),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || `HTTP error! status: ${response.status}`);
+        throw new Error(result.message || `HTTP error! status: ${response.status}`);
       }
 
       return {
         success: true,
         message: result.message || 'Contact information submitted successfully',
-        emailId: result.emailId
+        emailId: result.submissionId
       };
 
     } catch (error) {
