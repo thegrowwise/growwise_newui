@@ -12,7 +12,7 @@ import { PopularCoursesSection } from '../../components/sections/home/PopularCou
 import { StatisticsSection } from '../../components/sections/home/StatisticsSection';
 import { ProgramsSection } from '../../components/sections/home/ProgramsSection';
 import { WhyChooseSection } from '../../components/sections/home/WhyChooseSection';
-import { TestimonialsSection } from '../../components/sections/home/TestimonialsSection';
+import TestimonialsWithBackend from '../../components/sections/TestimonialsWithBackend';
 import { CtaSection } from '../../components/sections/home/CtaSection';
 
 export default function Home() {
@@ -108,7 +108,7 @@ export default function Home() {
 
       <WhyChooseSection items={whyChooseUs as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <TestimonialsSection testimonials={testimonials as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
+      <TestimonialsWithBackend />
 
       <CtaSection
         title={data?.cta?.title || t('home.cta.title')}

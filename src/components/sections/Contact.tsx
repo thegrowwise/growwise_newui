@@ -90,7 +90,11 @@ export default function Contact() {
   const socialLinks = contact?.socialLinks ?? [];
 
   // Location details
-  const locationDetails = contact?.locationDetails ?? {};
+  const locationDetails = contact?.locationDetails ?? {
+    phone: '(925) 456-4606',
+    googleMapsUrl: 'https://maps.google.com/?q=4564+Dublin+Blvd,+Dublin,+CA',
+    directionsUrl: 'https://maps.google.com/?daddr=4564+Dublin+Blvd,+Dublin,+CA'
+  };
 
   if (isSubmitted) {
     return (
@@ -137,9 +141,17 @@ export default function Contact() {
             {contact?.hero?.subtitle || t('subtitle')}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3">
-              <Phone className="w-5 h-5 mr-2" />
-{t('buttons.callNow')}
+            <Button 
+              asChild
+              className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3"
+            >
+              <a 
+                href={`tel:${contact?.contactInfo?.[0]?.primary?.replace(/[\s\(\)\-]/g, '') || '19254564606'}`}
+                title="Click to call"
+              >
+                <Phone className="w-5 h-5 mr-2" />
+                {t('buttons.callNow')}
+              </a>
             </Button>
             <Button 
               onClick={openChatbot}
@@ -168,20 +180,47 @@ export default function Contact() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {contactInfo.map((item, index) => {
               const IconComponent = getIconComponent(item.icon);
-                return (
+              const isPhone = item.icon === 'Phone';
+              const isEmail = item.icon === 'Mail';
+              const isLiveChat = item.icon === 'MessageCircle';
+              const isVisitUs = item.icon === 'MapPin';
+              const isClickable = isPhone || isEmail || isLiveChat || isVisitUs;
+              
+              const href = isPhone 
+                ? `tel:${item.primary.replace(/[\s\(\)\-]/g, '')}`
+                : isEmail 
+                ? `mailto:${item.primary}`
+                : isLiveChat
+                ? '#' // Will be handled by onClick
+                : isVisitUs
+                ? 'https://maps.google.com/?q=4564+Dublin+Blvd,+Dublin,+CA'
+                : '#';
+              
+              const CardWrapper = isClickable ? 'a' : 'div';
+              const cardProps = isClickable ? { 
+                href: href, 
+                title: isPhone ? 'Click to call' : isEmail ? 'Click to email' : isVisitUs ? 'Click to view on map' : 'Click to start chat',
+                onClick: isLiveChat ? (e: React.MouseEvent) => { e.preventDefault(); openChatbot(); } : undefined
+              } : {};
+              
+              return (
                 <Card key={index} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer">
                   <CardContent className="p-6">
-                    <div className={`${item.bgColor} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent className="w-6 h-6 text-white" />
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-                    <p className="font-semibold text-gray-800 mb-1">{item.primary}</p>
-                    <p className="text-sm text-gray-600 mb-3">{item.secondary}</p>
-                    <p className="text-sm text-gray-500">{item.description}</p>
+                    <CardWrapper {...cardProps} className="block">
+                      <div className={`${item.bgColor} w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                        <IconComponent className="w-6 h-6 text-white" />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                      <p className={`font-semibold mb-1 ${isClickable ? 'text-[#F16112] hover:text-[#d54f0a] transition-colors cursor-pointer' : 'text-gray-800'}`}>
+                        {item.primary}
+                      </p>
+                      <p className="text-sm text-gray-600 mb-3">{item.secondary}</p>
+                      <p className="text-sm text-gray-500">{item.description}</p>
+                    </CardWrapper>
                   </CardContent>
                 </Card>
-                );
-              })}
+              );
+            })}
             </div>
             </div>
       </section>
