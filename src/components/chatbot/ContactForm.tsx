@@ -16,11 +16,17 @@ interface ContactFormProps {
 }
 
 export interface ContactFormData {
-  name: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
   email: string;
-  phone: string;
+  phone?: string;
   message?: string;
-  source: string; // Where the form was submitted from
+  subject?: string;
+  program?: string;
+  gradeLevel?: string;
+  preferredContact?: string;
+  source?: string; // Where the form was submitted from
 }
 
 export default function ContactForm({ 
@@ -43,7 +49,7 @@ export default function ContactForm({
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    if (!formData.name.trim()) {
+    if (!formData?.name?.trim()) {
       errors.name = 'Name is required';
     }
 
@@ -53,7 +59,7 @@ export default function ContactForm({
       errors.email = 'Please enter a valid email address';
     }
 
-    if (!formData.phone.trim()) {
+    if (!formData?.phone?.trim()) {
       errors.phone = 'Phone number is required';
     } else if (!/^[\+]?[1-9][\d]{0,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) {
       errors.phone = 'Please enter a valid phone number';
