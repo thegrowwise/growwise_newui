@@ -13,6 +13,7 @@ export interface MenuItem {
   href: string;
   type: 'simple' | 'dropdown';
   active?: boolean;
+  visible?: boolean; // New flag to show/hide menu items
   variant?: 'blue' | 'orange' | string;
   dropdown?: {
     title: string;
@@ -24,6 +25,7 @@ export interface MenuItem {
       icon: string;
       href: string;
       gradient: string;
+      visible?: boolean; // New flag for dropdown items
     }>;
   };
 }

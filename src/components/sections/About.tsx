@@ -18,6 +18,7 @@ import { getIconComponent } from '@/lib/iconMap';
 import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchAboutRequested } from '@/store/slices/aboutSlice';
+import TestimonialsWithBackend from './TestimonialsWithBackend';
 
 export default function About() {
   const { openChatbot } = useChatbot();
@@ -298,47 +299,7 @@ export default function About() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="section-base section-gray">
-        <div className="max-w-7xl mx-auto">
-          <div className="center-text mb-12">
-            <h2 className="title-section mb-4">{t('testimonials.title')}</h2>
-            <p className="subtitle-sm max-w-3xl mx-auto">{t('testimonials.subtitle')}</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-8">
-                  <div className="flex items-center gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 fill-[#F16112] text-[#F16112]" />
-                    ))}
-                  </div>
-                  
-                  <div className="relative mb-6">
-                    <Quote className="w-8 h-8 text-[#F16112]/20 absolute -top-2 -left-2" />
-                    <p className="text-gray-700 italic leading-relaxed pl-6">
-                      "{testimonial.content}"
-                    </p>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div>
-                      <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                      <p className="text-sm text-gray-600">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+      <TestimonialsWithBackend />
 
       {/* Location & Contact Info */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-[#1F396D]">
