@@ -37,6 +37,7 @@ import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchContactRequested } from '@/store/slices/contactSlice';
 import { getIconComponent } from '@/lib/iconMap';
+import { contactService } from '@/lib/contactService';
 
 export default function Contact() {
   const { openChatbot } = useChatbot();
@@ -59,6 +60,7 @@ export default function Contact() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (!contact && !contactLoading) dispatch(fetchContactRequested());
@@ -71,12 +73,40 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError(null);
     
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      // Validate form data
+      const validation = contactService.validateContactData({
+        name: `${formData.firstName} ${formData.lastName}`.trim(),
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        source: 'website'
+      });
+
+      if (!validation.isValid) {
+        setSubmitError(Object.values(validation.errors).join(', '));
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Submit to backend
+      const result = await contactService.submitContactForm({
+        ...formData,
+        source: 'website'
+      });
+      
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        setSubmitError(result.message || 'Failed to submit form. Please try again.');
+      }
+    } catch (error) {
+      setSubmitError('An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const programs = contact?.programs ?? [];
@@ -386,6 +416,13 @@ export default function Contact() {
                         </label>
                       </div>
                     </div>
+
+                    {/* Error Message */}
+                    {submitError && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <p className="text-red-600 text-sm">{submitError}</p>
+                      </div>
+                    )}
 
                     {/* Submit Button */}
                     <Button
