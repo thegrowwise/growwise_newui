@@ -1,9 +1,10 @@
 import Link from 'next/link';
-import { Search, ShoppingCart } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { MenuItem } from './types';
 import { isMenuItemActive } from './utils';
 import Dropdown from './Dropdown';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
+import SearchBar from './SearchBar';
 
 interface NavigationProps {
   menuItems: MenuItem[];
@@ -94,9 +95,7 @@ export default function Navigation({
       <div className="hidden lg:flex items-center space-x-6">
         {/* Utility Icons */}
         <div className="flex items-center space-x-4">
-          <button className="text-gray-700 hover:text-[#F16112] transition-colors">
-            <Search className="w-5 h-5" />
-          </button>
+          <SearchBar />
           <Link href={createLocaleUrl('/cart')} className="relative text-gray-700 hover:text-[#F16112] transition-colors">
             <ShoppingCart className="w-5 h-5" />
             {cartItemCount > 0 && (
