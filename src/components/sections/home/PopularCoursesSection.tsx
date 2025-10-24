@@ -23,7 +23,7 @@ export function PopularCoursesSection({ courses, error, onRetry }: { courses: Po
   return (
     <section className="relative -mt-24 px-4 lg:px-8 pb-20">
       <div className="max-w-5xl mx-auto relative z-20">
-        <Card className="bg-white/25 backdrop-blur-3xl rounded-[32px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.25)] border-2 border-white/60 overflow-hidden ring-1 ring-white/30">
+        <Card className="bg-white/25 backdrop-blur-3xl rounded-[32px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.25)] border-2 border-white/60 overflow-hidden ring-1 ring-white/30 animate-fade-in-up">
           <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8"></div>
           <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5"></div>
           <CardContent className="p-8 lg:p-12 relative z-10">
@@ -32,7 +32,7 @@ export function PopularCoursesSection({ courses, error, onRetry }: { courses: Po
               <p className="text-gray-600">Start your learning journey with our most sought-after programs</p>
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {courses.map((course) => {
+              {courses.map((course, index) => {
                 if (!course || !course.IconComponent) {
                   return (
                     <ItemError key={`err-${Math.random()}`} title="Course unavailable" message="Failed to load this course." />
@@ -41,7 +41,7 @@ export function PopularCoursesSection({ courses, error, onRetry }: { courses: Po
                 const Icon = course.IconComponent as any;
                 const isBlue = course.iconColor.includes('#1F396D');
                 return (
-                  <Card key={course.id} className={`bg-white/40 backdrop-blur-2xl border-2 ${course.borderColor} rounded-2xl shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40`} onClick={course.onClick}>
+                  <Card key={course.id} className={`bg-white/40 backdrop-blur-2xl border-2 ${course.borderColor} rounded-2xl shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 animate-scale-in`} style={{ animationDelay: `${index * 0.1}s` }} onClick={course.onClick}>
                     <div className={`absolute inset-0 ${course.bgColor} opacity-60`}></div>
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
                     <CardContent className="p-6 text-center flex flex-col items-center relative z-10">

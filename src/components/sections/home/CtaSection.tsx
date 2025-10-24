@@ -22,9 +22,9 @@ export function CtaSection({
       <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]"></div>
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#F16112]/10 to-transparent"></div>
       <div className="max-w-4xl mx-auto text-center relative z-10">
-        <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-white">{title}</h2>
-        <p className="text-xl lg:text-2xl mb-12 text-white/90 leading-relaxed">{subtitle}</p>
-        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-white animate-fade-in-up">{title}</h2>
+        <p className="text-xl lg:text-2xl mb-12 text-white/90 leading-relaxed animate-fade-in-up animation-delay-200">{subtitle}</p>
+        <div className="flex flex-col sm:flex-row gap-6 justify-center animate-fade-in-up animation-delay-400">
           <Button onClick={onPrimary} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105" size="lg">
             {primaryText}
           </Button>

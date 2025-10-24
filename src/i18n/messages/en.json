@@ -601,6 +601,32 @@
       "primaryCta": "Get Started Today",
       "secondaryCta": "Schedule a Call"
     }
+  },
+  "errorPages": {
+    "notFound": {
+      "title": "Page Not Found",
+      "description": "Sorry, we couldn't find the page you're looking for. It might have been moved, deleted, or you entered the wrong URL.",
+      "goHome": "Go Home",
+      "goBack": "Go Back",
+      "quickLinks": "Quick Links",
+      "academic": "Academic Programs",
+      "steam": "STEAM Programs", 
+      "programs": "All Programs",
+      "contact": "Contact Us",
+      "autoRedirect": "You will be automatically redirected to the home page in 5 seconds."
+    },
+    "error": {
+      "title": "Something Went Wrong",
+      "description": "We're sorry, but something unexpected happened. Our team has been notified and we're working to fix this issue.",
+      "tryAgain": "Try Again",
+      "goHome": "Go Home",
+      "needHelp": "Need Help?",
+      "contactSupport": "Contact Support",
+      "learnMore": "Learn More",
+      "details": "Error Details",
+      "technicalInfo": "If this problem persists, please contact our support team with the error ID below.",
+      "autoRedirect": "You will be automatically redirected to the home page in 5 seconds."
+    }
   }
 }
 

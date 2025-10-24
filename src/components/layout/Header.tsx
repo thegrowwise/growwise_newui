@@ -10,6 +10,7 @@ import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calcul
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/components/gw/CartContext';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
+import { SearchModal } from '@/components/ui/SearchModal';
 
 // Icon mapping for dynamic icon rendering
 const iconMap: { [key: string]: any } = {
@@ -32,6 +33,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState<{ [key: string]: boolean }>({});
   const [openSubmenus, setOpenSubmenus] = useState<{ [key: string]: boolean }>({});
+  const [searchModalOpen, setSearchModalOpen] = useState(false);
 
   // Get menu items from Redux store with fallbacks
   const menuItems = header?.menuItems || [];
@@ -73,6 +75,19 @@ export default function Header() {
         clearTimeoutRef(key);
       });
     };
+  }, []);
+
+  // Keyboard shortcut for search (Ctrl+K or Cmd+K)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault();
+        setSearchModalOpen(true);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   // Helper function to check if a menu item is active
@@ -128,6 +143,7 @@ export default function Header() {
         onMouseEnter={() => openDropdown(item.key)}
         onMouseLeave={() => {
           scheduleCloseDropdown(item.key);
+          // Close all submenus for this dropdown
           setOpenSubmenus(prev => ({ ...prev, [item.key]: false }));
         }}
       >
@@ -249,7 +265,11 @@ export default function Header() {
                     <div 
                       className="absolute left-full top-0 ml-2 w-72 bg-white/95 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-white/30 z-50"
                       onMouseEnter={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: true }))}
-                      onMouseLeave={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }))}
+                      onMouseLeave={() => {
+                        setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }));
+                        // Close the main Academic dropdown when mouse leaves submenu area
+                        scheduleCloseDropdown(item.key);
+                      }}
                     >
                       {/* Submenu Header */}
                       <div className="px-4 py-3 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
@@ -619,8 +639,16 @@ export default function Header() {
           <div className="hidden lg:flex items-center space-x-6">
             {/* Utility Icons */}
             <div className="flex items-center space-x-4">
-              <button className="text-gray-700 hover:text-[#F16112] transition-colors">
+              <button 
+                onClick={() => setSearchModalOpen(true)}
+                className="text-gray-700 hover:text-[#F16112] transition-colors p-2 hover:bg-gray-100 rounded-full group relative"
+                aria-label="Search"
+                title="Search (Ctrl+K)"
+              >
                 <Search className="w-5 h-5" />
+                <span className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  Ctrl+K
+                </span>
               </button>
               <Link href="/cart" className="relative text-gray-700 hover:text-[#F16112] transition-colors">
                 <ShoppingCart className="w-5 h-5" />
@@ -634,8 +662,9 @@ export default function Header() {
 
           {/* CTA Buttons */}
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="text-gray-700 hover:text-[#1F396D] hover:bg-gray-100 rounded-full px-6">Log in</Button>
-              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">{t('navigation.enroll')}</Button>
+              <Link href="/enroll-academic">
+                <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-6 shadow-lg">{t('navigation.enroll')}</Button>
+              </Link>
             </div>
 
             {/* Locale Switcher moved to far right */}
@@ -645,7 +674,14 @@ export default function Header() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="lg:hidden">
+          <div className="lg:hidden flex items-center space-x-4">
+            <button 
+              onClick={() => setSearchModalOpen(true)}
+              className="text-gray-700 hover:text-[#F16112] transition-colors p-2 hover:bg-gray-100 rounded-full"
+              aria-label="Search"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <button
               type="button"
               className="text-gray-700 hover:text-[#F16112]"
@@ -680,16 +716,21 @@ export default function Header() {
               </Link>
             ))}
             <div className="pt-4 space-y-3">
-              <Button variant="outline" className="w-full border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white rounded-full">
-                Log in
-              </Button>
-              <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full">
-                Enroll Now
-              </Button>
+              <Link href="/enroll-academic" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white rounded-full">
+                  Enroll Now
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       )}
+
+      {/* Search Modal */}
+      <SearchModal 
+        isOpen={searchModalOpen} 
+        onClose={() => setSearchModalOpen(false)} 
+      />
     </header>
   );
 }

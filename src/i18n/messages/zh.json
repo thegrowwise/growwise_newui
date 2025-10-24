@@ -559,6 +559,32 @@
       "primaryButton": "Get Started",
       "secondaryButton": "Contact Us"
     }
+  },
+  "errorPages": {
+    "notFound": {
+      "title": "页面未找到",
+      "description": "抱歉，我们找不到您要查找的页面。它可能已被移动、删除，或者您输入了错误的URL。",
+      "goHome": "返回首页",
+      "goBack": "返回",
+      "quickLinks": "快速链接",
+      "academic": "学术课程",
+      "steam": "STEAM课程",
+      "programs": "所有课程",
+      "contact": "联系我们",
+      "autoRedirect": "您将在5秒后自动重定向到首页。"
+    },
+    "error": {
+      "title": "出现错误",
+      "description": "抱歉，发生了意外情况。我们的团队已收到通知，正在努力解决这个问题。",
+      "tryAgain": "重试",
+      "goHome": "返回首页",
+      "needHelp": "需要帮助？",
+      "contactSupport": "联系支持",
+      "learnMore": "了解更多",
+      "details": "错误详情",
+      "technicalInfo": "如果此问题持续存在，请联系我们的支持团队并提供下面的错误ID。",
+      "autoRedirect": "您将在5秒后自动重定向到首页。"
+    }
   }
 }
 

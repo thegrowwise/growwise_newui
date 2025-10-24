@@ -144,35 +144,6 @@
       "href": "/contact",
       "type": "simple",
       "variant": "orange"
-    },
-    {
-      "key": "programs",
-      "label": "Programs",
-      "href": "/programs",
-      "type": "dropdown",
-      "variant": "blue",
-      "dropdown": {
-        "title": "All Programs",
-        "subtitle": "Discover our comprehensive learning programs",
-        "items": [
-          {
-            "key": "summer",
-            "title": "Summer Camp",
-            "description": "Fun and educational summer programs",
-            "icon": "Calculator",
-            "href": "/programs/summer",
-            "gradient": "from-[#1F396D] to-[#F16112]"
-          },
-          {
-            "key": "afterSchool",
-            "title": "After School",
-            "description": "Extended learning opportunities",
-            "icon": "BookOpen",
-            "href": "/programs/after-school",
-            "gradient": "from-[#F16112] to-[#F1894F]"
-          }
-        ]
-      }
     }
   ],
   "academic": {
