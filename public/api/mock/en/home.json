@@ -38,10 +38,10 @@
     }
   ],
   "popularCourses": [
-    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "Free Assessment" },
-    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "Free Assessment" },
-    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "Free Assessment" },
-    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "Free Assessment" }
+    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "Explore Course", "href": "/steam/ml-ai-coding" },
+    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "Explore Course", "href": "/courses/math" },
+    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "Explore Course", "href": "/steam/ml-ai-coding" },
+    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "Explore Course", "href": "/courses/english" }
   ],
   "statisticsData": [
     { "id": 1, "value": "300+", "label": "Students Enrolled", "icon": "Users", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
@@ -98,10 +98,11 @@
     { "name": "Lisa Rodriguez", "role": "Parent", "content": "The personalized attention and innovative teaching methods make GrowWise stand out from other programs.", "rating": 5, "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" }
   ],
   "whyChooseUs": [
-    { "icon": "Users", "title": "Expert Instructors", "description": "Learn from certified teachers with years of experience in K-12 and STEAM education" },
-    { "icon": "Award", "title": "Proven Results", "description": "95% of our students show measurable improvement within the first semester" },
-    { "icon": "BookOpen", "title": "Comprehensive Curriculum", "description": "Aligned with state standards and designed for modern learning needs" },
-    { "icon": "Microscope", "title": "Hands-on Learning", "description": "Interactive labs and projects that make learning engaging and memorable" }
+    { "icon": "UserCheck", "title": "1️⃣ Personalized Pathway", "description": "We build a unique learning plan for each child — aligned with school curriculum, grade level, and personal goals. No generic lessons — every session is customized for their needs.", "subtitle": "Tailored Learning for Every Student" },
+    { "icon": "Target", "title": "2️⃣ 100% Curriculum Aligned", "description": "Our lessons follow district pacing guides (Dublin, Pleasanton, San Ramon USD) and California Common Core, ensuring seamless classroom reinforcement.", "subtitle": "Perfectly Synced with School Topics" },
+    { "icon": "RefreshCw", "title": "3️⃣ Continuous Feedback Loop", "description": "Parents receive consistent feedback and progress snapshots — so you always know where your child stands and how to help at home.", "subtitle": "Regular Progress Updates for Parents" },
+    { "icon": "BarChart3", "title": "4️⃣ Frequent Assessments", "description": "Diagnostic, weekly, and unit assessments guide the next learning step. Our tutors personalize practice based on every result.", "subtitle": "Measure, Adjust, and Master" },
+    { "icon": "TrendingUp", "title": "5️⃣ Real Results", "description": "Students gain measurable improvement — stronger grades, sharper problem-solving, and renewed motivation within weeks.", "subtitle": "Confidence, Grades, and Growth" }
   ],
   "cta": {
     "title": "Ready to Start Your Learning Journey?",

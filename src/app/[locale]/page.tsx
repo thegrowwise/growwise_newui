@@ -12,7 +12,7 @@ import { PopularCoursesSection } from '../../components/sections/home/PopularCou
 import { StatisticsSection } from '../../components/sections/home/StatisticsSection';
 import { ProgramsSection } from '../../components/sections/home/ProgramsSection';
 import { WhyChooseSection } from '../../components/sections/home/WhyChooseSection';
-import TestimonialsWithBackend from '../../components/sections/TestimonialsWithBackend';
+import { TestimonialsSection } from '../../components/sections/home/TestimonialsSection';
 import { CtaSection } from '../../components/sections/home/CtaSection';
 
 export default function Home() {
@@ -41,7 +41,6 @@ export default function Home() {
   const popularCourses = useMemo(() => (data?.popularCourses || []).map((c) => ({
     ...c,
     IconComponent: getIconComponent(c.icon),
-    onClick: openAssessmentModal,
   })), [data]);
 
   const statisticsData = useMemo(() => (data?.statisticsData || []).map((s) => ({
@@ -104,11 +103,11 @@ export default function Home() {
         onRetry={() => dispatch(fetchHomeStart())}
       />
 
-      <ProgramsSection k12={k12Programs as any} steam={steamPrograms as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
+      <ProgramsSection k12={k12Programs as any} steam={steamPrograms as any} />
 
       <WhyChooseSection items={whyChooseUs as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <TestimonialsWithBackend />
+      <TestimonialsSection testimonials={testimonials as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
       <CtaSection
         title={data?.cta?.title || t('home.cta.title')}

@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { SectionError } from '../../ui/SectionError';
@@ -13,8 +14,9 @@ export interface PopularCourseVM {
   iconColor: string;
   borderColor: string;
   cta: string;
+  href?: string;
   IconComponent: React.ComponentType<any>;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export function PopularCoursesSection({ courses, error, onRetry }: { courses: PopularCourseVM[] | null; error?: string | null; onRetry?: () => void }) {
@@ -52,7 +54,20 @@ export function PopularCoursesSection({ courses, error, onRetry }: { courses: Po
                       </div>
                       <h4 className="font-bold text-sm text-gray-900 mb-2 leading-tight text-center group-hover:text-gray-800 transition-colors">{course.name}</h4>
                       <p className="text-xs text-gray-600 mb-4 group-hover:text-gray-700 transition-colors">{course.benefit}</p>
-                      <Button className={`w-full ${isBlue ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`}>{course.cta}</Button>
+                      {course.href ? (
+                        <Link href={course.href}>
+                          <Button className={`w-full ${isBlue ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`}>
+                            {course.cta}
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Button 
+                          onClick={course.onClick}
+                          className={`w-full ${isBlue ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`}
+                        >
+                          {course.cta}
+                        </Button>
+                      )}
                     </CardContent>
                   </Card>
                 );
