@@ -1,0 +1,45 @@
+{
+  "logo": {
+    "src": "/assets/growwise-logo.png",
+    "alt": "GrowWise 标志",
+    "width": 250,
+    "height": 100
+  },
+  "description": "都柏林首屈一指的K-12学术支持中心，为三谷社区提供卓越服务。",
+  "contact": {
+    "phone": "(925) 456-4606",
+    "email": "connect@thegrowwise.com",
+    "address": "4564 Dublin Blvd, Dublin, CA"
+  },
+  "sections": [
+    {
+      "title": "学术课程",
+      "links": [
+        { "label": "数学课程", "href": "/courses/math", "active": true },
+        { "label": "英语课程", "href": "/courses/english", "active": true },
+        { "label": "学术课程", "href": "/academic", "active": true },
+        { "label": "书籍评估", "href": "/book-assessment", "active": true },
+        { "label": "学术注册", "href": "/enroll-academic", "active": true }
+      ]
+    },
+    {
+      "title": "STEAM课程",
+      "links": [
+        { "label": "ML/AI编程", "href": "/steam/ml-ai-coding", "active": true },
+        { "label": "游戏开发", "href": "/steam/game-development", "active": true },
+        { "label": "STEAM概览", "href": "/steam", "active": true },
+        { "label": "Python编程", "href": "#", "active": false }
+      ]
+    },
+    {
+      "title": "资源",
+      "links": [
+        { "label": "关于我们", "href": "/about", "active": true },
+        { "label": "联系我们", "href": "/contact", "active": true },
+        { "label": "课程概览", "href": "/programs", "active": true },
+        { "label": "一般注册", "href": "/enroll", "active": true }
+      ]
+    }
+  ],
+  "copyright": "© 2025 GrowWise。保留所有权利。为都柏林、普莱森顿和三谷社区提供服务。"
+}

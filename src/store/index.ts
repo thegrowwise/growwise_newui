@@ -9,6 +9,7 @@ import aboutReducer from './slices/aboutSlice';
 import englishCoursesReducer from './slices/englishCoursesSlice';
 import mathCoursesReducer from './slices/mathCoursesSlice';
 import steamReducer from './slices/steamSlice';
+import footerReducer from './slices/footerSlice';
 import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -24,6 +25,7 @@ export const store = configureStore({
     englishCourses: englishCoursesReducer,
     mathCourses: mathCoursesReducer,
     steam: steamReducer,
+    footer: footerReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

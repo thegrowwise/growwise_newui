@@ -1,0 +1,45 @@
+{
+  "logo": {
+    "src": "/assets/growwise-logo.png",
+    "alt": "ग्रोवाइज़ लोगो",
+    "width": 250,
+    "height": 100
+  },
+  "description": "डबलिन का प्रमुख K-12 शैक्षणिक सहायता केंद्र, ट्राई-वैली समुदाय की सेवा उत्कृष्टता के साथ कर रहा है।",
+  "contact": {
+    "phone": "(925) 456-4606",
+    "email": "connect@thegrowwise.com",
+    "address": "4564 Dublin Blvd, Dublin, CA"
+  },
+  "sections": [
+    {
+      "title": "शैक्षणिक कार्यक्रम",
+      "links": [
+        { "label": "गणित पाठ्यक्रम", "href": "/courses/math", "active": true },
+        { "label": "अंग्रेजी पाठ्यक्रम", "href": "/courses/english", "active": true },
+        { "label": "शैक्षणिक कार्यक्रम", "href": "/academic", "active": true },
+        { "label": "पुस्तक मूल्यांकन", "href": "/book-assessment", "active": true },
+        { "label": "शैक्षणिक नामांकन", "href": "/enroll-academic", "active": true }
+      ]
+    },
+    {
+      "title": "STEAM कार्यक्रम",
+      "links": [
+        { "label": "ML/AI कोडिंग", "href": "/steam/ml-ai-coding", "active": true },
+        { "label": "गेम डेवलपमेंट", "href": "/steam/game-development", "active": true },
+        { "label": "STEAM अवलोकन", "href": "/steam", "active": true },
+        { "label": "पायथन प्रोग्रामिंग", "href": "#", "active": false }
+      ]
+    },
+    {
+      "title": "संसाधन",
+      "links": [
+        { "label": "हमारे बारे में", "href": "/about", "active": true },
+        { "label": "संपर्क करें", "href": "/contact", "active": true },
+        { "label": "कार्यक्रम अवलोकन", "href": "/programs", "active": true },
+        { "label": "सामान्य नामांकन", "href": "/enroll", "active": true }
+      ]
+    }
+  ],
+  "copyright": "© 2025 ग्रोवाइज़। सभी अधिकार सुरक्षित। डबलिन, प्लेज़ेंटन और ट्राई-वैली समुदाय की सेवा कर रहे हैं।"
+}

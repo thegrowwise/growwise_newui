@@ -1,0 +1,45 @@
+{
+  "logo": {
+    "src": "/assets/growwise-logo.png",
+    "alt": "Logo de GrowWise",
+    "width": 250,
+    "height": 100
+  },
+  "description": "El centro de apoyo académico K-12 más importante de Dublin, sirviendo a la comunidad Tri-Valley con excelencia.",
+  "contact": {
+    "phone": "(925) 456-4606",
+    "email": "connect@thegrowwise.com",
+    "address": "4564 Dublin Blvd, Dublin, CA"
+  },
+  "sections": [
+    {
+      "title": "Programas Académicos",
+      "links": [
+        { "label": "Cursos de Matemáticas", "href": "/courses/math", "active": true },
+        { "label": "Cursos de Inglés", "href": "/courses/english", "active": true },
+        { "label": "Programas Académicos", "href": "/academic", "active": true },
+        { "label": "Evaluación de Libros", "href": "/book-assessment", "active": true },
+        { "label": "Inscribirse Académico", "href": "/enroll-academic", "active": true }
+      ]
+    },
+    {
+      "title": "Programas STEAM",
+      "links": [
+        { "label": "Codificación ML/IA", "href": "/steam/ml-ai-coding", "active": true },
+        { "label": "Desarrollo de Juegos", "href": "/steam/game-development", "active": true },
+        { "label": "Resumen STEAM", "href": "/steam", "active": true },
+        { "label": "Programación Python", "href": "#", "active": false }
+      ]
+    },
+    {
+      "title": "Recursos",
+      "links": [
+        { "label": "Acerca de Nosotros", "href": "/about", "active": true },
+        { "label": "Contáctanos", "href": "/contact", "active": true },
+        { "label": "Resumen de Programas", "href": "/programs", "active": true },
+        { "label": "Inscripción General", "href": "/enroll", "active": true }
+      ]
+    }
+  ],
+  "copyright": "© 2025 GrowWise. Todos los derechos reservados. Sirviendo a Dublin, Pleasanton y la comunidad Tri-Valley."
+}
