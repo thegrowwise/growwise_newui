@@ -12,7 +12,7 @@ import { PopularCoursesSection } from '../../components/sections/home/PopularCou
 import { StatisticsSection } from '../../components/sections/home/StatisticsSection';
 import { ProgramsSection } from '../../components/sections/home/ProgramsSection';
 import { WhyChooseSection } from '../../components/sections/home/WhyChooseSection';
-import TestimonialsWithBackend from '../../components/sections/TestimonialsWithBackend';
+import { TestimonialsSection } from '../../components/sections/home/TestimonialsSection';
 import { CtaSection } from '../../components/sections/home/CtaSection';
 
 export default function Home() {
@@ -41,7 +41,6 @@ export default function Home() {
   const popularCourses = useMemo(() => (data?.popularCourses || []).map((c) => ({
     ...c,
     IconComponent: getIconComponent(c.icon),
-    onClick: openAssessmentModal,
   })), [data]);
 
   const statisticsData = useMemo(() => (data?.statisticsData || []).map((s) => ({
@@ -84,26 +83,7 @@ export default function Home() {
   const goToHeroSlide = (index: number) => setCurrentHeroSlide(index % (heroSlides.length || 1));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
-      {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-72 h-72 bg-[#1F396D]/10 rounded-full blur-3xl animate-float-gentle"></div>
-        <div className="absolute top-40 right-20 w-96 h-96 bg-[#F16112]/10 rounded-full blur-3xl animate-float-gentle animation-delay-2000"></div>
-        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-[#29335C]/10 rounded-full blur-3xl animate-float-gentle animation-delay-4000"></div>
-        <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-[#F1894F]/10 rounded-full blur-3xl animate-float-gentle animation-delay-6000"></div>
-        <div className="absolute bottom-1/3 right-20 w-56 h-56 bg-[#1F396D]/5 rounded-full blur-2xl animate-float-gentle animation-delay-8000"></div>
-        
-        {/* Floating Particles */}
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#F16112]/30 rounded-full animate-float-rotate animation-delay-1000"></div>
-        <div className="absolute top-1/3 right-1/4 w-3 h-3 bg-[#1F396D]/30 rounded-full animate-float-rotate animation-delay-3000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-2 h-2 bg-[#F1894F]/30 rounded-full animate-float-rotate animation-delay-5000"></div>
-        <div className="absolute top-2/3 right-1/3 w-4 h-4 bg-[#29335C]/30 rounded-full animate-float-rotate animation-delay-7000"></div>
-        <div className="absolute bottom-1/3 left-1/4 w-3 h-3 bg-[#F16112]/20 rounded-full animate-float-rotate animation-delay-9000"></div>
-        
-        {/* Gradient Orbs */}
-        <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-[#1F396D]/20 to-[#F16112]/20 rounded-full blur-2xl animate-pulse-glow"></div>
-        <div className="absolute bottom-10 left-10 w-40 h-40 bg-gradient-to-br from-[#F16112]/20 to-[#F1894F]/20 rounded-full blur-2xl animate-pulse-glow animation-delay-2000"></div>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
       <HeroSection slides={heroSlides as any} currentIndex={currentHeroSlide} onPrev={prevHeroSlide} onNext={nextHeroSlide} onGoTo={goToHeroSlide} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
       <PopularCoursesSection courses={popularCourses as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
@@ -127,7 +107,7 @@ export default function Home() {
 
       <WhyChooseSection items={whyChooseUs as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <TestimonialsWithBackend />
+      <TestimonialsSection testimonials={testimonials as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
       <CtaSection
         title={data?.cta?.title || t('home.cta.title')}
