@@ -6,7 +6,6 @@
     "followLabel": "Follow us:",
     "social": {
       "facebook": "https://www.facebook.com/people/GrowWise/61561059687164/",
-      "twitter": "#",
       "instagram": "https://www.instagram.com/growwise.dublin/",
       "linkedin": "https://www.linkedin.com/company/thegrowwise/"
     }
@@ -118,7 +117,8 @@
             "description": "Fun and educational summer programs",
             "icon": "Calculator",
             "href": "/programs/summer",
-            "gradient": "from-[#1F396D] to-[#F16112]"
+            "gradient": "from-[#1F396D] to-[#F16112]",
+            "visible": false
           },
           {
             "key": "afterSchool",
@@ -126,7 +126,8 @@
             "description": "Extended learning opportunities",
             "icon": "BookOpen",
             "href": "/programs/after-school",
-            "gradient": "from-[#F16112] to-[#F1894F]"
+            "gradient": "from-[#F16112] to-[#F1894F]",
+            "visible": true
           }
         ]
       }

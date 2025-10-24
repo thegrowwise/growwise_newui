@@ -87,8 +87,7 @@
   "socialLinks": [
     { "icon": "Facebook", "url": "https://www.facebook.com/people/GrowWise/61561059687164/", "label": "Facebook" },
     { "icon": "Instagram", "url": "https://www.instagram.com/growwise.dublin/", "label": "Instagram" },
-    { "icon": "Linkedin", "url": "https://www.linkedin.com/company/thegrowwise/", "label": "LinkedIn" },
-    { "icon": "Twitter", "url": "#", "label": "Twitter" }
+    { "icon": "Linkedin", "url": "https://www.linkedin.com/company/thegrowwise/", "label": "LinkedIn" }
   ],
   "locationDetails": {
     "address": "4564 Dublin Blvd, Dublin, CA 94568",
