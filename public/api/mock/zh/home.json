@@ -38,10 +38,10 @@
     }
   ],
   "popularCourses": [
-    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "Free Assessment" },
-    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "Free Assessment" },
-    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "Free Assessment" },
-    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "Free Assessment" }
+    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "探索课程", "href": "/courses/python" },
+    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "探索课程", "href": "/courses/math" },
+    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "探索课程", "href": "/steam/ml-ai-coding" },
+    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "探索课程", "href": "/courses/english" }
   ],
   "statisticsData": [
     { "id": 1, "value": "300+", "label": "Students Enrolled", "icon": "Users", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
@@ -98,10 +98,11 @@
     { "name": "Lisa Rodriguez", "role": "Parent", "content": "The personalized attention and innovative teaching methods make GrowWise stand out from other programs.", "rating": 5, "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" }
   ],
   "whyChooseUs": [
-    { "icon": "Users", "title": "Expert Instructors", "description": "Learn from certified teachers with years of experience in K-12 and STEAM education" },
-    { "icon": "Award", "title": "Proven Results", "description": "95% of our students show measurable improvement within the first semester" },
-    { "icon": "BookOpen", "title": "Comprehensive Curriculum", "description": "Aligned with state standards and designed for modern learning needs" },
-    { "icon": "Microscope", "title": "Hands-on Learning", "description": "Interactive labs and projects that make learning engaging and memorable" }
+    { "icon": "UserCheck", "title": "1️⃣ 个性化学习路径", "description": "我们为每个孩子构建独特的学习计划 — 与学校课程、年级水平和个人目标保持一致。没有通用课程 — 每节课都根据他们的需求定制。", "subtitle": "为每个学生量身定制学习" },
+    { "icon": "Target", "title": "2️⃣ 100%课程对齐", "description": "我们的课程遵循学区进度指南（都柏林、普莱森顿、圣拉蒙学区）和加州共同核心标准，确保课堂无缝强化。", "subtitle": "与学校主题完美同步" },
+    { "icon": "RefreshCw", "title": "3️⃣ 持续反馈循环", "description": "家长收到一致的反馈和进度快照 — 这样您总是知道您的孩子在哪里以及如何在家帮助。", "subtitle": "为家长提供定期进度更新" },
+    { "icon": "BarChart3", "title": "4️⃣ 频繁评估", "description": "诊断、每周和单元评估指导下一个学习步骤。我们的导师根据每个结果个性化练习。", "subtitle": "测量、调整和掌握" },
+    { "icon": "TrendingUp", "title": "5️⃣ 真实结果", "description": "学生在几周内获得可衡量的改善 — 更强的成绩、更敏锐的问题解决能力和重新焕发的动力。", "subtitle": "信心、成绩和成长" }
   ],
   "cta": {
     "title": "Ready to Start Your Learning Journey?",

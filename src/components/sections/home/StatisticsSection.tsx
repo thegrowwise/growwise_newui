@@ -26,15 +26,15 @@ export function StatisticsSection({ title, subtitle, stats, error, onRetry }: { 
         <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-[#F1894F]/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: '8s' }}></div>
       </div>
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16 animate-fade-in-up">
+        <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">{title}</h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">{subtitle}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {stats.map((stat, index) => {
+          {stats.map((stat) => {
             const Icon = stat.IconComponent as any;
             return (
-              <Card key={stat.id} className="bg-white/30 backdrop-blur-3xl rounded-[28px] shadow-[0px_25px_60px_0px_rgba(31,57,109,0.2)] border-2 border-white/50 hover:shadow-[0px_40px_100px_0px_rgba(31,57,109,0.3)] transition-all duration-700 transform hover:-translate-y-3 group ring-1 ring-white/30 animate-fade-in-up" style={{ animationDelay: `${index * 0.2}s` }}>
+              <Card key={stat.id} className="bg-white/30 backdrop-blur-3xl rounded-[28px] shadow-[0px_25px_60px_0px_rgba(31,57,109,0.2)] border-2 border-white/50 hover:shadow-[0px_40px_100px_0px_rgba(31,57,109,0.3)] transition-all duration-700 transform hover:-translate-y-3 group ring-1 ring-white/30">
                 <CardContent className="p-8 text-center relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent rounded-[28px]"></div>
                   <div className={`${stat.bgColor} w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500 shadow-[0px_10px_30px_rgba(255,255,255,0.3)] backdrop-blur-xl border-2 border-white/40 ring-1 ring-white/20 relative z-10`}>

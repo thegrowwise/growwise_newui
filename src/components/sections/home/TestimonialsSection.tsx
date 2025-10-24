@@ -4,7 +4,14 @@ import { Card, CardContent } from '../../ui/card';
 import { SectionError } from '../../ui/SectionError';
 import { ImageWithFallback } from '../../gw/ImageWithFallback';
 import { Star } from 'lucide-react';
-import { TestimonialVM } from '@/lib/testimonialsApi';
+
+export interface TestimonialVM {
+  name: string;
+  role: string;
+  content: string;
+  rating: number;
+  image: string;
+}
 
 export function TestimonialsSection({ testimonials, error, onRetry }: { testimonials: TestimonialVM[] | null; error?: string | null; onRetry?: () => void }) {
   if (error) return <SectionError title="Testimonials unavailable" message={error} onRetry={onRetry} />;
@@ -12,7 +19,14 @@ export function TestimonialsSection({ testimonials, error, onRetry }: { testimon
   return (
     <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl lg:text-5xl font-bold text-center mb-16 text-gray-900">What Our Families Say</h2>
+        <div className="text-center mb-16">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+            Why Parents Love <span className="text-[#F16112]">GrowWise</span>
+          </h2>
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Personalized learning. Real growth. Measurable success — every student, every grade.
+          </p>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {testimonials.map((t, idx) => (
             <Card key={idx} className="bg-white/35 backdrop-blur-3xl rounded-[28px] shadow-[0px_25px_60px_0px_rgba(31,57,109,0.2)] border-2 border-white/50 hover:shadow-[0px_40px_100px_0px_rgba(31,57,109,0.3)] transition-all duration-500 hover:-translate-y-2 ring-1 ring-white/30">

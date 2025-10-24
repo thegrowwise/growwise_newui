@@ -479,8 +479,8 @@
       "subtitle": "We believe in giving back to the community that supports us, creating opportunities for all students to succeed."
     },
     "testimonials": { 
-      "title": "What Our Families Say",
-      "subtitle": "Don't just take our word for it. Here's what parents and students say about their GrowWise experience."
+      "title": "Why Parents Love GrowWise",
+      "subtitle": "Personalized learning. Real growth. Measurable success — every student, every grade."
     },
     "location": {
       "title": "Visit Our Dublin Center",
@@ -558,32 +558,6 @@
       "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
       "primaryButton": "Get Started",
       "secondaryButton": "Contact Us"
-    }
-  },
-  "errorPages": {
-    "notFound": {
-      "title": "Página No Encontrada",
-      "description": "Lo sentimos, no pudimos encontrar la página que buscas. Puede haber sido movida, eliminada, o ingresaste una URL incorrecta.",
-      "goHome": "Ir al Inicio",
-      "goBack": "Volver",
-      "quickLinks": "Enlaces Rápidos",
-      "academic": "Programas Académicos",
-      "steam": "Programas STEAM",
-      "programs": "Todos los Programas",
-      "contact": "Contáctanos",
-      "autoRedirect": "Serás redirigido automáticamente a la página de inicio en 5 segundos."
-    },
-    "error": {
-      "title": "Algo Salió Mal",
-      "description": "Lo sentimos, pero algo inesperado ocurrió. Nuestro equipo ha sido notificado y estamos trabajando para solucionar este problema.",
-      "tryAgain": "Intentar de Nuevo",
-      "goHome": "Ir al Inicio",
-      "needHelp": "¿Necesitas Ayuda?",
-      "contactSupport": "Contactar Soporte",
-      "learnMore": "Saber Más",
-      "details": "Detalles del Error",
-      "technicalInfo": "Si este problema persiste, por favor contacta a nuestro equipo de soporte con el ID de error a continuación.",
-      "autoRedirect": "Serás redirigido automáticamente a la página de inicio en 5 segundos."
     }
   }
 }
