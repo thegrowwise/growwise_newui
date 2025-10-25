@@ -7,6 +7,8 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { useFormTracking, usePageTracking } from '@/lib/analytics/hooks';
+import { TrackedForm } from '@/lib/analytics/components';
 
 export default function EnrollPage() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -18,11 +20,18 @@ export default function EnrollPage() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Analytics hooks
+  usePageTracking('Enrollment Page');
+  const { trackFormStart, trackFormSubmit, trackFormAbandon } = useFormTracking();
+
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
     setErrorMessage('');
+
+    // Track form start
+    trackFormStart('enrollment_form');
 
     try {
       const formData = new FormData(e.currentTarget);
@@ -56,6 +65,8 @@ export default function EnrollPage() {
 
       if (result.success) {
         setSubmitStatus('success');
+        // Track successful form submission
+        trackFormSubmit('enrollment_form', true);
         // Reset form by clearing all state
         setAgree(false);
         setBootcamp(undefined);
@@ -68,11 +79,15 @@ export default function EnrollPage() {
       } else {
         setSubmitStatus('error');
         setErrorMessage(result.error || 'Failed to submit enrollment');
+        // Track failed form submission
+        trackFormSubmit('enrollment_form', false, result.error);
       }
     } catch (error) {
       console.error('Enrollment submission error:', error);
       setSubmitStatus('error');
       setErrorMessage('Network error. Please try again.');
+      // Track failed form submission due to network error
+      trackFormSubmit('enrollment_form', false, 'Network error');
     } finally {
       setIsSubmitting(false);
     }
@@ -108,7 +123,12 @@ export default function EnrollPage() {
           </div>
         )}
 
-        <form ref={formRef} onSubmit={handleSubmit} className="bg-white/70 backdrop-blur-xl border-2 border-white/60 ring-1 ring-white/30 rounded-2xl shadow-[0_20px_60px_rgba(31,57,109,0.15)] p-6 md:p-10">
+        <TrackedForm 
+          ref={formRef} 
+          formName="enrollment_form"
+          onSubmit={handleSubmit} 
+          className="bg-white/70 backdrop-blur-xl border-2 border-white/60 ring-1 ring-white/30 rounded-2xl shadow-[0_20px_60px_rgba(31,57,109,0.15)] p-6 md:p-10"
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName">Your Full Name *</Label>
@@ -219,7 +239,7 @@ export default function EnrollPage() {
               )}
             </Button>
           </div>
-        </form>
+        </TrackedForm>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useButtonTracking } from '@/lib/analytics/hooks';
 
 interface NavButtonProps {
   item: {
@@ -11,6 +12,8 @@ interface NavButtonProps {
 }
 
 export default function NavButton({ item, createLocaleUrl }: NavButtonProps) {
+  const { trackButtonClick } = useButtonTracking();
+
   const getButtonStyles = (variant: 'blue' | 'orange') => {
     const baseStyles = "px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap";
     
@@ -21,11 +24,20 @@ export default function NavButton({ item, createLocaleUrl }: NavButtonProps) {
     return `${baseStyles} bg-[#1F396D] text-white hover:bg-[#29335C] shadow-lg hover:shadow-xl`;
   };
 
+  const handleClick = () => {
+    trackButtonClick(item.label, 'header_navigation', {
+      button_type: 'nav_button',
+      button_variant: item.variant,
+      destination: item.href
+    });
+  };
+
   return (
     <div className="relative group">
       <Link
         href={createLocaleUrl(item.href)}
         className={getButtonStyles(item.variant)}
+        onClick={handleClick}
       >
         {item.label}
       </Link>

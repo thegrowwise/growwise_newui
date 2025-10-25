@@ -9,6 +9,7 @@ import { CartProvider } from "@/components/gw/CartContext";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
 import Chatbot from "@/components/chatbot/Chatbot";
 import { locales } from '@/i18n/config';
+import { PageTrackingWrapper } from '@/components/analytics/PageTrackingWrapper';
 
 export const metadata: Metadata = {
   title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
@@ -35,12 +36,14 @@ export default async function LocaleLayout({
       <CartProvider>
         <ChatbotProvider>
           <ContentProvider>
-            <Header />
-            <main suppressHydrationWarning>
-              {children}
-            </main>
-            <Footer />
-            <Chatbot />
+            <PageTrackingWrapper>
+              <Header />
+              <main suppressHydrationWarning>
+                {children}
+              </main>
+              <Footer />
+              <Chatbot />
+            </PageTrackingWrapper>
           </ContentProvider>
         </ChatbotProvider>
       </CartProvider>
