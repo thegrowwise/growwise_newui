@@ -20,6 +20,7 @@ import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
+import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 
 const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
@@ -206,6 +207,49 @@ const MathCoursesPage: React.FC = () => {
 
   // Enhanced Program Features from Redux data
   const enhancedProgramFeatures = mathCoursesData?.features ?? [];
+
+  // Show loading skeleton when data is loading
+  if (mathCoursesLoading && !mathCoursesData) {
+    return (
+      <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        {/* Header Skeleton */}
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-amber-50"></div>
+          <div className="relative z-10 py-20 px-4 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center">
+              <div className="space-y-6">
+                <div className="h-12 w-96 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-80 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-10 w-48 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filters Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[...Array(3)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Courses Grid Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <HydrationBoundary>

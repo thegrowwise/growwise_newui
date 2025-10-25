@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { DropdownItem as DropdownItemType, SubmenuItem } from './types';
@@ -28,13 +29,14 @@ export default function DropdownItem({
   createLocaleUrl,
   variant
 }: DropdownItemProps) {
+  const [isHovered, setIsHovered] = useState(false);
   const IconComponent = ICON_MAP[item.icon as keyof typeof ICON_MAP] || ICON_MAP.Calculator;
   const colors = {
     blue: { primary: '#1F396D', secondary: '#F16112' },
     orange: { primary: '#F16112', secondary: '#1F396D' }
   }[variant];
 
-  const isHighlighted = isActive || (hasSubmenu && isSubmenuOpen);
+  const isHighlighted = isActive || (hasSubmenu && isSubmenuOpen) || isHovered;
 
   const handleClick = (e: React.MouseEvent) => {
     if (hasSubmenu) {
@@ -49,7 +51,18 @@ export default function DropdownItem({
     <div className="relative">
       <Link
         href={hasSubmenu ? '#' : createLocaleUrl(item.href)}
-        onMouseEnter={hasSubmenu ? onSubmenuEnter : undefined}
+        onMouseEnter={(e) => {
+          setIsHovered(true);
+          if (hasSubmenu) {
+            onSubmenuEnter();
+          }
+        }}
+        onMouseLeave={(e) => {
+          setIsHovered(false);
+          if (hasSubmenu) {
+            onSubmenuLeave();
+          }
+        }}
         onClick={handleClick}
         className={`group mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer border-0 outline-none w-full ${
           isHighlighted
@@ -125,6 +138,8 @@ interface SubmenuProps {
 }
 
 function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }: SubmenuProps) {
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+
   return (
     <div 
       className="absolute left-full top-0 ml-2 w-72 bg-white/95 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-white/30 z-50"
@@ -142,37 +157,41 @@ function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }:
         {items.filter(item => item.visible !== false).map((subItem, subIndex) => {
           const SubIconComponent = ICON_MAP[subItem.icon as keyof typeof ICON_MAP] || ICON_MAP.Calculator;
           const isSubActive = false; // TODO: Pass from parent if needed
+          const isSubHovered = hoveredItem === subItem.title;
+          const isSubHighlighted = isSubActive || isSubHovered;
           
           return (
             <Link
               key={subItem.title}
               href={subItem.href}
               onClick={onItemClick}
+              onMouseEnter={() => setHoveredItem(subItem.title)}
+              onMouseLeave={() => setHoveredItem(null)}
               className={`group mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer border-0 outline-none w-full ${
-                isSubActive 
+                isSubHighlighted 
                   ? 'bg-gradient-to-r from-[#1F396D]/10 to-[#F16112]/10 shadow-inner' 
                   : 'hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50'
               }`}
             >
               <div className="flex items-center gap-3 px-4 py-2 w-full">
                 <div className={`p-2 rounded-lg transition-all duration-300 ${
-                  isSubActive 
+                  isSubHighlighted 
                     ? `bg-gradient-to-r ${subItem.gradient} shadow-md` 
                     : 'bg-gray-100 group-hover:bg-gradient-to-r group-hover:from-gray-200 group-hover:to-gray-100'
                 }`}>
                   <SubIconComponent className={`w-4 h-4 transition-colors duration-300 ${
-                    isSubActive ? 'text-white' : 'text-gray-600'
+                    isSubHighlighted ? 'text-white' : 'text-gray-600'
                   }`} />
                 </div>
                 
                 <div className="flex-1 text-left">
                   <span className={`font-semibold text-sm block ${
-                    isSubActive ? `text-[${colors.primary}]` : 'text-gray-900 group-hover:text-gray-900'
+                    isSubHighlighted ? `text-[${colors.primary}]` : 'text-gray-900 group-hover:text-gray-900'
                   }`}>
                     {subItem.title}
                   </span>
                   <p className={`text-xs mt-0.5 ${
-                    isSubActive ? `text-[${colors.primary}]/70` : 'text-gray-500 group-hover:text-gray-600'
+                    isSubHighlighted ? `text-[${colors.primary}]/70` : 'text-gray-500 group-hover:text-gray-600'
                   }`}>
                     {subItem.description}
                   </p>
