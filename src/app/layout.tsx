@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ClientAnalyticsProvider } from "@/components/providers/ClientAnalyticsProvider";
 
 export const metadata: Metadata = {
   title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
-        {children}
+        <ClientAnalyticsProvider>
+          {children}
+        </ClientAnalyticsProvider>
       </body>
     </html>
   );

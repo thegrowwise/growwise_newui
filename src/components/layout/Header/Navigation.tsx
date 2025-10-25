@@ -1,6 +1,7 @@
 import { MenuItem } from './types';
 import MenuItemRenderer from './MenuItemRenderer';
 import UtilityIcons from './UtilityIcons';
+import { useNavigationTracking } from '@/lib/analytics/hooks';
 
 interface NavigationProps {
   menuItems: MenuItem[];
@@ -35,6 +36,7 @@ export default function Navigation({
   footerHelper,
   footerContactCta
 }: NavigationProps) {
+  const { trackNavigationClick } = useNavigationTracking();
   return (
     <>
       {/* Desktop Navigation */}
