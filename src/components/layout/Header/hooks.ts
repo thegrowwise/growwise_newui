@@ -36,15 +36,44 @@ export function useDropdownState() {
   };
 
   const openSubmenu = (key: string) => {
-    setOpenSubmenus(prev => ({ ...prev, [key]: true }));
+    // Clear any existing timeouts for submenus
+    Object.keys(dropdownTimeouts.current).forEach(timeoutKey => {
+      if (timeoutKey.startsWith('submenu-')) {
+        clearTimeoutRef(timeoutKey);
+      }
+    });
+    
+    setOpenSubmenus(prev => {
+      // Close all other submenus and open the new one
+      const newState: DropdownState = {};
+      newState[key] = true;
+      return newState;
+    });
   };
 
   const closeSubmenu = (key: string) => {
     setOpenSubmenus(prev => ({ ...prev, [key]: false }));
   };
 
+  const scheduleCloseSubmenu = (key: string) => {
+    const timeoutKey = `submenu-${key}`;
+    clearTimeoutRef(timeoutKey);
+    dropdownTimeouts.current[timeoutKey] = window.setTimeout(() => {
+      setOpenSubmenus(prev => ({ ...prev, [key]: false }));
+    }, 100); // Small delay to allow for smooth transitions
+  };
+
   const toggleSubmenu = (key: string) => {
-    setOpenSubmenus(prev => ({ ...prev, [key]: !prev[key] }));
+    setOpenSubmenus(prev => {
+      // If the current submenu is open, close it
+      if (prev[key]) {
+        return { ...prev, [key]: false };
+      }
+      // Otherwise, close all other submenus and open this one
+      const newState: DropdownState = {};
+      newState[key] = true;
+      return newState;
+    });
   };
 
   const closeAllDropdowns = () => {
@@ -70,11 +99,12 @@ export function useDropdownState() {
     closeDropdown,
     openSubmenu,
     closeSubmenu,
+    scheduleCloseSubmenu,
     toggleSubmenu,
     closeAllDropdowns,
     onSubmenuToggle: toggleSubmenu,
     onSubmenuEnter: openSubmenu,
-    onSubmenuLeave: closeSubmenu
+    onSubmenuLeave: scheduleCloseSubmenu
   };
 }
 

@@ -7,6 +7,7 @@ import { Card, CardContent } from '../ui/card';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import ContactForm, { ContactFormData } from './ContactForm';
 import { contactService } from '../../lib/contactService';
+import { ChatMessageSkeleton } from '../ui/loading-skeletons';
 
 interface Message {
   id: string;
@@ -372,6 +373,11 @@ export default function Chatbot() {
                   )}
                 </div>
               ))}
+              
+              {/* Typing indicator */}
+              {isTyping && (
+                <ChatMessageSkeleton />
+              )}
               
               {/* Suggested Questions */}
               {messages.length === 1 && (

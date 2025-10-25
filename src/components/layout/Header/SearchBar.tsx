@@ -4,6 +4,7 @@ import { Search, X, Loader2, ArrowRight, BookOpen, Code, Users, Star } from 'luc
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { websiteSearchService } from '@/lib/websiteSearchService';
+import { SearchResultsSkeleton } from '../../ui/loading-skeletons';
 
 interface SearchResult {
   id: string;
@@ -253,7 +254,10 @@ export default function SearchBar() {
                 </div>
 
                 <div className="space-y-2">
-                  {results.map((result, index) => (
+                  {isLoading ? (
+                    <SearchResultsSkeleton />
+                  ) : (
+                    results.map((result, index) => (
                     <Card
                       key={result.id}
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -286,7 +290,8 @@ export default function SearchBar() {
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
             )}
