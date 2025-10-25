@@ -12,6 +12,8 @@ export interface ProgramVM {
   bgGradient: string;
   iconColor: string;
   href?: string;
+  ctaText?: string;
+  ctaUrl?: string;
   IconComponent: React.ComponentType<any>;
   subItems: { name: string; icon: string; description: string }[];
 }
@@ -53,13 +55,20 @@ export function ProgramsSection({
                 ))}
               </div>
               <div className="mt-8 pt-6">
-                {program.href ? (
+                {program.ctaUrl ? (
                   <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
-                    <Link href={program.href}>Enroll Now</Link>
+                    <Link href={program.ctaUrl}>{program.ctaText || 'Enroll Now'}</Link>
+                  </Button>
+                ) : program.href ? (
+                  <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
+                    <Link href={program.href}>{program.ctaText || 'Enroll Now'}</Link>
                   </Button>
                 ) : (
-                  <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
-                    Enroll Now
+                  <Button 
+                    onClick={() => window.location.href = '/enroll'}
+                    className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}
+                  >
+                    {program.ctaText || 'Enroll Now'}
                   </Button>
                 )}
               </div>

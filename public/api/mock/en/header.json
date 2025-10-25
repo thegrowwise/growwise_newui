@@ -146,6 +146,15 @@
       "variant": "orange"
     },
     {
+      "key": "enroll",
+      "label": "Enroll Now",
+      "href": "/enroll",
+      "type": "simple",
+      "variant": "orange",
+      "isButton": true,
+      "buttonStyle": "rounded"
+    },
+    {
       "key": "programs",
       "label": "Programs",
       "href": "/programs",
