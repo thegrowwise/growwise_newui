@@ -1,60 +1,225 @@
 {
-  "whyChooseAcademic": [
+  "academicPrograms": [
     {
-      "icon": "Calculator",
+      "id": 1,
       "title": "Math Mastery",
-      "description": "Personalized math instruction for all levels, aligned with DUSD & PUSD curriculum.",
-      "bgColor": "bg-gradient-to-br from-[#1F396D] to-[#29335C]",
-      "color": "text-[#1F396D]"
+      "description": "Comprehensive mathematics curriculum from foundational to advanced levels",
+      "icon": "Calculator",
+      "gradient": "from-[#1F396D] to-[#29335C]",
+      "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10",
+      "iconColor": "text-[#1F396D]",
+      "features": [
+        "Elementary Math (K-5)",
+        "Middle School Math (6-8)",
+        "High School Math (9-12)",
+        "DUSD & PUSD Aligned",
+        "One-on-One Support",
+        "Progress Tracking"
+      ],
+      "ctaText": "Start Learning",
+      "ctaUrl": "/enroll"
     },
     {
+      "id": 2,
+      "title": "English Language Arts",
+      "description": "Develop comprehensive English language arts skills",
       "icon": "BookOpen",
-      "title": "English Excellence",
-      "description": "Comprehensive English language arts skills from reading to writing.",
-      "bgColor": "bg-gradient-to-br from-[#F16112] to-[#F1894F]",
-      "color": "text-[#F16112]"
-    },
-    {
-      "icon": "UserCheck",
-      "title": "Personalized Support",
-      "description": "One-on-one guidance to help students excel academically.",
-      "bgColor": "bg-gradient-to-br from-[#F1894F] to-[#F16112]",
-      "color": "text-[#F1894F]"
-    },
-    {
-      "icon": "Lightbulb",
-      "title": "Engaging Curriculum",
-      "description": "Innovative and interactive curriculum for deeper learning.",
-      "bgColor": "bg-gradient-to-br from-[#1F396D] to-[#F16112]",
-      "color": "text-[#1F396D]"
+      "gradient": "from-[#F16112] to-[#F1894F]",
+      "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10",
+      "iconColor": "text-[#F16112]",
+      "features": [
+        "Reading Comprehension",
+        "Writing Skills",
+        "Grammar & Vocabulary",
+        "DUSD & PUSD Aligned",
+        "Grade-Level & Accelerated",
+        "One-on-One Support"
+      ],
+      "ctaText": "Start Learning",
+      "ctaUrl": "/enroll"
     }
   ],
-  "successStories": [
-    {
-      "name": "Ava Patel",
-      "grade": "Grade 7",
-      "subject": "Math",
-      "improvement": "+30% Improvement",
-      "quote": "GrowWise helped me understand math concepts I struggled with for years!",
-      "image": "/assets/0fb554c814973287034758481cdce9617220c706.png"
+  "heroSection": {
+    "title": "Math & English Programs Aligned with DUSD & PUSD",
+    "subtitle": "GrowWise School: Dublin's Learning Hub for K-12 Excellence",
+    "description": "Welcome to GrowWise School, your local destination for personalized academic programs. Serving students from grades 1-12 in Dublin, Pleasanton, and the entire Tri-Valley area, we are committed to nurturing success.",
+    "alignment": "Our curriculum is 100% aligned with California Common Core, DUSD, and PUSD standards, ensuring your child's learning directly supports their classroom progress.",
+    "ctaText": "Enroll now!",
+    "primaryButton": {
+      "text": "Learn more →",
+      "action": "modal"
     },
-    {
-      "name": "Liam Chen",
-      "grade": "Grade 9",
-      "subject": "English",
-      "improvement": "+2 Grade Levels",
-      "quote": "My writing and grammar improved so much thanks to GrowWise!",
-      "image": "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png"
-    },
-    {
-      "name": "Sophia Kim",
-      "grade": "Grade 5",
-      "subject": "Math & English",
-      "improvement": "Top 5% in Class",
-      "quote": "I love the fun lessons and friendly teachers at GrowWise!",
-      "image": "/assets/4d5f8738dc90c959ab8bf4453a752c35ebcfde0b.png"
+    "secondaryButton": {
+      "text": "Enroll Now",
+      "url": "/enroll"
     }
-  ]
+  },
+  "pricingOptions": [
+    {
+      "id": 1,
+      "title": "One-on-One Tutoring",
+      "description": "Personalized attention for focused learning",
+      "icon": "👤",
+      "color": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20",
+      "textColor": "text-[#1F396D]"
+    },
+    {
+      "id": 2,
+      "title": "Small Group Classes",
+      "description": "Collaborative learning with peers",
+      "icon": "👥",
+      "color": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20",
+      "textColor": "text-[#F16112]"
+    },
+    {
+      "id": 3,
+      "title": "Online Sessions",
+      "description": "Flexible learning from anywhere",
+      "icon": "💻",
+      "color": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20",
+      "textColor": "text-[#F1894F]"
+    }
+  ],
+  "englishMasteryComponents": [
+    {
+      "id": 1,
+      "title": "Reading Comprehension",
+      "color": "bg-gradient-to-br from-[#1F396D] to-[#29335C]",
+      "textColor": "text-white",
+      "features": [
+        "Critical thinking skills",
+        "Text analysis techniques",
+        "Inference and deduction",
+        "Vocabulary expansion"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Writing Excellence",
+      "color": "bg-gradient-to-br from-[#F16112] to-[#F1894F]",
+      "textColor": "text-white",
+      "features": [
+        "Essay structure and organization",
+        "Creative writing techniques",
+        "Grammar and mechanics",
+        "Research and citation"
+      ]
+    }
+  ],
+  "mathPrograms": [
+    {
+      "id": 1,
+      "title": "Elementary Math",
+      "color": "bg-gradient-to-br from-[#1F396D] to-[#29335C]",
+      "borderColor": "border-[#1F396D]/30",
+      "textColor": "text-white",
+      "features": [
+        "Number sense and operations",
+        "Fractions and decimals",
+        "Geometry basics",
+        "Problem-solving strategies"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Middle School Math",
+      "color": "bg-gradient-to-br from-[#F16112] to-[#F1894F]",
+      "borderColor": "border-[#F16112]/30",
+      "textColor": "text-white",
+      "features": [
+        "Pre-algebra foundations",
+        "Algebraic thinking",
+        "Geometry and measurement",
+        "Data analysis"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "High School Math",
+      "color": "bg-gradient-to-br from-[#F1894F] to-[#F16112]",
+      "borderColor": "border-[#F1894F]/30",
+      "textColor": "text-white",
+      "features": [
+        "Algebra I & II",
+        "Geometry and trigonometry",
+        "Pre-calculus preparation",
+        "AP Math courses"
+      ]
+    }
+  ],
+  "writingFeatures": [
+    { "label": "Creative Writing", "color": "bg-[#1F396D] text-white" },
+    { "label": "Essay Writing", "color": "bg-[#F16112] text-white" },
+    { "label": "Research Papers", "color": "bg-[#F1894F] text-white" },
+    { "label": "Grammar & Style", "color": "bg-[#29335C] text-white" }
+  ],
+  "testPrepPricing": {
+    "title": "SAT/ACT Test Prep Pricing",
+    "description": "Comprehensive test preparation with proven strategies",
+    "pricing": [
+      {
+        "title": "Individual Sessions",
+        "price": "$120",
+        "description": "One-on-one personalized prep",
+        "features": ["Personalized study plan", "Practice test analysis", "Strategy coaching"]
+      },
+      {
+        "title": "Group Sessions",
+        "price": "$80",
+        "description": "Small group preparation",
+        "features": ["Peer learning", "Group practice tests", "Collaborative strategies"]
+      },
+      {
+        "title": "Practice Tests",
+        "price": "$8",
+        "description": "for non-GrowWisers",
+        "features": ["Full-length practice tests", "Detailed score reports", "Performance analysis"]
+      }
+    ],
+    "ctaText": "Register for Practice Sessions",
+    "ctaUrl": "/enroll"
+  },
+  "ctaSection": {
+    "title": "Ready to Excel in Academics?",
+    "subtitle": "Join hundreds of students who have improved their academic performance with our personalized programs.",
+    "primaryButton": {
+      "text": "Book Free Assessment",
+      "url": "/enroll"
+    },
+    "secondaryButton": {
+      "text": "Learn More",
+      "action": "modal"
+    }
+  },
+  "modalContent": {
+    "title": "Choose Your Learning Path",
+    "subtitle": "Select the program that best fits your academic goals",
+    "programs": [
+      {
+        "title": "Math Programs",
+        "description": "Build strong mathematical foundations",
+        "icon": "Calculator",
+        "features": [
+          "DUSD & PUSD Aligned",
+          "Grade-Level & Accelerated",
+          "One-on-One Support"
+        ],
+        "ctaText": "View More",
+        "ctaUrl": "/courses/math"
+      },
+      {
+        "title": "English Programs",
+        "description": "Develop comprehensive language arts skills",
+        "icon": "BookOpen",
+        "features": [
+          "Reading Comprehension",
+          "Essay Writing",
+          "Grammar & Vocabulary"
+        ],
+        "ctaText": "View More",
+        "ctaUrl": "/courses/english"
+      }
+    ],
+    "footerText": "Not sure which path to choose? Contact us for guidance"
+  }
 }
-
-
