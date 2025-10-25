@@ -6,6 +6,7 @@
       "subtitle": "Personalized and small group learning",
       "description": "Build strong academic foundations with expert K-12 instruction tailored to your child's learning style.",
       "cta": "Book 60 minutes Free Assessment",
+      "ctaUrl": "/enroll",
       "icon": "BookOpen",
       "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#2a4a7c]",
       "iconColor": "text-white",
@@ -18,6 +19,7 @@
       "subtitle": "STEAM courses",
       "description": "Hands-on STEAM learning with Roblox, Scratch, Python, ML/AI, and Young Entrepreneurship programs.",
       "cta": "Book 30 minutes trial class",
+      "ctaUrl": "/enroll",
       "icon": "Code",
       "bgGradient": "bg-gradient-to-br from-[#F16112] via-[#F1894F] to-[#d54f0a]",
       "iconColor": "text-white",
@@ -30,6 +32,7 @@
       "subtitle": "100% personal attention",
       "description": "Specially designed for specific homework help and targeted learning support for kids who need focused attention.",
       "cta": "Register Now",
+      "ctaUrl": "/enroll",
       "icon": "Users",
       "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#F16112] to-[#F1894F]",
       "iconColor": "text-white",
@@ -49,44 +52,44 @@
     { "id": 3, "value": "98%", "label": "Students Satisfaction", "icon": "ThumbsUp", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" }
   ],
   "k12Programs": [
-    { "id": 1, "title": "Math Courses", "description": "Build strong mathematical foundations from elementary to advanced levels", "icon": "Calculator", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "href": "/courses/math", "subItems": [
+    { "id": 1, "title": "Math Courses", "description": "Build strong mathematical foundations from elementary to advanced levels", "icon": "Calculator", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "href": "/courses/math", "ctaText": "Start Learning", "ctaUrl": "/courses/math", "subItems": [
       { "name": "Elementary Math", "icon": "🔢", "description": "Basic arithmetic and number sense" },
       { "name": "Middle School Math", "icon": "📊", "description": "Algebra and geometry foundations" },
       { "name": "DUSD Accelerated Math", "icon": "🚀", "description": "Advanced placement preparation" },
       { "name": "High School Math", "icon": "🎯", "description": "Calculus and advanced topics" }
     ] },
-    { "id": 2, "title": "ELA Courses", "description": "Develop comprehensive English language arts skills", "icon": "BookOpen", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "href": "/courses/english", "subItems": [
+    { "id": 2, "title": "ELA Courses", "description": "Develop comprehensive English language arts skills", "icon": "BookOpen", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "href": "/courses/english", "ctaText": "Start Learning", "ctaUrl": "/courses/english", "subItems": [
       { "name": "English Mastery: K-12", "icon": "📚", "description": "Complete language arts curriculum" },
       { "name": "Reading Enrichment", "icon": "📖", "description": "Improve reading comprehension" },
       { "name": "Grammar Boost", "icon": "✏️", "description": "Master grammar and mechanics" }
     ] },
-    { "id": 3, "title": "Writing Lab", "description": "Master the art of effective written communication", "icon": "PenTool", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+    { "id": 3, "title": "Writing Lab", "description": "Master the art of effective written communication", "icon": "PenTool", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "ctaText": "Start Learning", "ctaUrl": "/courses/english", "subItems": [
       { "name": "Creative Writing", "icon": "✨", "description": "Unleash your creative potential" },
       { "name": "Essay Writing", "icon": "📝", "description": "Academic and persuasive writing" },
       { "name": "Create & Reflect", "icon": "🤔", "description": "Develop critical thinking skills" }
     ] },
-    { "id": 4, "title": "SAT/ACT", "description": "Achieve your best scores with comprehensive test preparation", "icon": "Award", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-gray-50 to-gray-100", "iconColor": "text-[#1F396D]", "subItems": [
+    { "id": 4, "title": "SAT/ACT", "description": "Achieve your best scores with comprehensive test preparation", "icon": "Award", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-gray-50 to-gray-100", "iconColor": "text-[#1F396D]", "ctaText": "Start Learning", "ctaUrl": "/courses/sat-prep", "subItems": [
       { "name": "Math Test Prep", "icon": "🧮", "description": "Master SAT/ACT math sections" },
       { "name": "Online SAT Test Prep", "icon": "💻", "description": "Comprehensive SAT preparation" },
       { "name": "Online ACT Test Prep", "icon": "🎯", "description": "Complete ACT test strategy" }
     ] }
   ],
   "steamPrograms": [
-    { "id": 1, "title": "Game Development", "description": "Create immersive games and interactive experiences", "icon": "Gamepad2", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "subItems": [
+    { "id": 1, "title": "Game Development", "description": "Create immersive games and interactive experiences", "icon": "Gamepad2", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "ctaText": "Enroll Now", "ctaUrl": "/steam/game-development", "subItems": [
       { "name": "Roblox Studio", "icon": "🎮", "description": "Create games in Roblox platform" },
       { "name": "Scratch", "icon": "🐱", "description": "Visual programming for beginners" },
       { "name": "Minecraft", "icon": "⛏️", "description": "Build and code in Minecraft" }
     ] },
-    { "id": 2, "title": "Python Programming", "description": "Master the world's most popular programming language", "icon": "Code", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "subItems": [
+    { "id": 2, "title": "Python Programming", "description": "Master the world's most popular programming language", "icon": "Code", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "ctaText": "Enroll Now", "ctaUrl": "/steam/ml-ai-coding", "subItems": [
       { "name": "Python Kickstart", "icon": "🚀", "description": "Begin your Python journey" },
       { "name": "Python Power Up", "icon": "⚡", "description": "Intermediate Python skills" },
       { "name": "Python Pro", "icon": "🏆", "description": "Advanced Python mastery" }
     ] },
-    { "id": 3, "title": "Young Founders", "description": "Develop entrepreneurial skills and business mindset", "icon": "Lightbulb", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+    { "id": 3, "title": "Young Founders", "description": "Develop entrepreneurial skills and business mindset", "icon": "Lightbulb", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "ctaText": "Enroll Now", "ctaUrl": "/steam", "subItems": [
       { "name": "Youth CEO", "icon": "👑", "description": "Learn leadership and management" },
       { "name": "I Am Brand", "icon": "🎯", "description": "Build your personal brand" }
     ] },
-    { "id": 4, "title": "ML/Gen AI", "description": "Explore artificial intelligence and machine learning", "icon": "Brain", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10", "iconColor": "text-[#1F396D]", "subItems": [
+    { "id": 4, "title": "ML/Gen AI", "description": "Explore artificial intelligence and machine learning", "icon": "Brain", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10", "iconColor": "text-[#1F396D]", "ctaText": "Enroll Now", "ctaUrl": "/steam/ml-ai-coding", "subItems": [
       { "name": "Prompt Engineering", "icon": "🤖", "description": "Master AI prompt techniques" },
       { "name": "AI for Everyone", "icon": "🧠", "description": "AI fundamentals for all ages" },
       { "name": "ML/AI for Highschoolers", "icon": "🎓", "description": "Advanced AI concepts" }
@@ -108,7 +111,9 @@
     "title": "Ready to Start Your Learning Journey?",
     "subtitle": "Join thousands of students who have transformed their academic future with GrowWise.",
     "primaryCta": "Get Started",
-    "secondaryCta": "Contact Us"
+    "primaryCtaUrl": "/enroll",
+    "secondaryCta": "Contact Us",
+    "secondaryCtaUrl": "/contact"
   }
 }
 

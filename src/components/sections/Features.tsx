@@ -269,11 +269,12 @@ export default function Features() {
                       {/* CTA Button */}
                       <div className="mt-6 pt-4">
                         <Button 
+                          onClick={() => window.location.href = program.ctaUrl || '/enroll'}
                           className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-lg text-white rounded-xl py-3 transition-all duration-300 transform ${
                             isHovered ? 'scale-105 shadow-lg' : ''
                           }`}
                         >
-                          Enroll Now
+                          {program.ctaText || 'Enroll Now'}
                           <GraduationCap className="ml-2 w-4 h-4" />
                         </Button>
                       </div>

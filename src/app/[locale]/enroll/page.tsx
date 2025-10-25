@@ -1,27 +1,81 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 
 export default function EnrollPage() {
+  const formRef = useRef<HTMLFormElement>(null);
   const [agree, setAgree] = useState(false);
   const [bootcamp, setBootcamp] = useState<string | undefined>(undefined);
   const [course, setCourse] = useState<string | undefined>(undefined);
   const [level, setLevel] = useState<string | undefined>(undefined);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    // For now, just log. Hook up to API later.
-    // eslint-disable-next-line no-console
-    console.log(Object.fromEntries(formData.entries()));
-    alert('Thank you! Your registration has been received.');
-    e.currentTarget.reset();
-    setAgree(false);
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const enrollmentData = {
+        fullName: formData.get('fullName') as string,
+        email: formData.get('email') as string,
+        mobile: formData.get('mobile') as string,
+        city: formData.get('city') as string,
+        postal: formData.get('postal') as string,
+        bootcamp: bootcamp || 'None',
+        course: course || 'None',
+        level: level as string,
+        agree: agree
+      };
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/enrollment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(enrollmentData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setSubmitStatus('error');
+        setErrorMessage(result.error || result.message || `Server error (${response.status})`);
+        return;
+      }
+
+      if (result.success) {
+        setSubmitStatus('success');
+        // Reset form by clearing all state
+        setAgree(false);
+        setBootcamp(undefined);
+        setCourse(undefined);
+        setLevel(undefined);
+        // Reset form fields using ref
+        if (formRef.current) {
+          formRef.current.reset();
+        }
+      } else {
+        setSubmitStatus('error');
+        setErrorMessage(result.error || 'Failed to submit enrollment');
+      }
+    } catch (error) {
+      console.error('Enrollment submission error:', error);
+      setSubmitStatus('error');
+      setErrorMessage('Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -32,7 +86,29 @@ export default function EnrollPage() {
           <p className="text-gray-600 mt-2">Please fill out the form below and we will get back to you shortly.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white/70 backdrop-blur-xl border-2 border-white/60 ring-1 ring-white/30 rounded-2xl shadow-[0_20px_60px_rgba(31,57,109,0.15)] p-6 md:p-10">
+        {/* Success Message */}
+        {submitStatus === 'success' && (
+          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
+            <CheckCircle className="w-5 h-5 text-green-600" />
+            <div>
+              <h3 className="text-green-800 font-semibold">Enrollment Successful!</h3>
+              <p className="text-green-700 text-sm">Thank you for enrolling with GrowWise. We will contact you within 24 hours.</p>
+            </div>
+          </div>
+        )}
+
+        {/* Error Message */}
+        {submitStatus === 'error' && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-red-600" />
+            <div>
+              <h3 className="text-red-800 font-semibold">Enrollment Failed</h3>
+              <p className="text-red-700 text-sm">{errorMessage}</p>
+            </div>
+          </div>
+        )}
+
+        <form ref={formRef} onSubmit={handleSubmit} className="bg-white/70 backdrop-blur-xl border-2 border-white/60 ring-1 ring-white/30 rounded-2xl shadow-[0_20px_60px_rgba(31,57,109,0.15)] p-6 md:p-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName">Your Full Name *</Label>
@@ -103,8 +179,8 @@ export default function EnrollPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="postal">Postal code *</Label>
-              <Input id="postal" name="postal" placeholder="Postal code" required />
+              <Label htmlFor="postal">Postal code</Label>
+              <Input id="postal" name="postal" placeholder="Postal code" />
             </div>
           </div>
 
@@ -128,8 +204,19 @@ export default function EnrollPage() {
           </div>
 
           <div className="mt-8 flex justify-center">
-            <Button type="submit" disabled={!agree} className="w-full md:w-auto bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-8 py-6 text-base font-semibold">
-              Register for Professional Courses
+            <Button 
+              type="submit" 
+              disabled={!agree || isSubmitting} 
+              className="w-full md:w-auto bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-8 py-6 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Processing Enrollment...
+                </>
+              ) : (
+                'Register for Professional Courses'
+              )}
             </Button>
           </div>
         </form>
