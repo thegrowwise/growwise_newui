@@ -76,6 +76,7 @@
       "phone": "Phone Number",
       "studentName": "Student Name",
       "grade": "Grade Level",
+      "schoolDistrict": "School District",
       "subjects": "Subjects of Interest",
       "mode": "Preferred Learning Mode",
       "schedule": "Preferred Schedule",
@@ -102,16 +103,12 @@
     "subjects": {
       "math": "Math",
       "english": "English",
-      "coding": "Coding",
-      "ai": "AI/ML",
-      "gameDev": "Game Development",
-      "robotics": "Robotics",
       "sat": "SAT/ACT"
     },
     "schedule": {
-      "weekdaysAfterSchool": "Weekdays After School",
-      "weekendsMorning": "Weekends Morning",
-      "weekendsAfternoon": "Weekends Afternoon"
+      "weekdaysAfterSchool": "Weekdays After School (3PM - 6PM)",
+      "weekendsMorning": "Weekend Morning (10AM - 12PM)",
+      "weekendsAfternoon": "Weekend Afternoon (2PM - 4PM)"
     }
   },
   "chatbot": {
