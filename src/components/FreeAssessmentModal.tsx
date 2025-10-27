@@ -25,6 +25,7 @@ interface FormData {
   phone: string;
   studentName: string;
   grade: string;
+  schoolDistrict: string;
   subjects: string[];
   mode: string;
   schedule: string;
@@ -40,6 +41,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
     phone: '',
     studentName: '',
     grade: '',
+    schoolDistrict: '',
     subjects: [],
     mode: '',
     schedule: '',
@@ -50,15 +52,14 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const grades = [
-    t('assessment.grades.kindergarten'), t('assessment.grades.grade1'), t('assessment.grades.grade2'), 
+    t('assessment.grades.grade1'), t('assessment.grades.grade2'), 
     t('assessment.grades.grade3'), t('assessment.grades.grade4'), t('assessment.grades.grade5'),
     t('assessment.grades.grade6'), t('assessment.grades.grade7'), t('assessment.grades.grade8'), 
     t('assessment.grades.grade9'), t('assessment.grades.grade10'), t('assessment.grades.grade11'), t('assessment.grades.grade12')
   ];
 
   const availableSubjects = [
-    t('assessment.subjects.math'), t('assessment.subjects.english'), t('assessment.subjects.coding'), 
-    t('assessment.subjects.ai'), t('assessment.subjects.gameDev'), t('assessment.subjects.robotics'), t('assessment.subjects.sat')
+    t('assessment.subjects.math'), t('assessment.subjects.english'), t('assessment.subjects.sat')
   ];
 
   const scheduleOptions = [
@@ -97,6 +98,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
       phone: '',
       studentName: '',
       grade: '',
+      schoolDistrict: '',
       subjects: [],
       mode: '',
       schedule: '',
@@ -225,6 +227,27 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                             </SelectContent>
                           </Select>
                         </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <Label htmlFor="schoolDistrict">{t('assessment.form.schoolDistrict')} *</Label>
+                        <Select onValueChange={(value) => handleInputChange('schoolDistrict', value)} required>
+                          <SelectTrigger className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors">
+                            <SelectValue placeholder={t('assessment.form.schoolDistrict')} />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl">
+                            {[
+                              t('assessment.schoolDistricts.dublin'),
+                              t('assessment.schoolDistricts.pleasanton'),
+                              t('assessment.schoolDistricts.sanRamon'),
+                              t('assessment.schoolDistricts.other')
+                            ].map((district) => (
+                              <SelectItem key={district} value={district} className="hover:bg-[#F16112]/10">
+                                {district}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
                     </div>
 
