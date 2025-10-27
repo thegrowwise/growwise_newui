@@ -231,23 +231,14 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
                       <div className="space-y-2">
                         <Label htmlFor="schoolDistrict">{t('assessment.form.schoolDistrict')} *</Label>
-                        <Select onValueChange={(value) => handleInputChange('schoolDistrict', value)} required>
-                          <SelectTrigger className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors">
-                            <SelectValue placeholder={t('assessment.form.schoolDistrict')} />
-                          </SelectTrigger>
-                          <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl">
-                            {[
-                              t('assessment.schoolDistricts.dublin'),
-                              t('assessment.schoolDistricts.pleasanton'),
-                              t('assessment.schoolDistricts.sanRamon'),
-                              t('assessment.schoolDistricts.other')
-                            ].map((district) => (
-                              <SelectItem key={district} value={district} className="hover:bg-[#F16112]/10">
-                                {district}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <Textarea
+                          id="schoolDistrict"
+                          value={formData.schoolDistrict}
+                          onChange={(e) => handleInputChange('schoolDistrict', e.target.value)}
+                          className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors min-h-[80px]"
+                          placeholder="Enter your school district (e.g., Dublin USD, Pleasanton USD, San Ramon USD, etc.)"
+                          required
+                        />
                       </div>
                     </div>
 

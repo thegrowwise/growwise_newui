@@ -109,12 +109,6 @@
       "weekdaysAfterSchool": "Weekdays After School (3PM - 6PM)",
       "weekendsMorning": "Weekend Morning (10AM - 12PM)",
       "weekendsAfternoon": "Weekend Afternoon (2PM - 4PM)"
-    },
-    "schoolDistricts": {
-      "dublin": "Dublin USD",
-      "pleasanton": "Pleasanton USD",
-      "sanRamon": "San Ramon USD",
-      "other": "Other"
     }
   },
   "chatbot": {
