@@ -2,13 +2,14 @@
 
 import React, { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { X, CheckCircle, User, GraduationCap, BookOpen, MessageSquare, Mail, Smartphone } from 'lucide-react';
+import { X, CheckCircle, User, GraduationCap, BookOpen, Users, MessageSquare, Mail, Smartphone } from 'lucide-react';
 import { Button } from './button';
 import { Input } from './input';
 import { Label } from './label';
 import { Textarea } from './textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { RadioGroup, RadioGroupItem } from './radio-group';
+import { Checkbox } from './checkbox';
 import { Card, CardContent } from './card';
 import CountryCodeSelector from '../CountryCodeSelector';
 
@@ -50,6 +51,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // A. Remove Kindergarten from Grades
   const grades = [
     t('assessment.grades.grade1'), t('assessment.grades.grade2'), 
     t('assessment.grades.grade3'), t('assessment.grades.grade4'), t('assessment.grades.grade5'),
@@ -57,6 +59,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
     t('assessment.grades.grade9'), t('assessment.grades.grade10'), t('assessment.grades.grade11'), t('assessment.grades.grade12')
   ];
 
+  // B. Remove Math, English, SAT/ACT - Add STEAM subjects
   const availableSubjects = [
     t('trial.subjects.coding'), 
     t('trial.subjects.ai'), 
@@ -126,13 +129,13 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                 <>
                   <div className="text-center mb-8">
                     <div className="w-16 h-16 bg-gradient-to-r from-[#F16112] to-[#F1894F] rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0px_15px_40px_rgba(241,97,18,0.4)]">
-                      <BookOpen className="w-8 h-8 text-white" />
+                      <GraduationCap className="w-8 h-8 text-white" />
                     </div>
                     <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-3">
-                      Book Trial
+                      Book 30-Minute Free Trial
                     </h2>
                     <p className="text-gray-600 text-base lg:text-lg">
-                      Book your 30-minute free trial class for STEAM courses
+                      Get personalized learning recommendations for your child
                     </p>
                   </div>
 
@@ -227,6 +230,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                         </div>
                       </div>
 
+                      {/* C. Add School District field */}
                       <div className="space-y-2">
                         <Label htmlFor="schoolDistrict">School District *</Label>
                         <Textarea
@@ -242,7 +246,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
 
                     <div className="space-y-4">
                       <h3 className="text-xl font-semibold text-[#1F396D] flex items-center gap-2">
-                        <GraduationCap className="w-5 h-5" />
+                        <Users className="w-5 h-5" />
                         Learning Preferences
                       </h3>
 
@@ -252,12 +256,11 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                           <div className="grid grid-cols-2 md:grid-cols-2 gap-3">
                             {availableSubjects.map((subject) => (
                               <div key={subject} className="flex items-center space-x-2">
-                                <input
-                                  type="checkbox"
+                                <Checkbox
                                   id={subject}
                                   checked={formData.subjects.includes(subject)}
-                                  onChange={(e) => handleSubjectChange(subject, e.target.checked)}
-                                  className="w-4 h-4 border-2 border-gray-300 rounded text-[#F16112] focus:ring-[#F16112] focus:ring-2"
+                                  onCheckedChange={(checked) => handleSubjectChange(subject, checked as boolean)}
+                                  className="border-2 border-gray-300 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112]"
                                 />
                                 <Label htmlFor={subject} className="text-sm font-normal cursor-pointer">
                                   {subject}
@@ -293,6 +296,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                           </RadioGroup>
                         </div>
 
+                        {/* D. Replace time slots with Email/SMS contact options */}
                         <div className="space-y-3">
                           <Label className="text-base font-medium">Preferred Contact Method *</Label>
                           <RadioGroup
@@ -358,7 +362,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                           </div>
                         ) : (
                           <>
-                            Book 30-Minute Trial
+                            Book 30-Minute Free Trial
                             <CheckCircle className="ml-2 w-5 h-5" />
                           </>
                         )}
@@ -381,7 +385,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                   </h2>
 
                   <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-md mx-auto">
-                    Our team will contact you within 24 hours to schedule your 30-minute trial class.
+                    Our team will contact you within 24 hours to schedule your 30-minute free trial class.
                   </p>
 
                   <div className="space-y-4">
