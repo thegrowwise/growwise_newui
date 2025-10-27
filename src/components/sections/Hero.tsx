@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, BookOpen, Code, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ClientOnly from '@/components/providers/ClientOnly';
+import BookTrialModal from '@/components/ui/BookTrialModal';
 
 // Hero Carousel Slides Data with Corrected Images
 const heroSlides = [
@@ -47,6 +48,7 @@ const heroSlides = [
 
 function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
 
   // Auto-advance slides
   useEffect(() => {
@@ -67,6 +69,14 @@ function HeroCarousel() {
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
+  };
+
+  const openTrialModal = () => {
+    setIsTrialModalOpen(true);
+  };
+
+  const closeTrialModal = () => {
+    setIsTrialModalOpen(false);
   };
 
   return (
@@ -107,6 +117,7 @@ function HeroCarousel() {
                   
                   {/* CTA Button - Optimized Size */}
                   <Button 
+                    onClick={slide.id === 2 ? openTrialModal : undefined}
                     className={`${slide.ctaColor} rounded-full px-6 py-3 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-sm lg:text-base`}
                   >
                     {slide.cta}
@@ -164,6 +175,9 @@ function HeroCarousel() {
           />
         ))}
       </div>
+
+      {/* Book Trial Modal */}
+      <BookTrialModal isOpen={isTrialModalOpen} onClose={closeTrialModal} />
     </div>
   );
 }
