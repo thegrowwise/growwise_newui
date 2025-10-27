@@ -294,7 +294,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-base font-medium">Preferred Days/Timings *</Label>
+                          <Label className="text-base font-medium">Preferred Contact Method *</Label>
                           <RadioGroup
                             value={formData.contactMethod}
                             onValueChange={(value) => handleInputChange('contactMethod', value)}
