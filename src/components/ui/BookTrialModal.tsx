@@ -27,7 +27,6 @@ interface FormData {
   schoolDistrict: string;
   subjects: string[];
   mode: string;
-  schedule: string;
   contactMethod: string;
   notes: string;
 }
@@ -44,7 +43,6 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
     schoolDistrict: '',
     subjects: [],
     mode: '',
-    schedule: '',
     contactMethod: '',
     notes: ''
   });
@@ -101,7 +99,6 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
       schoolDistrict: '',
       subjects: [],
       mode: '',
-      schedule: '',
       contactMethod: '',
       notes: ''
     });
@@ -297,52 +294,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                         </div>
 
                         <div className="space-y-3">
-                          <Label className="text-base font-medium">Preferred Days/Time *</Label>
-                          <RadioGroup
-                            value={formData.schedule}
-                            onValueChange={(value) => handleInputChange('schedule', value)}
-                            className="space-y-3"
-                          >
-                            {[
-                              {
-                                key: 'weekdaysAfterSchool',
-                                label: 'Weekdays After School',
-                                timeSlots: ['3:00 PM - 4:00 PM', '4:00 PM - 5:00 PM', '5:00 PM - 6:00 PM']
-                              },
-                              {
-                                key: 'weekendsMorning',
-                                label: 'Weekend Morning',
-                                timeSlots: ['10:00 AM - 11:00 AM', '11:00 AM - 12:00 PM']
-                              },
-                              {
-                                key: 'weekendsAfternoon',
-                                label: 'Weekend Afternoon',
-                                timeSlots: ['2:00 PM - 3:00 PM', '3:00 PM - 4:00 PM']
-                              }
-                            ].map((dayGroup) => (
-                              <div key={dayGroup.key} className="space-y-2">
-                                <h4 className="font-medium text-gray-700 text-sm">{dayGroup.label}</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                                  {dayGroup.timeSlots.map((timeSlot) => (
-                                    <div key={timeSlot} className="flex items-center space-x-2">
-                                      <RadioGroupItem
-                                        value={`${dayGroup.key}-${timeSlot}`}
-                                        id={`${dayGroup.key}-${timeSlot}`}
-                                        className="border-2 border-gray-300 text-[#F16112]"
-                                      />
-                                      <Label htmlFor={`${dayGroup.key}-${timeSlot}`} className="cursor-pointer text-sm">
-                                        {timeSlot}
-                                      </Label>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                          </RadioGroup>
-                        </div>
-
-                        <div className="space-y-3">
-                          <Label className="text-base font-medium">Preferred Contact Method *</Label>
+                          <Label className="text-base font-medium">Preferred Days/Timings *</Label>
                           <RadioGroup
                             value={formData.contactMethod}
                             onValueChange={(value) => handleInputChange('contactMethod', value)}
