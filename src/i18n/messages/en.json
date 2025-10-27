@@ -101,6 +101,14 @@
       "english": "English",
       "sat": "SAT/ACT"
     },
+    "trial": {
+      "subjects": {
+        "coding": "Coding",
+        "ai": "AI/ML",
+        "gameDev": "Game Development",
+        "robotics": "Robotics"
+      }
+    },
     "schedule": {
       "weekdaysAfterSchool": "Weekdays After School (3PM - 6PM)",
       "weekendsMorning": "Weekend Morning (10AM - 12PM)",
