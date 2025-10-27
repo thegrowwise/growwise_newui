@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, BookOpen, Code, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ClientOnly from '@/components/providers/ClientOnly';
 import BookTrialModal from '@/components/ui/BookTrialModal';
+import STEAMTrialModal from '@/components/ui/STEAMTrialModal';
 
 // Hero Carousel Slides Data with Corrected Images
 const heroSlides = [
@@ -47,8 +49,10 @@ const heroSlides = [
 ];
 
 function HeroCarousel() {
+  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
+  const [isSTEAMTrialModalOpen, setIsSTEAMTrialModalOpen] = useState(false);
 
   // Auto-advance slides
   useEffect(() => {
@@ -77,6 +81,18 @@ function HeroCarousel() {
 
   const closeTrialModal = () => {
     setIsTrialModalOpen(false);
+  };
+
+  const openSTEAMTrialModal = () => {
+    setIsSTEAMTrialModalOpen(true);
+  };
+
+  const closeSTEAMTrialModal = () => {
+    setIsSTEAMTrialModalOpen(false);
+  };
+
+  const navigateToEnrollForm = () => {
+    router.push('/enroll-academic#enrollment-form');
   };
 
   return (
@@ -117,7 +133,7 @@ function HeroCarousel() {
                   
                   {/* CTA Button - Optimized Size */}
                   <Button 
-                    onClick={slide.id === 2 ? openTrialModal : undefined}
+                    onClick={slide.id === 1 ? openTrialModal : slide.id === 2 ? openSTEAMTrialModal : slide.id === 3 ? navigateToEnrollForm : undefined}
                     className={`${slide.ctaColor} rounded-full px-6 py-3 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 text-sm lg:text-base`}
                   >
                     {slide.cta}
@@ -178,6 +194,9 @@ function HeroCarousel() {
 
       {/* Book Trial Modal */}
       <BookTrialModal isOpen={isTrialModalOpen} onClose={closeTrialModal} />
+      
+      {/* STEAM Trial Modal */}
+      <STEAMTrialModal isOpen={isSTEAMTrialModalOpen} onClose={closeSTEAMTrialModal} />
     </div>
   );
 }

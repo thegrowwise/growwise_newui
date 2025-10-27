@@ -3,11 +3,13 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
 import FreeAssessmentModal from '../../components/FreeAssessmentModal';
+import STEAMTrialModal from '../../components/ui/STEAMTrialModal';
 import { RootState } from '../../store';
 import { fetchHomeStart } from '../../store/slices/homeSlice';
 import { getIconComponent } from '../../lib/iconMap';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import { HeroSection } from '../../components/sections/home/HeroSection';
+import { useRouter } from 'next/navigation';
 import { PopularCoursesSection } from '../../components/sections/home/PopularCoursesSection';
 import { StatisticsSection } from '../../components/sections/home/StatisticsSection';
 import { ProgramsSection } from '../../components/sections/home/ProgramsSection';
@@ -26,10 +28,15 @@ import {
 export default function Home() {
   const t = useTranslations();
   const dispatch = useDispatch();
+  const router = useRouter();
   const { data, loading, error } = useSelector((s: RootState) => s.home);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
+  const [isSTEAMTrialModalOpen, setIsSTEAMTrialModalOpen] = useState(false);
   const openAssessmentModal = () => setIsAssessmentModalOpen(true);
   const closeAssessmentModal = () => setIsAssessmentModalOpen(false);
+  const openSTEAMTrialModal = () => setIsSTEAMTrialModalOpen(true);
+  const closeSTEAMTrialModal = () => setIsSTEAMTrialModalOpen(false);
+  const navigateToEnrollForm = () => router.push('/enroll-academic#enrollment-form');
   const { openChatbot } = useChatbot();
 
   const heroSlides = useMemo(() => (data?.heroSlides || []).map((s) => ({
@@ -43,7 +50,7 @@ export default function Home() {
     iconColor: s.iconColor,
     ctaColor: s.ctaColor,
     bgImage: s.bgImage,
-    onClick: openAssessmentModal
+    onClick: s.id === 1 ? openAssessmentModal : s.id === 2 ? openSTEAMTrialModal : s.id === 3 ? navigateToEnrollForm : openAssessmentModal
   })), [data]);
 
   const popularCourses = useMemo(() => (data?.popularCourses || []).map((c) => ({
@@ -74,21 +81,26 @@ export default function Home() {
   const whyChooseUs = useMemo(() => (data?.whyChooseUs || []).map((w) => ({ ...w, IconComponent: getIconComponent(w.icon) })), [data]);
 
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     dispatch(fetchHomeStart());
   }, [dispatch]);
 
   useEffect(() => {
+    if (isPaused) return;
+    
     const interval = setInterval(() => {
       setCurrentHeroSlide((prev) => (prev + 1) % (heroSlides.length || 1));
     }, 7000);
     return () => clearInterval(interval);
-  }, [heroSlides.length]);
+  }, [heroSlides.length, isPaused]);
 
   const nextHeroSlide = () => setCurrentHeroSlide((prev) => (prev + 1) % (heroSlides.length || 1));
   const prevHeroSlide = () => setCurrentHeroSlide((prev) => (prev - 1 + (heroSlides.length || 1)) % (heroSlides.length || 1));
   const goToHeroSlide = (index: number) => setCurrentHeroSlide(index % (heroSlides.length || 1));
+  const pauseCarousel = () => setIsPaused(true);
+  const resumeCarousel = () => setIsPaused(false);
 
   // Show loading skeletons when data is loading or not available
   if (loading || !data || (data && (!data.heroSlides || data.heroSlides.length === 0))) {
@@ -106,7 +118,17 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
-      <HeroSection slides={heroSlides as any} currentIndex={currentHeroSlide} onPrev={prevHeroSlide} onNext={nextHeroSlide} onGoTo={goToHeroSlide} error={error} onRetry={() => dispatch(fetchHomeStart())} />
+      <HeroSection 
+        slides={heroSlides as any} 
+        currentIndex={currentHeroSlide} 
+        onPrev={prevHeroSlide} 
+        onNext={nextHeroSlide} 
+        onGoTo={goToHeroSlide} 
+        onMouseEnter={pauseCarousel}
+        onMouseLeave={resumeCarousel}
+        error={error} 
+        onRetry={() => dispatch(fetchHomeStart())} 
+      />
 
       <PopularCoursesSection courses={popularCourses as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
@@ -141,6 +163,7 @@ export default function Home() {
       />
 
       <FreeAssessmentModal isOpen={isAssessmentModalOpen} onClose={closeAssessmentModal} />
+      <STEAMTrialModal isOpen={isSTEAMTrialModalOpen} onClose={closeSTEAMTrialModal} />
     </div>
   );
 }

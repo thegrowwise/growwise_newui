@@ -147,7 +147,7 @@ export default function EnrollAcademicPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section id="enrollment-form" className="py-20 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <Badge className="mb-4 bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0 px-6 py-2">

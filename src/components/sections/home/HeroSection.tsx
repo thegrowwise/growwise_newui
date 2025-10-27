@@ -25,6 +25,8 @@ export function HeroSection({
   onPrev,
   onNext,
   onGoTo,
+  onMouseEnter,
+  onMouseLeave,
   error,
   onRetry,
 }: {
@@ -33,6 +35,8 @@ export function HeroSection({
   onPrev: () => void;
   onNext: () => void;
   onGoTo: (index: number) => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
   error?: string | null;
   onRetry?: () => void;
 }) {
@@ -47,7 +51,11 @@ export function HeroSection({
         <div className="absolute top-60 left-1/2 w-24 h-24 bg-[#29335C]/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '6s' }}></div>
       </div>
       <div className="max-w-6xl mx-auto relative z-10">
-        <div className="relative bg-white/20 backdrop-blur-3xl rounded-[40px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.25)] overflow-hidden border border-white/50 ring-1 ring-white/20">
+        <div 
+          className="relative bg-white/20 backdrop-blur-3xl rounded-[40px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.25)] overflow-hidden border border-white/50 ring-1 ring-white/20"
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
           <div className="relative h-[500px] lg:h-[550px] overflow-hidden">
             {slides.map((slide, index) => {
               const isActive = index === currentIndex;
