@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
 
 export interface ProgramVM {
   id: number;
@@ -25,6 +26,7 @@ export function ProgramsSection({
   k12: ProgramVM[];
   steam: ProgramVM[];
 }) {
+  const locale = useLocale();
   const ProgramGrid = ({ items, accent }: { items: ProgramVM[]; accent: 'blue' | 'orange' }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       {items.map((program) => {
@@ -44,15 +46,41 @@ export function ProgramsSection({
               </div>
               <p className="text-gray-600 text-sm mb-8 leading-relaxed">{program.description}</p>
               <div className="space-y-4 flex-1">
-                {program.subItems.map((item) => (
-                  <div key={item.name} className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40`}>
-                    <span className="text-3xl">{item.icon}</span>
-                    <div className="flex-1">
-                      <p className="font-semibold text-gray-800 text-sm">{item.name}</p>
-                      <p className="text-xs text-gray-600">{item.description}</p>
+                {program.subItems.map((item) => {
+                  const isMathProgram = program.title.toLowerCase().includes('math');
+                  const nameLower = item.name.toLowerCase();
+                  const gradeParam = nameLower.includes('elementary')
+                    ? 'Elementary'
+                    : nameLower.includes('middle')
+                    ? 'Middle School'
+                    : nameLower.includes('high')
+                    ? 'High School'
+                    : null;
+                  const alignmentParam = nameLower.includes('dusd') ? 'DUSD Aligned' : null;
+                  const isLinked = isMathProgram && (!!gradeParam || !!alignmentParam);
+                  const query = alignmentParam
+                    ? `alignment=${encodeURIComponent(alignmentParam)}`
+                    : gradeParam
+                    ? `grade=${encodeURIComponent(gradeParam)}`
+                    : '';
+                  const href = `/${locale}/courses/math${query ? `?${query}` : ''}#courses`;
+                  const content = (
+                    <div className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40`}>
+                      <span className="text-3xl">{item.icon}</span>
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-800 text-sm">{item.name}</p>
+                        <p className="text-xs text-gray-600">{item.description}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                  return isLinked ? (
+                    <Link key={item.name} href={href} prefetch>
+                      {content}
+                    </Link>
+                  ) : (
+                    <div key={item.name}>{content}</div>
+                  );
+                })}
               </div>
               <div className="mt-8 pt-6">
                 {program.ctaUrl ? (

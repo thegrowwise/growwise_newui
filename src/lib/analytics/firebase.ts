@@ -5,15 +5,10 @@
  * - Guards SSR and missing measurementId
  */
 
-import { initializeApp, getApps, FirebaseApp } from 'firebase/app';
-import {
-  getAnalytics,
-  isSupported,
-  Analytics,
-  logEvent as gaLogEvent,
-  setUserProperties as gaSetUserProperties,
-  setUserId as gaSetUserId,
-} from 'firebase/analytics';
+	// Lazy import Firebase only in the browser to avoid bundling it on the server
+	// Types are declared here to keep the rest of the file typed.
+	type FirebaseApp = import('firebase/app').FirebaseApp;
+	type Analytics = import('firebase/analytics').Analytics;
 import { AnalyticsConfig } from './config';
 
 type PendingJob =
@@ -35,7 +30,7 @@ class FirebaseAnalyticsService {
   /**
    * Initialize Firebase Analytics (call once, but safe to call multiple times)
    */
-  public async initialize(config: AnalyticsConfig): Promise<boolean> {
+	  public async initialize(config: AnalyticsConfig): Promise<boolean> {
     if (this.initDone) return true;
     if (this.initPromise) return this.initPromise;
 
@@ -60,9 +55,15 @@ class FirebaseAnalyticsService {
           return false;
         }
 
-        // Initialize / reuse Firebase app
-        const existingApps = getApps();
-        this.app = existingApps.length ? existingApps[0] : initializeApp(config);
+	        // Dynamically import Firebase SDK only on client
+	        const [{ initializeApp, getApps }, { getAnalytics, isSupported }] = await Promise.all([
+	          import('firebase/app'),
+	          import('firebase/analytics'),
+	        ]);
+
+	        // Initialize / reuse Firebase app
+	        const existingApps = getApps();
+	        this.app = existingApps.length ? existingApps[0] : initializeApp(config as any);
 
         // Respect environments that don’t support Analytics (e.g., Safari Private, strict blockers)
         const supported = await isSupported().catch(() => false);
@@ -73,7 +74,7 @@ class FirebaseAnalyticsService {
           return false;
         }
 
-        this.analytics = getAnalytics(this.app);
+	        this.analytics = getAnalytics(this.app);
         this.initDone = true;
         if (process.env.NODE_ENV !== 'production') {
           console.log('Firebase Analytics initialized.');
