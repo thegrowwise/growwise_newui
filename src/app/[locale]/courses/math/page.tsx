@@ -17,6 +17,7 @@ import MathSymbolsBackground from '@/components/MathSymbolsBackground';
 import CourseCard from '@/components/CourseCard';
 import { useTouchDetection } from '@/hooks/useHydration';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
@@ -26,6 +27,7 @@ const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('mathCourses');
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const mathCoursesData = useAppSelector((s) => s.mathCourses.data);
   const mathCoursesLoading = useAppSelector((s) => s.mathCourses.loading);
@@ -39,6 +41,25 @@ const MathCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Apply preselected filter from query params and scroll to courses
+  useEffect(() => {
+    const grade = searchParams.get('grade');
+    const alignment = searchParams.get('alignment');
+    if (grade && !selectedGradeLevels.includes(grade)) {
+      setSelectedGradeLevels([grade]);
+    }
+    if (alignment && !selectedAlignments.includes(alignment)) {
+      setSelectedAlignments([alignment]);
+    }
+    if (grade || alignment) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fetch Math courses data
   useEffect(() => {
@@ -339,7 +360,7 @@ const MathCoursesPage: React.FC = () => {
       </section>
 
       {/* Math Courses Section with New Chip Filters */}
-      <section className="py-16 px-4 lg:px-8" style={{
+      <section id="courses" className="py-16 px-4 lg:px-8" style={{
         background: `
           radial-gradient(circle at 20% 25%, rgba(31, 57, 109, 0.08) 0%, transparent 15%),
           radial-gradient(circle at 80% 35%, rgba(241, 137, 79, 0.1) 0%, transparent 20%),
