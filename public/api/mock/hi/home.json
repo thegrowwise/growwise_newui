@@ -63,7 +63,7 @@
     { "id": 3, "title": "Writing Lab", "description": "Master the art of effective written communication", "icon": "PenTool", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
       { "name": "Creative Writing", "icon": "✨", "description": "Unleash your creative potential" },
       { "name": "Essay Writing", "icon": "📝", "description": "Academic and persuasive writing" },
-      { "name": "Create & Reflect", "icon": "🤔", "description": "Develop critical thinking skills" }
+      { "name": "Foundations of Writing", "icon": "🤔", "description": "Develop critical thinking skills" }
     ] },
     { "id": 4, "title": "SAT/ACT", "description": "Achieve your best scores with comprehensive test preparation", "icon": "Award", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-gray-50 to-gray-100", "iconColor": "text-[#1F396D]", "subItems": [
       { "name": "Math Test Prep", "icon": "🧮", "description": "Master SAT/ACT math sections" },

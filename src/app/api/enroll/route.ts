@@ -149,8 +149,7 @@ async function sendBusinessEnrollmentEmail(enrollmentData: any) {
   try {
     const emailContent = {
       to: [
-        'info@growwise.com', // Your business email
-        'enrollments@growwise.com' // Enrollments team email
+        'connect@thegrowwise.com', // Your business email
       ],
       subject: `New Course Enrollment from ${enrollmentData.fullName}`,
       html: generateBusinessEnrollmentEmailHTML(enrollmentData),
@@ -338,7 +337,7 @@ function generateUserConfirmationEmailHTML(data: any) {
       <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
       <p style="color: #666; font-size: 12px; text-align: center;">
         This email was sent from GrowWise Educational Services<br>
-        If you have any questions, please contact us at info@growwise.com
+        If you have any questions, please contact us at connect@thegrowwise.com
       </p>
     </div>
   `;
@@ -371,6 +370,6 @@ What Happens Next?
 
 Visit our website: https://growwise.com
 
-If you have any questions, please contact us at info@growwise.com
+If you have any questions, please contact us at connect@thegrowwise.com
   `;
 }

@@ -74,7 +74,7 @@ async function fetchContentAPI(): Promise<ContentData> {
     contact: {
       title: "Get in Touch",
       description: "Ready to start your child's journey with GrowWise? Contact us today to learn more about our programs and schedule a visit.",
-      email: "info@growwise.edu",
+      email: "connect@thegrowwise.com",
       phone: "+1 (555) 123-4567",
       address: "123 Education Street, Learning City, LC 12345"
     },
