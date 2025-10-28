@@ -4,6 +4,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import { ChevronRight } from 'lucide-react';
 
 export interface ProgramVM {
   id: number;
@@ -48,6 +49,8 @@ export function ProgramsSection({
               <div className="space-y-4 flex-1">
                 {program.subItems.map((item) => {
                   const isMathProgram = program.title.toLowerCase().includes('math');
+                  const isEnglishProgram = program.title.toLowerCase().includes('english') || program.title.toLowerCase().includes('ela');
+                  const isWritingProgram = program.title.toLowerCase().includes('writing');
                   const nameLower = item.name.toLowerCase();
                   const gradeParam = nameLower.includes('elementary')
                     ? 'Elementary'
@@ -57,21 +60,45 @@ export function ProgramsSection({
                     ? 'High School'
                     : null;
                   const alignmentParam = nameLower.includes('dusd') ? 'DUSD Aligned' : null;
-                  const isLinked = isMathProgram && (!!gradeParam || !!alignmentParam);
+                  const courseTypeParam = nameLower.includes('mastery') 
+                    ? 'Comprehensive'
+                    : nameLower.includes('reading') && nameLower.includes('enrichment')
+                    ? 'Core English'
+                    : nameLower.includes('grammar') && nameLower.includes('boost')
+                    ? 'Grammar'
+                    : nameLower.includes('creative') && nameLower.includes('writing')
+                    ? 'Creative Writing'
+                    : nameLower.includes('essay') && nameLower.includes('writing')
+                    ? 'Essay Writing'
+                    : nameLower.includes('foundations') && nameLower.includes('writing')
+                    ? 'Creative Writing'
+                    : null;
+                  const isLinked = (isMathProgram && (!!gradeParam || !!alignmentParam)) || 
+                    (isEnglishProgram && !!courseTypeParam) ||
+                    (isWritingProgram && !!courseTypeParam);
                   const query = alignmentParam
                     ? `alignment=${encodeURIComponent(alignmentParam)}`
                     : gradeParam
                     ? `grade=${encodeURIComponent(gradeParam)}`
+                    : courseTypeParam
+                    ? `type=${encodeURIComponent(courseTypeParam)}`
                     : '';
-                  const href = `/${locale}/courses/math${query ? `?${query}` : ''}#courses`;
+                  const href = isMathProgram 
+                    ? `/${locale}/courses/math${query ? `?${query}` : ''}#courses`
+                    : isEnglishProgram || isWritingProgram
+                    ? `/${locale}/courses/english${query ? `?${query}` : ''}#courses`
+                    : '';
                   const content = (
-                    <div className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40`}>
-                      <span className="text-3xl">{item.icon}</span>
-                      <div className="flex-1">
-                        <p className="font-semibold text-gray-800 text-sm">{item.name}</p>
-                        <p className="text-xs text-gray-600">{item.description}</p>
-                      </div>
+                    <div className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40 ${isLinked ? 'cursor-pointer hover:scale-105' : ''}`}>
+                    <span className="text-3xl">{item.icon}</span>
+                    <div className="flex-1">
+                      <p className="font-semibold text-gray-800 text-sm">{item.name}</p>
+                      <p className="text-xs text-gray-600">{item.description}</p>
                     </div>
+                      {isLinked && (
+                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                      )}
+                  </div>
                   );
                   return isLinked ? (
                     <Link key={item.name} href={href} prefetch>

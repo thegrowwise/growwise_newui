@@ -94,8 +94,7 @@ async function sendContactEmail(contactData: any) {
     // For demonstration, we'll simulate the email sending
     const emailContent = {
       to: [
-        'info@growwise.com', // Your business email
-        'support@growwise.com' // Support team email
+        'connect@thegrowwise.com', // Your business email
       ],
       subject: `New Contact Form Submission from ${contactData.name}`,
       html: `

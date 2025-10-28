@@ -11,6 +11,7 @@ import { useChatbot } from '@/contexts/ChatbotContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
@@ -20,6 +21,7 @@ const EnglishCoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('englishCourses');
+  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const englishCoursesData = useAppSelector((s) => s.englishCourses.data);
   const englishCoursesLoading = useAppSelector((s) => s.englishCourses.loading);
@@ -33,6 +35,19 @@ const EnglishCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Apply preselected filter from query params and scroll to courses
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type && !selectedCourseTypes.includes(type)) {
+      setSelectedCourseTypes([type]);
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Fetch English courses data
   useEffect(() => {
@@ -363,7 +378,7 @@ const EnglishCoursesPage: React.FC = () => {
       </section>
 
       {/* English Courses Section with Chip Filters */}
-      <section className="py-16 px-4 lg:px-8" style={{
+      <section id="courses" className="py-16 px-4 lg:px-8" style={{
         background: `
           radial-gradient(circle at 20% 25%, rgba(31, 57, 109, 0.08) 0%, transparent 15%),
           radial-gradient(circle at 80% 35%, rgba(241, 137, 79, 0.1) 0%, transparent 20%),
