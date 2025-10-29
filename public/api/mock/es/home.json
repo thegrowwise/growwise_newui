@@ -75,19 +75,21 @@
     { "id": 1, "title": "Game Development", "description": "Create immersive games and interactive experiences", "icon": "Gamepad2", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "subItems": [
       { "name": "Roblox Studio", "icon": "🎮", "description": "Create games in Roblox platform" },
       { "name": "Scratch", "icon": "🐱", "description": "Visual programming for beginners" },
-      { "name": "Minecraft", "icon": "⛏️", "description": "Build and code in Minecraft" }
+      { "name": "Minecraft", "icon": "⛏️", "description": "Build and code in Minecraft" },
+      { "name": "Robotics", "icon": "🤖", "description": "Build and program robots" }
     ] },
     { "id": 2, "title": "Python Programming", "description": "Master the world's most popular programming language", "icon": "Code", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "subItems": [
       { "name": "Python Kickstart", "icon": "🚀", "description": "Begin your Python journey" },
       { "name": "Python Power Up", "icon": "⚡", "description": "Intermediate Python skills" },
       { "name": "Python Pro", "icon": "🏆", "description": "Advanced Python mastery" }
     ] },
-    { "id": 3, "title": "Young Founders", "description": "Develop entrepreneurial skills and business mindset", "icon": "Lightbulb", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
-      { "name": "Youth CEO", "icon": "👑", "description": "Learn leadership and management" },
-      { "name": "I Am Brand", "icon": "🎯", "description": "Build your personal brand" }
+    { "id": 3, "title": "App Development", "description": "Design, build, and publish apps for web and mobile", "icon": "Smartphone", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+      { "name": "Web App Development", "icon": "🌐", "description": "Build modern web applications" },
+      { "name": "Mobile App Development", "icon": "📱", "description": "Create iOS and Android apps" },
+      { "name": "Young App Creators", "icon": "🧒", "description": "Start building apps early" }
     ] },
     { "id": 4, "title": "ML/Gen AI", "description": "Explore artificial intelligence and machine learning", "icon": "Brain", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10", "iconColor": "text-[#1F396D]", "subItems": [
-      { "name": "Prompt Engineering", "icon": "🤖", "description": "Master AI prompt techniques" },
+      { "name": "Build AI Agent", "icon": "🤖", "description": "Create autonomous AI agents" },
       { "name": "AI for Everyone", "icon": "🧠", "description": "AI fundamentals for all ages" },
       { "name": "ML/AI for Highschoolers", "icon": "🎓", "description": "Advanced AI concepts" }
     ] }
