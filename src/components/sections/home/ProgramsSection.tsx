@@ -51,15 +51,35 @@ export function ProgramsSection({
                   const isMathProgram = program.title.toLowerCase().includes('math');
                   const isEnglishProgram = program.title.toLowerCase().includes('english') || program.title.toLowerCase().includes('ela');
                   const isWritingProgram = program.title.toLowerCase().includes('writing');
+                  const isSteamGameProgram = program.title.toLowerCase().includes('game development');
+                  const isSteamPythonProgram = program.title.toLowerCase().includes('python programming');
                   const nameLower = item.name.toLowerCase();
-                  const gradeParam = nameLower.includes('elementary')
+                  let gradeParam = nameLower.includes('elementary')
                     ? 'Elementary'
                     : nameLower.includes('middle')
                     ? 'Middle School'
                     : nameLower.includes('high')
                     ? 'High School'
                     : null;
+                  if (isSteamPythonProgram && nameLower.includes('kickstart')) {
+                    gradeParam = 'Elementary';
+                  }
                   const alignmentParam = nameLower.includes('dusd') ? 'DUSD Aligned' : null;
+                  const levelParam = (isSteamGameProgram
+                    ? (nameLower.includes('roblox')
+                      ? 'Beginner to Intermediate'
+                      : nameLower.includes('scratch')
+                      ? 'Beginner'
+                      : nameLower.includes('minecraft')
+                      ? 'Intermediate'
+                      : null)
+                    : null) || (isSteamPythonProgram
+                    ? (nameLower.includes('power') && nameLower.includes('up')
+                      ? 'Beginner to Advanced'
+                      : nameLower.includes('pro')
+                      ? 'Intermediate to Advanced'
+                      : null)
+                    : null);
                   const courseTypeParam = nameLower.includes('mastery') 
                     ? 'Comprehensive'
                     : nameLower.includes('reading') && nameLower.includes('enrichment')
@@ -72,21 +92,31 @@ export function ProgramsSection({
                     ? 'Essay Writing'
                     : nameLower.includes('foundations') && nameLower.includes('writing')
                     ? 'Creative Writing'
+                    : (isSteamGameProgram && nameLower.includes('robot'))
+                    ? 'Robotics'
                     : null;
                   const isLinked = (isMathProgram && (!!gradeParam || !!alignmentParam)) || 
                     (isEnglishProgram && !!courseTypeParam) ||
-                    (isWritingProgram && !!courseTypeParam);
+                    (isWritingProgram && !!courseTypeParam) ||
+                    (isSteamGameProgram && (!!levelParam || !!courseTypeParam)) ||
+                    (isSteamPythonProgram && (!!gradeParam || !!levelParam || !!courseTypeParam));
                   const query = alignmentParam
                     ? `alignment=${encodeURIComponent(alignmentParam)}`
                     : gradeParam
                     ? `grade=${encodeURIComponent(gradeParam)}`
                     : courseTypeParam
                     ? `type=${encodeURIComponent(courseTypeParam)}`
+                    : levelParam
+                    ? `level=${encodeURIComponent(levelParam)}`
                     : '';
                   const href = isMathProgram 
                     ? `/${locale}/courses/math${query ? `?${query}` : ''}#courses`
-                    : isEnglishProgram || isWritingProgram
+                    : (isEnglishProgram || isWritingProgram)
                     ? `/${locale}/courses/english${query ? `?${query}` : ''}#courses`
+                    : isSteamGameProgram
+                    ? `/${locale}/steam/game-development${query ? `?${query}` : ''}#courses`
+                    : isSteamPythonProgram
+                    ? `/${locale}/steam/ml-ai-coding${query ? `?${query}` : ''}#courses`
                     : '';
                   const content = (
                     <div className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40 ${isLinked ? 'cursor-pointer hover:scale-105' : ''}`}>

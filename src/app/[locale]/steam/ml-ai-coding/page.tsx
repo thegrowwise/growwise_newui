@@ -8,6 +8,7 @@ import { Brain, Code, Bot, Clock, Users, Star, Filter, ShoppingCart, CheckCircle
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import { useSearchParams } from 'next/navigation';
 
 // ML/AI Programming Course Data
 interface MLAICourse {
@@ -124,6 +125,7 @@ const MLAICoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const searchParams = useSearchParams();
 
   // Detect touch device and disable hover effects on mobile
   useEffect(() => {
@@ -148,6 +150,28 @@ const MLAICoursesPage: React.FC = () => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Apply preselected filter from query params and scroll to courses
+  useEffect(() => {
+    const grade = searchParams.get('grade');
+    const level = searchParams.get('level');
+    let didSet = false;
+    if (grade && !selectedGradeLevels.includes(grade)) {
+      setSelectedGradeLevels([grade]);
+      didSet = true;
+    }
+    if (level && !selectedLevels.includes(level)) {
+      setSelectedLevels([level]);
+      didSet = true;
+    }
+    if (didSet) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Filter categories
@@ -385,6 +409,7 @@ const MLAICoursesPage: React.FC = () => {
 
       {/* Enhanced Courses Section */}
       <section 
+        id="courses"
         className="py-20 px-4 lg:px-8 relative" 
         style={{
           background: `
