@@ -531,7 +531,7 @@ const EnglishCoursesPage: React.FC = () => {
                   }`}>
                     
                     {/* Front Side - Clean Layout */}
-                    <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} group-hover:scale-105 transition-all duration-300`}>
+                    <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} transition-all duration-300`}>
                       <CardContent className="p-5 relative flex flex-col h-full justify-between">
                         {/* Top Section - Course Header */}
                         <div className="flex-shrink-0">
@@ -556,10 +556,10 @@ const EnglishCoursesPage: React.FC = () => {
 
                         {/* Course Description */}
                         <div className="flex-grow">
-                          <p className="text-gray-600 text-sm mb-4 leading-relaxed">{course.description}</p>
+                          <p className="text-gray-600 text-sm mb-1 leading-snug line-clamp-1">{course.description}</p>
                           
                           {/* Course Tags/Chips */}
-                          <div className="mb-4 space-y-2">
+                          <div className="mb-2 space-y-1">
                             <div className="flex flex-wrap gap-1">
                               {course.gradeLevel.map((grade) => (
                                 <span
@@ -643,15 +643,15 @@ const EnglishCoursesPage: React.FC = () => {
                           </Button>
                         </div>
 
-                        {/* Decorative background elements */}
-                        <div className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-10 transition-all duration-500 group-hover:scale-150 group-hover:opacity-20`} />
-                        <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-5 transition-all duration-500 group-hover:scale-125 group-hover:opacity-10`} />
+                          {/* Decorative background elements (kept within bounds) */}
+                          <div className={`absolute top-2 right-2 w-16 h-16 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-10 transition-all duration-500`} />
+                          <div className={`absolute bottom-2 left-2 w-12 h-12 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-5 transition-all duration-500`} />
                       </CardContent>
                     </Card>
 
                     {/* Back Side - Enhanced Hover State - Only for non-touch devices */}
                     {!isTouchDevice && (
-                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180 scale-105`}>
+                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180`}>
                         <CardContent className="p-4 relative flex flex-col h-full justify-between overflow-hidden">
                           {/* Top Section - Course Header */}
                           <div className="flex-shrink-0">
