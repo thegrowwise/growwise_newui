@@ -562,7 +562,7 @@ const MLAICoursesPage: React.FC = () => {
                     }`}>
                       
                       {/* Front Side - Clean Layout */}
-                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} group-hover:scale-105 transition-all duration-300`}>
+                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} transition-all duration-300`}>
                         <CardContent className="p-5 relative flex flex-col h-full justify-between">
                           {/* Top Section - Course Header */}
                           <div className="flex-shrink-0">
@@ -587,10 +587,10 @@ const MLAICoursesPage: React.FC = () => {
 
                           {/* Course Description */}
                           <div className="flex-grow">
-                            <p className="text-gray-600 text-sm mb-4 leading-relaxed">{course.description}</p>
+                            <p className="text-gray-600 text-sm mb-1 leading-snug line-clamp-1">{course.description}</p>
                             
                             {/* Course Tags/Chips */}
-                            <div className="mb-4 space-y-2">
+                            <div className="mb-2 space-y-1">
                               <div className="flex flex-wrap gap-1">
                                 {course.gradeLevel.map((grade) => (
                                   <span
@@ -678,7 +678,7 @@ const MLAICoursesPage: React.FC = () => {
 
                       {/* Back Side - Learning Path & Success (Only for non-touch devices) */}
                       {!isTouchDevice && (
-                        <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 backface-hidden rotate-y-180`}>
+                        <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 backface-hidden rotate-y-180`}>
                           <CardContent className="p-6 relative flex flex-col h-full justify-between">
                             {/* Back Header */}
                             <div className="flex-shrink-0">

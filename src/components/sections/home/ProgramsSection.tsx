@@ -45,7 +45,7 @@ export function ProgramsSection({
                   <h4 className={`font-bold text-xl ${program.iconColor} drop-shadow-sm`}>{program.title}</h4>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm mb-8 leading-relaxed">{program.description}</p>
+              <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">{program.description}</p>
               <div className="space-y-4 flex-1">
                 {program.subItems.map((item) => {
                   const isMathProgram = program.title.toLowerCase().includes('math');

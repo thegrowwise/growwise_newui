@@ -52,7 +52,7 @@ export default function CourseCard({
       }`}>
         
         {/* Front Side */}
-        <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} group-hover:scale-105 transition-all duration-300`}>
+        <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} transition-all duration-300`}>
           <CardContent className="p-5 relative flex flex-col h-full justify-between">
             {/* Course Header */}
             <div className="flex-shrink-0">
@@ -78,12 +78,12 @@ export default function CourseCard({
 
             {/* Course Description */}
             <div className="flex-grow">
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+              <p className="text-gray-600 text-sm mb-1 leading-snug line-clamp-1">
                 {course.description}
               </p>
               
               {/* Course Tags */}
-              <div className="mb-4 space-y-2">
+              <div className="mb-2 space-y-1">
                 <div className="flex flex-wrap gap-1">
                   {course.gradeLevel.map((grade: string) => (
                     <span
@@ -149,7 +149,7 @@ export default function CourseCard({
         {/* Back Side - Only for non-touch devices */}
         <DynamicWrapper ssr={false}>
           {!isTouchDevice && (
-            <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180 scale-105`}>
+            <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180`}>
               <CardContent className="p-4 relative flex flex-col h-full justify-between overflow-hidden">
                 {/* Back side content */}
                 <div className="flex-shrink-0">
