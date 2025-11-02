@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -142,6 +142,38 @@ const gameDevCourses: GameDevCourse[] = [
   }
 ];
 
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onLevelFound,
+  onTypeFound
+}: { 
+  onLevelFound: (level: string) => void;
+  onTypeFound: (type: string) => void;
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const level = searchParams.get('level');
+    const type = searchParams.get('type');
+
+    if (level) {
+      onLevelFound(level);
+    }
+    if (type) {
+      onTypeFound(type);
+    }
+    
+    if (level || type) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onLevelFound, onTypeFound]);
+  
+  return null;
+}
+
 const GameDevelopmentPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
@@ -154,7 +186,25 @@ const GameDevelopmentPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const searchParams = useSearchParams();
+
+  // Handlers for search params
+  const handleLevelFound = useCallback((level: string) => {
+    setSelectedLevels((prev) => {
+      if (!prev.includes(level)) {
+        return [level];
+      }
+      return prev;
+    });
+  }, []);
+
+  const handleTypeFound = useCallback((type: string) => {
+    setSelectedCourseTypes((prev) => {
+      if (!prev.includes(type)) {
+        return [type];
+      }
+      return prev;
+    });
+  }, []);
 
   // Detect touch device and disable hover effects on mobile
   useEffect(() => {
@@ -179,26 +229,6 @@ const GameDevelopmentPage: React.FC = () => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Apply preselected filter from query params and scroll to courses
-  useEffect(() => {
-    const level = searchParams.get('level');
-    const type = searchParams.get('type');
-
-    if (level && !selectedLevels.includes(level)) {
-      setSelectedLevels([level]);
-    }
-    if (type && !selectedCourseTypes.includes(type)) {
-      setSelectedCourseTypes([type]);
-    }
-    if (level || type) {
-      const el = document.getElementById('courses');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Filter categories
@@ -350,6 +380,12 @@ const GameDevelopmentPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+      <Suspense fallback={null}>
+        <SearchParamsHandler 
+          onLevelFound={handleLevelFound}
+          onTypeFound={handleTypeFound}
+        />
+      </Suspense>
 
       {/* Enhanced Creative Header Section - Game Development Theme */}
       <section className="relative overflow-hidden">

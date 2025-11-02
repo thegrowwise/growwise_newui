@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +8,6 @@ import { BookOpen, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Award,
 import { englishCourses } from '@/data/englishCourses';
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
-import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
@@ -17,11 +16,32 @@ import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 
-const EnglishCoursesPage: React.FC = () => {
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onTypeFound 
+}: { 
+  onTypeFound: (type: string) => void 
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type) {
+      onTypeFound(type);
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onTypeFound]);
+  
+  return null;
+}
+
+function EnglishCoursesContent() {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('englishCourses');
-  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const englishCoursesData = useAppSelector((s) => s.englishCourses.data);
   const englishCoursesLoading = useAppSelector((s) => s.englishCourses.loading);
@@ -36,17 +56,14 @@ const EnglishCoursesPage: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  // Apply preselected filter from query params and scroll to courses
-  useEffect(() => {
-    const type = searchParams.get('type');
-    if (type && !selectedCourseTypes.includes(type)) {
-      setSelectedCourseTypes([type]);
-      const el = document.getElementById('courses');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Handler for search params type
+  const handleTypeFound = useCallback((type: string) => {
+    setSelectedCourseTypes((prev) => {
+      if (!prev.includes(type)) {
+        return [type];
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      return prev;
+    });
   }, []);
 
   // Fetch English courses data
@@ -277,6 +294,9 @@ const EnglishCoursesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+      <Suspense fallback={null}>
+        <SearchParamsHandler onTypeFound={handleTypeFound} />
+      </Suspense>
 
       {/* Enhanced Creative Header Section - English Theme */}
       <section className="relative overflow-hidden">
@@ -928,6 +948,52 @@ const EnglishCoursesPage: React.FC = () => {
         />
       )}
     </div>
+  );
+}
+
+const EnglishCoursesPage: React.FC = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        {/* Header Skeleton */}
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-blue-50 via-indigo-50 to-purple-50"></div>
+          <div className="relative z-10 py-20 px-4 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center">
+              <div className="space-y-6">
+                <div className="h-12 w-96 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-80 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-10 w-48 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filters Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[...Array(3)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Courses Grid Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    }>
+      <EnglishCoursesContent />
+    </Suspense>
   );
 };
 

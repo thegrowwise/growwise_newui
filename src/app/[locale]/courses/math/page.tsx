@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,11 +23,42 @@ import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onGradeFound,
+  onAlignmentFound
+}: { 
+  onGradeFound: (grade: string) => void;
+  onAlignmentFound: (alignment: string) => void;
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const grade = searchParams.get('grade');
+    const alignment = searchParams.get('alignment');
+    
+    if (grade) {
+      onGradeFound(grade);
+    }
+    if (alignment) {
+      onAlignmentFound(alignment);
+    }
+    
+    if (grade || alignment) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onGradeFound, onAlignmentFound]);
+  
+  return null;
+}
+
 const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('mathCourses');
-  const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
   const mathCoursesData = useAppSelector((s) => s.mathCourses.data);
   const mathCoursesLoading = useAppSelector((s) => s.mathCourses.loading);
@@ -42,23 +73,23 @@ const MathCoursesPage: React.FC = () => {
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
-  // Apply preselected filter from query params and scroll to courses
-  useEffect(() => {
-    const grade = searchParams.get('grade');
-    const alignment = searchParams.get('alignment');
-    if (grade && !selectedGradeLevels.includes(grade)) {
-      setSelectedGradeLevels([grade]);
-    }
-    if (alignment && !selectedAlignments.includes(alignment)) {
-      setSelectedAlignments([alignment]);
-    }
-    if (grade || alignment) {
-      const el = document.getElementById('courses');
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Handlers for search params
+  const handleGradeFound = useCallback((grade: string) => {
+    setSelectedGradeLevels((prev) => {
+      if (!prev.includes(grade)) {
+        return [grade];
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      return prev;
+    });
+  }, []);
+
+  const handleAlignmentFound = useCallback((alignment: string) => {
+    setSelectedAlignments((prev) => {
+      if (!prev.includes(alignment)) {
+        return [alignment];
+      }
+      return prev;
+    });
   }, []);
 
   // Fetch Math courses data
@@ -275,6 +306,12 @@ const MathCoursesPage: React.FC = () => {
   return (
     <HydrationBoundary>
       <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        <Suspense fallback={null}>
+          <SearchParamsHandler 
+            onGradeFound={handleGradeFound}
+            onAlignmentFound={handleAlignmentFound}
+          />
+        </Suspense>
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">
