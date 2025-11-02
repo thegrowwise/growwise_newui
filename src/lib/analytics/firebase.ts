@@ -56,10 +56,12 @@ class FirebaseAnalyticsService {
         }
 
 	        // Dynamically import Firebase SDK only on client
-	        const [{ initializeApp, getApps }, { getAnalytics, isSupported }] = await Promise.all([
+	        const [{ initializeApp, getApps }, analyticsModule] = await Promise.all([
 	          import('firebase/app'),
 	          import('firebase/analytics'),
 	        ]);
+	        
+	        const { getAnalytics, isSupported, logEvent, setUserId } = analyticsModule;
 
 	        // Initialize / reuse Firebase app
 	        const existingApps = getApps();
@@ -75,6 +77,11 @@ class FirebaseAnalyticsService {
         }
 
 	        this.analytics = getAnalytics(this.app);
+        
+        // Store analytics functions for later use
+        (this as any)._logEvent = logEvent;
+        (this as any)._setUserId = setUserId;
+        
         this.initDone = true;
         if (process.env.NODE_ENV !== 'production') {
           console.log('Firebase Analytics initialized.');
@@ -106,7 +113,12 @@ class FirebaseAnalyticsService {
   public logEvent(eventName: string, parameters?: Record<string, any>): void {
     if (this.isAvailable() && this.analytics) {
       try {
-        gaLogEvent(this.analytics, eventName, parameters);
+        const logEventFn = (this as any)._logEvent;
+        if (logEventFn) {
+          logEventFn(this.analytics, eventName, parameters);
+        } else {
+          console.warn('logEvent function not available');
+        }
       } catch (e) {
         console.error('Failed to log event:', eventName, e);
       }
@@ -122,11 +134,19 @@ class FirebaseAnalyticsService {
 
   /**
    * Set user properties (safe before init)
+   * Note: Firebase Analytics doesn't have a direct setUserProperties function.
+   * User properties should be sent as custom parameters in events.
    */
   public setUserProperties(properties: Record<string, string | number | boolean>): void {
     if (this.isAvailable() && this.analytics) {
       try {
-        gaSetUserProperties(this.analytics, properties);
+        // Log user properties as a custom event
+        const logEventFn = (this as any)._logEvent;
+        if (logEventFn) {
+          logEventFn(this.analytics, 'user_properties_set', properties);
+        } else {
+          console.warn('logEvent function not available for user properties');
+        }
       } catch (e) {
         console.error('Failed to set user properties:', e);
       }
@@ -144,7 +164,12 @@ class FirebaseAnalyticsService {
   public setUserId(userId: string): void {
     if (this.isAvailable() && this.analytics) {
       try {
-        gaSetUserId(this.analytics, userId);
+        const setUserIdFn = (this as any)._setUserId;
+        if (setUserIdFn) {
+          setUserIdFn(this.analytics, userId);
+        } else {
+          console.warn('setUserId function not available');
+        }
       } catch (e) {
         console.error('Failed to set user ID:', e);
       }
@@ -169,18 +194,27 @@ class FirebaseAnalyticsService {
   private flushQueue(): void {
     if (!this.analytics) return;
     const a = this.analytics;
+    const logEventFn = (this as any)._logEvent;
+    const setUserIdFn = (this as any)._setUserId;
 
     for (const job of this.queue) {
       try {
         switch (job.kind) {
           case 'event':
-            gaLogEvent(a, job.name, job.params);
+            if (logEventFn) {
+              logEventFn(a, job.name, job.params);
+            }
             break;
           case 'props':
-            gaSetUserProperties(a, job.props);
+            // Log user properties as a custom event
+            if (logEventFn) {
+              logEventFn(a, 'user_properties_set', job.props);
+            }
             break;
           case 'uid':
-            gaSetUserId(a, job.uid);
+            if (setUserIdFn) {
+              setUserIdFn(a, job.uid);
+            }
             break;
         }
       } catch (e) {
