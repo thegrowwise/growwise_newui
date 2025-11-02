@@ -16,6 +16,14 @@ import { ProgramsSection } from '../../components/sections/home/ProgramsSection'
 import { WhyChooseSection } from '../../components/sections/home/WhyChooseSection';
 import { TestimonialsSection } from '../../components/sections/home/TestimonialsSection';
 import { CtaSection } from '../../components/sections/home/CtaSection';
+import { 
+  HeroSkeleton, 
+  StatisticsSkeleton, 
+  PopularCoursesSkeleton, 
+  ProgramsSkeleton, 
+  WhyChooseSkeleton, 
+  TestimonialsSkeleton 
+} from '../../components/ui/loading-skeletons';
 
 export default function Home() {
   const t = useTranslations();
@@ -93,6 +101,20 @@ export default function Home() {
   const goToHeroSlide = (index: number) => setCurrentHeroSlide(index % (heroSlides.length || 1));
   const pauseCarousel = () => setIsPaused(true);
   const resumeCarousel = () => setIsPaused(false);
+
+  // Show loading skeletons when data is loading or not available
+  if (loading || !data || (data && (!data.heroSlides || data.heroSlides.length === 0))) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        <HeroSkeleton />
+        <PopularCoursesSkeleton />
+        <StatisticsSkeleton />
+        <ProgramsSkeleton />
+        <WhyChooseSkeleton />
+        <TestimonialsSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>

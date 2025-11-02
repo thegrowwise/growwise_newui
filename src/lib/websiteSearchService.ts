@@ -29,7 +29,7 @@ export class WebsiteSearchService {
   private baseUrl: string;
 
   private constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   }
 
   public static getInstance(): WebsiteSearchService {
@@ -84,7 +84,9 @@ export class WebsiteSearchService {
    */
   async getSuggestions(query: string, limit: number = 5): Promise<string[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/search/suggestions?q=${encodeURIComponent(query)}&limit=${limit}`, {
+      const url = `${this.baseUrl}/api/search/suggestions?q=${encodeURIComponent(query)}&limit=${limit}`;
+      
+      const response = await fetch(url, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -92,20 +94,38 @@ export class WebsiteSearchService {
       });
 
       if (!response.ok) {
+        // If 404 or other error, return fallback instead of throwing
+        if (response.status === 404) {
+          console.warn(`Suggestions endpoint not found (404), using fallback suggestions`);
+          return this.getFallbackSuggestions(query);
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
 
       if (!data.success) {
-        throw new Error(data.error || 'Suggestions failed');
+        console.warn('Suggestions API returned error, using fallback');
+        return this.getFallbackSuggestions(query);
       }
 
       return data.data.suggestions || [];
 
     } catch (error) {
-      console.error('WebsiteSearchService Suggestions Error:', error);
-      // Return fallback suggestions
+      console.warn('WebsiteSearchService Suggestions Error:', error);
+      // Return fallback suggestions instead of throwing
+      return this.getFallbackSuggestions(query);
+    }
+  }
+
+  /**
+   * Get fallback suggestions based on query
+   */
+  private getFallbackSuggestions(query: string): string[] {
+    const queryLower = query.toLowerCase().trim();
+    
+    // Handle "courses" query specifically
+    if (queryLower === 'courses' || queryLower === 'course') {
       return [
         'Math courses',
         'Python programming',
@@ -114,6 +134,32 @@ export class WebsiteSearchService {
         'STEAM courses'
       ];
     }
+    
+    // Handle other queries
+    if (queryLower.includes('math')) {
+      return ['Math courses', 'Calculus', 'Algebra', 'SAT Math Prep', 'High School Math'];
+    }
+    
+    if (queryLower.includes('programming') || queryLower.includes('coding') || queryLower.includes('python')) {
+      return ['Python Programming', 'Game Development', 'Scratch Programming', 'App Development', 'Coding courses'];
+    }
+    
+    if (queryLower.includes('ai') || queryLower.includes('machine')) {
+      return ['AI Explorer', 'Machine Learning', 'Prompt Engineering', 'Generative AI', 'ML/AI courses'];
+    }
+    
+    if (queryLower.includes('english') || queryLower.includes('reading') || queryLower.includes('writing')) {
+      return ['English Mastery', 'Reading Enrichment', 'Writing Lab', 'ELA courses', 'Grammar Boost'];
+    }
+    
+    // General fallback
+    return [
+      'Math courses',
+      'Python programming',
+      'AI Explorer',
+      'Free assessment',
+      'STEAM courses'
+    ];
   }
 
   /**

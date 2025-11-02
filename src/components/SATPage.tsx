@@ -363,7 +363,7 @@ const SATPage: React.FC = () => {
 
                         {/* Course Description */}
                         <div className="flex-grow">
-                          <p className="text-gray-600 text-sm mb-4 leading-relaxed">{course.description}</p>
+                          <p className="text-gray-600 text-sm mb-2 leading-relaxed line-clamp-2">{course.description}</p>
                           
                           {/* Course Details */}
                           <div className="mb-4 space-y-2">

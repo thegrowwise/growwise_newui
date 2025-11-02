@@ -3,6 +3,8 @@ import React from 'react';
 import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { ChevronRight } from 'lucide-react';
 
 export interface ProgramVM {
   id: number;
@@ -12,6 +14,8 @@ export interface ProgramVM {
   bgGradient: string;
   iconColor: string;
   href?: string;
+  ctaText?: string;
+  ctaUrl?: string;
   IconComponent: React.ComponentType<any>;
   subItems: { name: string; icon: string; description: string }[];
 }
@@ -23,6 +27,7 @@ export function ProgramsSection({
   k12: ProgramVM[];
   steam: ProgramVM[];
 }) {
+  const locale = useLocale();
   const ProgramGrid = ({ items, accent }: { items: ProgramVM[]; accent: 'blue' | 'orange' }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       {items.map((program) => {
@@ -40,26 +45,115 @@ export function ProgramsSection({
                   <h4 className={`font-bold text-xl ${program.iconColor} drop-shadow-sm`}>{program.title}</h4>
                 </div>
               </div>
-              <p className="text-gray-600 text-sm mb-8 leading-relaxed">{program.description}</p>
+              <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">{program.description}</p>
               <div className="space-y-4 flex-1">
-                {program.subItems.map((item) => (
-                  <div key={item.name} className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40`}>
+                {program.subItems.map((item) => {
+                  const isMathProgram = program.title.toLowerCase().includes('math');
+                  const isEnglishProgram = program.title.toLowerCase().includes('english') || program.title.toLowerCase().includes('ela');
+                  const isWritingProgram = program.title.toLowerCase().includes('writing');
+                  const isSteamGameProgram = program.title.toLowerCase().includes('game development');
+                  const isSteamPythonProgram = program.title.toLowerCase().includes('python programming');
+                  const nameLower = item.name.toLowerCase();
+                  let gradeParam = nameLower.includes('elementary')
+                    ? 'Elementary'
+                    : nameLower.includes('middle')
+                    ? 'Middle School'
+                    : nameLower.includes('high')
+                    ? 'High School'
+                    : null;
+                  if (isSteamPythonProgram && nameLower.includes('kickstart')) {
+                    gradeParam = 'Elementary';
+                  }
+                  const alignmentParam = nameLower.includes('dusd') ? 'DUSD Aligned' : null;
+                  const levelParam = (isSteamGameProgram
+                    ? (nameLower.includes('roblox')
+                      ? 'Beginner to Intermediate'
+                      : nameLower.includes('scratch')
+                      ? 'Beginner'
+                      : nameLower.includes('minecraft')
+                      ? 'Intermediate'
+                      : null)
+                    : null) || (isSteamPythonProgram
+                    ? (nameLower.includes('power') && nameLower.includes('up')
+                      ? 'Beginner to Advanced'
+                      : nameLower.includes('pro')
+                      ? 'Intermediate to Advanced'
+                      : null)
+                    : null);
+                  const courseTypeParam = nameLower.includes('mastery') 
+                    ? 'Comprehensive'
+                    : nameLower.includes('reading') && nameLower.includes('enrichment')
+                    ? 'Core English'
+                    : nameLower.includes('grammar') && nameLower.includes('boost')
+                    ? 'Grammar'
+                    : nameLower.includes('creative') && nameLower.includes('writing')
+                    ? 'Creative Writing'
+                    : nameLower.includes('essay') && nameLower.includes('writing')
+                    ? 'Essay Writing'
+                    : nameLower.includes('foundations') && nameLower.includes('writing')
+                    ? 'Creative Writing'
+                    : (isSteamGameProgram && nameLower.includes('robot'))
+                    ? 'Robotics'
+                    : null;
+                  const isLinked = (isMathProgram && (!!gradeParam || !!alignmentParam)) || 
+                    (isEnglishProgram && !!courseTypeParam) ||
+                    (isWritingProgram && !!courseTypeParam) ||
+                    (isSteamGameProgram && (!!levelParam || !!courseTypeParam)) ||
+                    (isSteamPythonProgram && (!!gradeParam || !!levelParam || !!courseTypeParam));
+                  const query = alignmentParam
+                    ? `alignment=${encodeURIComponent(alignmentParam)}`
+                    : gradeParam
+                    ? `grade=${encodeURIComponent(gradeParam)}`
+                    : courseTypeParam
+                    ? `type=${encodeURIComponent(courseTypeParam)}`
+                    : levelParam
+                    ? `level=${encodeURIComponent(levelParam)}`
+                    : '';
+                  const href = isMathProgram 
+                    ? `/${locale}/courses/math${query ? `?${query}` : ''}#courses`
+                    : (isEnglishProgram || isWritingProgram)
+                    ? `/${locale}/courses/english${query ? `?${query}` : ''}#courses`
+                    : isSteamGameProgram
+                    ? `/${locale}/steam/game-development${query ? `?${query}` : ''}#courses`
+                    : isSteamPythonProgram
+                    ? `/${locale}/steam/ml-ai-coding${query ? `?${query}` : ''}#courses`
+                    : '';
+                  const content = (
+                    <div className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40 ${isLinked ? 'cursor-pointer hover:scale-105' : ''}`}>
                     <span className="text-3xl">{item.icon}</span>
                     <div className="flex-1">
                       <p className="font-semibold text-gray-800 text-sm">{item.name}</p>
                       <p className="text-xs text-gray-600">{item.description}</p>
                     </div>
+                      {isLinked && (
+                        <ChevronRight className="w-4 h-4 text-gray-400" />
+                      )}
                   </div>
-                ))}
+                  );
+                  return isLinked ? (
+                    <Link key={item.name} href={href} prefetch>
+                      {content}
+                    </Link>
+                  ) : (
+                    <div key={item.name}>{content}</div>
+                  );
+                })}
               </div>
               <div className="mt-8 pt-6">
-                {program.href ? (
+                {program.ctaUrl ? (
                   <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
-                    <Link href={program.href}>Enroll Now</Link>
+                    <Link href={program.ctaUrl}>{program.ctaText || 'Enroll Now'}</Link>
+                  </Button>
+                ) : program.href ? (
+                  <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
+                    <Link href={program.href}>{program.ctaText || 'Enroll Now'}</Link>
                   </Button>
                 ) : (
-                  <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
-                    Enroll Now
+                  <Button 
+                    onClick={() => window.location.href = '/enroll'}
+                    className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}
+                  >
+                    {program.ctaText || 'Enroll Now'}
                   </Button>
                 )}
               </div>

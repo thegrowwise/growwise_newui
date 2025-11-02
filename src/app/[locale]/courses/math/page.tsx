@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,9 +17,43 @@ import MathSymbolsBackground from '@/components/MathSymbolsBackground';
 import CourseCard from '@/components/CourseCard';
 import { useTouchDetection } from '@/hooks/useHydration';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
+import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
+
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onGradeFound,
+  onAlignmentFound
+}: { 
+  onGradeFound: (grade: string) => void;
+  onAlignmentFound: (alignment: string) => void;
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const grade = searchParams.get('grade');
+    const alignment = searchParams.get('alignment');
+    
+    if (grade) {
+      onGradeFound(grade);
+    }
+    if (alignment) {
+      onAlignmentFound(alignment);
+    }
+    
+    if (grade || alignment) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onGradeFound, onAlignmentFound]);
+  
+  return null;
+}
 
 const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
@@ -38,6 +72,25 @@ const MathCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Handlers for search params
+  const handleGradeFound = useCallback((grade: string) => {
+    setSelectedGradeLevels((prev) => {
+      if (!prev.includes(grade)) {
+        return [grade];
+      }
+      return prev;
+    });
+  }, []);
+
+  const handleAlignmentFound = useCallback((alignment: string) => {
+    setSelectedAlignments((prev) => {
+      if (!prev.includes(alignment)) {
+        return [alignment];
+      }
+      return prev;
+    });
+  }, []);
 
   // Fetch Math courses data
   useEffect(() => {
@@ -207,9 +260,58 @@ const MathCoursesPage: React.FC = () => {
   // Enhanced Program Features from Redux data
   const enhancedProgramFeatures = mathCoursesData?.features ?? [];
 
+  // Show loading skeleton when data is loading
+  if (mathCoursesLoading && !mathCoursesData) {
+    return (
+      <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        {/* Header Skeleton */}
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-orange-50 to-amber-50"></div>
+          <div className="relative z-10 py-20 px-4 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center">
+              <div className="space-y-6">
+                <div className="h-12 w-96 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-80 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-10 w-48 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filters Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[...Array(3)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Courses Grid Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <HydrationBoundary>
       <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        <Suspense fallback={null}>
+          <SearchParamsHandler 
+            onGradeFound={handleGradeFound}
+            onAlignmentFound={handleAlignmentFound}
+          />
+        </Suspense>
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">
@@ -295,7 +397,7 @@ const MathCoursesPage: React.FC = () => {
       </section>
 
       {/* Math Courses Section with New Chip Filters */}
-      <section className="py-16 px-4 lg:px-8" style={{
+      <section id="courses" className="py-16 px-4 lg:px-8" style={{
         background: `
           radial-gradient(circle at 20% 25%, rgba(31, 57, 109, 0.08) 0%, transparent 15%),
           radial-gradient(circle at 80% 35%, rgba(241, 137, 79, 0.1) 0%, transparent 20%),

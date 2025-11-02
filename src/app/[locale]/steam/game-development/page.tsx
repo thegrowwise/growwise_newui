@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import { useSearchParams } from 'next/navigation';
 
 // Game Development Course Data
 interface GameDevCourse {
@@ -58,6 +59,32 @@ const gameDevCourses: GameDevCourse[] = [
     rating: 4.9,
     studentsEnrolled: 312,
     tags: ['Scratch', 'Visual Programming', 'Game Design', 'STEAM']
+  },
+  {
+    id: 'robotics-fundamentals',
+    name: 'Robotics Fundamentals',
+    description: 'Learn Robotics with GrowWise. Build, program, and test robots while mastering engineering and problem-solving skills.',
+    price: 389,
+    priceRange: '$380–$780',
+    duration: '12 weeks',
+    level: 'Beginner to Intermediate',
+    gradeLevel: ['Elementary', 'Middle School', 'High School'],
+    courseType: ['Robotics', 'STEAM', 'Engineering'],
+    alignment: ['CSTA Standards', 'Engineering Design Process', 'Computational Thinking'],
+    features: [
+      'Robot building basics and components',
+      'Sensors, motors, and controllers',
+      'Block-based and text programming',
+      'Autonomous navigation and challenges',
+      'Team-based design projects',
+      'Problem-solving through iterations',
+      'Showcase and demo day'
+    ],
+    image: 'https://images.unsplash.com/photo-1541996275315-1f66f1a222b7?w=400&h=300&fit=crop',
+    instructor: 'Priya Shah',
+    rating: 4.8,
+    studentsEnrolled: 205,
+    tags: ['Robotics', 'Engineering', 'STEAM']
   },
   {
     id: 'roblox-game-development',
@@ -115,6 +142,38 @@ const gameDevCourses: GameDevCourse[] = [
   }
 ];
 
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onLevelFound,
+  onTypeFound
+}: { 
+  onLevelFound: (level: string) => void;
+  onTypeFound: (type: string) => void;
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const level = searchParams.get('level');
+    const type = searchParams.get('type');
+
+    if (level) {
+      onLevelFound(level);
+    }
+    if (type) {
+      onTypeFound(type);
+    }
+    
+    if (level || type) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onLevelFound, onTypeFound]);
+  
+  return null;
+}
+
 const GameDevelopmentPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
@@ -127,6 +186,25 @@ const GameDevelopmentPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Handlers for search params
+  const handleLevelFound = useCallback((level: string) => {
+    setSelectedLevels((prev) => {
+      if (!prev.includes(level)) {
+        return [level];
+      }
+      return prev;
+    });
+  }, []);
+
+  const handleTypeFound = useCallback((type: string) => {
+    setSelectedCourseTypes((prev) => {
+      if (!prev.includes(type)) {
+        return [type];
+      }
+      return prev;
+    });
+  }, []);
 
   // Detect touch device and disable hover effects on mobile
   useEffect(() => {
@@ -165,7 +243,8 @@ const GameDevelopmentPage: React.FC = () => {
     { value: 'Visual Programming', label: 'Visual Programming', icon: '👁️', color: 'bg-blue-100 text-blue-800 border-blue-200' },
     { value: 'Engineering', label: 'Engineering', icon: '⚙️', color: 'bg-purple-100 text-purple-800 border-purple-200' },
     { value: 'Programming', label: 'Programming', icon: '💻', color: 'bg-indigo-100 text-indigo-800 border-indigo-200' },
-    { value: 'STEAM', label: 'STEAM', icon: '🔬', color: 'bg-teal-100 text-teal-800 border-teal-200' }
+    { value: 'STEAM', label: 'STEAM', icon: '🔬', color: 'bg-teal-100 text-teal-800 border-teal-200' },
+    { value: 'Robotics', label: 'Robotics', icon: '🤖', color: 'bg-green-100 text-green-800 border-green-200' }
   ];
 
   const levelFilters = [
@@ -301,6 +380,12 @@ const GameDevelopmentPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+      <Suspense fallback={null}>
+        <SearchParamsHandler 
+          onLevelFound={handleLevelFound}
+          onTypeFound={handleTypeFound}
+        />
+      </Suspense>
 
       {/* Enhanced Creative Header Section - Game Development Theme */}
       <section className="relative overflow-hidden">
@@ -388,6 +473,7 @@ const GameDevelopmentPage: React.FC = () => {
 
       {/* Enhanced Courses Section */}
       <section 
+        id="courses"
         className="py-20 px-4 lg:px-8 relative" 
         style={{
           background: `

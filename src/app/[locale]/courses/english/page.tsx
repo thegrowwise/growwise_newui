@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,14 +8,37 @@ import { BookOpen, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Award,
 import { englishCourses } from '@/data/englishCourses';
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
-import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
 import { useTranslations } from 'next-intl';
+import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
+import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 
-const EnglishCoursesPage: React.FC = () => {
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onTypeFound 
+}: { 
+  onTypeFound: (type: string) => void 
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type) {
+      onTypeFound(type);
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onTypeFound]);
+  
+  return null;
+}
+
+function EnglishCoursesContent() {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('englishCourses');
@@ -32,6 +55,16 @@ const EnglishCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Handler for search params type
+  const handleTypeFound = useCallback((type: string) => {
+    setSelectedCourseTypes((prev) => {
+      if (!prev.includes(type)) {
+        return [type];
+      }
+      return prev;
+    });
+  }, []);
 
   // Fetch English courses data
   useEffect(() => {
@@ -216,8 +249,54 @@ const EnglishCoursesPage: React.FC = () => {
   // Enhanced Program Features from Redux data
   const enhancedProgramFeatures = englishCoursesData?.features ?? [];
 
+  // Show loading skeleton when data is loading
+  if (englishCoursesLoading && !englishCoursesData) {
+    return (
+      <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        {/* Header Skeleton */}
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-blue-50 via-indigo-50 to-purple-50"></div>
+          <div className="relative z-10 py-20 px-4 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center">
+              <div className="space-y-6">
+                <div className="h-12 w-96 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-80 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-10 w-48 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filters Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[...Array(3)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Courses Grid Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+      <Suspense fallback={null}>
+        <SearchParamsHandler onTypeFound={handleTypeFound} />
+      </Suspense>
 
       {/* Enhanced Creative Header Section - English Theme */}
       <section className="relative overflow-hidden">
@@ -319,7 +398,7 @@ const EnglishCoursesPage: React.FC = () => {
       </section>
 
       {/* English Courses Section with Chip Filters */}
-      <section className="py-16 px-4 lg:px-8" style={{
+      <section id="courses" className="py-16 px-4 lg:px-8" style={{
         background: `
           radial-gradient(circle at 20% 25%, rgba(31, 57, 109, 0.08) 0%, transparent 15%),
           radial-gradient(circle at 80% 35%, rgba(241, 137, 79, 0.1) 0%, transparent 20%),
@@ -472,7 +551,7 @@ const EnglishCoursesPage: React.FC = () => {
                   }`}>
                     
                     {/* Front Side - Clean Layout */}
-                    <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} group-hover:scale-105 transition-all duration-300`}>
+                    <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} transition-all duration-300`}>
                       <CardContent className="p-5 relative flex flex-col h-full justify-between">
                         {/* Top Section - Course Header */}
                         <div className="flex-shrink-0">
@@ -497,10 +576,10 @@ const EnglishCoursesPage: React.FC = () => {
 
                         {/* Course Description */}
                         <div className="flex-grow">
-                          <p className="text-gray-600 text-sm mb-4 leading-relaxed">{course.description}</p>
+                          <p className="text-gray-600 text-sm mb-1 leading-snug line-clamp-1">{course.description}</p>
                           
                           {/* Course Tags/Chips */}
-                          <div className="mb-4 space-y-2">
+                          <div className="mb-2 space-y-1">
                             <div className="flex flex-wrap gap-1">
                               {course.gradeLevel.map((grade) => (
                                 <span
@@ -584,15 +663,15 @@ const EnglishCoursesPage: React.FC = () => {
                           </Button>
                         </div>
 
-                        {/* Decorative background elements */}
-                        <div className={`absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-10 transition-all duration-500 group-hover:scale-150 group-hover:opacity-20`} />
-                        <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-5 transition-all duration-500 group-hover:scale-125 group-hover:opacity-10`} />
+                          {/* Decorative background elements (kept within bounds) */}
+                          <div className={`absolute top-2 right-2 w-16 h-16 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-10 transition-all duration-500`} />
+                          <div className={`absolute bottom-2 left-2 w-12 h-12 bg-gradient-to-br ${courseGradients.gradient} rounded-full opacity-5 transition-all duration-500`} />
                       </CardContent>
                     </Card>
 
                     {/* Back Side - Enhanced Hover State - Only for non-touch devices */}
                     {!isTouchDevice && (
-                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180 scale-105`}>
+                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_16px_32px_0px_rgba(0,0,0,0.15)] border-2 ${courseGradients.hoverBorder} backface-hidden rotate-y-180`}>
                         <CardContent className="p-4 relative flex flex-col h-full justify-between overflow-hidden">
                           {/* Top Section - Course Header */}
                           <div className="flex-shrink-0">
@@ -869,6 +948,52 @@ const EnglishCoursesPage: React.FC = () => {
         />
       )}
     </div>
+  );
+}
+
+const EnglishCoursesPage: React.FC = () => {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+        {/* Header Skeleton */}
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-blue-50 via-indigo-50 to-purple-50"></div>
+          <div className="relative z-10 py-20 px-4 lg:px-8">
+            <div className="max-w-6xl mx-auto text-center">
+              <div className="space-y-6">
+                <div className="h-12 w-96 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-6 w-80 mx-auto bg-gray-200 rounded animate-pulse"></div>
+                <div className="h-10 w-48 mx-auto bg-gray-200 rounded-full animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Filters Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              {[...Array(3)].map((_, index) => (
+                <CardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Courses Grid Skeleton */}
+        <section className="py-12 px-4 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[...Array(6)].map((_, index) => (
+                <CourseCardSkeleton key={index} />
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    }>
+      <EnglishCoursesContent />
+    </Suspense>
   );
 };
 

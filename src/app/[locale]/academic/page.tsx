@@ -39,11 +39,25 @@ const AcademicPage: React.FC = () => {
   const [hoveredProgram, setHoveredProgram] = useState<number | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [isLearnMoreModalOpen, setIsLearnMoreModalOpen] = useState(false);
+  const [academicData, setAcademicData] = useState<any>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const fetchAcademicData = async () => {
+      try {
+        const response = await fetch('/api/mock/en/academic.json');
+        const data = await response.json();
+        setAcademicData(data);
+      } catch (error) {
+        console.error('Error fetching academic data:', error);
+      }
+    };
+    fetchAcademicData();
   }, []);
 
   const academicPrograms = [
@@ -61,7 +75,9 @@ const AcademicPage: React.FC = () => {
         'Accelerated Math Programs',
         'Integrated Math 1 & 2',
         'One-on-One & Small Group Options'
-      ]
+      ],
+      ctaText: 'Start Learning',
+      ctaUrl: '/enroll'
     },
     {
       id: 2,
@@ -77,7 +93,9 @@ const AcademicPage: React.FC = () => {
         'Grammar & Mechanics',
         'Essay Writing Excellence',
         'California Common Core Aligned'
-      ]
+      ],
+      ctaText: 'Start Learning',
+      ctaUrl: '/enroll'
     }
   ];
 
@@ -233,7 +251,7 @@ const AcademicPage: React.FC = () => {
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
                   <Button onClick={() => setIsLearnMoreModalOpen(true)} className="bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Learn more →</Button>
-                  <Button className="bg-[#F16112] hover:bg-[#F1894F] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Enroll Now</Button>
+                  <Button onClick={() => router.push('/enroll')} className="bg-[#F16112] hover:bg-[#F1894F] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Enroll Now</Button>
                 </div>
               </div>
             </CardContent>
@@ -305,10 +323,13 @@ const AcademicPage: React.FC = () => {
                       ))}
                     </div>
 
-                    <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
-                      isHovered ? 'scale-105 shadow-xl' : ''
-                    }`}>
-                      Start Learning
+                    <Button 
+                      onClick={() => router.push(program.ctaUrl || '/enroll')}
+                      className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
+                        isHovered ? 'scale-105 shadow-xl' : ''
+                      }`}
+                    >
+                      {program.ctaText || 'Start Learning'}
                       <ChevronRight className="ml-2 w-5 h-5" />
                     </Button>
                   </CardContent>
@@ -468,7 +489,10 @@ const AcademicPage: React.FC = () => {
                       </div>
                     </div>
                     <p className="text-gray-600 text-lg mb-6">Helps build speed, accuracy, and confidence under pressure.</p>
-                    <Button className="bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:from-[#29335C] hover:to-[#F1894F] text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300">
+                    <Button 
+                      onClick={() => router.push('/enroll')}
+                      className="bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:from-[#29335C] hover:to-[#F1894F] text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
                       Register for Practice Sessions
                       <ChevronRight className="ml-2 w-5 h-5" />
                     </Button>
@@ -622,11 +646,19 @@ const AcademicPage: React.FC = () => {
           <h2 className="text-4xl lg:text-5xl font-bold mb-8 text-white">Ready to Excel in Academics?</h2>
           <p className="text-xl lg:text-2xl mb-12 text-white/90 leading-relaxed">Join hundreds of students who have improved their academic performance with our personalized programs.</p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105" size="lg">
+            <Button 
+              onClick={() => router.push('/enroll')}
+              className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105" 
+              size="lg"
+            >
               Book Free Assessment
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" size="lg">
+            <Button 
+              onClick={() => setIsLearnMoreModalOpen(true)}
+              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" 
+              size="lg"
+            >
               Learn More
             </Button>
           </div>
@@ -677,7 +709,10 @@ const AcademicPage: React.FC = () => {
                       <div className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-[#1F396D] flex-shrink-0" /><span className="text-sm text-gray-700">One-on-One Support</span></div>
                     </div>
                   </div>
-                  <Button className="w-full bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
+                  <Button 
+                    onClick={() => { router.push('/courses/math'); setIsLearnMoreModalOpen(false); }}
+                    className="w-full bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto"
+                  >
                     View More
                     <ChevronRight className="ml-2 w-4 h-4" />
                   </Button>
@@ -702,7 +737,10 @@ const AcademicPage: React.FC = () => {
                       <div className="flex items-center gap-3"><CheckCircle className="w-4 h-4 text-[#F16112] flex-shrink-0" /><span className="text-sm text-gray-700">Grammar & Vocabulary</span></div>
                     </div>
                   </div>
-                  <Button className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
+                  <Button 
+                    onClick={() => { router.push('/courses/english'); setIsLearnMoreModalOpen(false); }}
+                    className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto"
+                  >
                     View More
                     <ChevronRight className="ml-2 w-4 h-4" />
                   </Button>

@@ -18,7 +18,7 @@ const popularCourses = [
   {
     title: "Math Mastery",
     caption: "1:1 attention",
-    primaryCta: "Free Assessment",
+    primaryCta: "Book Assessment",
     primaryCtaType: "primary",
     secondaryCta: "Learn More",
     icon: (
@@ -40,9 +40,9 @@ const popularCourses = [
     )
   },
   {
-    title: "Reading Rockets",
+    title: "Mastery in English",
     caption: "Accelerated growth",
-    primaryCta: "Free Assessment",
+    primaryCta: "Book Assessment",
     primaryCtaType: "primary",
     secondaryCta: "Learn More",
     icon: (

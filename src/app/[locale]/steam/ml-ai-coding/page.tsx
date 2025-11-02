@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { Brain, Code, Bot, Clock, Users, Star, Filter, ShoppingCart, CheckCircle
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import { useSearchParams } from 'next/navigation';
 
 // ML/AI Programming Course Data
 interface MLAICourse {
@@ -112,6 +113,41 @@ const mlaiCourses: MLAICourse[] = [
   }
 ];
 
+// Component that handles search params - wrapped separately for Suspense
+function SearchParamsHandler({ 
+  onGradeFound,
+  onLevelFound
+}: { 
+  onGradeFound: (grade: string) => void;
+  onLevelFound: (level: string) => void;
+}) {
+  const searchParams = useSearchParams();
+  
+  useEffect(() => {
+    const grade = searchParams.get('grade');
+    const level = searchParams.get('level');
+    let didSet = false;
+    
+    if (grade) {
+      onGradeFound(grade);
+      didSet = true;
+    }
+    if (level) {
+      onLevelFound(level);
+      didSet = true;
+    }
+    
+    if (didSet) {
+      const el = document.getElementById('courses');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, [searchParams, onGradeFound, onLevelFound]);
+  
+  return null;
+}
+
 const MLAICoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
@@ -124,6 +160,25 @@ const MLAICoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Handlers for search params
+  const handleGradeFound = useCallback((grade: string) => {
+    setSelectedGradeLevels((prev) => {
+      if (!prev.includes(grade)) {
+        return [grade];
+      }
+      return prev;
+    });
+  }, []);
+
+  const handleLevelFound = useCallback((level: string) => {
+    setSelectedLevels((prev) => {
+      if (!prev.includes(level)) {
+        return [level];
+      }
+      return prev;
+    });
+  }, []);
 
   // Detect touch device and disable hover effects on mobile
   useEffect(() => {
@@ -298,6 +353,12 @@ const MLAICoursesPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+      <Suspense fallback={null}>
+        <SearchParamsHandler 
+          onGradeFound={handleGradeFound}
+          onLevelFound={handleLevelFound}
+        />
+      </Suspense>
 
       {/* Enhanced Creative Header Section - AI Theme */}
       <section className="relative overflow-hidden">
@@ -385,6 +446,7 @@ const MLAICoursesPage: React.FC = () => {
 
       {/* Enhanced Courses Section */}
       <section 
+        id="courses"
         className="py-20 px-4 lg:px-8 relative" 
         style={{
           background: `
@@ -537,7 +599,7 @@ const MLAICoursesPage: React.FC = () => {
                     }`}>
                       
                       {/* Front Side - Clean Layout */}
-                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} group-hover:scale-105 transition-all duration-300`}>
+                      <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 hover:border-gray-200 ${!isTouchDevice ? 'backface-hidden' : ''} transition-all duration-300`}>
                         <CardContent className="p-5 relative flex flex-col h-full justify-between">
                           {/* Top Section - Course Header */}
                           <div className="flex-shrink-0">
@@ -562,10 +624,10 @@ const MLAICoursesPage: React.FC = () => {
 
                           {/* Course Description */}
                           <div className="flex-grow">
-                            <p className="text-gray-600 text-sm mb-4 leading-relaxed">{course.description}</p>
+                            <p className="text-gray-600 text-sm mb-1 leading-snug line-clamp-1">{course.description}</p>
                             
                             {/* Course Tags/Chips */}
-                            <div className="mb-4 space-y-2">
+                            <div className="mb-2 space-y-1">
                               <div className="flex flex-wrap gap-1">
                                 {course.gradeLevel.map((grade) => (
                                   <span
@@ -653,7 +715,7 @@ const MLAICoursesPage: React.FC = () => {
 
                       {/* Back Side - Learning Path & Success (Only for non-touch devices) */}
                       {!isTouchDevice && (
-                        <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 backface-hidden rotate-y-180`}>
+                        <Card className={`absolute inset-0 w-full h-full ${courseGradients.bgGradient} rounded-[24px] overflow-hidden shadow-[0px_8px_24px_0px_rgba(0,0,0,0.1)] border-2 border-white/50 backface-hidden rotate-y-180`}>
                           <CardContent className="p-6 relative flex flex-col h-full justify-between">
                             {/* Back Header */}
                             <div className="flex-shrink-0">

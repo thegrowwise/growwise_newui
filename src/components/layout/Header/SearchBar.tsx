@@ -1,9 +1,10 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Search, X, Loader2, ArrowRight, BookOpen, Code, Users, Star } from 'lucide-react';
 import { Button } from '../../ui/button';
 import { Card, CardContent } from '../../ui/card';
 import { websiteSearchService } from '@/lib/websiteSearchService';
+import { SearchResultsSkeleton } from '../../ui/loading-skeletons';
 
 interface SearchResult {
   id: string;
@@ -58,52 +59,8 @@ export default function SearchBar() {
   const inputRef = useRef<HTMLInputElement>(null);
   const debounceRef = useRef<NodeJS.Timeout>();
 
-  // Handle click outside to close search
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-        setShowSuggestions(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Handle keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (!isOpen) return;
-
-      if (event.key === 'Escape') {
-        setIsOpen(false);
-        setShowSuggestions(false);
-        setQuery('');
-        setResults([]);
-      } else if (event.key === 'Enter' && selectedIndex >= 0) {
-        if (showSuggestions && suggestions[selectedIndex]) {
-          setQuery(suggestions[selectedIndex]);
-          handleSearch(suggestions[selectedIndex]);
-        }
-      } else if (event.key === 'ArrowDown') {
-        event.preventDefault();
-        setSelectedIndex(prev => 
-          showSuggestions 
-            ? Math.min(prev + 1, suggestions.length - 1)
-            : Math.min(prev + 1, results.length - 1)
-        );
-      } else if (event.key === 'ArrowUp') {
-        event.preventDefault();
-        setSelectedIndex(prev => Math.max(prev - 1, -1));
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, showSuggestions, suggestions, results]);
-
-  const handleSearch = async (searchQuery: string = query) => {
+  // Search function
+  const handleSearch = useCallback(async (searchQuery: string = query) => {
     if (!searchQuery.trim()) return;
 
     setIsSearching(true);
@@ -126,7 +83,58 @@ export default function SearchBar() {
     } finally {
       setIsSearching(false);
     }
-  };
+  }, [query]);
+
+  // Handle click outside to close search
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+        setShowSuggestions(false);
+        setQuery('');
+        setResults([]);
+      } else if (event.key === 'Enter') {
+        if (selectedIndex >= 0 && showSuggestions && suggestions[selectedIndex]) {
+          // Use selected suggestion
+          event.preventDefault();
+          setQuery(suggestions[selectedIndex]);
+          handleSearch(suggestions[selectedIndex]);
+        } else if (query.trim()) {
+          // Perform search with current query
+          event.preventDefault();
+          handleSearch();
+        }
+      } else if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        setSelectedIndex(prev => 
+          showSuggestions 
+            ? Math.min(prev + 1, suggestions.length - 1)
+            : Math.min(prev + 1, results.length - 1)
+        );
+      } else if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        setSelectedIndex(prev => Math.max(prev - 1, -1));
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, showSuggestions, suggestions, results, selectedIndex, query, handleSearch]);
 
   const handleInputChange = (value: string) => {
     setQuery(value);
@@ -147,7 +155,15 @@ export default function SearchBar() {
           const newSuggestions = await websiteSearchService.getSuggestions(value, 5);
           setSuggestions(newSuggestions);
         } catch (error) {
-          console.error('Suggestions error:', error);
+          console.warn('Suggestions unavailable, using fallback:', error);
+          // Use fallback suggestions if API fails
+          setSuggestions([
+            'Math courses',
+            'Python programming',
+            'AI Explorer',
+            'Free assessment',
+            'STEAM courses'
+          ]);
         }
       }, 300);
     } else {
@@ -253,7 +269,10 @@ export default function SearchBar() {
                 </div>
 
                 <div className="space-y-2">
-                  {results.map((result, index) => (
+                  {isLoading ? (
+                    <SearchResultsSkeleton />
+                  ) : (
+                    results.map((result, index) => (
                     <Card
                       key={result.id}
                       className={`cursor-pointer transition-all duration-200 hover:shadow-md ${
@@ -286,7 +305,8 @@ export default function SearchBar() {
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
             )}
