@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { X, Plus, Minus, Calculator } from 'lucide-react';
+import { Plus, Minus, Calculator } from 'lucide-react';
 
 interface CourseCustomizationModalProps {
   isOpen: boolean;
@@ -57,12 +57,7 @@ const CourseCustomizationModal: React.FC<CourseCustomizationModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md mx-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            <span>Customize Course</span>
-            <Button variant="ghost" size="sm" onClick={onClose}>
-              <X className="w-4 h-4" />
-            </Button>
-          </DialogTitle>
+          <DialogTitle>Customize Course</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6">

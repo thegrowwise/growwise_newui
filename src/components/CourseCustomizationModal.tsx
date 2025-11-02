@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { Label } from "./ui/label";
-import { X, Plus, Minus, ShoppingCart, Calculator, Clock, Users } from "lucide-react";
+import { Plus, Minus, ShoppingCart, Calculator, Clock, Users } from "lucide-react";
 import { useCart } from './gw/CartContext';
 
 interface CourseCustomizationModalProps {
@@ -184,13 +184,6 @@ const CourseCustomizationModal: React.FC<CourseCustomizationModalProps> = ({
       <DialogContent className="sm:max-w-[500px] bg-white border-0 shadow-2xl rounded-[24px] p-0 overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] p-6 text-white relative">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors"
-          >
-            <X className="w-4 h-4" />
-          </button>
-          
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-white/20 rounded-xl">
               <Calculator className="w-5 h-5" />
