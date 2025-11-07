@@ -219,7 +219,7 @@ export default function Chatbot() {
     
     // Statistics and Trust
     if (input.includes('statistics') || input.includes('students') || input.includes('families') || input.includes('satisfaction') || input.includes('enrolled')) {
-      return { text: "GrowWise is trusted by Tri-Valley families:\n\n👥 **300+ Students Enrolled**\n📚 **25+ Courses Offered**\n👍 **98% Student Satisfaction**\n\nWe're proud to serve the Tri-Valley community with proven results and expert instruction. Our students show measurable improvement within the first semester!" };
+      return { text: "GrowWise is trusted by Tri-Valley families:\n\n👥 **325+ Students Enrolled**\n📚 **25+ Courses Offered**\n👍 **98% Student Satisfaction**\n\nWe're proud to serve the Tri-Valley community with proven results and expert instruction. Our students show measurable improvement within the first semester!" };
     }
     
     // Why Choose Us

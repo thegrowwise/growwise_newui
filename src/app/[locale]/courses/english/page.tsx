@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +16,18 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
+import HydrationBoundary from '@/components/HydrationBoundary';
+//import EnglishSymbolsBackground from '@/components/EnglishSymbolsBackground';
+import { useHydration } from '@/hooks/useHydration';
+import { 
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogCancel,
+  AlertDialogAction
+} from '@/components/ui/alert-dialog';
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -45,6 +58,7 @@ function EnglishCoursesContent() {
   const dispatch = useAppDispatch();
   const englishCoursesData = useAppSelector((s) => s.englishCourses.data);
   const englishCoursesLoading = useAppSelector((s) => s.englishCourses.loading);
+  const { isHydrated } = useHydration();
   
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
   const [selectedCourseTypes, setSelectedCourseTypes] = useState<string[]>([]);
@@ -55,6 +69,16 @@ function EnglishCoursesContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+
+  // Compact contact options for modal
+  const contactInfo = [
+    { icon: 'Phone', title: 'Call Us', primary: '(925) 456-4606', bgColor: 'bg-[#1F396D]' },
+    { icon: 'Mail', title: 'Email Us', primary: 'connect@thegrowwise.com', bgColor: 'bg-[#F16112]' },
+    { icon: 'MapPin', title: 'Visit Us', primary: '4564 Dublin Blvd, CA', bgColor: 'bg-[#F1894F]' },
+    { icon: 'MessageCircle', title: 'Live Chat', primary: 'Instant Support', bgColor: 'bg-[#29335C]' }
+  ];
 
   // Handler for search params type
   const handleTypeFound = useCallback((type: string) => {
@@ -103,6 +127,15 @@ function EnglishCoursesContent() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Deterministic PRNG to avoid hydration mismatches (stable across SSR/CSR)
+  const prng = (seed: number) => {
+    let t = seed >>> 0;
+    return () => {
+      t = (t * 1664525 + 1013904223) >>> 0;
+      return t / 4294967296;
+    };
+  };
 
   // Filter categories from Redux data
   const gradeLevelFilters = englishCoursesData?.filters?.gradeLevels ?? [];
@@ -299,28 +332,12 @@ function EnglishCoursesContent() {
       </Suspense>
 
       {/* Enhanced Creative Header Section - English Theme */}
+      <div suppressHydrationWarning>
       <section className="relative overflow-hidden">
         {/* Animated Background - English-themed gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-blue-50 via-indigo-50 to-purple-50">
-          {/* Floating literary symbols */}
-          <div className="absolute inset-0 overflow-hidden">
-            {[...Array(15)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute text-gray-500/60 animate-float-gentle font-semibold"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  transform: `translateY(${scrollY * 0.05}px)`,
-                  animationDelay: `${i * 1.2}s`,
-                  animationDuration: `${8 + Math.random() * 4}s`,
-                  fontSize: `${Math.random() * 15 + 18}px`
-                }}
-              >
-                {['📚', '✍️', '📝', '💭', '🔤', '📖', '✨', '🎯', '💡', '🌟', '📋', '🖊️', '📄', '🔍', '💻'][Math.floor(Math.random() * 15)]}
-              </div>
-            ))}
-          </div>
+          {/* Floating literary symbols - extracted to SSR-safe client component */}
+          {/* <EnglishSymbolsBackground scrollY={scrollY} seed={123456} /> */}
           
           {/* Gradient overlay circles - English theme colors */}
           <div className="absolute top-20 left-10 w-64 h-64 bg-emerald-100/30 rounded-full blur-3xl animate-pulse"></div>
@@ -345,11 +362,18 @@ function EnglishCoursesContent() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
+              <Button onClick={() => setIsAssessmentModalOpen(true)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
                 <BookOpen className="mr-2 w-5 h-5" />
                 Book Free Assessment
               </Button>
-              <Button variant="outline" className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg">
+              <Button 
+                onClick={() => {
+                  const coursesSection = document.getElementById('courses');
+                  if (coursesSection) {
+                    coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                variant="outline" className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg">
                 <Eye className="mr-2 w-5 h-5" />
                 View Programs
               </Button>
@@ -396,6 +420,7 @@ function EnglishCoursesContent() {
           </div>
         </div>
       </section>
+      </div>
 
       {/* English Courses Section with Chip Filters */}
       <section id="courses" className="py-16 px-4 lg:px-8" style={{
@@ -726,21 +751,14 @@ function EnglishCoursesContent() {
                             </div>
                           </div>
                           
-                          {/* Bottom Section - CTA Buttons */}
-                          <div className="flex-shrink-0 space-y-1.5 mt-2">
+                          {/* Bottom Section - CTA */}
+                          <div className="flex-shrink-0 mt-2">
                             <Button 
                               onClick={() => handleAddToCart(course)}
                               className={`w-full bg-gradient-to-r ${courseGradients.gradient} hover:shadow-lg text-white rounded-xl py-2 text-xs transition-all duration-300 transform scale-105 shadow-lg`}
                             >
                               <ShoppingCart className="mr-1 w-3 h-3" />
                               Add to Cart • {course.priceRange}
-                            </Button>
-                            <Button 
-                              variant="outline"
-                              className={`w-full border ${courseGradients.iconColor} hover:bg-gray-50 rounded-xl py-1.5 text-xs transition-all duration-300`}
-                            >
-                              Learn More
-                              <ChevronRight className="ml-1 w-3 h-3" />
                             </Button>
                           </div>
 
@@ -924,11 +942,11 @@ function EnglishCoursesContent() {
             {englishCoursesData?.cta?.subtitle || t('cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-[30px]" size="lg">
+            <Button onClick={openChatbot} className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-[30px]" size="lg">
               {englishCoursesData?.cta?.primaryButton || t('cta.primaryButton')}
             </Button>
             <Button 
-              onClick={openChatbot}
+              onClick={() => setIsContactModalOpen(true)}
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
               size="lg"
             >
@@ -937,6 +955,66 @@ function EnglishCoursesContent() {
           </div>
         </div>
       </section>
+
+      {/* Contact Methods Modal */}
+      <AlertDialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+        <AlertDialogContent className="bg-white/95 border border-gray-200 rounded-2xl shadow-xl max-w-4xl w-[calc(100%-2rem)] p-0 overflow-hidden">
+          <button
+            onClick={() => setIsContactModalOpen(false)}
+            className="absolute top-4 right-4 z-20 w-8 h-8 bg-white hover:bg-gray-50 rounded-full flex items-center justify-center shadow-md border border-gray-200"
+          >
+            <X className="w-4 h-4 text-gray-600" />
+          </button>
+          <div className="relative z-10 p-6">
+            <AlertDialogHeader className="text-center mb-4">
+              <AlertDialogTitle className="text-2xl font-bold text-gray-900 mb-1">
+                Multiple Ways to Connect
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-base text-gray-600">
+                Choose the method that works best for you
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {contactInfo.map((item, index) => {
+                const IconComponent = getIconComponent(item.icon);
+                const isPhone = item.icon === 'Phone';
+                const isEmail = item.icon === 'Mail';
+                const isLiveChat = item.icon === 'MessageCircle';
+                const isVisitUs = item.icon === 'MapPin';
+                const href = isPhone 
+                  ? `tel:${item.primary.replace(/[\s\(\)\-]/g, '')}`
+                  : isEmail 
+                  ? `mailto:${item.primary}`
+                  : isVisitUs
+                  ? 'https://maps.google.com/?q=4564+Dublin+Blvd,+Dublin,+CA'
+                  : '#';
+                const CardWrapper = isLiveChat ? 'button' : 'a';
+                const commonProps: any = isLiveChat
+                  ? { onClick: () => { setIsContactModalOpen(false); openChatbot(); } }
+                  : { href: href };
+                return (
+                  <Card key={index} className="bg-white border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 overflow-hidden">
+                    <CardContent className="p-5">
+                      <CardWrapper {...commonProps} className="block text-left w-full">
+                        <div className="flex items-start gap-4">
+                          <div className={`${item.bgColor} w-12 h-12 rounded-xl flex items-center justify-center shadow-md`}>
+                            <IconComponent className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-lg font-bold text-gray-900 mb-1">{item.title}</h3>
+                            <p className="text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis text-[#F16112]" title={item.primary}>{item.primary}</p>
+                          </div>
+                        </div>
+                      </CardWrapper>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Course Customization Modal */}
       {selectedCourse && (
@@ -947,6 +1025,11 @@ function EnglishCoursesContent() {
           onAddToCart={addItem}
         />
       )}
+      {/* Free Assessment Modal */}
+      <FreeAssessmentModal 
+        isOpen={isAssessmentModalOpen}
+        onClose={() => setIsAssessmentModalOpen(false)}
+      />
     </div>
   );
 }
@@ -992,7 +1075,9 @@ const EnglishCoursesPage: React.FC = () => {
         </section>
       </div>
     }>
-      <EnglishCoursesContent />
+      <HydrationBoundary suppressHydrationWarning>
+        <EnglishCoursesContent />
+      </HydrationBoundary>
     </Suspense>
   );
 };

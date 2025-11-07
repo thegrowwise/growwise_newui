@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
+import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -72,6 +73,7 @@ const MathCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
 
   // Handlers for search params
   const handleGradeFound = useCallback((grade: string) => {
@@ -343,12 +345,24 @@ const MathCoursesPage: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
+              <Button 
+                onClick={() => setIsAssessmentModalOpen(true)}
+                className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+              >
                 <Calculator className="mr-2 w-5 h-5" />
                 Book Free Assessment
               </Button>
               {/* Fixed View Programs Button - Better Visibility */}
-              <Button variant="outline" className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg">
+              <Button 
+                onClick={() => {
+                  const coursesSection = document.getElementById('courses');
+                  if (coursesSection) {
+                    coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                variant="outline" 
+                className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg"
+              >
                 <Eye className="mr-2 w-5 h-5" />
                 View Programs
               </Button>
@@ -648,10 +662,6 @@ const MathCoursesPage: React.FC = () => {
                     <Mail className="w-4 h-4" />
                     <span>connect@thegrowwise.com</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    <span>(925) 456-4606</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -667,27 +677,11 @@ const MathCoursesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 lg:px-8 bg-[#1F396D]">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl mb-6 text-white">{mathCoursesData?.cta?.title || t('cta.title')}</h2>
-          <p className="text-xl mb-8 text-white/90">
-            {mathCoursesData?.cta?.subtitle || t('cta.subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-[30px]" size="lg">
-              {mathCoursesData?.cta?.primaryButton || t('cta.primaryButton')}
-            </Button>
-            <Button 
-              onClick={openChatbot}
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
-              size="lg"
-            >
-              {mathCoursesData?.cta?.secondaryButton || t('cta.secondaryButton')}
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* Free Assessment Modal */}
+      <FreeAssessmentModal 
+        isOpen={isAssessmentModalOpen}
+        onClose={() => setIsAssessmentModalOpen(false)}
+      />
       </div>
     </HydrationBoundary>
   );

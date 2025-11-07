@@ -4,7 +4,7 @@
     "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed.",
     "stats": [
       { "label": "Founded", "value": "2019", "color": "text-[#1F396D]" },
-      { "label": "Students Served", "value": "300+", "color": "text-[#F16112]" },
+      { "label": "Students Served", "value": "325+", "color": "text-[#F16112]" },
       { "label": "Courses Offered", "value": "25+", "color": "text-[#F1894F]" },
       { "label": "Satisfaction Rate", "value": "98%", "color": "text-[#29335C]" }
     ]
@@ -97,7 +97,7 @@
     { "icon": "Award", "title": "Our Values", "description": "Excellence in education, personalized attention, innovative teaching methods, strong community partnerships, and unwavering commitment to student success.", "gradient": "from-[#F1894F] to-[#F16112]", "bgColor": "bg-[#F1894F]/10" }
   ],
   "achievements": [
-    { "icon": "Users", "title": "300+ Students Served", "description": "Since 2019, we've helped over 300 students achieve their academic goals", "value": "300+", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
+    { "icon": "Users", "title": "325+ Students Served", "description": "Since 2019, we've helped over 325 students achieve their academic goals", "value": "325+", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
     { "icon": "Star", "title": "98% Satisfaction Rate", "description": "Consistently high parent and student satisfaction scores", "value": "98%", "color": "text-[#F16112]", "bgColor": "bg-[#F16112]/10" },
     { "icon": "TrendingUp", "title": "95% Improvement Rate", "description": "95% of students show measurable improvement within first semester", "value": "95%", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" },
     { "icon": "Award", "title": "5+ Years of Excellence", "description": "Recognized as a leading educational center in Dublin and Tri-Valley area", "value": "2019", "color": "text-[#29335C]", "bgColor": "bg-[#29335C]/10" }

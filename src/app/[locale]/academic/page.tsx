@@ -33,12 +33,14 @@ import {
   TrendingUp,
   X
 } from 'lucide-react';
+import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 
 const AcademicPage: React.FC = () => {
   const router = useRouter();
   const [hoveredProgram, setHoveredProgram] = useState<number | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [isLearnMoreModalOpen, setIsLearnMoreModalOpen] = useState(false);
+  const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const [academicData, setAcademicData] = useState<any>(null);
 
   useEffect(() => {
@@ -647,7 +649,7 @@ const AcademicPage: React.FC = () => {
           <p className="text-xl lg:text-2xl mb-12 text-white/90 leading-relaxed">Join hundreds of students who have improved their academic performance with our personalized programs.</p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Button 
-              onClick={() => router.push('/enroll')}
+              onClick={() => setIsAssessmentModalOpen(true)}
               className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105" 
               size="lg"
             >
@@ -691,7 +693,7 @@ const AcademicPage: React.FC = () => {
             </AlertDialogHeader>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card onClick={() => { router.push('/math-courses'); setIsLearnMoreModalOpen(false); }} className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full">
+            <Card onClick={() => { router.push('/courses/math'); setIsLearnMoreModalOpen(false); }} className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/15 opacity-60"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
                 <CardContent className="p-8 text-center flex flex-col items-center justify-between relative z-10 h-full">
@@ -719,7 +721,7 @@ const AcademicPage: React.FC = () => {
                 </CardContent>
               </Card>
 
-              <Card onClick={() => { router.push('/english-courses'); setIsLearnMoreModalOpen(false); }} className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full">
+              <Card onClick={() => { router.push('/courses/english'); setIsLearnMoreModalOpen(false); }} className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/15 opacity-60"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
                 <CardContent className="p-8 text-center flex flex-col items-center justify-between relative z-10 h-full">
@@ -753,6 +755,12 @@ const AcademicPage: React.FC = () => {
           </div>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Free Assessment Modal */}
+      <FreeAssessmentModal 
+        isOpen={isAssessmentModalOpen}
+        onClose={() => setIsAssessmentModalOpen(false)}
+      />
     </div>
   );
 };
