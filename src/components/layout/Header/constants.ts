@@ -6,7 +6,8 @@ import {
   GraduationCap, 
   Target, 
   BookMarked, 
-  UserCheck 
+  UserCheck,
+  Calendar
 } from 'lucide-react';
 import { VariantStyles } from './types';
 
@@ -19,7 +20,8 @@ export const ICON_MAP = {
   GraduationCap,
   Target,
   BookMarked,
-  UserCheck
+  UserCheck,
+  Calendar
 } as const;
 
 // Variant-based styles

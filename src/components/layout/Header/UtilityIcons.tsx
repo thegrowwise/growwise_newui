@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { ShoppingCart } from 'lucide-react';
 import SearchBar from './SearchBar';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
+import { useButtonTracking } from '@/lib/analytics/hooks';
+import { useTranslations } from 'next-intl';
 
 interface UtilityIconsProps {
   cartItemCount: number;
@@ -9,6 +11,17 @@ interface UtilityIconsProps {
 }
 
 export default function UtilityIcons({ cartItemCount, createLocaleUrl }: UtilityIconsProps) {
+  const t = useTranslations('navigation');
+  const { trackButtonClick } = useButtonTracking();
+
+  const handleEnrollClick = () => {
+    trackButtonClick('Enroll Now', 'header_navigation', {
+      button_type: 'nav_button',
+      button_variant: 'orange',
+      destination: '/enroll'
+    });
+  };
+
   return (
     <div className="hidden lg:flex items-center space-x-6">
       {/* Utility Icons */}
@@ -24,6 +37,15 @@ export default function UtilityIcons({ cartItemCount, createLocaleUrl }: Utility
               {cartItemCount}
             </span>
           )}
+        </Link>
+        
+        {/* Enroll Now Button */}
+        <Link
+          href={createLocaleUrl('/enroll')}
+          onClick={handleEnrollClick}
+          className="px-6 py-2 rounded-full font-medium transition-all duration-300 whitespace-nowrap bg-[#F16112] text-white hover:bg-[#F1894F] shadow-lg hover:shadow-xl"
+        >
+          {t('enroll')}
         </Link>
       </div>
 

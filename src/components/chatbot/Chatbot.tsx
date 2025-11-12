@@ -289,10 +289,10 @@ export default function Chatbot() {
         <div className="fixed bottom-6 right-6 z-50">
           <Button
             onClick={handleStartChat}
-            className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 border-2 border-white/20 backdrop-blur-sm"
+            className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 border-2 border-white/20 backdrop-blur-sm flex items-center justify-center p-0 [&_svg]:!size-7"
             size="lg"
           >
-            <MessageCircle className="w-8 h-8" />
+            <MessageCircle className="size-7" style={{ width: '28px', height: '28px' }} />
           </Button>
         </div>
       )}
