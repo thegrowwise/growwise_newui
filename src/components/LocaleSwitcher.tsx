@@ -12,8 +12,8 @@ const localeNames = {
   hi: 'हिन्दी'
 };
 
-// Temporarily disable other languages - only show English
-const enabledLocales = ['en'];
+// All available languages
+const enabledLocales = ['en', 'es', 'zh', 'hi'];
 
 export default function LocaleSwitcher() {
   const locale = useLocale();
