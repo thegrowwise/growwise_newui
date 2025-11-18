@@ -606,6 +606,14 @@
       "primaryCta": "Get Started Today",
       "secondaryCta": "Schedule a Call"
     }
+  },
+  "trial": {
+    "subjects": {
+      "coding": "Coding",
+      "ai": "AI/ML",
+      "gameDev": "Game Development",
+      "robotics": "Robotics"
+    }
   }
 }
 
