@@ -114,16 +114,16 @@ export default function WinterCampPage() {
     };
   }, []);
 
-  // Winter Workshop Cards
+  // Winter Camp Cards
   const workshops = [
     {
       id: 'roblox-workshop',
-      title: 'Roblox Workshop',
-      description: 'Build and publish your own Roblox games in this hands-on winter workshop. Learn game design, Lua scripting, and create interactive experiences.',
+      title: 'Roblox Camp',
+      description: 'Build and publish your own Roblox games in this hands-on winter camp. Learn game design, Lua scripting, and create interactive experiences.',
       icon: Gamepad2,
-      gradient: 'from-blue-500 to-cyan-400',
-      bgGradient: 'bg-gradient-to-br from-blue-50 to-cyan-50',
-      iconColor: 'text-blue-600',
+      gradient: 'from-sky-500 to-blue-600',
+      bgGradient: 'bg-gradient-to-br from-sky-50 to-blue-50',
+      iconColor: 'text-sky-600',
       features: [
         'Roblox Studio Basics',
         'Lua Scripting Fundamentals',
@@ -132,17 +132,18 @@ export default function WinterCampPage() {
         'Publishing Your Game',
         'Monetization Basics'
       ],
-      duration: '5 Days',
-      level: 'Beginner to Intermediate'
+      duration: '1 to 5 days camp',
+      level: 'Beginner to Intermediate',
+      price: 75
     },
     {
       id: 'scratch-workshop',
-      title: 'Scratch Workshop',
+      title: 'Scratch Camp',
       description: 'Create fun games and animations using Scratch visual programming. Perfect for beginners to learn coding concepts through creative projects.',
       icon: Code,
-      gradient: 'from-orange-500 to-amber-400',
-      bgGradient: 'bg-gradient-to-br from-orange-50 to-amber-50',
-      iconColor: 'text-orange-600',
+      gradient: 'from-blue-500 to-sky-500',
+      bgGradient: 'bg-gradient-to-br from-blue-50 to-sky-50',
+      iconColor: 'text-blue-600',
       features: [
         'Visual Programming Basics',
         'Game Creation',
@@ -151,17 +152,18 @@ export default function WinterCampPage() {
         'Sharing & Collaboration',
         'Problem Solving Skills'
       ],
-      duration: '5 Days',
-      level: 'Beginner'
+      duration: '1 to 5 days camp',
+      level: 'Beginner',
+      price: 75
     },
     {
       id: 'minecraft-workshop',
-      title: 'Minecraft Workshop',
+      title: 'Minecraft Camp',
       description: 'Explore engineering and coding in Minecraft. Learn redstone circuits, command blocks, and modding to create amazing builds and contraptions.',
       icon: Blocks,
-      gradient: 'from-green-500 to-emerald-400',
-      bgGradient: 'bg-gradient-to-br from-green-50 to-emerald-50',
-      iconColor: 'text-green-600',
+      gradient: 'from-slate-600 to-blue-600',
+      bgGradient: 'bg-gradient-to-br from-slate-50 to-blue-50',
+      iconColor: 'text-slate-700',
       features: [
         'Redstone Engineering',
         'Command Block Programming',
@@ -170,8 +172,9 @@ export default function WinterCampPage() {
         'Collaborative Projects',
         'Creative Problem Solving'
       ],
-      duration: '5 Days',
-      level: 'Beginner to Intermediate'
+      duration: '1 to 5 days camp',
+      level: 'Beginner to Intermediate',
+      price: 75
     }
   ];
 
@@ -214,19 +217,154 @@ export default function WinterCampPage() {
         .animate-float {
           animation: float 3s ease-in-out infinite;
         }
+        
+        @keyframes sparkle {
+          0%, 100% {
+            opacity: 0;
+            transform: scale(0) rotate(0deg);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1) rotate(180deg);
+          }
+        }
+        
+        @keyframes twinkle {
+          0%, 100% {
+            opacity: 0.3;
+          }
+          50% {
+            opacity: 1;
+          }
+        }
+        
+        .sparkle {
+          animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        .twinkle {
+          animation: twinkle 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes snowfall {
+          0% {
+            transform: translateY(-100vh) translateX(0) rotate(0deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) translateX(20px) rotate(360deg);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes snowfall-left {
+          0% {
+            transform: translateY(-100vh) translateX(0) rotate(0deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(100vh) translateX(-20px) rotate(360deg);
+            opacity: 0;
+          }
+        }
+        
+        .snowflake {
+          position: absolute;
+          top: -10px;
+          color: rgba(148, 163, 184, 0.6);
+          pointer-events: none;
+          z-index: 1;
+        }
+        
+        .snowflake svg {
+          filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+        }
+        
+        .snowflake-fall {
+          animation: snowfall linear infinite;
+        }
+        
+        .snowflake-fall-left {
+          animation: snowfall-left linear infinite;
+        }
       `}</style>
-      <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/30 to-slate-50 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/20 to-slate-50 relative overflow-hidden">
       {/* Subtle Winter Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Subtle Snowflakes */}
-        {[...Array(15)].map((_, i) => {
+        {/* Falling Snowflakes - Icons */}
+        {[...Array(20)].map((_, i) => {
+          // Use fixed values based on index to avoid hydration mismatch
+          const left = (i * 5) % 100;
+          const delay = (i * 0.2) % 6;
+          const duration = 12 + (i % 5) * 2; // Vary duration between 12-20 seconds
+          const driftDirection = i % 2 === 0 ? 'snowflake-fall' : 'snowflake-fall-left';
+          const size = 8 + (i % 3) * 2; // Vary size between 8-12px
+          const opacity = 0.5 + (i % 2) * 0.2; // Vary opacity
+          return (
+            <div
+              key={`snow-icon-${i}`}
+              className={`snowflake ${driftDirection}`}
+              style={{
+                left: `${left}%`,
+                animationDuration: `${duration}s`,
+                animationDelay: `${delay}s`,
+                opacity: opacity
+              } as React.CSSProperties}
+            >
+              <Snowflake className="w-4 h-4" style={{ width: `${size}px`, height: `${size}px` }} />
+            </div>
+          );
+        })}
+        
+        {/* Falling Snowflakes - Simple Dots */}
+        {[...Array(50)].map((_, i) => {
+          // Use fixed values based on index to avoid hydration mismatch
+          const left = (i * 2) % 100;
+          const delay = (i * 0.1) % 5;
+          const duration = 8 + (i % 4) * 2; // Vary duration between 8-14 seconds
+          const driftDirection = i % 2 === 0 ? 'snowflake-fall' : 'snowflake-fall-left';
+          const size = 3 + (i % 3); // Vary size between 3-5px
+          const opacity = 0.5 + (i % 3) * 0.15; // Vary opacity
+          return (
+            <div
+              key={`snow-dot-${i}`}
+              className={`snowflake ${driftDirection}`}
+              style={{
+                left: `${left}%`,
+                animationDuration: `${duration}s`,
+                animationDelay: `${delay}s`,
+                width: `${size}px`,
+                height: `${size}px`,
+                borderRadius: '50%',
+                backgroundColor: 'rgba(148, 163, 184, 0.7)',
+                opacity: opacity,
+                boxShadow: '0 0 2px rgba(255, 255, 255, 0.5)'
+              } as React.CSSProperties}
+            />
+          );
+        })}
+        
+        {/* Subtle Static Snowflakes */}
+        {[...Array(10)].map((_, i) => {
           // Use fixed values based on index to avoid hydration mismatch
           const delay = (i * 0.2) % 3;
-          const left = (i * 7.3) % 100;
+          const left = (i * 10) % 100;
           const top = (i * 11.7) % 100;
           return (
             <div
-              key={i}
+              key={`static-${i}`}
               className="absolute text-slate-300/20"
               style={{
                 left: `${left}%`,
@@ -243,9 +381,9 @@ export default function WinterCampPage() {
           );
         })}
         
-        {/* Subtle Decorative Circles with Animation */}
+        {/* Subtle Winter Decorative Circles */}
         <div 
-          className="absolute top-20 left-10 w-96 h-96 bg-blue-100/20 rounded-full blur-3xl" 
+          className="absolute top-20 left-10 w-96 h-96 bg-sky-100/15 rounded-full blur-3xl" 
           style={{ 
             animationName: 'pulse',
             animationDuration: '4s',
@@ -254,7 +392,7 @@ export default function WinterCampPage() {
           }}
         ></div>
         <div 
-          className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-slate-100/20 rounded-full blur-3xl" 
+          className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-slate-200/10 rounded-full blur-3xl" 
           style={{ 
             animationName: 'pulse',
             animationDuration: '5s',
@@ -264,7 +402,7 @@ export default function WinterCampPage() {
           }}
         ></div>
         <div 
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50/10 rounded-full blur-3xl" 
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-100/8 rounded-full blur-3xl" 
           style={{ 
             animationName: 'pulse',
             animationDuration: '6s',
@@ -273,6 +411,74 @@ export default function WinterCampPage() {
             animationDelay: '2s'
           }}
         ></div>
+        
+        {/* Floating Sparkles */}
+        {[...Array(15)].map((_, i) => {
+          const positions = [
+            { left: '10%', top: '20%' },
+            { left: '85%', top: '30%' },
+            { left: '15%', top: '60%' },
+            { left: '90%', top: '50%' },
+            { left: '5%', top: '80%' },
+            { left: '75%', top: '15%' },
+            { left: '25%', top: '40%' },
+            { left: '95%', top: '70%' },
+            { left: '50%', top: '10%' },
+            { left: '30%', top: '85%' },
+            { left: '70%', top: '25%' },
+            { left: '20%', top: '45%' },
+            { left: '80%', top: '65%' },
+            { left: '40%', top: '75%' },
+            { left: '60%', top: '35%' }
+          ];
+          const pos = positions[i];
+          const delay = (i * 0.2) % 3;
+          const size = 8 + (i % 3) * 4;
+          const colors = ['text-sky-400', 'text-blue-400', 'text-cyan-400'];
+          return (
+            <div
+              key={`sparkle-${i}`}
+              className={`absolute ${colors[i % 3]} twinkle`}
+              style={{
+                left: pos.left,
+                top: pos.top,
+                animationDelay: `${delay}s`,
+                fontSize: `${size}px`
+              }}
+            >
+              <Sparkles className="w-4 h-4" style={{ width: `${size}px`, height: `${size}px` }} />
+            </div>
+          );
+        })}
+        
+        {/* Holiday Stars */}
+        {[...Array(8)].map((_, i) => {
+          const positions = [
+            { left: '8%', top: '12%' },
+            { left: '92%', top: '18%' },
+            { left: '12%', top: '55%' },
+            { left: '88%', top: '48%' },
+            { left: '6%', top: '78%' },
+            { left: '94%', top: '72%' },
+            { left: '45%', top: '8%' },
+            { left: '55%', top: '88%' }
+          ];
+          const pos = positions[i];
+          const delay = (i * 0.3) % 2;
+          return (
+            <div
+              key={`star-${i}`}
+              className="absolute twinkle"
+              style={{
+                left: pos.left,
+                top: pos.top,
+                animationDelay: `${delay}s`
+              }}
+            >
+              <Star className="w-6 h-6 text-amber-300 fill-amber-300" style={{ opacity: 0.6 }} />
+            </div>
+          );
+        })}
       </div>
 
       {/* Hero Section */}
@@ -282,29 +488,32 @@ export default function WinterCampPage() {
           <div className={`inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg mb-8 border border-slate-200 transition-all duration-1000 ${
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
           }`}>
-            <Snowflake className="w-4 h-4 text-blue-500 animate-spin-slow" />
-            <span className="text-slate-700 font-semibold text-sm uppercase tracking-wide">Winter Camp 2024</span>
+            <Snowflake className="w-4 h-4 text-sky-500 animate-spin-slow" />
+            <span className="text-slate-700 font-semibold text-sm uppercase tracking-wide">Winter Camp 2025-26</span>
             <span className="text-slate-400">•</span>
-            <span className="text-slate-600 text-sm">Dec 23 - Jan 3</span>
+            <span className="text-slate-600 text-sm">Dec 22 - Jan 2</span>
           </div>
           
           {/* Main Title */}
           <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 transition-all duration-1000 delay-200 ${
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            <span className="bg-gradient-to-r from-slate-800 via-blue-700 to-slate-800 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 via-sky-500 to-blue-600 bg-clip-text text-transparent relative">
               Winter Coding
+              <Sparkles className="absolute -top-2 -right-8 w-6 h-6 text-sky-400 sparkle" style={{ animationDelay: '0s' }} />
+              <Sparkles className="absolute -bottom-1 -left-6 w-4 h-4 text-blue-400 sparkle" style={{ animationDelay: '0.5s' }} />
             </span>
             <br />
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              Workshops
+            <span className="bg-gradient-to-r from-sky-500 via-blue-500 to-sky-500 bg-clip-text text-transparent relative">
+              Camps
+              <Sparkles className="absolute -top-1 right-4 w-5 h-5 text-blue-400 sparkle" style={{ animationDelay: '1s' }} />
             </span>
           </h1>
           
           <p className={`text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed transition-all duration-1000 delay-300 ${
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            Join us for immersive coding workshops during the holiday break. 
+            Join us for immersive coding camps during the holiday break. 
             <br className="hidden md:block" />
             <span className="text-slate-500">Learn game development and coding through hands-on projects.</span>
           </p>
@@ -314,10 +523,10 @@ export default function WinterCampPage() {
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             {[
-              { icon: Calendar, text: '5-Day Intensive', color: 'text-blue-600' },
-              { icon: Clock, text: '3 Hours/Day', color: 'text-cyan-600' },
-              { icon: Users, text: 'Small Groups', color: 'text-blue-600' },
-              { icon: Award, text: 'Certificate Included', color: 'text-cyan-600' }
+              { icon: Calendar, text: '5-Day Intensive', color: 'text-sky-600' },
+              { icon: Clock, text: '3 Hours/Day', color: 'text-blue-600' },
+              { icon: Users, text: 'Small Groups', color: 'text-slate-700' },
+              { icon: Award, text: 'Certificate Included', color: 'text-sky-600' }
             ].map((item, index) => {
               const IconComponent = item.icon;
               return (
@@ -334,26 +543,26 @@ export default function WinterCampPage() {
           </div>
 
           {/* Subtle Offer Badge */}
-          <div className={`inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl shadow-sm transition-all duration-1000 delay-700 hover:scale-105 ${
+          <div className={`inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200 rounded-xl shadow-sm transition-all duration-1000 delay-700 hover:scale-105 ${
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            <Star className="w-4 h-4 text-blue-600 fill-blue-600 animate-pulse" />
-            <span className="text-sm font-semibold text-slate-700">Early Bird: 15% Off + Free Gift</span>
+            <Star className="w-4 h-4 text-sky-500 fill-sky-500 animate-pulse" />
+            <span className="text-sm font-semibold text-slate-700">Early Bird: 10% Off for 5 Days Course + Free Snacks</span>
           </div>
         </div>
       </section>
 
-      {/* Workshops Section */}
+      {/* Camps Section */}
       <section ref={workshopsRef} className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className={`text-center mb-16 transition-all duration-1000 ${
             isVisible.workshops ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">
-              Choose Your Workshop
+              Choose Your Camp
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              Three immersive workshops designed to spark creativity and build coding skills
+              Three immersive camps designed to spark creativity and build coding skills
             </p>
           </div>
 
@@ -385,16 +594,19 @@ export default function WinterCampPage() {
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <CardContent className="p-5 relative flex flex-col h-full justify-between">
-                    {/* Top Section - Workshop Header */}
+                    {/* Top Section - Camp Header */}
                     <div className="flex-shrink-0">
                       <div className="flex items-center gap-3 mb-3">
                         <div className={`p-2.5 rounded-2xl bg-gradient-to-br ${workshop.gradient} shadow-lg transition-transform duration-300 ${isHovered ? 'scale-110 rotate-3' : ''}`}>
                           <IconComponent className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1">
-                          <h3 className={`font-bold text-base ${workshop.iconColor} leading-tight`}>
-                            {workshop.title}
-                          </h3>
+                          <div className="flex items-center justify-between gap-2">
+                            <h3 className={`font-bold text-base ${workshop.iconColor} leading-tight`}>
+                              {workshop.title}
+                            </h3>
+                            <span className="text-lg font-bold text-gray-900">${workshop.price}</span>
+                          </div>
                           <Badge className="bg-white/80 text-gray-700 text-xs mt-1">
                             {workshop.level}
                           </Badge>
@@ -402,13 +614,13 @@ export default function WinterCampPage() {
                       </div>
                     </div>
 
-                    {/* Workshop Description */}
+                    {/* Camp Description */}
                     <div className="flex-grow mb-4">
                       <p className="text-sm text-gray-600 leading-relaxed mb-4">
                         {workshop.description}
                       </p>
                       
-                      {/* Workshop Details */}
+                      {/* Camp Details */}
                       <div className="flex flex-wrap gap-2 mb-4">
                         <Badge className="bg-white/80 text-gray-700 text-xs px-2 py-1">
                           <Clock className="w-3 h-3 mr-1 inline" />
@@ -419,13 +631,13 @@ export default function WinterCampPage() {
                       {/* Features List */}
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2 text-sm flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-blue-500" />
+                          <Sparkles className="w-3.5 h-3.5 text-sky-500" />
                           What You'll Learn
                         </h4>
                         <ul className="space-y-1.5">
                           {workshop.features.slice(0, 4).map((feature, index) => (
                             <li key={index} className="flex items-start gap-2 text-xs text-gray-600">
-                              <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                              <CheckCircle className="w-4 h-4 text-sky-500 mt-0.5 flex-shrink-0" />
                               <span>{feature}</span>
                             </li>
                           ))}
@@ -459,7 +671,7 @@ export default function WinterCampPage() {
             isVisible.benefits ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900">
-              Why Choose Our Workshops?
+              Why Choose Our Camps?
             </h2>
             <p className="text-lg text-slate-600">Designed to inspire and educate through hands-on learning</p>
           </div>
@@ -488,12 +700,12 @@ export default function WinterCampPage() {
               }
             ].map((benefit, index) => {
               const IconComponent = benefit.icon;
-              const gradients = [
-                'from-blue-500 to-cyan-400',
-                'from-blue-600 to-indigo-500',
-                'from-cyan-500 to-blue-500',
-                'from-indigo-500 to-blue-600'
-              ];
+                        const gradients = [
+                          'from-sky-500 to-blue-500',
+                          'from-blue-500 to-sky-500',
+                          'from-slate-600 to-blue-600',
+                          'from-blue-600 to-slate-600'
+                        ];
               
               return (
                 <div
@@ -534,18 +746,18 @@ export default function WinterCampPage() {
         <div className={`max-w-4xl mx-auto text-center transition-all duration-1000 ${
           isVisible.cta ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}>
-          <Card className="bg-gradient-to-br from-blue-600 to-cyan-600 text-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
-            <CardContent className="p-12">
-              <div className="flex justify-center mb-6">
-                <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm animate-float">
-                  <Star className="w-12 h-12 text-yellow-300 fill-yellow-300 animate-pulse" />
-                </div>
-              </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Ready to Start Your Coding Journey?
-              </h2>
-              <p className="text-xl mb-8 text-blue-50">
-                Limited spots available! Enroll now and secure your place in our winter workshops.
+          <Card className="bg-gradient-to-br from-slate-700 via-blue-700 to-slate-700 text-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105">
+                      <CardContent className="p-12">
+                        <div className="flex justify-center mb-6">
+                          <div className="p-4 bg-white/10 rounded-full backdrop-blur-sm animate-float">
+                            <Star className="w-12 h-12 text-sky-300 fill-sky-300 animate-pulse" />
+                          </div>
+                        </div>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                          Ready to Start Your Coding Journey?
+                        </h2>
+                        <p className="text-xl mb-8 text-white/90">
+                Limited spots available! Enroll now and secure your place in our winter camps.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -566,7 +778,7 @@ export default function WinterCampPage() {
       <AlertDialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
         <AlertDialogContent className="bg-white/95 backdrop-blur-3xl border-2 border-gray-200/50 shadow-[0px_30px_90px_rgba(31,57,109,0.25)] rounded-[20px] max-w-4xl w-[calc(100%-2rem)] p-0 overflow-hidden max-h-[70vh]">
           {/* Enhanced Background gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-cyan-50/50"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-50/50 via-transparent to-blue-50/50"></div>
           
           {/* Custom Close Button */}
           <button
@@ -579,14 +791,14 @@ export default function WinterCampPage() {
           {/* Scrollable content area */}
           <div className="relative z-10 p-4 lg:p-6">
             <AlertDialogHeader className="text-center mb-4 lg:mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-50 via-white to-cyan-50 border border-gray-200 shadow-sm mb-3">
-                <Sparkles className="w-4 h-4 text-blue-500" />
-                <span className="text-xs font-semibold text-gray-700 tracking-wide">Get in touch</span>
-                <Sparkles className="w-4 h-4 text-cyan-500" />
-              </div>
-              <AlertDialogTitle className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-                Multiple Ways to <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Connect</span>
-              </AlertDialogTitle>
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-gray-200 shadow-sm mb-3">
+                          <Sparkles className="w-4 h-4 text-sky-500" />
+                          <span className="text-xs font-semibold text-gray-700 tracking-wide">Get in touch</span>
+                          <Sparkles className="w-4 h-4 text-sky-500" />
+                        </div>
+                        <AlertDialogTitle className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+                          Multiple Ways to <span className="bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent">Connect</span>
+                        </AlertDialogTitle>
               <AlertDialogDescription className="text-base text-gray-600 leading-relaxed max-w-2xl mx-auto">
                 Choose the method that works best for you
               </AlertDialogDescription>
@@ -629,7 +841,7 @@ export default function WinterCampPage() {
                         <h3 className="text-lg font-bold text-gray-900 mb-1.5">{item.title}</h3>
                         <div>
                           <p
-                            className={`text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis leading-snug ${isClickable ? 'text-blue-600 group-hover:text-blue-700 transition-colors' : 'text-gray-800'}`}
+                                      className={`text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis leading-snug ${isClickable ? 'text-blue-600 group-hover:text-blue-700 transition-colors' : 'text-gray-800'}`}
                             title={item.primary}
                           >
                             {item.primary}
@@ -656,9 +868,9 @@ export default function WinterCampPage() {
         workshops={workshops.map(w => {
           // Map workshop IDs to background colors
           const colorMap: { [key: string]: string } = {
-            'roblox-workshop': 'bg-blue-500',
-            'scratch-workshop': 'bg-orange-500',
-            'minecraft-workshop': 'bg-green-500'
+            'roblox-workshop': 'bg-sky-500',
+            'scratch-workshop': 'bg-blue-500',
+            'minecraft-workshop': 'bg-slate-600'
           };
           return {
             id: w.id,
@@ -666,7 +878,8 @@ export default function WinterCampPage() {
             icon: w.icon,
             level: w.level,
             gradient: w.gradient,
-            bgColor: colorMap[w.id] || 'bg-blue-500'
+            bgColor: colorMap[w.id] || 'bg-sky-500',
+            price: w.price
           };
         })}
         onSelectSlot={(workshopId, dateSlot) => {

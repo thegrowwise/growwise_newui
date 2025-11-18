@@ -7,6 +7,8 @@ import { Badge } from './badge';
 import { X, ShoppingCart, Plus, Check } from 'lucide-react';
 import { Gamepad2, Code, Blocks } from 'lucide-react';
 import { useCart } from '@/components/gw/CartContext';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
 
 interface Workshop {
   id: string;
@@ -15,6 +17,7 @@ interface Workshop {
   level: string;
   gradient: string;
   bgColor: string;
+  price?: number;
 }
 
 interface DateSlot {
@@ -39,11 +42,13 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
   onSelectSlot,
   scrollToWorkshopId
 }) => {
-  const { addItem } = useCart();
+  const { addItem, state: cartState } = useCart();
+  const locale = useLocale();
   const workshopRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
+  const createLocaleUrl = (path: string) => `/${locale}${path}`;
 
-  // Scroll to specific workshop when modal opens
+  // Scroll to specific camp when modal opens
   useEffect(() => {
     if (isOpen && scrollToWorkshopId) {
       // Small delay to ensure modal is fully rendered
@@ -96,10 +101,10 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
     const cartItem = {
       id: cartItemId,
       name: `${workshop.title} - ${dateSlot.date}`,
-      price: 0, // You may want to add pricing later
+      price: workshop.price || 75,
       quantity: 1,
       category: 'Winter Camp',
-      type: 'Workshop',
+      type: 'Camp',
       duration: dateSlot.time,
       level: workshop.level || ''
     };
@@ -141,12 +146,19 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
             >
               <X className="w-5 h-5" />
             </button>
-            <button
-              className="p-2 hover:bg-white/10 rounded-full transition-colors"
+            <Link
+              href={createLocaleUrl('/cart')}
+              className="relative p-2 hover:bg-white/10 rounded-full transition-colors"
               aria-label="Shopping Cart"
+              onClick={onClose}
             >
               <ShoppingCart className="w-5 h-5" />
-            </button>
+              {cartState.itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  {cartState.itemCount}
+                </span>
+              )}
+            </Link>
           </div>
         </div>
 
@@ -168,7 +180,7 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
             </div>
           </div>
 
-          {/* Workshop Rows */}
+          {/* Camp Rows */}
           <div className="divide-y divide-gray-300 pt-4">
             {workshops.map((workshop) => {
               const IconComponent = workshop.icon;
@@ -221,6 +233,10 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
                                 <div className="flex items-center gap-2 text-sm text-gray-700">
                                   <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
                                   <span className="font-medium">{slot.time}</span>
+                                </div>
+                                <div className="flex items-center justify-between pt-2 border-t border-gray-200">
+                                  <span className="text-xs text-gray-600 font-medium">Price:</span>
+                                  <span className="text-lg font-bold text-gray-900">${workshop.price || 75}</span>
                                 </div>
                               </div>
                               <Button
