@@ -49,7 +49,7 @@ export default function Dropdown({
     >
       <Link
         href={createLocaleUrl(item.href)}
-        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
+        className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
           isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
         }`}
         onClick={() => onItemClick()}
@@ -69,7 +69,7 @@ export default function Dropdown({
 
       {/* Dropdown Content - only show if there are items */}
       {visibleItems.length > 0 && (
-        <div className={`absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-white/30 overflow-visible ${
+        <div className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
           isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
         }`}>
         {/* Header Section */}

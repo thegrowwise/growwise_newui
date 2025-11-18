@@ -66,6 +66,21 @@ export default function Contact() {
     if (!contact && !contactLoading) dispatch(fetchContactRequested());
   }, [contact, contactLoading, dispatch]);
 
+  // Handle hash navigation to scroll to specific sections
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash === '#contact-methods' || hash === '#contact-form' || hash === '#location') {
+        const section = document.getElementById(hash.substring(1));
+        if (section) {
+          setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
+    }
+  }, []);
+
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -196,7 +211,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Information Cards */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section id="contact-methods" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -256,7 +271,7 @@ export default function Contact() {
       </section>
 
       {/* Main Contact Form and Info Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <section id="contact-form" className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
 
@@ -522,7 +537,7 @@ export default function Contact() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Users className="w-5 h-5 text-[#F1894F]" />
-                      <span className="text-sm">300+ Happy Students</span>
+                      <span className="text-sm">325+ Happy Students</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Star className="w-5 h-5 text-[#F1894F]" />
@@ -545,7 +560,7 @@ export default function Contact() {
       </section>
 
       {/* Map Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section id="location" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

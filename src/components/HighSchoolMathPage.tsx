@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { GraduationCap, Calculator, TrendingUp, Award, BookOpen, CheckCircle, Clock, Users, Target, Brain, Sparkles, Eye, ChevronRight, Star, ShoppingCart, ArrowRight, Filter, X, UserCheck } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+} from "./ui/alert-dialog";
+import { GraduationCap, Calculator, TrendingUp, Award, BookOpen, CheckCircle, Clock, Users, Target, Brain, Sparkles, Eye, ChevronRight, Star, ShoppingCart, ArrowRight, Filter, X, UserCheck, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
 import { useCart } from './gw/CartContext';
+import { useChatbot } from '../contexts/ChatbotContext';
 import FreeAssessmentModal from './FreeAssessmentModal';
+import { getIconComponent } from '@/lib/iconMap';
 
 const HighSchoolMathPage: React.FC = () => {
+  const router = useRouter();
   const { addItem } = useCart();
+  const { openChatbot } = useChatbot();
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [hoveredCourse, setHoveredCourse] = useState<string | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
@@ -172,6 +185,42 @@ const HighSchoolMathPage: React.FC = () => {
     });
   };
 
+  // Contact information for modal
+  const contactInfo = [
+    {
+      icon: 'Phone',
+      title: 'Call Us',
+      primary: '(925) 456-4606',
+      secondary: 'Mon-Fri 9AM-7PM',
+      description: 'Speak directly with our education consultants',
+      bgColor: 'bg-[#1F396D]'
+    },
+    {
+      icon: 'Mail',
+      title: 'Email Us',
+      primary: 'connect@thegrowwise.com',
+      secondary: 'Response within 24 hours',
+      description: 'Get detailed information about our programs',
+      bgColor: 'bg-[#F16112]'
+    },
+    {
+      icon: 'MapPin',
+      title: 'Visit Us',
+      primary: '4564 Dublin Blvd',
+      secondary: 'Dublin, CA 94568',
+      description: 'Come see our learning center in person',
+      bgColor: 'bg-[#F1894F]'
+    },
+    {
+      icon: 'MessageCircle',
+      title: 'Live Chat',
+      primary: 'Instant Support',
+      secondary: 'Available during business hours',
+      description: 'Quick answers to your questions',
+      bgColor: 'bg-[#29335C]'
+    }
+  ];
+
   // Modified hover handlers to respect touch device detection
   const handleMouseEnter = (courseId: string) => {
     if (!isTouchDevice) {
@@ -253,11 +302,20 @@ const HighSchoolMathPage: React.FC = () => {
                 className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
               >
                 <Calculator className="mr-2 w-5 h-5" />
-                Free Assessment
+                Book Free Assessment
               </Button>
-              <Button variant="outline" className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg">
+              <Button 
+                onClick={() => {
+                  const coursesSection = document.getElementById('courses');
+                  if (coursesSection) {
+                    coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                variant="outline" 
+                className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg"
+              >
                 <Eye className="mr-2 w-5 h-5" />
-                View Courses
+                View Programs
               </Button>
             </div>
           </div>
@@ -304,7 +362,7 @@ const HighSchoolMathPage: React.FC = () => {
       </section>
 
       {/* High School Math Courses Section */}
-      <section className="py-16 px-4 lg:px-8" style={{
+      <section id="courses" className="py-16 px-4 lg:px-8" style={{
         background: `
           radial-gradient(circle at 20% 25%, rgba(31, 57, 109, 0.08) 0%, transparent 15%),
           radial-gradient(circle at 80% 35%, rgba(241, 137, 79, 0.1) 0%, transparent 20%),
@@ -553,10 +611,11 @@ const HighSchoolMathPage: React.FC = () => {
               onClick={() => setIsAssessmentModalOpen(true)}
               className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
             >
-              Free Assessment
+              Book Free Assessment
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
             <Button
+              onClick={() => setIsContactModalOpen(true)}
               className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full transition-all duration-300 transform hover:scale-105"
             >
               Contact Us
@@ -564,6 +623,90 @@ const HighSchoolMathPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Contact Methods Modal */}
+      <AlertDialog open={isContactModalOpen} onOpenChange={setIsContactModalOpen}>
+        <AlertDialogContent className="bg-white/95 backdrop-blur-3xl border-2 border-gray-200/50 shadow-[0px_30px_90px_rgba(31,57,109,0.25)] rounded-[20px] max-w-4xl w-[calc(100%-2rem)] p-0 overflow-hidden max-h-[70vh]">
+          {/* Enhanced Background gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/5 via-transparent to-[#F16112]/5"></div>
+          
+          {/* Custom Close Button */}
+          <button
+            onClick={() => setIsContactModalOpen(false)}
+            className="absolute top-4 right-4 z-20 w-9 h-9 bg-white hover:bg-gray-50 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200 group"
+          >
+            <X className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
+          </button>
+          
+          {/* Scrollable content area */}
+          <div className="relative z-10 p-4 lg:p-6">
+            <AlertDialogHeader className="text-center mb-4 lg:mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#1F396D]/10 via-white to-[#F16112]/10 border border-gray-200 shadow-sm mb-3">
+                <Sparkles className="w-4 h-4 text-[#F16112]" />
+                <span className="text-xs font-semibold text-gray-700 tracking-wide">Get in touch</span>
+                <Sparkles className="w-4 h-4 text-[#1F396D]" />
+              </div>
+              <AlertDialogTitle className="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+                Multiple Ways to <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">Connect</span>
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-base text-gray-600 leading-relaxed max-w-2xl mx-auto">
+                Choose the method that works best for you
+              </AlertDialogDescription>
+              <div className="mx-auto mt-3 h-px w-40 bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+            </AlertDialogHeader>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {contactInfo.map((item, index) => {
+                const IconComponent = getIconComponent(item.icon);
+                const isPhone = item.icon === 'Phone';
+                const isEmail = item.icon === 'Mail';
+                const isLiveChat = item.icon === 'MessageCircle';
+                const isVisitUs = item.icon === 'MapPin';
+                const isClickable = isPhone || isEmail || isLiveChat || isVisitUs;
+                
+                const href = isPhone 
+                  ? `tel:${item.primary.replace(/[\s\(\)\-]/g, '')}`
+                  : isEmail 
+                  ? `mailto:${item.primary}`
+                  : isLiveChat
+                  ? '#' // Will be handled by onClick
+                  : isVisitUs
+                  ? 'https://maps.google.com/?q=4564+Dublin+Blvd,+Dublin,+CA'
+                  : '#';
+                
+                const CardWrapper = isClickable ? 'a' : 'div';
+                const cardProps = isClickable ? { 
+                  href: href, 
+                  title: isPhone ? 'Click to call' : isEmail ? 'Click to email' : isVisitUs ? 'Click to view on map' : 'Click to start chat',
+                  onClick: isLiveChat ? (e: React.MouseEvent) => { e.preventDefault(); setIsContactModalOpen(false); openChatbot(); } : undefined
+                } : {};
+                
+                return (
+                  <Card key={index} className="relative bg-white/95 border border-gray-200 rounded-xl shadow-md hover:shadow-xl transition-all duration-200 cursor-pointer group hover:border-[#F16112]/50 overflow-hidden hover:-translate-y-0.5">
+                    <CardWrapper {...cardProps} className="block h-full no-underline">
+                      <CardContent className="relative p-5 lg:p-6">
+                        <div className={`${item.bgColor} w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-200 shadow-md ring-1 ring-white/40`}>
+                          <IconComponent className="w-6 h-6 text-white" />
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1.5">{item.title}</h3>
+                        <div>
+                          <p
+                            className={`text-sm font-semibold whitespace-nowrap overflow-hidden text-ellipsis leading-snug ${isClickable ? 'text-[#F16112] group-hover:text-[#d54f0a] transition-colors' : 'text-gray-800'}`}
+                            title={item.primary}
+                          >
+                            {item.primary}
+                          </p>
+                        </div>
+                        {/* Shortened: primary only for compact height */}
+                      </CardContent>
+                    </CardWrapper>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Free Assessment Modal */}
       <FreeAssessmentModal 

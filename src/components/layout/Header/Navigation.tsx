@@ -41,24 +41,26 @@ export default function Navigation({
     <>
       {/* Desktop Navigation */}
       <nav className="header-desktop-nav">
-        {menuItems.map((item) => (
-          <MenuItemRenderer
-            key={item.key}
-            item={item}
-            pathname={pathname}
-            openDropdowns={openDropdowns}
-            openSubmenus={openSubmenus}
-            onDropdownEnter={onDropdownEnter}
-            onDropdownLeave={onDropdownLeave}
-            onDropdownToggle={onDropdownToggle}
-            onSubmenuToggle={onSubmenuToggle}
-            onSubmenuEnter={onSubmenuEnter}
-            onSubmenuLeave={onSubmenuLeave}
-            createLocaleUrl={createLocaleUrl}
-            footerHelper={footerHelper}
-            footerContactCta={footerContactCta}
-          />
-        ))}
+        {menuItems
+          .filter((item) => item.key !== 'enroll') // Filter out enroll button as it's now in UtilityIcons
+          .map((item) => (
+            <MenuItemRenderer
+              key={item.key}
+              item={item}
+              pathname={pathname}
+              openDropdowns={openDropdowns}
+              openSubmenus={openSubmenus}
+              onDropdownEnter={onDropdownEnter}
+              onDropdownLeave={onDropdownLeave}
+              onDropdownToggle={onDropdownToggle}
+              onSubmenuToggle={onSubmenuToggle}
+              onSubmenuEnter={onSubmenuEnter}
+              onSubmenuLeave={onSubmenuLeave}
+              createLocaleUrl={createLocaleUrl}
+              footerHelper={footerHelper}
+              footerContactCta={footerContactCta}
+            />
+          ))}
       </nav>
 
       {/* Utility Icons and CTA Buttons */}

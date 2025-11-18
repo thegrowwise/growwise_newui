@@ -152,7 +152,7 @@ export default function Header() {
         </Link>
 
         {/* Dropdown Content - Exact styling from first project */}
-        <div className={`absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-white/30 overflow-visible ${
+        <div className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
           isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
         }`}>
           {/* Header Section */}
@@ -247,7 +247,7 @@ export default function Header() {
                   {/* Submenu for Courses - Appears on the right side */}
                   {hasSubmenu && dropdownItem.submenuItems && isSubmenuOpen && (
                     <div 
-                      className="absolute left-full top-0 ml-2 w-72 bg-white/95 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-white/30 z-50"
+                      className="absolute left-full top-0 ml-2 w-72 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-gray-200 z-50"
                       onMouseEnter={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: true }))}
                       onMouseLeave={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }))}
                     >

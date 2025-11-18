@@ -8,7 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 const statisticsData = [
   {
     id: 1,
-    value: "300+",
+    value: "325+",
     label: "Students Enrolled",
     icon: Users,
     color: "text-[#1F396D]",
@@ -175,7 +175,7 @@ export default function TrustedByFamilies() {
               <Shield className="w-6 h-6 text-white" />
             </div>
             <span className="text-base font-semibold text-gray-700">
-              Trusted by 300+ Tri-Valley families
+              Trusted by 325+ Tri-Valley families
             </span>
           </div>
         </div>

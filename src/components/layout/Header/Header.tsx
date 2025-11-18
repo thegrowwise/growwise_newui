@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
@@ -20,6 +20,7 @@ export default function Header() {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const header = useAppSelector((s) => s.header.data);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Custom hooks for state management
   const {
@@ -51,6 +52,21 @@ export default function Header() {
     if (!header) dispatch(fetchHeaderRequested());
   }, [dispatch, header]);
 
+  // Scroll detection for header shrink animation
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      setIsScrolled(scrollPosition > 50);
+    };
+
+    // Check initial scroll position
+    handleScroll();
+
+    // Add scroll listener with passive option for better performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Get header data with fallbacks
   const topPhone = header?.topBar.phone ?? DEFAULT_HEADER_DATA.topBar.phone;
   const topEmail = header?.topBar.email ?? DEFAULT_HEADER_DATA.topBar.email;
@@ -61,23 +77,35 @@ export default function Header() {
   const footerContactCta = header?.footerContactCta ?? DEFAULT_HEADER_DATA.footerContactCta;
 
   return (
-    <header className="header-root">
+    <header className={`header-root ${isScrolled ? 'header-scrolled' : ''}`}>
       {/* Top Header Bar */}
-      <TopBar
-        phone={topPhone}
-        email={topEmail}
-        address={topAddress}
-        followLabel={followLabel}
-        social={social}
-      />
+      <div className={`transition-all duration-300 ${isScrolled ? 'max-h-0 overflow-hidden opacity-0' : 'max-h-20 opacity-100'}`}>
+        <TopBar
+          phone={topPhone}
+          email={topEmail}
+          address={topAddress}
+          followLabel={followLabel}
+          social={social}
+        />
+      </div>
 
       {/* Main Navigation */}
       <div className="container-7xl">
-        <div className="header-mainrow">
+        <div 
+          className="header-mainrow transition-all duration-300" 
+          style={{ height: isScrolled ? '5rem' : '8rem' }}
+        >
           {/* Logo */}
           <div className="flex items-center">
             <Link href={createLocaleUrlHelper('/')} className="cursor-pointer" aria-label="GrowWise home">
-              <div className="header-logo" style={{ backgroundImage: "url('/assets/growwise-logo.png')" }} />
+              <div 
+                className="header-logo transition-all duration-300" 
+                style={{ 
+                  backgroundImage: "url('/assets/growwise-logo.png')",
+                  height: isScrolled ? '70px' : '110px',
+                  width: isScrolled ? '180px' : '280px'
+                }} 
+              />
             </Link>
           </div>
 

@@ -124,6 +124,27 @@
       }
     },
     {
+      "key": "camps",
+      "label": "Camps",
+      "href": "/camps",
+      "type": "dropdown",
+      "variant": "orange",
+      "dropdown": {
+        "title": "Camps & Programs",
+        "subtitle": "Join our exciting camp experiences",
+        "items": [
+          {
+            "key": "winterCamp",
+            "title": "Winter Camp",
+            "description": "Engaging winter programs for students",
+            "icon": "Calendar",
+            "href": "/camps/winter",
+            "gradient": "from-[#F16112] to-[#F1894F]"
+          }
+        ]
+      }
+    },
+    {
       "key": "resources",
       "label": "Resources",
       "href": "#",

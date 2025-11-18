@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -67,8 +68,11 @@ const ImageWithFallback: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = (
 
 export default function SteamPage() {
   const t = useTranslations('steam');
+  const locale = useLocale();
   const [hoveredProgram, setHoveredProgram] = useState<string | null>(null);
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
+  
+  const createLocaleUrl = (path: string) => `/${locale}${path}`;
 
   // STEAM Programs Overview Data
   const steamPrograms = [
@@ -88,59 +92,45 @@ export default function SteamPage() {
         'Game Design Principles',
         '3D Modeling Basics'
       ]
-    },
-    {
-      id: 'python-programming',
-      title: 'Python Programming',
-      description: 'Master the world\'s most popular programming language from basics to advanced',
-      icon: Code,
-      gradient: 'from-[#1F396D] to-[#29335C]',
-      bgGradient: 'bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10',
-      iconColor: 'text-[#1F396D]',
-      features: [
-        'Python Fundamentals',
-        'Object-Oriented Programming',
-        'Data Structures & Algorithms',
-        'Web Development with Flask',
-        'API Development',
-        'Project-Based Learning'
-      ]
-    },
-    {
-      id: 'ai-ml',
-      title: 'AI & Machine Learning',
-      description: 'Explore artificial intelligence and machine learning concepts for the future',
-      icon: Brain,
-      gradient: 'from-[#1F396D] to-[#F16112]',
-      bgGradient: 'bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10',
-      iconColor: 'text-[#1F396D]',
-      features: [
-        'AI Fundamentals',
-        'Machine Learning Basics',
-        'Prompt Engineering',
-        'Computer Vision',
-        'Natural Language Processing',
-        'Ethics in AI'
-      ]
-    },
-    {
-      id: 'young-founders',
-      title: 'Young Entrepreneurs',
-      description: 'Develop entrepreneurial skills and business mindset for future leaders',
-      icon: Lightbulb,
-      gradient: 'from-[#F1894F] to-[#F16112]',
-      bgGradient: 'bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10',
-      iconColor: 'text-[#F1894F]',
-      features: [
-        'Business Planning',
-        'Leadership Development',
-        'Brand Building',
-        'Financial Literacy',
-        'Marketing Fundamentals',
-        'Presentation Skills'
-      ]
     }
   ];
+
+  // Python Programming and AI/ML Data (for two-column card)
+  const pythonProgram = {
+    id: 'python-programming',
+    title: 'Python Programming',
+    description: 'Master the world\'s most popular programming language from basics to advanced',
+    icon: Code,
+    gradient: 'from-[#1F396D] to-[#29335C]',
+    bgGradient: 'bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10',
+    iconColor: 'text-[#1F396D]',
+    features: [
+      'Python Fundamentals',
+      'Object-Oriented Programming',
+      'Data Structures & Algorithms',
+      'Web Development with Flask',
+      'API Development',
+      'Project-Based Learning'
+    ]
+  };
+
+  const aiMlProgram = {
+    id: 'ai-ml',
+    title: 'AI & Machine Learning',
+    description: 'Explore artificial intelligence and machine learning concepts for the future',
+    icon: Brain,
+    gradient: 'from-[#1F396D] to-[#F16112]',
+    bgGradient: 'bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10',
+    iconColor: 'text-[#1F396D]',
+    features: [
+      'AI Fundamentals',
+      'Machine Learning Basics',
+      'Prompt Engineering',
+      'Computer Vision',
+      'Natural Language Processing',
+      'Ethics in AI'
+    ]
+  };
 
   // Game Development Detailed Programs
   const gameDevelopmentPrograms = [
@@ -295,38 +285,6 @@ export default function SteamPage() {
     }
   ];
 
-  // Young Entrepreneurs Modules
-  const entrepreneurshipModules = [
-    {
-      id: 1,
-      title: 'Youth CEO Program',
-      description: 'Develop leadership and business management skills',
-      icon: Target,
-      features: [
-        'Leadership Fundamentals',
-        'Team Building',
-        'Decision Making',
-        'Project Management',
-        'Communication Skills',
-        'Strategic Thinking'
-      ]
-    },
-    {
-      id: 2,
-      title: 'I Am Brand',
-      description: 'Build your personal brand and online presence',
-      icon: Sparkles,
-      features: [
-        'Personal Branding',
-        'Social Media Strategy',
-        'Content Creation',
-        'Digital Marketing',
-        'Networking Skills',
-        'Online Portfolio'
-      ]
-    }
-  ];
-
   // Success Stories Data
   const successStories = [
     {
@@ -347,15 +305,6 @@ export default function SteamPage() {
       image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face',
       quote: 'Creating games taught me creativity, problem-solving, and how to turn ideas into reality.'
     },
-    {
-      id: 3,
-      name: 'Marcus Johnson',
-      age: 15,
-      program: 'Young Entrepreneurs',
-      achievement: 'Started his own tutoring business helping younger students',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
-      quote: 'The entrepreneurship program gave me the confidence to turn my passion into a business.'
-    }
   ];
 
   // Why Choose STEAM
@@ -465,6 +414,7 @@ export default function SteamPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Game Development Card */}
             {steamPrograms.map((program, index) => {
               const IconComponent = program.icon;
               const isHovered = hoveredProgram === program.id;
@@ -505,16 +455,103 @@ export default function SteamPage() {
                       ))}
                     </div>
 
-                    <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
-                      isHovered ? 'scale-105 shadow-xl' : ''
-                    }`}>
-                      Start Learning
-                      <ChevronRight className="ml-2 w-5 h-5" />
-                    </Button>
+                    <Link href={createLocaleUrl('/steam/game-development')}>
+                      <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
+                        isHovered ? 'scale-105 shadow-xl' : ''
+                      }`}>
+                        Start Learning
+                        <ChevronRight className="ml-2 w-5 h-5" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               );
             })}
+
+            {/* Python Programming & AI/ML Two-Column Card */}
+            {(() => {
+              const isHovered = hoveredProgram === 'python-ai-ml';
+              return (
+                <Card 
+                  className={`bg-white/35 backdrop-blur-3xl rounded-[32px] shadow-[0px_25px_60px_0px_rgba(31,57,109,0.18)] border-2 border-white/50 transition-all duration-700 cursor-pointer group overflow-hidden relative ring-1 ring-white/30 ${
+                    isHovered ? 'shadow-[0px_40px_120px_0px_rgba(31,57,109,0.35)] scale-[1.02]' : ''
+                  }`}
+                  onMouseEnter={() => setHoveredProgram('python-ai-ml')}
+                  onMouseLeave={() => setHoveredProgram(null)}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/10 opacity-60"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/5"></div>
+                  
+                  <CardContent className="p-10 relative z-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+                      {/* Python Programming Column */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#1F396D] to-[#29335C] shadow-xl ring-2 ring-white/50">
+                            <Code className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-[#1F396D] mb-1">
+                              {pythonProgram.title}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              {pythonProgram.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 mb-6 flex-grow">
+                          {pythonProgram.features.map((feature, featureIndex) => (
+                            <div key={featureIndex} className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-[#1F396D] flex-shrink-0" />
+                              <span className="text-sm text-gray-700 font-medium">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-300 to-transparent -translate-x-1/2"></div>
+
+                      {/* AI & Machine Learning Column */}
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="p-4 rounded-2xl bg-gradient-to-br from-[#1F396D] to-[#F16112] shadow-xl ring-2 ring-white/50">
+                            <Brain className="w-6 h-6 text-white" />
+                          </div>
+                          <div>
+                            <h3 className="text-xl font-bold text-[#1F396D] mb-1">
+                              {aiMlProgram.title}
+                            </h3>
+                            <p className="text-sm text-gray-600">
+                              {aiMlProgram.description}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3 mb-6 flex-grow">
+                          {aiMlProgram.features.map((feature, featureIndex) => (
+                            <div key={featureIndex} className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 text-[#1F396D] flex-shrink-0" />
+                              <span className="text-sm text-gray-700 font-medium">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    <Link href={createLocaleUrl('/steam/ml-ai-coding')}>
+                      <Button className={`w-full bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
+                        isHovered ? 'scale-105 shadow-xl' : ''
+                      }`}>
+                        Start Learning
+                        <ChevronRight className="ml-2 w-5 h-5" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </div>
         </div>
       </section>
@@ -669,61 +706,6 @@ export default function SteamPage() {
         </div>
       </section>
 
-      {/* Young Entrepreneurs Section */}
-      <section className="py-20 px-4 lg:px-8 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#F1894F] mb-6">
-              Young Entrepreneurs Program
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Develop business acumen and leadership skills for tomorrow's innovators
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {entrepreneurshipModules.map((module, index) => {
-              const IconComponent = module.icon;
-              return (
-                <Card key={module.id} className="bg-white/35 backdrop-blur-3xl rounded-[32px] shadow-[0px_25px_60px_0px_rgba(31,57,109,0.18)] border-2 border-white/50 overflow-hidden hover:shadow-[0px_40px_100px_0px_rgba(31,57,109,0.3)] transition-all duration-500 hover:-translate-y-2 ring-1 ring-white/30">
-                  {/* Enhanced Background gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/5"></div>
-                  
-                  <CardContent className="p-10 relative z-10">
-                    {/* Glass reflection overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 via-transparent to-transparent rounded-[32px]"></div>
-                    <div className="relative z-10">
-                      <div className="flex items-center gap-6 mb-8">
-                        <div className="p-4 rounded-2xl bg-gradient-to-br from-[#F1894F] to-[#F16112] shadow-xl ring-2 ring-white/50">
-                          <IconComponent className="w-8 h-8 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold text-[#F1894F] mb-2 drop-shadow-sm">
-                            {module.title}
-                          </h3>
-                          <p className="text-gray-600 text-lg">
-                            {module.description}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="space-y-4">
-                        {module.features.map((feature, featureIndex) => (
-                          <div key={featureIndex} className="flex items-center gap-3">
-                            <CheckCircle className="w-5 h-5 text-[#F1894F] flex-shrink-0" />
-                            <span className="text-gray-700 font-medium">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
       {/* Success Stories */}
       <section className="py-20 px-4 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -863,9 +845,6 @@ export default function SteamPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* ML/AI Coding Option */}
               <Card 
-                onClick={() => {
-                  setIsExploreModalOpen(false);
-                }}
                 className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full"
               >
                 {/* Enhanced Background gradient */}
@@ -908,18 +887,21 @@ export default function SteamPage() {
                   </div>
 
                   {/* Enhanced CTA Button */}
-                  <Button className="w-full bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:from-[#F16112] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
-                    View More
-                    <ChevronRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <Link 
+                    href={createLocaleUrl('/steam/ml-ai-coding')} 
+                    className="w-full mt-auto"
+                    onClick={() => setIsExploreModalOpen(false)}
+                  >
+                    <Button className="w-full bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:from-[#F16112] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20">
+                      View Courses
+                      <ChevronRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
 
               {/* Game Development Option */}
               <Card 
-                onClick={() => {
-                  setIsExploreModalOpen(false);
-                }}
                 className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full"
               >
                 {/* Enhanced Background gradient */}
@@ -962,10 +944,16 @@ export default function SteamPage() {
                   </div>
 
                   {/* Enhanced CTA Button */}
-                  <Button className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
-                    View More
-                    <ChevronRight className="ml-2 w-4 h-4" />
-                  </Button>
+                  <Link 
+                    href={createLocaleUrl('/steam/game-development')} 
+                    className="w-full mt-auto"
+                    onClick={() => setIsExploreModalOpen(false)}
+                  >
+                    <Button className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20">
+                      View Courses
+                      <ChevronRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
             </div>
