@@ -200,10 +200,12 @@ const CartPage: React.FC = () => {
                   </div>
                   
                   {/* Checkout Button */}
-                  <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white py-3 mb-4">
-                    <CreditCard className="w-5 h-5 mr-2" />
-                    Proceed to Checkout
-                  </Button>
+                  <Link href={createLocaleUrl('/checkout')}>
+                    <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white py-3 mb-4">
+                      <CreditCard className="w-5 h-5 mr-2" />
+                      Proceed to Checkout
+                    </Button>
+                  </Link>
                   
                   {/* Security Badge */}
                   <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
