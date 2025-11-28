@@ -188,8 +188,8 @@ const CartPage: React.FC = () => {
                       <span>Calculated at checkout</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
-                      <span>Processing Fee</span>
-                      <span>Free</span>
+                      <span>Processing Fee (3.5%)</span>
+                      <span>Calculated at checkout</span>
                     </div>
                     <div className="border-t pt-4">
                       <div className="flex justify-between text-lg font-bold text-gray-900">
