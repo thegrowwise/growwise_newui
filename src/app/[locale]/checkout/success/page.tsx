@@ -117,24 +117,32 @@ const CheckoutSuccessContent: React.FC = () => {
 
                 <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
                   <h2 className="font-semibold text-gray-900 mb-4">Order Details</h2>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Order ID:</span>
-                      <span className="font-medium text-gray-900">{sessionId}</span>
+                  <div className="space-y-4 text-sm">
+                    <div>
+                      <div className="text-gray-600 mb-1">Order ID:</div>
+                      <div className="font-medium text-gray-900 break-all">
+                        {session?.id || sessionId}
+                      </div>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Amount Paid:</span>
-                      <span className="font-medium text-gray-900">${amountTotal}</span>
+                    <div>
+                      <div className="text-gray-600 mb-1">Amount Paid:</div>
+                      <div className="font-medium text-gray-900">
+                        ${amountTotal}
+                      </div>
                     </div>
                     {customerEmail && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Email:</span>
-                        <span className="font-medium text-gray-900">{customerEmail}</span>
+                      <div>
+                        <div className="text-gray-600 mb-1">Email:</div>
+                        <div className="font-medium text-gray-900 break-all">
+                          {customerEmail}
+                        </div>
                       </div>
                     )}
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Payment Status:</span>
-                      <span className="font-medium text-green-600 capitalize">{session.payment_status}</span>
+                    <div>
+                      <div className="text-gray-600 mb-1">Payment Status:</div>
+                      <div className="font-medium text-green-600 capitalize">
+                        {session.payment_status}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -175,14 +183,18 @@ const CheckoutSuccessContent: React.FC = () => {
                 {sessionId && (
                   <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
                     <h2 className="font-semibold text-gray-900 mb-4">Order Details</h2>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Session ID:</span>
-                        <span className="font-medium text-gray-900">{sessionId}</span>
+                    <div className="space-y-4 text-sm">
+                      <div>
+                        <div className="text-gray-600 mb-1">Session ID:</div>
+                        <div className="font-medium text-gray-900 break-all">
+                          {sessionId}
+                        </div>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Status:</span>
-                        <span className="font-medium text-yellow-600">Processing</span>
+                      <div>
+                        <div className="text-gray-600 mb-1">Status:</div>
+                        <div className="font-medium text-yellow-600">
+                          Processing
+                        </div>
                       </div>
                     </div>
                   </div>
