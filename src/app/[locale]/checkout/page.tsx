@@ -85,7 +85,7 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
-      <div className="max-w-4xl mx-auto px-4 lg:px-8 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header */}
         <div className="mb-8">
           <Link href={createLocaleUrl('/cart')}>
