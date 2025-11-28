@@ -184,18 +184,19 @@ const CartPage: React.FC = () => {
                       <span>${state.total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
-                      <span>Tax</span>
-                      <span>Calculated at checkout</span>
+                      <span>Processing Fee (3.5%)</span>
+                      <span>${(state.total * 0.035).toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between text-gray-600">
-                      <span>Processing Fee (3.5%)</span>
+                      <span>Tax</span>
                       <span>Calculated at checkout</span>
                     </div>
                     <div className="border-t pt-4">
                       <div className="flex justify-between text-lg font-bold text-gray-900">
-                        <span>Total</span>
-                        <span>${state.total.toFixed(2)}</span>
+                        <span>Estimated Total</span>
+                        <span>${(state.total * 1.035).toFixed(2)}</span>
                       </div>
+                      <p className="text-xs text-gray-500 mt-1">* Tax calculated at checkout</p>
                     </div>
                   </div>
                   
