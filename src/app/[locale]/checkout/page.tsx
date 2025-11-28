@@ -140,16 +140,17 @@ const CheckoutPage: React.FC = () => {
                   </div>
                   <div className="flex justify-between text-gray-600 mb-2">
                     <span>Processing Fee (3.5%)</span>
-                    <span>Calculated at checkout</span>
+                    <span>${(state.total * 0.035).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-gray-600 mb-2">
                     <span>Tax</span>
                     <span>Calculated at checkout</span>
                   </div>
                   <div className="flex justify-between text-lg font-bold text-gray-900 mt-4 pt-4 border-t">
-                    <span>Total</span>
-                    <span>Calculated at checkout</span>
+                    <span>Estimated Total</span>
+                    <span>${(state.total * 1.035).toFixed(2)}</span>
                   </div>
+                  <p className="text-xs text-gray-500 mt-1">* Final total includes tax calculated at checkout</p>
                 </div>
               </CardContent>
             </Card>
