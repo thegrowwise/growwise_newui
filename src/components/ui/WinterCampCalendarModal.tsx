@@ -72,22 +72,46 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
   }, [isOpen, scrollToWorkshopId]);
   // Date ranges from Dec 22nd to Jan 2nd
   const dateRanges = [
-    { label: 'Dec 22-28', dates: ['Dec 22', 'Dec 23', 'Dec 24', 'Dec 25', 'Dec 26', 'Dec 27', 'Dec 28'] },
+    { label: 'Dec 22-28', dates: ['Dec 22', 'Dec 23', 'Dec 24', 'Dec 26', 'Dec 27', 'Dec 28'] },
     { label: 'Dec 29 - Jan 02', dates: ['Dec 29', 'Dec 30', 'Dec 31', 'Jan 01', 'Jan 02'] }
   ];
 
-  // Generate date slots for each range
+  // Generate date slots for each range, filtering out Saturdays and Sundays
   const generateDateSlots = (dates: string[]): DateSlot[] => {
-    return dates.map((date, index) => {
-      const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const dayIndex = (index + 0) % 7; // Dec 22, 2024 is a Sunday
-      return {
-        date,
-        day: dayNames[dayIndex],
-        time: '3 Hours',
-        duration: '1-Day Camp'
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    
+    // Helper function to parse date string and get day of week
+    const getDayOfWeek = (dateStr: string): number => {
+      // Parse date string like "Dec 22", "Dec 23", "Jan 01", etc.
+      const [monthStr, dayStr] = dateStr.split(' ');
+      const monthMap: { [key: string]: number } = {
+        'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+        'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11
       };
-    });
+      const month = monthMap[monthStr];
+      const day = parseInt(dayStr, 10);
+      const year = month === 11 ? 2024 : 2025; // Dec is 2024, Jan is 2025
+      
+      const date = new Date(year, month, day);
+      return date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    };
+    
+    return dates
+      .map((date) => {
+        const dayIndex = getDayOfWeek(date);
+        return {
+          date,
+          day: dayNames[dayIndex],
+          dayIndex,
+          time: '3 Hours',
+          duration: '1-Day Camp'
+        };
+      })
+      .filter((slot) => {
+        // Filter out Saturdays (6) and Sundays (0)
+        return slot.dayIndex !== 0 && slot.dayIndex !== 6;
+      })
+      .map(({ dayIndex, ...slot }) => slot); // Remove dayIndex from final result
   };
 
   const handleSelect = (workshopId: string, dateSlot: DateSlot) => {

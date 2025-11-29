@@ -40,6 +40,25 @@ export default function Dropdown({
   const v = getVariant(item.variant);
   const visibleItems = getVisibleDropdownItems(item.dropdown?.items || []);
 
+  // Prevent navigation for "Camps" menu item
+  const isCamps = item.key === 'camps';
+  
+  const linkContent = (
+    <>
+      {item.label}
+      {visibleItems.length > 0 && (
+        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
+          isOpen ? 'rotate-180' : ''
+        }`} />
+      )}
+      
+      {/* Subtle highlight indicator */}
+      <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r ${v.indicator} rounded-full transition-all duration-300 ${
+        isOpen ? 'w-8' : 'group-hover:w-4'
+      }`}></div>
+    </>
+  );
+
   return (
     <div
       key={item.key}
@@ -47,25 +66,26 @@ export default function Dropdown({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Link
-        href={createLocaleUrl(item.href)}
-        className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
-          isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
-        }`}
-        onClick={() => onItemClick()}
-      >
-        {item.label}
-        {visibleItems.length > 0 && (
-          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
-            isOpen ? 'rotate-180' : ''
-          }`} />
-        )}
-        
-        {/* Subtle highlight indicator */}
-        <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r ${v.indicator} rounded-full transition-all duration-300 ${
-          isOpen ? 'w-8' : 'group-hover:w-4'
-        }`}></div>
-      </Link>
+      {isCamps ? (
+        <span
+          className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap cursor-default ${
+            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
+          }`}
+          onClick={() => onItemClick()}
+        >
+          {linkContent}
+        </span>
+      ) : (
+        <Link
+          href={createLocaleUrl(item.href)}
+          className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
+            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
+          }`}
+          onClick={() => onItemClick()}
+        >
+          {linkContent}
+        </Link>
+      )}
 
       {/* Dropdown Content - only show if there are items */}
       {visibleItems.length > 0 && (
