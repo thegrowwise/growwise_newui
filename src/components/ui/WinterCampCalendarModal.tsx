@@ -70,9 +70,9 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
       }, 300);
     }
   }, [isOpen, scrollToWorkshopId]);
-  // Date ranges from Dec 22nd to Jan 2nd
+  // Date ranges starting from Dec 22nd (Monday) to Jan 2nd
   const dateRanges = [
-    { label: 'Dec 22-28', dates: ['Dec 22', 'Dec 23', 'Dec 24', 'Dec 26', 'Dec 27', 'Dec 28'] },
+    { label: 'Dec 22-26', dates: ['Dec 22', 'Dec 23', 'Dec 24', 'Dec 26'] },
     { label: 'Dec 29 - Jan 02', dates: ['Dec 29', 'Dec 30', 'Dec 31', 'Jan 01', 'Jan 02'] }
   ];
 
@@ -90,7 +90,7 @@ const WinterCampCalendarModal: React.FC<WinterCampCalendarModalProps> = ({
       };
       const month = monthMap[monthStr];
       const day = parseInt(dayStr, 10);
-      const year = month === 11 ? 2024 : 2025; // Dec is 2024, Jan is 2025
+      const year = month === 11 ? 2025 : 2026; // Dec is 2025, Jan is 2026
       
       const date = new Date(year, month, day);
       return date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
