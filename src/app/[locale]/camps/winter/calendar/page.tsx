@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Plus, Check, ArrowLeft } from 'lucide-react';
 import { useCart } from '@/components/gw/CartContext';
@@ -26,10 +26,9 @@ interface Workshop {
   price?: number;
 }
 
-export default function WinterCampCalendarPage() {
-  const { addItem, state: cartState } = useCart();
+function WinterCampCalendarContent() {
+  const { addItem } = useCart();
   const locale = useLocale();
-  const router = useRouter();
   const searchParams = useSearchParams();
   const workshopRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
@@ -166,8 +165,8 @@ export default function WinterCampCalendarPage() {
 
   return (
     <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
-      {/* Header */}
-      <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white px-3 sm:px-4 lg:px-6 py-3 sm:py-4 sticky top-0 z-50 shadow-lg">
+      {/* Header - Positioned below main site header */}
+      <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white px-3 sm:px-4 lg:px-6 py-3 sm:py-4 sticky z-40 shadow-lg calendar-page-header">
         <div className="max-w-7xl mx-auto flex items-center">
           <Link href={createLocaleUrl('/camps/winter')}>
             <Button
@@ -381,6 +380,21 @@ export default function WinterCampCalendarPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function WinterCampCalendarPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1F396D] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading calendar...</p>
+        </div>
+      </div>
+    }>
+      <WinterCampCalendarContent />
+    </Suspense>
   );
 }
 
