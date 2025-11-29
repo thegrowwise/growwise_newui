@@ -211,8 +211,14 @@ html {
   .text-strong { @apply text-gray-900; }
   .stat-number { @apply text-3xl font-bold; }
   /* Header global utility classes extracted from Header.module.css */
-  .header-root { @apply bg-white/80 backdrop-blur-3xl shadow-[0px_8px_32px_rgba(31,57,109,0.12)] sticky top-0 z-50 border-b border-white/50 ring-1 ring-white/20 transition-all duration-300 ease-out; }
-  .header-root.header-scrolled { @apply shadow-[0px_4px_20px_rgba(31,57,109,0.18)]; }
+  .header-root { 
+    @apply bg-white/80 backdrop-blur-3xl shadow-[0px_8px_32px_rgba(31,57,109,0.12)] sticky top-0 z-50 border-b border-white/50 ring-1 ring-white/20 transition-all duration-300 ease-out; 
+    --header-height: 10rem; /* Default height when not scrolled (top bar + main row) */
+  }
+  .header-root.header-scrolled { 
+    @apply shadow-[0px_4px_20px_rgba(31,57,109,0.18)]; 
+    --header-height: 5rem; /* Height when scrolled (main row only) */
+  }
   .header-topbar { @apply bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white/90 border-b border-[#1F396D]/30 shadow-[0px_2px_8px_rgba(31,57,109,0.15)]; }
   .container-7xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
   .header-toprow { @apply flex items-center justify-between py-2 text-sm; }
@@ -303,4 +309,28 @@ html {
 [data-bis_register],
 [data-__processed_ab1c173e-84db-4b69-af27-621307447383__] {
   display: none !important;
+}
+
+/* Calendar page header - positioned below main header */
+.calendar-page-header {
+  top: var(--header-height, 5rem);
+}
+
+/* Responsive header height adjustments */
+@media (max-width: 1024px) {
+  .header-root {
+    --header-height: 8rem;
+  }
+  .header-root.header-scrolled {
+    --header-height: 5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-root {
+    --header-height: 6rem;
+  }
+  .header-root.header-scrolled {
+    --header-height: 4rem;
+  }
 }

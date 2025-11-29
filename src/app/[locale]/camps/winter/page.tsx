@@ -36,7 +36,6 @@ import {
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from '@/components/ui/alert-dialog';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { getIconComponent } from '@/lib/iconMap';
-import WinterCampCalendarModal from '@/components/ui/WinterCampCalendarModal';
 
 export default function WinterCampPage() {
   const t = useTranslations();
@@ -45,8 +44,6 @@ export default function WinterCampPage() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({ hero: true });
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
-  const [isCalendarModalOpen, setIsCalendarModalOpen] = useState(false);
-  const [scrollToWorkshopId, setScrollToWorkshopId] = useState<string | null>(null);
   const heroRef = useRef<HTMLDivElement>(null);
   const workshopsRef = useRef<HTMLDivElement>(null);
   const benefitsRef = useRef<HTMLDivElement>(null);
@@ -646,16 +643,14 @@ export default function WinterCampPage() {
                     </div>
 
                     {/* CTA Button */}
-                    <Button
-                      onClick={() => {
-                        setScrollToWorkshopId(workshop.id);
-                        setIsCalendarModalOpen(true);
-                      }}
-                      className={`w-full bg-gradient-to-r ${workshop.gradient} hover:opacity-90 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg text-sm group`}
-                    >
-                      View Schedule
-                      <Calendar className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
-                    </Button>
+                    <Link href={`${createLocaleUrl('/camps/winter/calendar')}?workshop=${workshop.id}`}>
+                      <Button
+                        className={`w-full bg-gradient-to-r ${workshop.gradient} hover:opacity-90 text-white font-semibold py-3 rounded-xl transition-all duration-300 shadow-lg text-sm group`}
+                      >
+                        View Schedule
+                        <Calendar className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                      </Button>
+                    </Link>
                   </CardContent>
                 </Card>
               );
@@ -857,36 +852,6 @@ export default function WinterCampPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* Calendar Modal */}
-      <WinterCampCalendarModal
-        isOpen={isCalendarModalOpen}
-        onClose={() => {
-          setIsCalendarModalOpen(false);
-          setScrollToWorkshopId(null);
-        }}
-        scrollToWorkshopId={scrollToWorkshopId}
-        workshops={workshops.map(w => {
-          // Map workshop IDs to background colors
-          const colorMap: { [key: string]: string } = {
-            'roblox-workshop': 'bg-sky-500',
-            'scratch-workshop': 'bg-blue-500',
-            'minecraft-workshop': 'bg-slate-600'
-          };
-          return {
-            id: w.id,
-            title: w.title,
-            icon: w.icon,
-            level: w.level,
-            gradient: w.gradient,
-            bgColor: colorMap[w.id] || 'bg-sky-500',
-            price: w.price
-          };
-        })}
-        onSelectSlot={(workshopId, dateSlot) => {
-          console.log('Selected:', workshopId, dateSlot);
-          // Handle slot selection - could open enrollment form, add to cart, etc.
-        }}
-      />
       </div>
     </>
   );
