@@ -5,6 +5,8 @@ import LocaleSwitcher from '@/components/LocaleSwitcher';
 import { MenuItem } from './types';
 import { getVisibleDropdownItems, isMenuItemActive } from './utils';
 
+// Student login is now handled by our custom page
+
 interface MobileNavigationProps {
   menuItems: MenuItem[];
   mobileMenuOpen: boolean;
@@ -177,17 +179,30 @@ export default function MobileNavigation({
                             )}
                           </>
                         ) : (
-                          <Link
-                            href={createLocaleUrl(item.href)}
-                            className={`block font-medium py-3 px-2 transition-colors duration-200 rounded-lg ${
-                              isActive
-                                ? 'text-[#1F396D] bg-[#1F396D]/10'
-                                : 'text-gray-700 hover:text-[#F16112] hover:bg-gray-50'
-                            }`}
-                            onClick={onCloseMobileMenu}
-                          >
-                            {item.label}
-                          </Link>
+                          // Prevent navigation for "Camps" menu item
+                          item.key === 'camps' ? (
+                            <span
+                              className={`block font-medium py-3 px-2 transition-colors duration-200 rounded-lg cursor-default ${
+                                isActive
+                                  ? 'text-[#1F396D] bg-[#1F396D]/10'
+                                  : 'text-gray-700 hover:text-[#F16112] hover:bg-gray-50'
+                              }`}
+                            >
+                              {item.label}
+                            </span>
+                          ) : (
+                            <Link
+                              href={createLocaleUrl(item.href)}
+                              className={`block font-medium py-3 px-2 transition-colors duration-200 rounded-lg ${
+                                isActive
+                                  ? 'text-[#1F396D] bg-[#1F396D]/10'
+                                  : 'text-gray-700 hover:text-[#F16112] hover:bg-gray-50'
+                              }`}
+                              onClick={onCloseMobileMenu}
+                            >
+                              {item.label}
+                            </Link>
+                          )
                         )}
                         {index < filteredMenuItems.length - 1 && (
                           <div className="border-b border-gray-200 my-1" />
@@ -212,6 +227,16 @@ export default function MobileNavigation({
 
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <LocaleSwitcher />
+              </div>
+
+              <div className="mt-6">
+                <Link
+                  href={createLocaleUrl('/student-login')}
+                  className="block w-full px-6 py-3 rounded-full font-medium text-center transition-all duration-300 border border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white"
+                  onClick={onCloseMobileMenu}
+                >
+                  Student Login
+                </Link>
               </div>
             </div>
           </div>
