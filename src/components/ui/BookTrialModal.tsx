@@ -12,6 +12,7 @@ import { RadioGroup, RadioGroupItem } from './radio-group';
 import { Checkbox } from './checkbox';
 import { Card, CardContent } from './card';
 import CountryCodeSelector from '../CountryCodeSelector';
+import { PHONE_PLACEHOLDER } from '@/lib/constants';
 
 interface BookTrialModalProps {
   isOpen: boolean;
@@ -187,7 +188,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                             value={formData.phone}
                             onChange={(e) => handleInputChange('phone', e.target.value)}
                             className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-r-xl rounded-l-none focus:border-[#F16112] transition-colors flex-1 border-l-0 h-10"
-                            placeholder="(555) 123-4567"
+                            placeholder={PHONE_PLACEHOLDER}
                             required
                           />
                         </div>

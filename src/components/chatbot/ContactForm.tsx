@@ -6,6 +6,7 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Card, CardContent } from '../ui/card';
 import { Mail, Phone, User, Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { PHONE_PLACEHOLDER } from '@/lib/constants';
 
 interface ContactFormProps {
   onSubmit: (data: ContactFormData) => Promise<void>;
@@ -182,7 +183,7 @@ export default function ContactForm({
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
                 className={`pl-10 ${validationErrors.phone ? 'border-red-300 focus:border-red-500' : ''}`}
-                placeholder="(555) 123-4567"
+                placeholder={PHONE_PLACEHOLDER}
                 disabled={isLoading}
               />
             </div>

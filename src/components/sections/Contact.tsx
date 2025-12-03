@@ -38,6 +38,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchContactRequested } from '@/store/slices/contactSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { contactService } from '@/lib/contactService';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export default function Contact() {
   const { openChatbot } = useChatbot();
@@ -136,9 +137,9 @@ export default function Contact() {
 
   // Location details
   const locationDetails = contact?.locationDetails ?? {
-    phone: '(925) 456-4606',
-    googleMapsUrl: 'https://maps.google.com/?q=4564+Dublin+Blvd,+Dublin,+CA',
-    directionsUrl: 'https://maps.google.com/?daddr=4564+Dublin+Blvd,+Dublin,+CA'
+    phone: CONTACT_INFO.phone,
+    googleMapsUrl: `https://maps.google.com/?q=${encodeURIComponent(CONTACT_INFO.address)}`,
+    directionsUrl: `https://maps.google.com/?daddr=${encodeURIComponent(CONTACT_INFO.address)}`
   };
 
   if (isSubmitted) {
@@ -165,7 +166,7 @@ export default function Contact() {
                 className="w-full border-[#F16112] text-[#F16112] hover:bg-[#F16112] hover:text-white"
               >
                 <Phone className="w-4 h-4 mr-2" />
-                Call (925) 456-4606
+                Call {CONTACT_INFO.phone}
               </Button>
             </div>
           </CardContent>
@@ -191,7 +192,7 @@ export default function Contact() {
               className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3"
             >
               <a 
-                href={`tel:${contact?.contactInfo?.[0]?.primary?.replace(/[\s\(\)\-]/g, '') || '19254564606'}`}
+                href={`tel:${contact?.contactInfo?.[0]?.primary?.replace(/[\s\(\)\-]/g, '') || CONTACT_INFO.phone.replace(/[\s\(\)\-]/g, '')}`}
                 title="Click to call"
               >
                 <Phone className="w-5 h-5 mr-2" />
@@ -567,7 +568,7 @@ export default function Contact() {
               Visit Our <span className="text-[#F16112]">Center</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Located in the heart of Dublin, CA, our facility provides an optimal learning environment
+              Located in the heart of {CONTACT_INFO.city}, our facility provides an optimal learning environment
             </p>
           </div>
 
@@ -725,7 +726,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 text-lg">
               <Phone className="w-5 h-5 mr-2" />
-              Call (925) 456-4606
+              Call {CONTACT_INFO.phone}
             </Button>
             <Button 
               onClick={openChatbot}

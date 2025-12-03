@@ -19,6 +19,7 @@ import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchAboutRequested } from '@/store/slices/aboutSlice';
 import TestimonialsWithBackend from './TestimonialsWithBackend';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export default function About() {
   const { openChatbot } = useChatbot();
@@ -312,21 +313,21 @@ export default function About() {
               <MapPin className="w-6 h-6 text-[#F1894F]" />
               <div>
                 <div className="font-semibold">{t('labels.address')}</div>
-                <div className="text-sm text-white/80">4564 Dublin Blvd, Dublin, CA</div>
+                <div className="text-sm text-white/80">{CONTACT_INFO.address}</div>
               </div>
             </div>
             <div className="flex items-center justify-center gap-3">
               <Phone className="w-6 h-6 text-[#F1894F]" />
               <div>
                 <div className="font-semibold">{t('labels.phone')}</div>
-                <div className="text-sm text-white/80">(925) 456-4606</div>
+                <div className="text-sm text-white/80">{CONTACT_INFO.phone}</div>
               </div>
             </div>
             <div className="flex items-center justify-center gap-3">
               <Mail className="w-6 h-6 text-[#F1894F]" />
               <div>
                 <div className="font-semibold">{t('labels.email')}</div>
-                <div className="text-sm text-white/80">connect@thegrowwise.com</div>
+                <div className="text-sm text-white/80">{CONTACT_INFO.email}</div>
               </div>
             </div>
           </div>
