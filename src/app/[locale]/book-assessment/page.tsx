@@ -23,7 +23,7 @@ import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Bra
 import CountryCodeSelector from '@/components/CountryCodeSelector';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 
 interface FormData {
   parentName: string;
