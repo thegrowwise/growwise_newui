@@ -28,13 +28,12 @@ import {
   PartyPopper,
   TreePine,
   Mail,
-} from 'lucide-react';
-import { CONTACT_INFO } from '@/lib/constants';
   Phone,
   MapPin,
   MessageCircle,
   X
 } from 'lucide-react';
+import { CONTACT_INFO } from '@/lib/constants';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from '@/components/ui/alert-dialog';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { getIconComponent } from '@/lib/iconMap';
