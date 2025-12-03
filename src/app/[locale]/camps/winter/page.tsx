@@ -33,6 +33,7 @@ import {
   MessageCircle,
   X
 } from 'lucide-react';
+import { CONTACT_INFO } from '@/lib/constants';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from '@/components/ui/alert-dialog';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { getIconComponent } from '@/lib/iconMap';
@@ -56,19 +57,19 @@ export default function WinterCampPage() {
     {
       icon: 'Phone',
       title: 'Call Us',
-      primary: '(925) 456-4606',
+      primary: CONTACT_INFO.phone,
       bgColor: 'bg-[#F16112]'
     },
     {
       icon: 'Mail',
       title: 'Email Us',
-      primary: 'connect@thegrowwise.com',
+      primary: CONTACT_INFO.email,
       bgColor: 'bg-[#1F396D]'
     },
     {
       icon: 'MapPin',
       title: 'Visit Us',
-      primary: '4564 Dublin Blvd, Dublin, CA',
+      primary: CONTACT_INFO.address,
       bgColor: 'bg-[#F1894F]'
     },
     {

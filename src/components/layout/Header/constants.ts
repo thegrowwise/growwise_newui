@@ -10,6 +10,7 @@ import {
   Calendar
 } from 'lucide-react';
 import { VariantStyles } from './types';
+import { CONTACT_INFO } from '@/lib/constants';
 
 // Icon mapping for dynamic icon rendering
 export const ICON_MAP = {
@@ -45,9 +46,9 @@ export const VARIANT_STYLES: Record<string, VariantStyles> = {
 // Default values for header data
 export const DEFAULT_HEADER_DATA = {
   topBar: {
-    phone: '(925) 456-4606',
-    email: 'connect@thegrowwise.com',
-    address: '📍 4564 Dublin Blvd, Dublin, CA',
+    phone: CONTACT_INFO.phone,
+    email: CONTACT_INFO.email,
+    address: CONTACT_INFO.formattedAddress,
     followLabel: 'Follow us:',
     social: {
       facebook: 'https://www.facebook.com/people/GrowWise/61561059687164/',

@@ -10,6 +10,7 @@ import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calcul
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/components/gw/CartContext';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
+import { CONTACT_INFO } from '@/lib/constants';
 
 // Icon mapping for dynamic icon rendering
 const iconMap: { [key: string]: any } = {
@@ -87,9 +88,9 @@ export default function Header() {
     if (!header) dispatch(fetchHeaderRequested());
   }, [dispatch, header]);
 
-  const topPhone = header?.topBar.phone ?? '(925) 456-4606';
-  const topEmail = header?.topBar.email ?? 'connect@thegrowwise.com';
-  const topAddress = header?.topBar.address ?? '📍 4564 Dublin Blvd, Dublin, CA';
+  const topPhone = header?.topBar.phone ?? CONTACT_INFO.phone;
+  const topEmail = header?.topBar.email ?? CONTACT_INFO.email;
+  const topAddress = header?.topBar.address ?? CONTACT_INFO.formattedAddress;
   const followLabel = header?.topBar.followLabel ?? 'Follow us:';
   const social = header?.topBar.social ?? { facebook: 'https://www.facebook.com/people/GrowWise/61561059687164/', twitter: '#', instagram: 'https://www.instagram.com/growwise.dublin/', linkedin: 'https://www.linkedin.com/company/thegrowwise/' };
   const footerHelper = header?.footerHelper ?? 'Need help choosing?';

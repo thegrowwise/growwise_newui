@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { GraduationCap, Users, Shield, Star, Send, Target, Clock, Award } from "lucide-react";
+import { PHONE_PLACEHOLDER } from '@/lib/constants';
 
 interface EnrollFormData {
   parentName: string;
@@ -227,7 +228,7 @@ export default function EnrollAcademicPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="mobilePhone">Mobile Phone Number <span className="text-red-500">*</span></Label>
-                        <Input id="mobilePhone" type="tel" value={formData.mobilePhone} onChange={(e) => handleInputChange("mobilePhone", e.target.value)} placeholder="(555) 123-4567" required />
+                        <Input id="mobilePhone" type="tel" value={formData.mobilePhone} onChange={(e) => handleInputChange("mobilePhone", e.target.value)} placeholder={PHONE_PLACEHOLDER} required />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>

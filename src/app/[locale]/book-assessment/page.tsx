@@ -23,6 +23,7 @@ import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Bra
 import CountryCodeSelector from '@/components/CountryCodeSelector';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 
 interface FormData {
   parentName: string;
@@ -336,7 +337,7 @@ export default function BookAssessmentPage() {
                         <div className="flex items-stretch">
                           <CountryCodeSelector value={formData.countryCode} onChange={(countryCode) => handleInputChange('countryCode', countryCode)} className="flex-shrink-0" />
                           <div className="w-px h-14 bg-gray-300 flex-shrink-0"></div>
-                          <Input id="phone" type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 border-l-0 h-14 text-base ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10 scale-[1.02]' : 'border-gray-300 hover:border-gray-400'}`} placeholder="(555) 123-4567" required />
+                          <Input id="phone" type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 border-l-0 h-14 text-base ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10 scale-[1.02]' : 'border-gray-300 hover:border-gray-400'}`} placeholder={PHONE_PLACEHOLDER} required />
                         </div>
                       </div>
                     </div>
@@ -381,7 +382,7 @@ export default function BookAssessmentPage() {
                           <RadioGroup value={formData.mode} onValueChange={(value) => handleInputChange('mode', value)} className="flex flex-col gap-4">
                             <div onClick={() => handleInputChange('mode', 'in-person')} className={`flex items-center space-x-4 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.01] active:scale-[0.99] ${formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}>
                               <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium flex-1 pointer-events-none">In-person at Dublin, CA</Label>
+                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium flex-1 pointer-events-none">In-person at {CONTACT_INFO.city}</Label>
                             </div>
                             <div onClick={() => handleInputChange('mode', 'online')} className={`flex items-center space-x-4 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.01] active:scale-[0.99] ${formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}>
                               <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
@@ -540,7 +541,7 @@ export default function BookAssessmentPage() {
             <p className="text-white/90 mb-10 text-xl leading-relaxed">Book a free assessment today and get personalized insights into your child's academic journey</p>
             <div className="flex flex-wrap justify-center gap-6">
               <Button onClick={scrollToForm} className="bg-white text-[#1F396D] hover:bg-gray-100 px-10 py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-200 hover:scale-105 group text-lg"><Calendar className="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform" />Book Free Assessment<ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" /></Button>
-              <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-7 rounded-2xl transition-all duration-200 text-lg backdrop-blur-xl"><PhoneIcon className="w-5 h-5 mr-2" />(925) 456-4606</Button>
+              <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-7 rounded-2xl transition-all duration-200 text-lg backdrop-blur-xl"><PhoneIcon className="w-5 h-5 mr-2" />{CONTACT_INFO.phone}</Button>
             </div>
           </motion.div>
         </div>

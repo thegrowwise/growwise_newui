@@ -67,15 +67,22 @@ export default function EnrollPage() {
         setSubmitStatus('success');
         // Track successful form submission
         trackFormSubmit('enrollment_form', true);
-        // Reset form by clearing all state
+        
+        // Reset form by clearing all state and form fields
         setAgree(false);
         setBootcamp(undefined);
         setCourse(undefined);
         setLevel(undefined);
+        
         // Reset form fields using ref
         if (formRef.current) {
           formRef.current.reset();
         }
+        
+        // Clear success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
       } else {
         setSubmitStatus('error');
         setErrorMessage(result.error || 'Failed to submit enrollment');
