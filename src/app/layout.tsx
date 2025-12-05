@@ -1,7 +1,16 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClientAnalyticsProvider } from "@/components/providers/ClientAnalyticsProvider";
+
+// Optimize font loading with next/font
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap', // Use font-display: swap for better performance
+  variable: '--font-inter',
+  preload: true,
+});
 
 export const metadata: Metadata = {
   title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
@@ -20,8 +29,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans antialiased" suppressHydrationWarning>
+    <html suppressHydrationWarning lang="en">
+      <head>
+        {/* Preconnect to external domains for faster loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://tlm2laiw0j.execute-api.us-west-1.amazonaws.com" />
+      </head>
+      <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
         <Script
           id="remove-extension-attributes"
           strategy="beforeInteractive"

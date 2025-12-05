@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Use optimized font variable */
+@layer base {
+  html {
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+}
+
 /* Removed Tailwind v4-only @custom-variant; using standard .dark class selectors below */
 
 :root {

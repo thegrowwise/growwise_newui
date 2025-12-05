@@ -7,7 +7,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import ContentProvider from "@/components/providers/ContentProvider";
 import { CartProvider } from "@/components/gw/CartContext";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
-import Chatbot from "@/components/chatbot/Chatbot";
+import LazyChatbot from "@/components/chatbot/LazyChatbot";
 import { locales } from '@/i18n/config';
 import { PageTrackingWrapper } from '@/components/analytics/PageTrackingWrapper';
 import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/seo/structuredData';
@@ -62,7 +62,7 @@ export default async function LocaleLayout({
                 {children}
               </main>
               <Footer />
-              <Chatbot />
+              <LazyChatbot />
             </PageTrackingWrapper>
           </ContentProvider>
         </ChatbotProvider>
