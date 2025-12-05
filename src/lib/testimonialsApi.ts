@@ -9,7 +9,9 @@ export interface TestimonialVM {
   role: string;
   content: string;
   rating: number;
-  image: string;
+  image: string | null;
+  initials?: string;
+  hasPhoto?: boolean;
   metadata?: {
     authorUrl?: string;
     reviewTime?: number;

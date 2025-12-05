@@ -80,7 +80,7 @@ export function useTestimonials(options: UseTestimonialsOptions = {}): UseTestim
     } finally {
       setLoading(false);
     }
-  }, [limit, offset]);
+  }, [limit, offset, minRating]);
 
   const refresh = useCallback(async () => {
     await fetchTestimonials(true);
