@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent } from '../../ui/card';
 import { SectionError } from '../../ui/SectionError';
-import { ImageWithFallback } from '../../gw/ImageWithFallback';
+import { OptimizedImage } from '../../gw/OptimizedImage';
 import { Star } from 'lucide-react';
 import { StructuredDataScript } from '../../seo/StructuredDataScript';
 import { generateReviewSchema, generateAggregateRatingSchema } from '@/lib/seo/structuredData';
@@ -78,7 +78,13 @@ export function TestimonialsSection({ testimonials, error, onRetry }: { testimon
                   </div>
                   <p className="text-gray-700 mb-8 italic text-base leading-relaxed">"{t.content}"</p>
                   <div className="flex items-center gap-4">
-                    <ImageWithFallback src={t.image} alt={t.name} className="w-14 h-14 rounded-full object-cover shadow-[0px_8px_20px_rgba(255,255,255,0.4)] border-2 border-white/70 ring-1 ring-white/50" />
+                    <OptimizedImage 
+                      src={t.image} 
+                      alt={t.name} 
+                      width={56}
+                      height={56}
+                      className="rounded-full object-cover shadow-[0px_8px_20px_rgba(255,255,255,0.4)] border-2 border-white/70 ring-1 ring-white/50" 
+                    />
                     <div>
                       <p className="font-semibold text-gray-900 text-base drop-shadow-sm">{t.name}</p>
                       <p className="text-sm text-gray-500">{t.role}</p>

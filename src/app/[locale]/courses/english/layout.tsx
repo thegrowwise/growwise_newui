@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateCourseSchema } from '@/lib/seo/structuredData'
+import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -41,11 +41,22 @@ export default async function EnglishCoursesLayout({
     }
   })
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: `${baseUrl}/${locale}` },
+    { name: 'Programs', url: `${baseUrl}/${locale}/programs` },
+    { name: 'Academic', url: `${baseUrl}/${locale}/academic` },
+    { name: 'English Courses', url: `${baseUrl}/${locale}/courses/english` },
+  ])
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>

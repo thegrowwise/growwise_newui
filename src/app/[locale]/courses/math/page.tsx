@@ -17,12 +17,14 @@ import MathSymbolsBackground from '@/components/MathSymbolsBackground';
 import CourseCard from '@/components/CourseCard';
 import { useTouchDetection } from '@/hooks/useHydration';
 import { useTranslations } from 'next-intl';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useLocale } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 import FreeAssessmentModal from '@/components/FreeAssessmentModal';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import Link from 'next/link';
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -305,6 +307,8 @@ const MathCoursesPage: React.FC = () => {
     );
   }
 
+  const locale = useLocale()
+
   return (
     <HydrationBoundary>
       <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -314,6 +318,18 @@ const MathCoursesPage: React.FC = () => {
             onAlignmentFound={handleAlignmentFound}
           />
         </Suspense>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-6">
+        <Breadcrumbs 
+          items={[
+            { name: 'Programs', url: `https://growwiseschool.org/${locale}/programs` },
+            { name: 'Academic', url: `https://growwiseschool.org/${locale}/academic` },
+            { name: 'Math Courses', url: `https://growwiseschool.org/${locale}/courses/math` },
+          ]}
+          className="mb-4"
+        />
+      </div>
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">
@@ -673,6 +689,124 @@ const MathCoursesPage: React.FC = () => {
             <div className="absolute bottom-4 left-4 w-8 h-8 border border-white/20 rounded-full flex items-center justify-center">
               <div className="w-4 h-4 bg-[#1F396D]/30 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Content Section - Internal Linking for SEO */}
+      <section className="py-16 px-4 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Explore Related <span className="text-[#F16112]">Programs</span>
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <Link 
+              href={`/${locale}/courses/english`}
+              className="group bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 border border-blue-100 hover:border-blue-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <BookOpen className="w-6 h-6 text-blue-600" />
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                  English Courses
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Comprehensive English Language Arts programs for K-12 students. Reading, writing, and grammar.
+              </p>
+              <span className="text-blue-600 font-semibold group-hover:underline">
+                Learn More →
+              </span>
+            </Link>
+
+            <Link 
+              href={`/${locale}/courses/sat-prep`}
+              className="group bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 border border-purple-100 hover:border-purple-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Target className="w-6 h-6 text-purple-600" />
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
+                  SAT Prep
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Boost your SAT score with expert test preparation strategies and practice tests.
+              </p>
+              <span className="text-purple-600 font-semibold group-hover:underline">
+                Learn More →
+              </span>
+            </Link>
+
+            <Link 
+              href={`/${locale}/courses/high-school-math`}
+              className="group bg-gradient-to-br from-orange-50 to-amber-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 border border-orange-100 hover:border-orange-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <GraduationCap className="w-6 h-6 text-orange-600" />
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
+                  High School Math
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Advanced math courses including Algebra, Geometry, Pre-Calculus, and Calculus.
+              </p>
+              <span className="text-orange-600 font-semibold group-hover:underline">
+                Learn More →
+              </span>
+            </Link>
+
+            <Link 
+              href={`/${locale}/academic`}
+              className="group bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 border border-green-100 hover:border-green-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Award className="w-6 h-6 text-green-600" />
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-green-600 transition-colors">
+                  Academic Programs
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Explore all our K-12 academic programs aligned with DUSD & PUSD standards.
+              </p>
+              <span className="text-green-600 font-semibold group-hover:underline">
+                Learn More →
+              </span>
+            </Link>
+
+            <Link 
+              href={`/${locale}/steam`}
+              className="group bg-gradient-to-br from-cyan-50 to-teal-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 border border-cyan-100 hover:border-cyan-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Sparkles className="w-6 h-6 text-cyan-600" />
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-cyan-600 transition-colors">
+                  STEAM Programs
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Innovative STEAM programs: ML/AI, Game Development, and Coding classes.
+              </p>
+              <span className="text-cyan-600 font-semibold group-hover:underline">
+                Learn More →
+              </span>
+            </Link>
+
+            <Link 
+              href={`/${locale}/book-assessment`}
+              className="group bg-gradient-to-br from-red-50 to-rose-50 rounded-xl p-6 hover:shadow-xl transition-all duration-300 border border-red-100 hover:border-red-300"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <CheckCircle className="w-6 h-6 text-red-600" />
+                <h3 className="text-xl font-bold text-gray-900 group-hover:text-red-600 transition-colors">
+                  Free Assessment
+                </h3>
+              </div>
+              <p className="text-gray-600 mb-4">
+                Book a free academic assessment to identify strengths and areas for improvement.
+              </p>
+              <span className="text-red-600 font-semibold group-hover:underline">
+                Book Now →
+              </span>
+            </Link>
           </div>
         </div>
       </section>

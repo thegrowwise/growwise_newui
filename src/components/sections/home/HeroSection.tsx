@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '../../ui/button';
 import { SectionError } from '../../ui/SectionError';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { ImageWithFallback } from '../../gw/ImageWithFallback';
+import { OptimizedImage } from '../../gw/OptimizedImage';
 
 export interface HeroSlideVM {
   id: number;
@@ -64,7 +64,14 @@ export function HeroSection({
                 <div key={slide.id} className={`absolute inset-0 transition-all duration-1000 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}`}>
                   <div className="relative h-full flex flex-col lg:flex-row items-center overflow-hidden">
                     <div className="absolute inset-0">
-                      <ImageWithFallback src={slide.bgImage} alt={slide.title} className="w-full h-full object-cover" />
+                      <OptimizedImage 
+                        src={slide.bgImage} 
+                        alt={slide.title} 
+                        fill
+                        className="object-cover"
+                        sizes="100vw"
+                        priority={isActive}
+                      />
                       <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
                       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
                       <div className="absolute inset-0 backdrop-blur-[0.5px]"></div>
