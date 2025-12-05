@@ -9,6 +9,7 @@ import { useTestimonials } from '@/hooks/useTestimonials';
 import { TestimonialVM } from '@/lib/testimonialsApi';
 import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
 import { generateReviewSchema, generateAggregateRatingSchema } from '@/lib/seo/structuredData';
+import { OptimizedImage } from '@/components/gw/OptimizedImage';
 
 export default function TestimonialsWithBackend() {
   const [currentSet, setCurrentSet] = useState(0);
@@ -325,15 +326,12 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialVM }) {
 
           {/* Author Info */}
           <div className="flex items-center justify-center gap-3">
-            <img
+            <OptimizedImage
               src={testimonial.image}
               alt={testimonial.name}
-              className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
-              onError={(e) => {
-                // Fallback to a default avatar if image fails to load
-                const target = e.target as HTMLImageElement;
-                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&size=150&background=1F396D&color=ffffff&bold=true`;
-              }}
+              width={48}
+              height={48}
+              className="rounded-full object-cover border-2 border-white shadow-md"
             />
             <div className="text-left">
               <h4 className="font-semibold text-gray-900 text-sm">

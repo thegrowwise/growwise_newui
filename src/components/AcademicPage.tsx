@@ -12,7 +12,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogDescription,
 } from "../components/ui/alert-dialog";
-import { ImageWithFallback } from "./gw/ImageWithFallback";
+import { OptimizedImage } from "./gw/OptimizedImage";
 import { Calculator, BookOpen, CheckCircle, ChevronRight, PenTool, UserCheck, Lightbulb, GraduationCap, HeartHandshake, X } from "lucide-react";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
@@ -176,9 +176,11 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 						<div className="relative">
 							<Card className="bg-white/80 backdrop-blur-xl rounded-[32px] shadow-[0px_20px_50px_0px_rgba(31,57,109,0.12)] border border-white/40 overflow-hidden">
 								<CardContent className="p-0">
-									<ImageWithFallback
+									<OptimizedImage
 										src="https://images.unsplash.com/photo-1532788592275-3f310c81dd95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHN0dWRlbnQlMjBsZWFybmluZyUyMHdpdGglMjBoZWFkcGhvbmVzfGVufDF8fHx8MTc1NzI2Nzg1OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
 										alt="Happy student learning with headphones"
+										width={800}
+										height={600}
 										className="w-full h-auto object-cover"
 									/>
 								</CardContent>
@@ -267,10 +269,12 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 							>
 								<CardContent className="p-8">
 									<div className="text-center mb-6">
-										<ImageWithFallback
+										<OptimizedImage
 											src={story.image}
 											alt={story.name}
-											className="w-16 h-16 rounded-full object-cover mx-auto mb-4 border-2 border-[#F16112]"
+											width={64}
+											height={64}
+											className="rounded-full object-cover mx-auto mb-4 border-2 border-[#F16112]"
 										/>
 										<h3 className="text-xl font-bold text-gray-900">{story.name}</h3>
 										<p className="text-gray-600">
