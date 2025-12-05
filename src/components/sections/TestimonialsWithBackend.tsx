@@ -220,27 +220,27 @@ export default function TestimonialsWithBackend() {
           </p>
           
           {/* Cache status indicator */}
-          {/* <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-500">
+          <div className="mt-4 flex items-center justify-center gap-2 text-sm">
             {source === 'default' && (
-              <span className="flex items-center gap-1 text-orange-600">
-                ⚠️ Using default testimonials (server unavailable)
+              <span className="flex items-center gap-1 text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
+                ⚠️ Using default testimonials (Google Reviews unavailable)
               </span>
             )}
             {source === 'api' && cached && (
-              <span className="flex items-center gap-1">
-                📦 Cached data
+              <span className="flex items-center gap-1 text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                📦 Cached data from Google Reviews
                 {fallback && <span className="text-orange-500">(fallback)</span>}
               </span>
             )}
             {source === 'api' && !cached && (
-              <span className="flex items-center gap-1 text-green-600">
+              <span className="flex items-center gap-1 text-green-600 bg-green-50 px-3 py-1 rounded-full">
                 🔄 Live data from Google Reviews
               </span>
             )}
-            {pagination && (
-              <span>• {pagination.total} high-rated reviews (4+ stars)</span>
+            {pagination && source === 'api' && (
+              <span className="text-gray-600">• {pagination.total} reviews</span>
             )}
-          </div> */}
+          </div>
         </div>
 
         {/* Testimonials Slider */}
