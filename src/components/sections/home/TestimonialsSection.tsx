@@ -210,11 +210,6 @@ export function TestimonialsSection({ testimonials, error, onRetry }: { testimon
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Personalized learning. Real growth. Measurable success — every student, every grade.
           </p>
-          {testimonials.length > 0 && (
-            <p className="text-sm text-gray-500 mt-2">
-              Showing {testimonials.length} {testimonials.length === 1 ? 'review' : 'reviews'} (4+ stars)
-            </p>
-          )}
         </div>
         
         {/* Carousel Container */}
