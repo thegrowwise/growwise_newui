@@ -18,13 +18,19 @@ export function proxy(request: NextRequest) {
   return intlMiddleware(request);
 }
 
-// Generate matcher pattern dynamically based on enabled locales
-const localeMatcher = ENABLED_LOCALES.length === 1 
-  ? ['/', `/${ENABLED_LOCALES[0]}/:path*`, '/((?!api|_next|_vercel|.*\\..*).*)']
-  : ['/', ...ENABLED_LOCALES.map(locale => `/${locale}/:path*`), '/((?!api|_next|_vercel|.*\\..*).*)'];
-
+// Static matcher pattern that works for all locales
+// Next.js requires this to be statically analyzable at build time
+// The middleware will handle filtering based on ENABLED_LOCALES at runtime
 export const config = {
-  // Match pathnames for enabled locales
-  matcher: localeMatcher
+  // Match all paths except API routes, Next.js internals, and static files
+  // The middleware will validate locales against ENABLED_LOCALES at runtime
+  matcher: [
+    // Match root path
+    '/',
+    // Match any locale path (en, es, zh, hi, etc.)
+    '/(en|es|zh|hi)/:path*',
+    // Match any other path (excluding API, Next.js internals, and static files)
+    '/((?!api|_next|_vercel|.*\\..*).*)'
+  ]
 };
 
