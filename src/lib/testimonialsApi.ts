@@ -63,7 +63,8 @@ class TestimonialsApiService {
 
   constructor() {
     // Use environment variable or default to localhost
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    // Try NEXT_PUBLIC_BACKEND_URL first (more common), then NEXT_PUBLIC_API_URL, then localhost
+    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     this.timeout = 10000; // 10 seconds
     this.defaultTestimonials = defaultTestimonials.testimonials;
   }
@@ -106,6 +107,13 @@ class TestimonialsApiService {
       }
 
       const data = await response.json();
+      
+      // Check if the response indicates an error (even with 200 status)
+      if (!data.success && data.error) {
+        console.warn('⚠️ Backend API error, using default testimonials:', data.error);
+        return this.getDefaultTestimonials(limit || null, offset, minRating);
+      }
+      
       return data;
     } catch (error) {
       console.warn('⚠️ Backend API unavailable, using default testimonials:', error);

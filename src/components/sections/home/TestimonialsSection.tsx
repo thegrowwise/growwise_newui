@@ -1,9 +1,11 @@
 "use client";
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Card, CardContent } from '../../ui/card';
 import { SectionError } from '../../ui/SectionError';
-import { ImageWithFallback } from '../../gw/ImageWithFallback';
+import { OptimizedImage } from '../../gw/OptimizedImage';
 import { Star } from 'lucide-react';
+import { StructuredDataScript } from '../../seo/StructuredDataScript';
+import { generateReviewSchema, generateAggregateRatingSchema } from '@/lib/seo/structuredData';
 
 export interface TestimonialVM {
   name: string;
@@ -16,8 +18,44 @@ export interface TestimonialVM {
 export function TestimonialsSection({ testimonials, error, onRetry }: { testimonials: TestimonialVM[] | null; error?: string | null; onRetry?: () => void }) {
   if (error) return <SectionError title="Testimonials unavailable" message={error} onRetry={onRetry} />;
   if (!testimonials || testimonials.length === 0) return <SectionError title="No testimonials yet" message="Check back later." onRetry={onRetry} />;
+  
+  // Generate structured data for reviews and aggregate rating
+  const structuredData = useMemo(() => {
+    const reviews = testimonials.map((testimonial) =>
+      generateReviewSchema({
+        itemReviewed: {
+          "@type": "EducationalOrganization",
+          name: "GrowWise"
+        },
+        reviewRating: {
+          ratingValue: testimonial.rating,
+        },
+        author: {
+          name: testimonial.name,
+          type: "Person"
+        },
+        reviewBody: testimonial.content,
+      })
+    )
+
+    // Calculate average rating
+    const avgRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length
+
+    const aggregateRating = generateAggregateRatingSchema({
+      itemReviewed: {
+        "@type": "EducationalOrganization",
+        name: "GrowWise"
+      },
+      ratingValue: Math.round(avgRating * 10) / 10, // Round to 1 decimal
+      reviewCount: testimonials.length,
+    })
+
+    return [...reviews, aggregateRating]
+  }, [testimonials])
+
   return (
     <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
+      <StructuredDataScript data={structuredData} id="testimonials-structured-data" />
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
@@ -40,7 +78,13 @@ export function TestimonialsSection({ testimonials, error, onRetry }: { testimon
                   </div>
                   <p className="text-gray-700 mb-8 italic text-base leading-relaxed">"{t.content}"</p>
                   <div className="flex items-center gap-4">
-                    <ImageWithFallback src={t.image} alt={t.name} className="w-14 h-14 rounded-full object-cover shadow-[0px_8px_20px_rgba(255,255,255,0.4)] border-2 border-white/70 ring-1 ring-white/50" />
+                    <OptimizedImage 
+                      src={t.image} 
+                      alt={t.name} 
+                      width={56}
+                      height={56}
+                      className="rounded-full object-cover shadow-[0px_8px_20px_rgba(255,255,255,0.4)] border-2 border-white/70 ring-1 ring-white/50" 
+                    />
                     <div>
                       <p className="font-semibold text-gray-900 text-base drop-shadow-sm">{t.name}</p>
                       <p className="text-sm text-gray-500">{t.role}</p>

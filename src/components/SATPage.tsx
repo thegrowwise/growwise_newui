@@ -5,8 +5,11 @@ import { Badge } from "./ui/badge";
 import { Target, GraduationCap, BookOpen, Calculator, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, BookMarked, Star, Shield, ArrowRight, ShoppingCart } from "lucide-react";
 import { useCart } from './gw/CartContext';
 import FreeAssessmentModal from './FreeAssessmentModal';
+import { RelatedContent } from './seo/RelatedContent';
+import { useLocale } from 'next-intl';
 
 const SATPage: React.FC = () => {
+  const locale = useLocale();
   const { addItem } = useCart();
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
@@ -534,6 +537,9 @@ const SATPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Related Content Section */}
+      <RelatedContent locale={locale} currentPage="sat-prep" />
 
       {/* Free Assessment Modal */}
       <FreeAssessmentModal 

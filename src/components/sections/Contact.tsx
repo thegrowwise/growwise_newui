@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -9,6 +9,8 @@ import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
+import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 import { 
   Phone, 
   Mail, 
@@ -671,6 +673,12 @@ export default function Contact() {
 
       {/* FAQ Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        {faqs.length > 0 && (
+          <StructuredDataScript 
+            data={generateFAQPageSchema(faqs)} 
+            id="contact-faq-structured-data" 
+          />
+        )}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

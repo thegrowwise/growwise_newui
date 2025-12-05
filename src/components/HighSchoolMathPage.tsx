@@ -15,9 +15,12 @@ import { useCart } from './gw/CartContext';
 import { useChatbot } from '../contexts/ChatbotContext';
 import FreeAssessmentModal from './FreeAssessmentModal';
 import { getIconComponent } from '@/lib/iconMap';
+import { RelatedContent } from './seo/RelatedContent';
+import { useLocale } from 'next-intl';
 
 const HighSchoolMathPage: React.FC = () => {
   const router = useRouter();
+  const locale = useLocale();
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
@@ -707,6 +710,9 @@ const HighSchoolMathPage: React.FC = () => {
           </div>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Related Content Section */}
+      <RelatedContent locale={locale} currentPage="high-school-math" />
 
       {/* Free Assessment Modal */}
       <FreeAssessmentModal 

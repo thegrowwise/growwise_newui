@@ -20,6 +20,10 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchAboutRequested } from '@/store/slices/aboutSlice';
 import TestimonialsWithBackend from './TestimonialsWithBackend';
 import { CONTACT_INFO } from '@/lib/constants';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { HelpCircle } from "lucide-react";
+import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
+import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 
 export default function About() {
   const { openChatbot } = useChatbot();
@@ -346,6 +350,78 @@ export default function About() {
             </Button>
           </div>
         </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        {(() => {
+          const faqs = [
+            {
+              question: "What makes GrowWise different from other tutoring centers?",
+              answer: "GrowWise offers personalized K-12 education with expert instructors, proven results, and flexible scheduling. We align our curriculum with DUSD & PUSD standards and provide both academic and innovative STEAM programs. Our small class sizes and individualized attention ensure every student reaches their full potential."
+            },
+            {
+              question: "What age groups do you serve?",
+              answer: "We serve students from Kindergarten through 12th grade (K-12). Our programs are tailored to each grade level, from elementary foundational skills to advanced high school courses and SAT preparation."
+            },
+            {
+              question: "Do you offer online or in-person classes?",
+              answer: "We offer both in-person classes at our Dublin, CA location and flexible scheduling options. Contact us to learn more about our current class formats and availability."
+            },
+            {
+              question: "How do I enroll my child?",
+              answer: "You can enroll online through our enrollment page, or contact us directly at connect@thegrowwise.com or (925) 456-4606. We also offer free assessments to help determine the best program for your child."
+            },
+            {
+              question: "What subjects do you offer?",
+              answer: "We offer comprehensive academic programs including Math (grade-level, accelerated, and integrated), English Language Arts, and SAT Prep. We also offer innovative STEAM programs including ML/AI, Game Development (Roblox, Scratch), Python coding, and more."
+            },
+            {
+              question: "Are your programs aligned with school curriculum?",
+              answer: "Yes, our academic programs are aligned with DUSD (Dublin Unified School District) and PUSD (Pleasanton Unified School District) standards, as well as California Common Core Standards (CACCS)."
+            }
+          ];
+          return (
+            <>
+              <StructuredDataScript 
+                data={generateFAQPageSchema(faqs)} 
+                id="about-faq-structured-data" 
+              />
+              <div className="max-w-4xl mx-auto">
+                <div className="text-center mb-12">
+                  <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                    Frequently Asked <span className="text-[#F16112]">Questions</span>
+                  </h2>
+                  <p className="text-lg text-gray-600">
+                    Learn more about GrowWise, our programs, and how we can help your child succeed.
+                  </p>
+                </div>
+
+                <Accordion type="single" collapsible className="space-y-4">
+                  {faqs.map((faq, index) => (
+                    <AccordionItem 
+                      key={index} 
+                      value={`item-${index}`}
+                      className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+                    >
+                      <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 bg-[#F16112]/10 rounded-lg flex items-center justify-center">
+                            <HelpCircle className="w-4 h-4 text-[#F16112]" />
+                          </div>
+                          <span className="font-semibold text-gray-900">{faq.question}</span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="px-6 pb-4 text-gray-600">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+            </>
+          );
+        })()}
       </section>
     </div>
   );

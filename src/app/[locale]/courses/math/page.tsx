@@ -16,13 +16,15 @@ import DynamicWrapper from '@/components/DynamicWrapper';
 import MathSymbolsBackground from '@/components/MathSymbolsBackground';
 import CourseCard from '@/components/CourseCard';
 import { useTouchDetection } from '@/hooks/useHydration';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 import FreeAssessmentModal from '@/components/FreeAssessmentModal';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { RelatedContent } from '@/components/seo/RelatedContent';
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -305,6 +307,8 @@ const MathCoursesPage: React.FC = () => {
     );
   }
 
+  const locale = useLocale()
+
   return (
     <HydrationBoundary>
       <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -314,6 +318,18 @@ const MathCoursesPage: React.FC = () => {
             onAlignmentFound={handleAlignmentFound}
           />
         </Suspense>
+
+      {/* Breadcrumbs */}
+      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-6">
+        <Breadcrumbs 
+          items={[
+            { name: 'Programs', url: `https://growwiseschool.org/${locale}/programs` },
+            { name: 'Academic', url: `https://growwiseschool.org/${locale}/academic` },
+            { name: 'Math Courses', url: `https://growwiseschool.org/${locale}/courses/math` },
+          ]}
+          className="mb-4"
+        />
+      </div>
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">
@@ -676,6 +692,9 @@ const MathCoursesPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* Related Content Section */}
+      <RelatedContent locale={locale} currentPage="math" />
 
       {/* Free Assessment Modal */}
       <FreeAssessmentModal 

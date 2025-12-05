@@ -10,9 +10,10 @@ import { englishCourses } from '@/data/englishCourses';
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { RelatedContent } from '@/components/seo/RelatedContent';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
@@ -52,6 +53,7 @@ function SearchParamsHandler({
 }
 
 function EnglishCoursesContent() {
+  const locale = useLocale();
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('englishCourses');
@@ -1025,6 +1027,9 @@ function EnglishCoursesContent() {
           onAddToCart={addItem}
         />
       )}
+      {/* Related Content Section */}
+      <RelatedContent locale={locale} currentPage="english" />
+
       {/* Free Assessment Modal */}
       <FreeAssessmentModal 
         isOpen={isAssessmentModalOpen}
