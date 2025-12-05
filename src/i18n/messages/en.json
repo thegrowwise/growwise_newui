@@ -456,7 +456,7 @@
     "story": { 
       "title": "Our Story",
       "p1": "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
-      "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Dr. Sarah Chen, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
+      "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Anshika Verma, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
       "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     },
     "achievements": { 
@@ -466,6 +466,10 @@
     "approach": { 
       "title": "Our Educational Approach",
       "subtitle": "We believe effective education requires more than delivering content. Our approach is built on four core principles that ensure every student receives the support they need to succeed."
+    },
+    "founder": { 
+      "title": "Meet Our Founder",
+      "subtitle": "Learn about the visionary leader who founded GrowWise with a passion for transforming education."
     },
     "team": { 
       "title": "Meet Our Team",

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -31,7 +31,6 @@ export default function About() {
   const dispatch = useAppDispatch();
   const about = useAppSelector((s) => s.about.data);
   const aboutLoading = useAppSelector((s) => s.about.loading);
-  const [activeTeamMember, setActiveTeamMember] = useState(0);
 
   useEffect(() => {
     if (!about && !aboutLoading) dispatch(fetchAboutRequested());
@@ -140,7 +139,7 @@ export default function About() {
                   className="w-full h-48 object-cover rounded-xl shadow-lg"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1515378791036-0648a814a05f?w=300&h=300&fit=crop"
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=300&h=300&fit=crop"
                   alt="STEAM learning activities"
                   className="w-full h-48 object-cover rounded-xl shadow-lg mt-8"
                 />
@@ -228,50 +227,62 @@ export default function About() {
         </div>
       </section>
 
-      {/* Meet Our Team Section */}
+      {/* Meet Our Founder Section */}
       <section className="section-base section-gray">
         <div className="max-w-7xl mx-auto">
           <div className="center-text mb-12">
-            <h2 className="title-section mb-4">{t('team.title')}</h2>
-            <p className="subtitle-sm max-w-3xl mx-auto">{t('team.subtitle')}</p>
+            <h2 className="title-section mb-4">{t('founder.title')}</h2>
+            <p className="subtitle-sm max-w-3xl mx-auto">{t('founder.subtitle')}</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
-              <Card 
-                key={index} 
-                className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer"
-                onClick={() => setActiveTeamMember(index)}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className="relative mb-6">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-24 h-24 rounded-full object-cover mx-auto shadow-lg group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-[#F16112] rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-4 h-4 text-white" />
+          <div className="flex justify-center">
+            {teamMembers.length > 0 && (() => {
+              const founder = teamMembers[0]; // Get the first team member (founder)
+              return (
+                <Card 
+                  className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 group max-w-2xl w-full"
+                >
+                  <CardContent className="p-8 md:p-12">
+                    <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
+                      <div className="relative flex-shrink-0">
+                        <img
+                          src={founder.image}
+                          alt={founder.name}
+                          className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover shadow-lg group-hover:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-[#F16112] rounded-full flex items-center justify-center shadow-lg">
+                          <CheckCircle className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1 text-center md:text-left">
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{founder.name}</h3>
+                        <p className="text-[#F16112] font-semibold text-lg mb-4">{founder.role}</p>
+                        <p className="text-gray-600 mb-6 leading-relaxed">{founder.bio}</p>
+                        
+                        {founder.education && (
+                          <div className="mb-6">
+                            <p className="text-sm font-semibold text-gray-700 mb-2">Education:</p>
+                            <p className="text-sm text-gray-600">{founder.education}</p>
+                          </div>
+                        )}
+                        
+                        <div className="space-y-3">
+                          <div className="text-sm font-semibold text-gray-700">Expertise:</div>
+                          <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                            {founder.expertise.map((skill, skillIndex) => (
+                              <Badge key={skillIndex} className="bg-[#1F396D]/10 text-[#1F396D] text-sm px-3 py-1">
+                                {skill}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{member.name}</h3>
-                  <p className="text-[#F16112] font-semibold mb-3">{member.role}</p>
-                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">{member.bio}</p>
-                  
-                  <div className="space-y-2">
-                    <div className="text-xs font-semibold text-gray-700 mb-1">Expertise:</div>
-                    <div className="flex flex-wrap gap-1 justify-center">
-                      {member.expertise.slice(0, 2).map((skill, skillIndex) => (
-                        <Badge key={skillIndex} className="bg-[#1F396D]/10 text-[#1F396D] text-xs">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+            })()}
           </div>
         </div>
       </section>

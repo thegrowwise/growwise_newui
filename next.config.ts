@@ -13,11 +13,32 @@ const nextConfig: NextConfig = {
     '@formatjs/ecma402-abstract',
     '@formatjs/intl-localematcher',
   ],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.s3.**.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.s3.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'thegrowwise.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'growwiseschool.org',
+      },
+    ],
   },
 };
 
