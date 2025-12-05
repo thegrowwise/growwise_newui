@@ -16,6 +16,7 @@ import { ProgramsSection } from '../../components/sections/home/ProgramsSection'
 import { WhyChooseSection } from '../../components/sections/home/WhyChooseSection';
 import { TestimonialsSection } from '../../components/sections/home/TestimonialsSection';
 import { CtaSection } from '../../components/sections/home/CtaSection';
+import { useTestimonials } from '../../hooks/useTestimonials';
 import { 
   HeroSkeleton, 
   StatisticsSkeleton, 
@@ -77,7 +78,28 @@ export default function Home() {
     IconComponent: getIconComponent(p.icon),
   })), [data]);
 
-  const testimonials = useMemo(() => data?.testimonials || [], [data]);
+  // Fetch testimonials from Google Reviews API (with fallback to static)
+  const { 
+    testimonials: apiTestimonials, 
+    loading: testimonialsLoading, 
+    error: testimonialsError,
+    retry: retryTestimonials 
+  } = useTestimonials({
+    limit: 20, // Show up to 20 testimonials on home page
+    autoRefresh: true,
+    refreshInterval: 300000, // 5 minutes
+    minRating: 4 // Show only 4-star and above reviews
+  });
+
+  // Use API testimonials if available, otherwise fallback to static from JSON
+  const testimonials = useMemo(() => {
+    if (apiTestimonials && apiTestimonials.length > 0) {
+      return apiTestimonials;
+    }
+    // Fallback to static testimonials from JSON if API fails
+    return data?.testimonials || [];
+  }, [apiTestimonials, data?.testimonials]);
+
   const whyChooseUs = useMemo(() => (data?.whyChooseUs || []).map((w) => ({ ...w, IconComponent: getIconComponent(w.icon) })), [data]);
 
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
@@ -151,7 +173,14 @@ export default function Home() {
 
       <WhyChooseSection items={whyChooseUs as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
 
-      <TestimonialsSection testimonials={testimonials as any} error={error} onRetry={() => dispatch(fetchHomeStart())} />
+      <TestimonialsSection 
+        testimonials={testimonials as any} 
+        error={testimonialsError || error} 
+        onRetry={() => {
+          retryTestimonials();
+          dispatch(fetchHomeStart());
+        }} 
+      />
 
       <CtaSection
         title={data?.cta?.title || t('home.cta.title')}

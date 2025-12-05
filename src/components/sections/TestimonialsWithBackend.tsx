@@ -326,13 +326,21 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialVM }) {
 
           {/* Author Info */}
           <div className="flex items-center justify-center gap-3">
-            <OptimizedImage
-              src={testimonial.image}
-              alt={testimonial.name}
-              width={48}
-              height={48}
-              className="rounded-full object-cover border-2 border-white shadow-md"
-            />
+            {(testimonial.hasPhoto !== false && testimonial.image) ? (
+              <OptimizedImage
+                src={testimonial.image}
+                alt={testimonial.name}
+                width={48}
+                height={48}
+                className="rounded-full object-cover border-2 border-white shadow-md"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-[#1F396D] flex items-center justify-center border-2 border-white shadow-md flex-shrink-0">
+                <span className="text-white font-bold text-base">
+                  {testimonial.initials || (testimonial.name ? testimonial.name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2) : 'A')}
+                </span>
+              </div>
+            )}
             <div className="text-left">
               <h4 className="font-semibold text-gray-900 text-sm">
                 {testimonial.name}
