@@ -89,6 +89,7 @@ export function OptimizedImage({
         quality={quality}
         onError={handleError}
         unoptimized={isExternal}
+        loading={priority ? undefined : 'lazy'}
         {...rest}
       />
     )
@@ -110,6 +111,7 @@ export function OptimizedImage({
       quality={quality}
       onError={handleError}
       unoptimized={isExternal}
+      loading={priority ? undefined : 'lazy'}
       {...rest}
     />
   )
