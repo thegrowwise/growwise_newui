@@ -320,16 +320,13 @@ const MathCoursesPage: React.FC = () => {
         </Suspense>
 
       {/* Breadcrumbs */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 pt-6">
-        <Breadcrumbs 
-          items={[
-            { name: 'Programs', url: `https://growwiseschool.org/${locale}/programs` },
-            { name: 'Academic', url: `https://growwiseschool.org/${locale}/academic` },
-            { name: 'Math Courses', url: `https://growwiseschool.org/${locale}/courses/math` },
-          ]}
-          className="mb-4"
-        />
-      </div>
+      <Breadcrumbs 
+        items={[
+          { name: 'Programs', url: `/${locale}/programs` },
+          { name: 'Academic', url: `/${locale}/academic` },
+          { name: 'Math Courses', url: `/${locale}/courses/math` },
+        ]}
+      />
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">

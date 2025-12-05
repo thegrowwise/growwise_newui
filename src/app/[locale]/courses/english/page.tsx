@@ -14,6 +14,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RelatedContent } from '@/components/seo/RelatedContent';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
@@ -332,6 +333,15 @@ function EnglishCoursesContent() {
       <Suspense fallback={null}>
         <SearchParamsHandler onTypeFound={handleTypeFound} />
       </Suspense>
+
+      {/* Breadcrumbs */}
+      <Breadcrumbs 
+        items={[
+          { name: 'Programs', url: `/${locale}/programs` },
+          { name: 'Academic', url: `/${locale}/academic` },
+          { name: 'English Courses', url: `/${locale}/courses/english` },
+        ]}
+      />
 
       {/* Enhanced Creative Header Section - English Theme */}
       <div suppressHydrationWarning>
