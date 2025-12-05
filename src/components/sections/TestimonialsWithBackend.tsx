@@ -1,12 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Star, Quote, RefreshCw, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ClientOnly from '@/components/providers/ClientOnly';
 import { useTestimonials } from '@/hooks/useTestimonials';
 import { TestimonialVM } from '@/lib/testimonialsApi';
+import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
+import { generateReviewSchema, generateAggregateRatingSchema } from '@/lib/seo/structuredData';
 
 export default function TestimonialsWithBackend() {
   const [currentSet, setCurrentSet] = useState(0);
@@ -25,6 +27,42 @@ export default function TestimonialsWithBackend() {
     refreshInterval: 300000, // 5 minutes
     minRating: 1 // Show all reviews
   });
+
+  // Generate structured data for reviews and aggregate rating
+  const structuredData = useMemo(() => {
+    if (!testimonials || testimonials.length === 0) return []
+    
+    const reviews = testimonials.map((testimonial) =>
+      generateReviewSchema({
+        itemReviewed: {
+          "@type": "EducationalOrganization",
+          name: "GrowWise"
+        },
+        reviewRating: {
+          ratingValue: testimonial.rating,
+        },
+        author: {
+          name: testimonial.name,
+          type: "Person"
+        },
+        reviewBody: testimonial.content,
+      })
+    )
+
+    // Calculate average rating
+    const avgRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length
+
+    const aggregateRating = generateAggregateRatingSchema({
+      itemReviewed: {
+        "@type": "EducationalOrganization",
+        name: "GrowWise"
+      },
+      ratingValue: Math.round(avgRating * 10) / 10, // Round to 1 decimal
+      reviewCount: testimonials.length,
+    })
+
+    return [...reviews, aggregateRating]
+  }, [testimonials])
 
   // Show 3 cards per set in slider
   const cardsPerSet = 3;
@@ -155,6 +193,9 @@ export default function TestimonialsWithBackend() {
 
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
+      {structuredData.length > 0 && (
+        <StructuredDataScript data={structuredData} id="testimonials-backend-structured-data" />
+      )}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">

@@ -90,3 +90,261 @@ export const websiteSchema = {
   }
 }
 
+/**
+ * Generate Course structured data
+ */
+export function generateCourseSchema({
+  name,
+  description,
+  provider,
+  courseCode,
+  educationalLevel,
+  teaches,
+  coursePrerequisites,
+  url,
+  image,
+  offers,
+}: {
+  name: string
+  description: string
+  provider?: string
+  courseCode?: string
+  educationalLevel?: string
+  teaches?: string[]
+  coursePrerequisites?: string
+  url: string
+  image?: string
+  offers?: {
+    price?: string
+    priceCurrency?: string
+    availability?: string
+    url?: string
+  }
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": name,
+    "description": description,
+    "provider": {
+      "@type": "EducationalOrganization",
+      "name": provider || "GrowWise",
+      "url": "https://growwiseschool.org",
+    },
+    ...(courseCode && { "courseCode": courseCode }),
+    ...(educationalLevel && { "educationalLevel": educationalLevel }),
+    ...(teaches && teaches.length > 0 && { "teaches": teaches }),
+    ...(coursePrerequisites && { "coursePrerequisites": coursePrerequisites }),
+    "url": url,
+    ...(image && { "image": image }),
+    ...(offers && {
+      "offers": {
+        "@type": "Offer",
+        ...(offers.price && { "price": offers.price }),
+        ...(offers.priceCurrency && { "priceCurrency": offers.priceCurrency || "USD" }),
+        ...(offers.availability && { "availability": offers.availability || "https://schema.org/InStock" }),
+        ...(offers.url && { "url": offers.url }),
+      }
+    }),
+  }
+}
+
+/**
+ * Generate Event structured data
+ */
+export function generateEventSchema({
+  name,
+  description,
+  startDate,
+  endDate,
+  location,
+  organizer,
+  image,
+  offers,
+  eventStatus,
+  eventAttendanceMode,
+}: {
+  name: string
+  description: string
+  startDate: string
+  endDate: string
+  location: {
+    name: string
+    address: {
+      streetAddress: string
+      addressLocality: string
+      addressRegion: string
+      postalCode: string
+      addressCountry: string
+    }
+  }
+  organizer?: {
+    name: string
+    url: string
+  }
+  image?: string
+  offers?: {
+    price?: string
+    priceCurrency?: string
+    availability?: string
+    url?: string
+  }
+  eventStatus?: string
+  eventAttendanceMode?: string
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": name,
+    "description": description,
+    "startDate": startDate,
+    "endDate": endDate,
+    "location": {
+      "@type": "Place",
+      "name": location.name,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": location.address.streetAddress,
+        "addressLocality": location.address.addressLocality,
+        "addressRegion": location.address.addressRegion,
+        "postalCode": location.address.postalCode,
+        "addressCountry": location.address.addressCountry,
+      }
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": organizer?.name || "GrowWise",
+      "url": organizer?.url || "https://growwiseschool.org",
+    },
+    ...(image && { "image": image }),
+    ...(offers && {
+      "offers": {
+        "@type": "Offer",
+        ...(offers.price && { "price": offers.price }),
+        ...(offers.priceCurrency && { "priceCurrency": offers.priceCurrency || "USD" }),
+        ...(offers.availability && { "availability": offers.availability || "https://schema.org/InStock" }),
+        ...(offers.url && { "url": offers.url }),
+      }
+    }),
+    ...(eventStatus && { "eventStatus": eventStatus || "https://schema.org/EventScheduled" }),
+    ...(eventAttendanceMode && { "eventAttendanceMode": eventAttendanceMode || "https://schema.org/OfflineEventAttendanceMode" }),
+  }
+}
+
+/**
+ * Generate Review/AggregateRating structured data
+ */
+export function generateReviewSchema({
+  itemReviewed,
+  reviewRating,
+  author,
+  reviewBody,
+  datePublished,
+}: {
+  itemReviewed: {
+    "@type": string
+    name: string
+  }
+  reviewRating: {
+    ratingValue: number
+    bestRating?: number
+    worstRating?: number
+  }
+  author?: {
+    name: string
+    type?: string
+  }
+  reviewBody?: string
+  datePublished?: string
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Review",
+    "itemReviewed": itemReviewed,
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": reviewRating.ratingValue,
+      "bestRating": reviewRating.bestRating || 5,
+      "worstRating": reviewRating.worstRating || 1,
+    },
+    ...(author && {
+      "author": {
+        "@type": author.type || "Person",
+        "name": author.name,
+      }
+    }),
+    ...(reviewBody && { "reviewBody": reviewBody }),
+    ...(datePublished && { "datePublished": datePublished }),
+  }
+}
+
+/**
+ * Generate AggregateRating structured data
+ */
+export function generateAggregateRatingSchema({
+  itemReviewed,
+  ratingValue,
+  reviewCount,
+  bestRating,
+  worstRating,
+}: {
+  itemReviewed: {
+    "@type": string
+    name: string
+  }
+  ratingValue: number
+  reviewCount: number
+  bestRating?: number
+  worstRating?: number
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "AggregateRating",
+    "itemReviewed": itemReviewed,
+    "ratingValue": ratingValue,
+    "reviewCount": reviewCount,
+    "bestRating": bestRating || 5,
+    "worstRating": worstRating || 1,
+  }
+}
+
+/**
+ * Generate FAQPage structured data
+ */
+export function generateFAQPageSchema(faqs: Array<{
+  question: string
+  answer: string
+}>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(faq => ({
+      "@type": "Question",
+      "name": faq.question,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": faq.answer,
+      }
+    }))
+  }
+}
+
+/**
+ * Generate BreadcrumbList structured data
+ */
+export function generateBreadcrumbSchema(items: Array<{
+  name: string
+  url: string
+}>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url,
+    }))
+  }
+}
+
