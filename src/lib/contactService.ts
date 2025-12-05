@@ -28,12 +28,15 @@ export class ContactService {
   async submitContactForm(data: ContactFormData): Promise<ContactSubmissionResult> {
     try {
       // Transform the data to match backend expectations
+      // Use name field directly, or construct from firstName/lastName if name is not provided
+      const name = data.name?.trim() || `${data.firstName || ''} ${data.lastName || ''}`.trim();
+      
       const backendData = {
-        name: `${data.firstName || ''} ${data.lastName || ''}`.trim(),
-        email: data.email,
-        phone: data.phone || '',
-        subject: data.subject || 'Contact Form Submission',
-        message: data.message,
+        name: name,
+        email: data.email?.trim() || '',
+        phone: data.phone?.trim() || '',
+        subject: data.subject || 'Contact Form Submission from Chatbot',
+        message: data.message?.trim() || 'User requested personalized information through chatbot.',
         // Additional metadata
         program: data.program || '',
         gradeLevel: data.gradeLevel || '',
