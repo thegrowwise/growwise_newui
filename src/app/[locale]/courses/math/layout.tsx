@@ -18,21 +18,26 @@ export default async function MathCoursesLayout({
   const { locale } = await params
   const baseUrl = 'https://growwiseschool.org'
   
-  // Generate Course structured data
+  // Generate Course structured data with enhanced details
   const courseSchema = generateCourseSchema({
-    name: "K-12 Math Courses - Grade-Level, Accelerated & Integrated Math",
-    description: "Comprehensive math courses from elementary to high school. Grade-level math, accelerated programs, and integrated math. DUSD & PUSD aligned curriculum. Expert math tutors in Dublin, CA.",
+    name: "K-12 Math Courses - Grade-Level, Accelerated & Integrated Math | Math Tutoring Dublin CA",
+    description: "Comprehensive math courses from elementary to high school. Grade-level math (California Common Core Standards), accelerated math programs, and integrated math 1 & 2. DUSD & PUSD aligned curriculum. Expert math tutors in Dublin, CA. Algebra, Geometry, Pre-Calculus, and more. Small class sizes, personalized instruction, proven results.",
     provider: "GrowWise",
+    courseCode: "MATH-K12",
     educationalLevel: "K-12",
     teaches: [
-      "Grade-Level Math (CACCS)",
+      "Grade-Level Math (California Common Core Standards)",
       "Accelerated Math",
-      "Integrated Math 1 & 2",
+      "Integrated Math 1",
+      "Integrated Math 2",
       "Algebra",
       "Geometry",
-      "Pre-Calculus"
+      "Pre-Calculus",
+      "Elementary Math",
+      "Middle School Math",
+      "High School Math"
     ],
-    coursePrerequisites: "Placement assessment recommended",
+    coursePrerequisites: "Placement assessment recommended to determine appropriate level",
     url: `${baseUrl}/${locale}/courses/math`,
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {

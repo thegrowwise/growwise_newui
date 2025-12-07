@@ -51,25 +51,25 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     path: '/academic',
   },
 
-  // Course pages
+  // Course pages - Enhanced with keyword-rich titles and descriptions
   '/courses/math': {
-    title: "Math Courses - K-12 Math Tutoring | GrowWise Dublin, CA",
-    description: "Comprehensive math courses from elementary to high school. Grade-level math, accelerated programs, and integrated math. DUSD & PUSD aligned curriculum. Expert math tutors in Dublin, CA.",
-    keywords: "math courses, math tutoring Dublin CA, K-12 math, grade-level math, accelerated math, integrated math, DUSD math, PUSD math, math tutor",
+    title: "Math Tutoring Dublin CA | K-12 Math Courses | Grade-Level, Accelerated & Integrated Math | GrowWise",
+    description: "Expert math tutoring in Dublin, CA. K-12 math courses including grade-level math, accelerated math, and integrated math 1 & 2. DUSD and PUSD aligned curriculum. Algebra, Geometry, Pre-Calculus. Small class sizes, personalized instruction. Book a free math assessment today!",
+    keywords: "math tutoring Dublin CA, math tutor Dublin, K-12 math courses, grade-level math, accelerated math, integrated math, DUSD math, PUSD math, algebra tutoring, geometry tutoring, pre-calculus, elementary math, middle school math, high school math, math classes Dublin CA, math help Dublin, math tutoring near me",
     path: '/courses/math',
   },
 
   '/courses/english': {
-    title: "English Language Arts Courses - Reading & Writing Tutoring | GrowWise",
-    description: "Comprehensive English Language Arts courses: reading comprehension, vocabulary, grammar, and essay writing. California Common Core aligned. Expert English tutors in Dublin, CA.",
-    keywords: "English courses, English tutoring Dublin CA, reading comprehension, essay writing, grammar, vocabulary, English Language Arts, ELA tutor",
+    title: "English Tutoring Dublin CA | Reading & Writing Courses | ELA Tutoring | GrowWise",
+    description: "Expert English Language Arts tutoring in Dublin, CA. Comprehensive ELA courses: reading comprehension, vocabulary development, grammar, and essay writing. California Common Core aligned. K-12 English tutoring with proven results. Book your free English assessment!",
+    keywords: "English tutoring Dublin CA, English tutor Dublin, reading comprehension, essay writing, grammar tutoring, vocabulary development, English Language Arts, ELA tutoring, writing tutor, reading tutor, English classes Dublin CA, English help Dublin, English tutoring near me, K-12 English courses",
     path: '/courses/english',
   },
 
   '/courses/sat-prep': {
-    title: "SAT Prep Course - SAT Test Preparation | GrowWise Dublin, CA",
-    description: "Comprehensive SAT prep course with practice tests, strategies, and personalized instruction. Boost your SAT score with expert tutors. Book your SAT prep course in Dublin, CA.",
-    keywords: "SAT prep, SAT preparation, SAT course, SAT tutoring Dublin CA, SAT test prep, SAT strategies, SAT practice tests",
+    title: "SAT Prep Dublin CA | SAT Test Preparation Course | SAT Tutoring | GrowWise",
+    description: "Top-rated SAT prep course in Dublin, CA. Comprehensive SAT preparation with practice tests, proven strategies, and personalized instruction. Expert SAT tutors help boost your score. Small classes, flexible scheduling. Book your SAT prep course today!",
+    keywords: "SAT prep Dublin CA, SAT preparation, SAT course, SAT tutoring Dublin, SAT test prep, SAT strategies, SAT practice tests, SAT classes Dublin CA, SAT help, SAT tutor near me, SAT prep course, SAT score improvement, college entrance exam prep",
     path: '/courses/sat-prep',
   },
 
@@ -82,23 +82,23 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
 
   // STEAM pages
   '/steam': {
-    title: "STEAM Programs - ML/AI, Game Development & Coding | GrowWise",
-    description: "Innovative STEAM programs: Machine Learning & AI, Game Development, and coding courses. Hands-on learning for K-12 students. Build real projects and develop tech skills at GrowWise.",
-    keywords: "STEAM programs, ML AI coding, game development, coding classes for kids, programming courses, STEM education Dublin CA, technology courses",
+    title: "STEAM Programs Dublin CA | ML/AI, Game Development & Coding Classes | GrowWise",
+    description: "Innovative STEAM programs in Dublin, CA: Machine Learning & AI, Game Development (Roblox, Scratch), Python coding, and more. Hands-on learning for K-12 students. Build real projects, develop tech skills. Expert instructors, project-based curriculum. Explore STEAM programs today!",
+    keywords: "STEAM programs Dublin CA, ML AI coding, game development, coding classes for kids, programming courses, STEM education, technology courses, coding classes Dublin CA, programming for kids, STEAM education, robotics, computer science for kids",
     path: '/steam',
   },
 
   '/steam/ml-ai-coding': {
-    title: "ML/AI Coding Course - Machine Learning & Artificial Intelligence | GrowWise",
-    description: "Learn Machine Learning and Artificial Intelligence coding. Hands-on projects, real-world applications. ML/AI course for K-12 students. Build AI projects at GrowWise.",
-    keywords: "ML AI coding, machine learning course, artificial intelligence course, AI coding for kids, ML programming, AI programming Dublin CA",
+    title: "ML/AI Coding Course Dublin CA | Machine Learning & AI for Kids | GrowWise",
+    description: "Learn Machine Learning and Artificial Intelligence coding in Dublin, CA. Hands-on ML/AI projects for K-12 students. Build real AI applications, understand machine learning concepts. Expert instructors, project-based learning. Start your AI journey today!",
+    keywords: "ML AI coding Dublin CA, machine learning course, artificial intelligence course, AI coding for kids, ML programming, AI programming, machine learning for students, AI classes Dublin CA, coding AI, learn machine learning, artificial intelligence tutoring",
     path: '/steam/ml-ai-coding',
   },
 
   '/steam/game-development': {
-    title: "Game Development Course - Learn to Build Games | GrowWise",
-    description: "Game development course for K-12 students. Learn to create games, build projects, and develop coding skills. Hands-on game development classes in Dublin, CA.",
-    keywords: "game development course, learn game development, coding games, game programming, game design course Dublin CA, kids game development",
+    title: "Game Development Course Dublin CA | Learn to Build Games | Coding Classes | GrowWise",
+    description: "Game development course for K-12 students in Dublin, CA. Learn to create games using Roblox, Scratch, and Python. Build real game projects, develop coding skills. Hands-on game development classes with expert instructors. Start building games today!",
+    keywords: "game development course Dublin CA, learn game development, coding games, game programming, game design course, kids game development, Roblox coding, Scratch programming, Python game development, game development classes, coding games for kids",
     path: '/steam/game-development',
   },
 

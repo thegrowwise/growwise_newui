@@ -19,18 +19,21 @@ export default async function SATPrepLayout({
   const baseUrl = 'https://growwiseschool.org'
   
   const courseSchema = generateCourseSchema({
-    name: "SAT Prep Course - SAT Test Preparation & Strategies",
-    description: "Comprehensive SAT prep course with practice tests, strategies, and personalized instruction. Boost your SAT score with expert tutors. Book your SAT prep course in Dublin, CA.",
+    name: "SAT Prep Course Dublin CA | SAT Test Preparation & Strategies | SAT Tutoring",
+    description: "Top-rated SAT prep course in Dublin, CA. Comprehensive SAT preparation with practice tests, proven strategies, and personalized instruction. Expert SAT tutors help boost your score. Small classes, flexible scheduling. Book your SAT prep course today!",
     provider: "GrowWise",
+    courseCode: "SAT-PREP",
     educationalLevel: "High School",
     teaches: [
       "SAT Math",
       "SAT Reading",
-      "SAT Writing",
-      "Test Strategies",
-      "Practice Tests"
+      "SAT Writing and Language",
+      "SAT Test Strategies",
+      "SAT Practice Tests",
+      "Time Management",
+      "Test-Taking Techniques"
     ],
-    coursePrerequisites: "High school student preparing for SAT",
+    coursePrerequisites: "High school student preparing for SAT exam",
     url: `${baseUrl}/${locale}/courses/sat-prep`,
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {

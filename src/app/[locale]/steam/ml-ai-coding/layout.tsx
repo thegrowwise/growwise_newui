@@ -19,18 +19,21 @@ export default async function MLAICodingLayout({
   const baseUrl = 'https://growwiseschool.org'
   
   const courseSchema = generateCourseSchema({
-    name: "ML/AI Coding Course - Machine Learning & Artificial Intelligence",
-    description: "Learn Machine Learning and Artificial Intelligence coding. Hands-on projects, real-world applications. ML/AI course for K-12 students. Build AI projects at GrowWise.",
+    name: "ML/AI Coding Course Dublin CA | Machine Learning & AI for Kids | GrowWise",
+    description: "Learn Machine Learning and Artificial Intelligence coding in Dublin, CA. Hands-on ML/AI projects for K-12 students. Build real AI applications, understand machine learning concepts. Expert instructors, project-based learning. Start your AI journey today!",
     provider: "GrowWise",
+    courseCode: "ML-AI-K12",
     educationalLevel: "K-12",
     teaches: [
       "Machine Learning",
       "Artificial Intelligence",
       "Python Programming",
       "Data Science",
-      "AI Project Development"
+      "AI Project Development",
+      "Neural Networks",
+      "Deep Learning Basics"
     ],
-    coursePrerequisites: "Basic programming knowledge recommended",
+    coursePrerequisites: "Basic programming knowledge recommended but not required",
     url: `${baseUrl}/${locale}/steam/ml-ai-coding`,
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {

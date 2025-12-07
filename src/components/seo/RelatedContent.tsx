@@ -143,6 +143,15 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
                 <span className={`${item.textColor} font-semibold group-hover:underline`}>
                   Learn More →
                 </span>
+                {/* SEO: Add keyword-rich anchor text for better internal linking */}
+                <span className="sr-only">
+                  {item.id === 'math' && 'Explore our comprehensive math tutoring programs in Dublin CA'}
+                  {item.id === 'english' && 'Discover our English Language Arts courses and reading comprehension programs'}
+                  {item.id === 'sat-prep' && 'Boost your SAT score with our expert SAT prep courses'}
+                  {item.id === 'steam' && 'Learn about our innovative STEAM programs including coding and game development'}
+                  {item.id === 'academic' && 'View all our K-12 academic programs aligned with DUSD and PUSD standards'}
+                  {item.id === 'assessment' && 'Book a free academic assessment to find the right program for your child'}
+                </span>
               </Link>
             )
           })}
