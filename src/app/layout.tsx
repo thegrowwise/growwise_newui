@@ -61,27 +61,75 @@ export default function RootLayout({
                   });
                 };
                 
+                // Remove Vercel Speed Insights toolbar
+                const removeVercelToolbar = () => {
+                  // Remove Vercel Speed Insights widget
+                  const vercelWidget = document.querySelector('[data-vercel-widget]');
+                  if (vercelWidget) {
+                    vercelWidget.remove();
+                  }
+                  
+                  // Remove Vercel toolbar iframe
+                  const vercelToolbar = document.querySelector('iframe[src*="vercel.com"]');
+                  if (vercelToolbar) {
+                    vercelToolbar.remove();
+                  }
+                  
+                  // Remove Vercel Speed Insights script
+                  const vercelScripts = document.querySelectorAll('script[src*="vercel.com"], script[src*="speed-insights"]');
+                  vercelScripts.forEach(script => script.remove());
+                  
+                  // Hide Vercel toolbar via CSS
+                  const style = document.createElement('style');
+                  style.textContent = \`
+                    [data-vercel-widget],
+                    iframe[src*="vercel.com"],
+                    [id*="vercel"],
+                    [class*="vercel-toolbar"],
+                    [class*="speed-insights"] {
+                      display: none !important;
+                      visibility: hidden !important;
+                      opacity: 0 !important;
+                      pointer-events: none !important;
+                    }
+                  \`;
+                  document.head.appendChild(style);
+                };
+                
                 removeExtensionAttributes();
+                removeVercelToolbar();
                 
                 if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', removeExtensionAttributes);
+                  document.addEventListener('DOMContentLoaded', () => {
+                    removeExtensionAttributes();
+                    removeVercelToolbar();
+                  });
                 } else {
                   removeExtensionAttributes();
+                  removeVercelToolbar();
                 }
                 
+                // Watch for Vercel toolbar being added dynamically
                 const observer = new MutationObserver(() => {
                   removeExtensionAttributes();
+                  removeVercelToolbar();
                 });
                 
                 observer.observe(document.documentElement, {
                   attributes: true,
-                  attributeFilter: ['bis_skin_checked', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed', 'cz-shortcut-listen'],
-                  subtree: true
+                  childList: true,
+                  subtree: true,
+                  attributeFilter: ['bis_skin_checked', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed', 'cz-shortcut-listen', 'data-vercel-widget'],
                 });
+                
+                // Keep watching for a longer period to catch late-loading Vercel scripts
+                setTimeout(() => {
+                  removeVercelToolbar();
+                }, 2000);
                 
                 setTimeout(() => {
                   observer.disconnect();
-                }, 5000);
+                }, 10000);
               })();
             `,
           }}
