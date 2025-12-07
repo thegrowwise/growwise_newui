@@ -19,18 +19,21 @@ export default async function GameDevelopmentLayout({
   const baseUrl = 'https://growwiseschool.org'
   
   const courseSchema = generateCourseSchema({
-    name: "Game Development Course - Learn to Build Games",
-    description: "Game development course for K-12 students. Learn to create games, build projects, and develop coding skills. Hands-on game development classes in Dublin, CA.",
+    name: "Game Development Course Dublin CA | Learn to Build Games | Coding Classes | GrowWise",
+    description: "Game development course for K-12 students in Dublin, CA. Learn to create games using Roblox, Scratch, and Python. Build real game projects, develop coding skills. Hands-on game development classes with expert instructors. Start building games today!",
     provider: "GrowWise",
+    courseCode: "GAME-DEV-K12",
     educationalLevel: "K-12",
     teaches: [
       "Game Design",
       "Game Programming",
       "Roblox Development",
       "Scratch Programming",
-      "Minecraft Modding"
+      "Python Game Development",
+      "Minecraft Modding",
+      "Game Mechanics"
     ],
-    coursePrerequisites: "No prior experience required",
+    coursePrerequisites: "No prior experience required - perfect for beginners",
     url: `${baseUrl}/${locale}/steam/game-development`,
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {

@@ -25,6 +25,7 @@ import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skelet
 import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { RelatedContent } from '@/components/seo/RelatedContent';
+import { CourseFAQ } from '@/components/seo/CourseFAQ';
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -689,6 +690,42 @@ const MathCoursesPage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section for SEO */}
+      <CourseFAQ 
+        faqs={[
+          {
+            question: "What math courses do you offer at GrowWise?",
+            answer: "We offer comprehensive K-12 math courses including grade-level math (aligned with California Common Core Standards), accelerated math programs, and integrated math 1 & 2. Our courses cover Algebra, Geometry, Pre-Calculus, and more. All programs are aligned with DUSD and PUSD curriculum standards."
+          },
+          {
+            question: "How do I know which math course is right for my child?",
+            answer: "We offer a free 60-minute placement assessment to evaluate your child's current math level and identify strengths and areas for improvement. Our education experts will recommend the perfect math program based on the assessment results, your child's grade level, and learning goals."
+          },
+          {
+            question: "Are your math courses aligned with school curriculum?",
+            answer: "Yes, our math courses are aligned with Dublin Unified School District (DUSD) and Pleasanton Unified School District (PUSD) standards, as well as California Common Core Standards (CACCS). This ensures your child's learning at GrowWise complements their school curriculum."
+          },
+          {
+            question: "What is the difference between grade-level, accelerated, and integrated math?",
+            answer: "Grade-level math follows the standard curriculum pace for each grade. Accelerated math moves at a faster pace, allowing students to cover more material. Integrated math combines algebra, geometry, and statistics into a unified approach, which is common in many modern high school curricula."
+          },
+          {
+            question: "How much does math tutoring cost at GrowWise?",
+            answer: "Our math courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at (925) 456-4606 or connect@thegrowwise.com for detailed pricing information."
+          },
+          {
+            question: "Do you offer online or in-person math tutoring?",
+            answer: "We offer in-person math tutoring at our Dublin, CA location. Our modern facility provides the perfect environment for focused learning. Contact us to learn more about our current class formats and availability."
+          },
+          {
+            question: "What makes GrowWise math tutoring different from other tutoring centers?",
+            answer: "GrowWise offers personalized math instruction with expert tutors, small class sizes, and curriculum alignment with local school districts. We provide proven results, flexible scheduling, and a supportive learning environment. Our instructors are experienced educators who understand both the curriculum and how to help students succeed."
+          }
+        ]}
+        title="Math Tutoring FAQs"
+        subtitle="Get answers to common questions about our math courses and programs"
+      />
 
       {/* Related Content Section */}
       <RelatedContent locale={locale} currentPage="math" />

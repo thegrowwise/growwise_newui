@@ -46,9 +46,11 @@ export const localBusinessSchema = {
   "@type": "LocalBusiness",
   "@id": "https://growwiseschool.org/#organization",
   "name": "GrowWise",
+  "alternateName": "GrowWise School",
   "image": "https://growwiseschool.org/logo.png",
   "telephone": CONTACT_INFO.phone,
   "email": CONTACT_INFO.email,
+  "url": "https://growwiseschool.org",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": CONTACT_INFO.street,
@@ -68,11 +70,102 @@ export const localBusinessSchema = {
       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
       "opens": "09:00",
       "closes": "19:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday"],
+      "opens": "09:00",
+      "closes": "17:00"
     }
   ],
   "priceRange": "$$",
   "currenciesAccepted": "USD",
-  "paymentAccepted": "Credit Card, Cash, Check"
+  "paymentAccepted": "Credit Card, Cash, Check",
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Dublin",
+      "addressRegion": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Pleasanton",
+      "addressRegion": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "San Ramon",
+      "addressRegion": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Livermore",
+      "addressRegion": "CA"
+    },
+    {
+      "@type": "City",
+      "name": "Fremont",
+      "addressRegion": "CA"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Educational Services",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "Academic Programs",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Math Tutoring",
+              "description": "K-12 Math courses including grade-level, accelerated, and integrated math"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "English Tutoring",
+              "description": "English Language Arts courses for K-12 students"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "SAT Prep",
+              "description": "Comprehensive SAT test preparation courses"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "STEAM Programs",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ML/AI Coding",
+              "description": "Machine Learning and Artificial Intelligence coding courses"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Game Development",
+              "description": "Game development courses using Roblox, Scratch, and Python"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }
 
 export const websiteSchema = {
@@ -130,6 +223,16 @@ export function generateCourseSchema({
       "@type": "EducationalOrganization",
       "name": provider || "GrowWise",
       "url": "https://growwiseschool.org",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": CONTACT_INFO.street,
+        "addressLocality": "Dublin",
+        "addressRegion": "CA",
+        "postalCode": CONTACT_INFO.zipCode,
+        "addressCountry": "US"
+      },
+      "telephone": CONTACT_INFO.phone,
+      "email": CONTACT_INFO.email,
     },
     ...(courseCode && { "courseCode": courseCode }),
     ...(educationalLevel && { "educationalLevel": educationalLevel }),
@@ -137,6 +240,8 @@ export function generateCourseSchema({
     ...(coursePrerequisites && { "coursePrerequisites": coursePrerequisites }),
     "url": url,
     ...(image && { "image": image }),
+    "inLanguage": "en-US",
+    "isAccessibleForFree": false,
     ...(offers && {
       "offers": {
         "@type": "Offer",

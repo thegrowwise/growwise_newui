@@ -15,6 +15,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RelatedContent } from '@/components/seo/RelatedContent';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { CourseFAQ } from '@/components/seo/CourseFAQ';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
@@ -1037,6 +1038,43 @@ function EnglishCoursesContent() {
           onAddToCart={addItem}
         />
       )}
+      
+      {/* FAQ Section for SEO */}
+      <CourseFAQ 
+        faqs={[
+          {
+            question: "What English courses do you offer at GrowWise?",
+            answer: "We offer comprehensive English Language Arts courses for K-12 students, including reading comprehension, vocabulary development, grammar and mechanics, essay writing, creative writing, and literary analysis. All courses are aligned with California Common Core Standards."
+          },
+          {
+            question: "How do I know which English course is right for my child?",
+            answer: "We offer a free 60-minute placement assessment to evaluate your child's current English level, reading comprehension, and writing skills. Our education experts will recommend the perfect English program based on the assessment results and your child's grade level."
+          },
+          {
+            question: "Are your English courses aligned with school curriculum?",
+            answer: "Yes, our English Language Arts courses are aligned with California Common Core Standards, ensuring your child's learning at GrowWise complements their school curriculum. We also align with Dublin Unified School District (DUSD) and Pleasanton Unified School District (PUSD) standards."
+          },
+          {
+            question: "What is included in your English tutoring program?",
+            answer: "Our English programs cover reading comprehension strategies, vocabulary building, grammar and mechanics, essay writing (narrative, expository, persuasive), creative writing, literary analysis, and test preparation. We provide personalized instruction tailored to each student's needs."
+          },
+          {
+            question: "How much does English tutoring cost at GrowWise?",
+            answer: "Our English courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at (925) 456-4606 or connect@thegrowwise.com for detailed pricing information."
+          },
+          {
+            question: "Do you help with college application essays?",
+            answer: "Yes, our high school English programs include college application essay writing support. We help students craft compelling personal statements and essays that showcase their unique strengths and experiences."
+          },
+          {
+            question: "What makes GrowWise English tutoring different?",
+            answer: "GrowWise offers personalized English instruction with expert tutors, small class sizes, and curriculum alignment with local school districts. We focus on building strong reading and writing skills through proven methodologies, providing detailed feedback, and creating a supportive learning environment."
+          }
+        ]}
+        title="English Tutoring FAQs"
+        subtitle="Get answers to common questions about our English Language Arts courses"
+      />
+
       {/* Related Content Section */}
       <RelatedContent locale={locale} currentPage="english" />
 

@@ -19,18 +19,22 @@ export default async function EnglishCoursesLayout({
   const baseUrl = 'https://growwiseschool.org'
   
   const courseSchema = generateCourseSchema({
-    name: "English Language Arts Courses - Reading, Writing & Grammar",
-    description: "Comprehensive English Language Arts courses: reading comprehension, vocabulary, grammar, and essay writing. California Common Core aligned. Expert English tutors in Dublin, CA.",
+    name: "English Language Arts Courses - Reading, Writing & Grammar | English Tutoring Dublin CA",
+    description: "Comprehensive English Language Arts courses: reading comprehension, vocabulary development, grammar, mechanics, and essay writing. California Common Core aligned. Expert English tutors in Dublin, CA. K-12 ELA programs with proven results. Small classes, personalized instruction, flexible scheduling.",
     provider: "GrowWise",
+    courseCode: "ELA-K12",
     educationalLevel: "K-12",
     teaches: [
       "Reading Comprehension",
       "Vocabulary Development",
       "Grammar & Mechanics",
       "Essay Writing",
-      "English Language Arts"
+      "Creative Writing",
+      "English Language Arts",
+      "Literary Analysis",
+      "Writing Skills"
     ],
-    coursePrerequisites: "Placement assessment recommended",
+    coursePrerequisites: "Placement assessment recommended to determine appropriate level",
     url: `${baseUrl}/${locale}/courses/english`,
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {
