@@ -17,9 +17,12 @@ export const metadata: Metadata = {
   description: "Empowering students through personalized K-12 education and innovative STEAM programs. Expert instruction, proven results, and flexible scheduling.",
   keywords: "K-12 education, STEAM programs, tutoring, SAT prep, math courses, coding classes, personalized learning",
   icons: {
-    icon: '/assets/smalllogo.png',
-    shortcut: '/assets/smalllogo.png',
-    apple: '/assets/smalllogo.png',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/icon.png',
   },
 };
 
@@ -31,10 +34,10 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
-        {/* Favicon */}
-        <link rel="icon" type="image/png" href="/assets/smalllogo.png" />
-        <link rel="shortcut icon" type="image/png" href="/assets/smalllogo.png" />
-        <link rel="apple-touch-icon" href="/assets/smalllogo.png" />
+        {/* Favicon - Next.js will automatically use favicon.ico and icon.png from app directory */}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icon.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
         {/* Preconnect to external domains for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
