@@ -64,7 +64,9 @@ export default function RootLayout({
                 removeExtensionAttributes();
                 
                 if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', removeExtensionAttributes);
+                  document.addEventListener('DOMContentLoaded', () => {
+                    removeExtensionAttributes();
+                  });
                 } else {
                   removeExtensionAttributes();
                 }
@@ -75,13 +77,14 @@ export default function RootLayout({
                 
                 observer.observe(document.documentElement, {
                   attributes: true,
+                  childList: true,
+                  subtree: true,
                   attributeFilter: ['bis_skin_checked', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed', 'cz-shortcut-listen'],
-                  subtree: true
                 });
                 
                 setTimeout(() => {
                   observer.disconnect();
-                }, 5000);
+                }, 10000);
               })();
             `,
           }}

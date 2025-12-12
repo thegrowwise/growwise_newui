@@ -68,9 +68,54 @@ export default function EnrollAcademicPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+
+    try {
+      // Map form data to backend API format
+      const enrollmentData = {
+        fullName: formData.studentName || formData.parentName, // Use student name, fallback to parent name
+        email: formData.email,
+        mobile: formData.mobilePhone,
+        city: formData.city,
+        postal: formData.postalCode,
+        bootcamp: 'None', // Not used in academic enrollment
+        course: formData.subject || 'None', // Map subject to course
+        level: formData.grade || 'Not specified', // Map grade to level
+        agree: formData.agreeToContact
+      };
+
+      // Validate required fields
+      if (!enrollmentData.fullName || !enrollmentData.email || !enrollmentData.mobile || 
+          !enrollmentData.city || !enrollmentData.postal || !enrollmentData.agree) {
+        alert('Please fill in all required fields and agree to receive communications.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/enrollment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(enrollmentData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || `Server error (${response.status})`);
+      }
+
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error(result.message || 'Failed to submit enrollment');
+      }
+    } catch (error) {
+      console.error('Enrollment submission error:', error);
+      alert(error instanceof Error ? error.message : 'Failed to submit enrollment. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
