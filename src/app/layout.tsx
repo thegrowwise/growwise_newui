@@ -31,6 +31,10 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <head>
+        {/* Favicon */}
+        <link rel="icon" type="image/png" href="/assets/smalllogo.png" />
+        <link rel="shortcut icon" type="image/png" href="/assets/smalllogo.png" />
+        <link rel="apple-touch-icon" href="/assets/smalllogo.png" />
         {/* Preconnect to external domains for faster loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
