@@ -21,12 +21,6 @@ const nextConfig: NextConfig = {
   compress: true, // Enable gzip compression
   poweredByHeader: false, // Remove X-Powered-By header for security
   
-  // Disable Vercel Analytics/Speed Insights toolbar
-  // Note: This must also be disabled in Vercel Dashboard > Project Settings > Analytics
-  env: {
-    NEXT_PUBLIC_VERCEL_ENV: process.env.NEXT_PUBLIC_VERCEL_ENV || '',
-  },
-  
   // Image optimization
   images: {
     remotePatterns: [
