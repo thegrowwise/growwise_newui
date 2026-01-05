@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { GraduationCap, Users, Shield, Star, Send, Target, Clock, Award } from "lucide-react";
+import { PHONE_PLACEHOLDER } from '@/lib/constants';
 
 interface EnrollFormData {
   parentName: string;
@@ -67,9 +68,54 @@ export default function EnrollAcademicPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+
+    try {
+      // Map form data to backend API format
+      const enrollmentData = {
+        fullName: formData.studentName || formData.parentName, // Use student name, fallback to parent name
+        email: formData.email,
+        mobile: formData.mobilePhone,
+        city: formData.city,
+        postal: formData.postalCode,
+        bootcamp: 'None', // Not used in academic enrollment
+        course: formData.subject || 'None', // Map subject to course
+        level: formData.grade || 'Not specified', // Map grade to level
+        agree: formData.agreeToContact
+      };
+
+      // Validate required fields
+      if (!enrollmentData.fullName || !enrollmentData.email || !enrollmentData.mobile || 
+          !enrollmentData.city || !enrollmentData.postal || !enrollmentData.agree) {
+        alert('Please fill in all required fields and agree to receive communications.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/enrollment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(enrollmentData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || result.message || `Server error (${response.status})`);
+      }
+
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error(result.message || 'Failed to submit enrollment');
+      }
+    } catch (error) {
+      console.error('Enrollment submission error:', error);
+      alert(error instanceof Error ? error.message : 'Failed to submit enrollment. Please try again or contact us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -227,7 +273,7 @@ export default function EnrollAcademicPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="mobilePhone">Mobile Phone Number <span className="text-red-500">*</span></Label>
-                        <Input id="mobilePhone" type="tel" value={formData.mobilePhone} onChange={(e) => handleInputChange("mobilePhone", e.target.value)} placeholder="(555) 123-4567" required />
+                        <Input id="mobilePhone" type="tel" value={formData.mobilePhone} onChange={(e) => handleInputChange("mobilePhone", e.target.value)} placeholder={PHONE_PLACEHOLDER} required />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>

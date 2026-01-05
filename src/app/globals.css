@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Use optimized font variable */
+@layer base {
+  html {
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+}
+
 /* Removed Tailwind v4-only @custom-variant; using standard .dark class selectors below */
 
 :root {
@@ -211,8 +218,15 @@ html {
   .text-strong { @apply text-gray-900; }
   .stat-number { @apply text-3xl font-bold; }
   /* Header global utility classes extracted from Header.module.css */
-  .header-root { @apply bg-white/80 backdrop-blur-3xl shadow-[0px_8px_32px_rgba(31,57,109,0.12)] sticky top-0 z-50 border-b border-white/50 ring-1 ring-white/20; }
-  .header-topbar { @apply bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white/90; }
+  .header-root { 
+    @apply bg-white/80 backdrop-blur-3xl shadow-[0px_8px_32px_rgba(31,57,109,0.12)] sticky top-0 z-50 border-b border-white/50 ring-1 ring-white/20 transition-all duration-300 ease-out; 
+    --header-height: 10rem; /* Default height when not scrolled (top bar + main row) */
+  }
+  .header-root.header-scrolled { 
+    @apply shadow-[0px_4px_20px_rgba(31,57,109,0.18)]; 
+    --header-height: 5rem; /* Height when scrolled (main row only) */
+  }
+  .header-topbar { @apply bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white/90 border-b border-[#1F396D]/30 shadow-[0px_2px_8px_rgba(31,57,109,0.15)]; }
   .container-7xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }
   .header-toprow { @apply flex items-center justify-between py-2 text-sm; }
   .header-contact-group { @apply hidden md:flex items-center space-x-6; }
@@ -224,13 +238,20 @@ html {
   .header-social-link { @apply text-white/70 hover:text-white transition-colors; }
   .header-address { @apply text-white/90 text-xs hidden lg:block; }
 
-  .header-mainrow { @apply flex items-center justify-between h-20; }
-  .header-logo { @apply bg-center bg-contain bg-no-repeat h-[80px] w-[200px]; }
+  .header-mainrow { @apply flex items-center justify-between h-32 flex-wrap gap-2; }
+  .header-logo { @apply bg-center bg-contain bg-no-repeat h-[110px] w-[280px] max-w-full; }
+  
+  @media (max-width: 640px) {
+    .header-logo { 
+      height: 80px !important;
+      width: 200px !important;
+    }
+  }
   .header-desktop-nav { @apply hidden lg:flex items-center space-x-1; }
-  .header-navlink { @apply px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative; }
+  .header-navlink { @apply px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative; }
   .header-nav-neutral { @apply text-gray-700 hover:bg-gray-100; }
   .header-indicator-base { @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300; }
-  .header-dropdown-panel { @apply absolute top-full left-0 mt-2 w-80 bg-white/95 backdrop-blur-3xl border-2 border-white/70 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden transition-all duration-300 z-50 ring-1 ring-white/40; }
+  .header-dropdown-panel { @apply absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden transition-all duration-300 z-50 ring-1 ring-gray-200; }
   .header-dropdown-header { @apply px-6 py-4 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100; }
   .header-dropdown-items { @apply py-1; }
   .header-dropdown-link { @apply mx-2 my-0.5 rounded-xl transition-all duration-300 cursor-pointer w-full; }
@@ -295,4 +316,28 @@ html {
 [data-bis_register],
 [data-__processed_ab1c173e-84db-4b69-af27-621307447383__] {
   display: none !important;
+}
+
+/* Calendar page header - positioned below main header */
+.calendar-page-header {
+  top: var(--header-height, 5rem);
+}
+
+/* Responsive header height adjustments */
+@media (max-width: 1024px) {
+  .header-root {
+    --header-height: 8rem;
+  }
+  .header-root.header-scrolled {
+    --header-height: 5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .header-root {
+    --header-height: 6rem;
+  }
+  .header-root.header-scrolled {
+    --header-height: 4rem;
+  }
 }

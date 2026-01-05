@@ -1,8 +1,14 @@
 User-agent: *
 Allow: /
 
+# Disallow admin and private pages
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /cart/
+Disallow: /student-login/
+
 # Sitemap
-Sitemap: https://growwise.edu/sitemap.xml
+Sitemap: https://growwiseschool.org/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1 

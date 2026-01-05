@@ -139,8 +139,18 @@ export default function CourseCard({
                 onClick={() => onAddToCart(course)}
                 className={`w-full bg-gradient-to-r ${courseGradients.gradient} text-white rounded-xl py-2.5 text-sm transition-all duration-300 shadow-md hover:shadow-lg group-hover:scale-105`}
               >
-                <ShoppingCart className="mr-2 w-4 h-4" />
-                Add to Cart
+                {/* Desktop button text - Only for non-touch devices */}
+                {!isTouchDevice && (
+                  <div className="flex items-center justify-center">
+                    <Eye className="mr-2 w-4 h-4" />
+                    Hover to reveal information
+                  </div>
+                )}
+                {/* Mobile button text or fallback for touch devices */}
+                <div className={`${!isTouchDevice ? 'hidden' : 'flex'} items-center justify-center`}>
+                  <ShoppingCart className="mr-2 w-4 h-4" />
+                  Add to Cart
+                </div>
               </Button>
             </div>
           </CardContent>
@@ -199,20 +209,13 @@ export default function CourseCard({
                 </div>
                 
                 {/* CTA Buttons */}
-                <div className="flex-shrink-0 space-y-1.5 mt-2">
+                <div className="flex-shrink-0 mt-2">
                   <Button 
                     onClick={() => onAddToCart(course)}
                     className={`w-full bg-gradient-to-r ${courseGradients.gradient} hover:shadow-lg text-white rounded-xl py-2 text-xs transition-all duration-300 transform scale-105 shadow-lg`}
                   >
                     <ShoppingCart className="mr-1 w-3 h-3" />
                     Add to Cart • {course.priceRange}
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    className={`w-full border ${courseGradients.iconColor} hover:bg-gray-50 rounded-xl py-1.5 text-xs transition-all duration-300`}
-                  >
-                    Learn More
-                    <ChevronRight className="ml-1 w-3 h-3" />
                   </Button>
                 </div>
               </CardContent>

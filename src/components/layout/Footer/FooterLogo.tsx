@@ -9,7 +9,7 @@ interface FooterLogoProps {
 
 export default function FooterLogo({ logo, description, contact }: FooterLogoProps) {
   return (
-    <div>
+    <div className="flex flex-col">
       <div className="flex items-center space-x-2 mb-6">
         <div 
           className="bg-center bg-contain bg-no-repeat" 

@@ -16,12 +16,16 @@ import DynamicWrapper from '@/components/DynamicWrapper';
 import MathSymbolsBackground from '@/components/MathSymbolsBackground';
 import CourseCard from '@/components/CourseCard';
 import { useTouchDetection } from '@/hooks/useHydration';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
+import FreeAssessmentModal from '@/components/FreeAssessmentModal';
+import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { RelatedContent } from '@/components/seo/RelatedContent';
+import { CourseFAQ } from '@/components/seo/CourseFAQ';
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -72,6 +76,7 @@ const MathCoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
 
   // Handlers for search params
   const handleGradeFound = useCallback((grade: string) => {
@@ -303,6 +308,8 @@ const MathCoursesPage: React.FC = () => {
     );
   }
 
+  const locale = useLocale()
+
   return (
     <HydrationBoundary>
       <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -312,6 +319,15 @@ const MathCoursesPage: React.FC = () => {
             onAlignmentFound={handleAlignmentFound}
           />
         </Suspense>
+
+      {/* Breadcrumbs */}
+      <Breadcrumbs 
+        items={[
+          { name: 'Programs', url: `/${locale}/programs` },
+          { name: 'Academic', url: `/${locale}/academic` },
+          { name: 'Math Courses', url: `/${locale}/courses/math` },
+        ]}
+      />
 
       {/* Enhanced Creative Header Section - Ultra Gentle Math Symbols */}
       <section className="relative overflow-hidden">
@@ -343,12 +359,24 @@ const MathCoursesPage: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
+              <Button 
+                onClick={() => setIsAssessmentModalOpen(true)}
+                className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+              >
                 <Calculator className="mr-2 w-5 h-5" />
                 Book Free Assessment
               </Button>
               {/* Fixed View Programs Button - Better Visibility */}
-              <Button variant="outline" className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg">
+              <Button 
+                onClick={() => {
+                  const coursesSection = document.getElementById('courses');
+                  if (coursesSection) {
+                    coursesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
+                variant="outline" 
+                className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg"
+              >
                 <Eye className="mr-2 w-5 h-5" />
                 View Programs
               </Button>
@@ -648,10 +676,6 @@ const MathCoursesPage: React.FC = () => {
                     <Mail className="w-4 h-4" />
                     <span>connect@thegrowwise.com</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    <span>(925) 456-4606</span>
-                  </div>
                 </div>
               </div>
             </div>
@@ -667,27 +691,50 @@ const MathCoursesPage: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-16 px-4 lg:px-8 bg-[#1F396D]">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl mb-6 text-white">{mathCoursesData?.cta?.title || t('cta.title')}</h2>
-          <p className="text-xl mb-8 text-white/90">
-            {mathCoursesData?.cta?.subtitle || t('cta.subtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 rounded-[30px]" size="lg">
-              {mathCoursesData?.cta?.primaryButton || t('cta.primaryButton')}
-            </Button>
-            <Button 
-              onClick={openChatbot}
-              className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-3 rounded-[30px] transition-all duration-200" 
-              size="lg"
-            >
-              {mathCoursesData?.cta?.secondaryButton || t('cta.secondaryButton')}
-            </Button>
-          </div>
-        </div>
-      </section>
+      {/* FAQ Section for SEO */}
+      <CourseFAQ 
+        faqs={[
+          {
+            question: "What math courses do you offer at GrowWise?",
+            answer: "We offer comprehensive K-12 math courses including grade-level math (aligned with California Common Core Standards), accelerated math programs, and integrated math 1 & 2. Our courses cover Algebra, Geometry, Pre-Calculus, and more. All programs are aligned with DUSD and PUSD curriculum standards."
+          },
+          {
+            question: "How do I know which math course is right for my child?",
+            answer: "We offer a free 60-minute placement assessment to evaluate your child's current math level and identify strengths and areas for improvement. Our education experts will recommend the perfect math program based on the assessment results, your child's grade level, and learning goals."
+          },
+          {
+            question: "Are your math courses aligned with school curriculum?",
+            answer: "Yes, our math courses are aligned with Dublin Unified School District (DUSD) and Pleasanton Unified School District (PUSD) standards, as well as California Common Core Standards (CACCS). This ensures your child's learning at GrowWise complements their school curriculum."
+          },
+          {
+            question: "What is the difference between grade-level, accelerated, and integrated math?",
+            answer: "Grade-level math follows the standard curriculum pace for each grade. Accelerated math moves at a faster pace, allowing students to cover more material. Integrated math combines algebra, geometry, and statistics into a unified approach, which is common in many modern high school curricula."
+          },
+          {
+            question: "How much does math tutoring cost at GrowWise?",
+            answer: "Our math courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at (925) 456-4606 or connect@thegrowwise.com for detailed pricing information."
+          },
+          {
+            question: "Do you offer online or in-person math tutoring?",
+            answer: "We offer in-person math tutoring at our Dublin, CA location. Our modern facility provides the perfect environment for focused learning. Contact us to learn more about our current class formats and availability."
+          },
+          {
+            question: "What makes GrowWise math tutoring different from other tutoring centers?",
+            answer: "GrowWise offers personalized math instruction with expert tutors, small class sizes, and curriculum alignment with local school districts. We provide proven results, flexible scheduling, and a supportive learning environment. Our instructors are experienced educators who understand both the curriculum and how to help students succeed."
+          }
+        ]}
+        title="Math Tutoring FAQs"
+        subtitle="Get answers to common questions about our math courses and programs"
+      />
+
+      {/* Related Content Section */}
+      <RelatedContent locale={locale} currentPage="math" />
+
+      {/* Free Assessment Modal */}
+      <FreeAssessmentModal 
+        isOpen={isAssessmentModalOpen}
+        onClose={() => setIsAssessmentModalOpen(false)}
+      />
       </div>
     </HydrationBoundary>
   );

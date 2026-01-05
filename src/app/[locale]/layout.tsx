@@ -7,14 +7,21 @@ import Footer from "@/components/layout/Footer/Footer";
 import ContentProvider from "@/components/providers/ContentProvider";
 import { CartProvider } from "@/components/gw/CartContext";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
-import Chatbot from "@/components/chatbot/Chatbot";
+import LazyChatbot from "@/components/chatbot/LazyChatbot";
 import { locales } from '@/i18n/config';
 import { PageTrackingWrapper } from '@/components/analytics/PageTrackingWrapper';
+import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/seo/structuredData';
 
+// Default metadata - can be overridden by page-specific generateMetadata
 export const metadata: Metadata = {
-  title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
-  description: "Empowering students through personalized K-12 education and innovative STEAM programs. Expert instruction, proven results, and flexible scheduling.",
-  keywords: "K-12 education, STEAM programs, tutoring, SAT prep, math courses, coding classes, personalized learning",
+  title: "GrowWise - K-12 Education & STEAM Programs | Dublin, CA",
+  description: "Expert K-12 tutoring and STEAM programs in Dublin, CA. Math, English, coding, and SAT prep. Personalized learning for every student. Book a free assessment today!",
+  keywords: "tutoring Dublin CA, K-12 education, STEAM programs, math tutor, English tutor, coding classes, SAT prep Dublin, personalized learning",
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export function generateStaticParams() {
@@ -33,6 +40,19 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider messages={messages}>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
       <CartProvider>
         <ChatbotProvider>
           <ContentProvider>
@@ -42,7 +62,7 @@ export default async function LocaleLayout({
                 {children}
               </main>
               <Footer />
-              <Chatbot />
+              <LazyChatbot />
             </PageTrackingWrapper>
           </ContentProvider>
         </ChatbotProvider>

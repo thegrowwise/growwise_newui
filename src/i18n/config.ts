@@ -1,12 +1,13 @@
 import { getRequestConfig } from 'next-intl/server';
+import { ENABLED_LOCALES, DEFAULT_LOCALE, getValidLocale, type Locale } from './localeConfig';
 
-// Can be imported from a shared config
-export const locales = ['en', 'es', 'zh', 'hi'] as const;
-export type Locale = (typeof locales)[number];
+// Export locales for backward compatibility
+export const locales = ENABLED_LOCALES;
+export type { Locale };
 
 export default getRequestConfig(async ({ locale }) => {
-  // Ensure locale is valid, fallback to 'en' if not
-  const validLocale = locale && locales.includes(locale as any) ? locale : 'en';
+  // Ensure locale is valid, fallback to default if not enabled
+  const validLocale = getValidLocale(locale);
   
   return {
     locale: validLocale,

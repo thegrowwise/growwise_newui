@@ -1,6 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchContentStart, fetchContentSuccess, fetchContentFailure } from '../slices/contentSlice';
 import { ContentData } from '../slices/contentSlice';
+import { CONTACT_INFO } from '@/lib/constants';
 
 // Mock API function - this can be easily replaced with a real API call
 async function fetchContentAPI(): Promise<ContentData> {
@@ -74,9 +75,9 @@ async function fetchContentAPI(): Promise<ContentData> {
     contact: {
       title: "Get in Touch",
       description: "Ready to start your child's journey with GrowWise? Contact us today to learn more about our programs and schedule a visit.",
-      email: "connect@thegrowwise.com",
-      phone: "+1 (555) 123-4567",
-      address: "123 Education Street, Learning City, LC 12345"
+      email: CONTACT_INFO.email,
+      phone: CONTACT_INFO.phone,
+      address: CONTACT_INFO.address
     },
     navigation: {
       logo: "GrowWise",

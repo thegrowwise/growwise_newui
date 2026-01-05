@@ -142,7 +142,7 @@ function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }:
 
   return (
     <div 
-      className="absolute left-full top-0 ml-2 w-72 bg-white/95 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-white/30 z-50"
+      className="absolute left-full top-0 ml-2 w-72 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-gray-200 z-50"
       onMouseEnter={onSubmenuEnter}
       onMouseLeave={onSubmenuLeave}
     >

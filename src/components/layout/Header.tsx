@@ -10,6 +10,7 @@ import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calcul
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/components/gw/CartContext';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
+import { CONTACT_INFO } from '@/lib/constants';
 
 // Icon mapping for dynamic icon rendering
 const iconMap: { [key: string]: any } = {
@@ -87,9 +88,9 @@ export default function Header() {
     if (!header) dispatch(fetchHeaderRequested());
   }, [dispatch, header]);
 
-  const topPhone = header?.topBar.phone ?? '(925) 456-4606';
-  const topEmail = header?.topBar.email ?? 'connect@thegrowwise.com';
-  const topAddress = header?.topBar.address ?? '📍 4564 Dublin Blvd, Dublin, CA';
+  const topPhone = header?.topBar.phone ?? CONTACT_INFO.phone;
+  const topEmail = header?.topBar.email ?? CONTACT_INFO.email;
+  const topAddress = header?.topBar.address ?? CONTACT_INFO.formattedAddress;
   const followLabel = header?.topBar.followLabel ?? 'Follow us:';
   const social = header?.topBar.social ?? { facebook: 'https://www.facebook.com/people/GrowWise/61561059687164/', twitter: '#', instagram: 'https://www.instagram.com/growwise.dublin/', linkedin: 'https://www.linkedin.com/company/thegrowwise/' };
   const footerHelper = header?.footerHelper ?? 'Need help choosing?';
@@ -152,7 +153,7 @@ export default function Header() {
         </Link>
 
         {/* Dropdown Content - Exact styling from first project */}
-        <div className={`absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-white/30 overflow-visible ${
+        <div className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
           isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
         }`}>
           {/* Header Section */}
@@ -247,7 +248,7 @@ export default function Header() {
                   {/* Submenu for Courses - Appears on the right side */}
                   {hasSubmenu && dropdownItem.submenuItems && isSubmenuOpen && (
                     <div 
-                      className="absolute left-full top-0 ml-2 w-72 bg-white/95 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-white/30 z-50"
+                      className="absolute left-full top-0 ml-2 w-72 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden ring-1 ring-gray-200 z-50"
                       onMouseEnter={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: true }))}
                       onMouseLeave={() => setOpenSubmenus(prev => ({ ...prev, [dropdownItem.key]: false }))}
                     >

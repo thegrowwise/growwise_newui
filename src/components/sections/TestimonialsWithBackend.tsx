@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Star, Quote, RefreshCw, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ClientOnly from '@/components/providers/ClientOnly';
 import { useTestimonials } from '@/hooks/useTestimonials';
 import { TestimonialVM } from '@/lib/testimonialsApi';
+import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
+import { generateReviewSchema, generateAggregateRatingSchema } from '@/lib/seo/structuredData';
+import { OptimizedImage } from '@/components/gw/OptimizedImage';
 
 export default function TestimonialsWithBackend() {
   const [currentSet, setCurrentSet] = useState(0);
@@ -25,6 +28,42 @@ export default function TestimonialsWithBackend() {
     refreshInterval: 300000, // 5 minutes
     minRating: 1 // Show all reviews
   });
+
+  // Generate structured data for reviews and aggregate rating
+  const structuredData = useMemo(() => {
+    if (!testimonials || testimonials.length === 0) return []
+    
+    const reviews = testimonials.map((testimonial) =>
+      generateReviewSchema({
+        itemReviewed: {
+          "@type": "EducationalOrganization",
+          name: "GrowWise"
+        },
+        reviewRating: {
+          ratingValue: testimonial.rating,
+        },
+        author: {
+          name: testimonial.name,
+          type: "Person"
+        },
+        reviewBody: testimonial.content,
+      })
+    )
+
+    // Calculate average rating
+    const avgRating = testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length
+
+    const aggregateRating = generateAggregateRatingSchema({
+      itemReviewed: {
+        "@type": "EducationalOrganization",
+        name: "GrowWise"
+      },
+      ratingValue: Math.round(avgRating * 10) / 10, // Round to 1 decimal
+      reviewCount: testimonials.length,
+    })
+
+    return [...reviews, aggregateRating]
+  }, [testimonials])
 
   // Show 3 cards per set in slider
   const cardsPerSet = 3;
@@ -155,6 +194,9 @@ export default function TestimonialsWithBackend() {
 
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
+      {structuredData.length > 0 && (
+        <StructuredDataScript data={structuredData} id="testimonials-backend-structured-data" />
+      )}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -178,27 +220,27 @@ export default function TestimonialsWithBackend() {
           </p>
           
           {/* Cache status indicator */}
-          {/* <div className="mt-4 flex items-center justify-center gap-2 text-sm text-gray-500">
+          <div className="mt-4 flex items-center justify-center gap-2 text-sm">
             {source === 'default' && (
-              <span className="flex items-center gap-1 text-orange-600">
-                ⚠️ Using default testimonials (server unavailable)
+              <span className="flex items-center gap-1 text-orange-600 bg-orange-50 px-3 py-1 rounded-full">
+                ⚠️ Using default testimonials (Google Reviews unavailable)
               </span>
             )}
             {source === 'api' && cached && (
-              <span className="flex items-center gap-1">
-                📦 Cached data
+              <span className="flex items-center gap-1 text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                📦 Cached data from Google Reviews
                 {fallback && <span className="text-orange-500">(fallback)</span>}
               </span>
             )}
             {source === 'api' && !cached && (
-              <span className="flex items-center gap-1 text-green-600">
+              <span className="flex items-center gap-1 text-green-600 bg-green-50 px-3 py-1 rounded-full">
                 🔄 Live data from Google Reviews
               </span>
             )}
-            {pagination && (
-              <span>• {pagination.total} high-rated reviews (4+ stars)</span>
+            {pagination && source === 'api' && (
+              <span className="text-gray-600">• {pagination.total} reviews</span>
             )}
-          </div> */}
+          </div>
         </div>
 
         {/* Testimonials Slider */}
@@ -284,16 +326,21 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialVM }) {
 
           {/* Author Info */}
           <div className="flex items-center justify-center gap-3">
-            <img
-              src={testimonial.image}
-              alt={testimonial.name}
-              className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
-              onError={(e) => {
-                // Fallback to a default avatar if image fails to load
-                const target = e.target as HTMLImageElement;
-                target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name)}&size=150&background=1F396D&color=ffffff&bold=true`;
-              }}
-            />
+            {(testimonial.hasPhoto !== false && testimonial.image) ? (
+              <OptimizedImage
+                src={testimonial.image}
+                alt={testimonial.name}
+                width={48}
+                height={48}
+                className="rounded-full object-cover border-2 border-white shadow-md"
+              />
+            ) : (
+              <div className="w-12 h-12 rounded-full bg-[#1F396D] flex items-center justify-center border-2 border-white shadow-md flex-shrink-0">
+                <span className="text-white font-bold text-base">
+                  {testimonial.initials || (testimonial.name ? testimonial.name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2) : 'A')}
+                </span>
+              </div>
+            )}
             <div className="text-left">
               <h4 className="font-semibold text-gray-900 text-sm">
                 {testimonial.name}

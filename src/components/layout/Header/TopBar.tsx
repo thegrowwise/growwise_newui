@@ -18,7 +18,7 @@ export default function TopBar({ phone, email, address, followLabel, social }: T
   const cleanPhoneNumber = phone.replace(/[\s\(\)\-]/g, '');
   
   return (
-    <div className="header-topbar">
+    <div className="header-topbar" suppressHydrationWarning>
       <div className="container-7xl">
         <div className="header-toprow">
           {/* Contact Info */}
@@ -61,7 +61,7 @@ export default function TopBar({ phone, email, address, followLabel, social }: T
                 </Link>
               </div>
             </div>
-            <div className="header-address">{address}</div>
+            <div className="header-address" suppressHydrationWarning>{address}</div>
           </div>
         </div>
       </div>

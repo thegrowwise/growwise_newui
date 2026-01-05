@@ -2,18 +2,8 @@
 
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
-import { locales } from '../i18n/config';
+import { ENABLED_LOCALES, LOCALE_NAMES, isLocaleEnabled, DEFAULT_LOCALE } from '../i18n/localeConfig';
 import { useEffect, useState } from 'react';
-
-const localeNames = {
-  en: 'English',
-  es: 'Español',
-  zh: '中文',
-  hi: 'हिन्दी'
-};
-
-// Temporarily disable other languages - only show English
-const enabledLocales = ['en'];
 
 export default function LocaleSwitcher() {
   const locale = useLocale();
@@ -23,20 +13,20 @@ export default function LocaleSwitcher() {
   
   // Extract locale from pathname as fallback
   const getLocaleFromPath = () => {
-    if (!pathname) return 'en';
+    if (!pathname) return DEFAULT_LOCALE;
     const segments = pathname.split('/');
     const pathLocale = segments[1];
-    return locales.includes(pathLocale as any) ? pathLocale : 'en';
+    return isLocaleEnabled(pathLocale) ? pathLocale : DEFAULT_LOCALE;
   };
   
-  const [currentLocale, setCurrentLocale] = useState('en'); // Start with default
+  const [currentLocale, setCurrentLocale] = useState(DEFAULT_LOCALE); // Start with default
 
   // Handle hydration
   useEffect(() => {
     setIsMounted(true);
     // Prioritize pathname detection over useLocale hook
     const pathLocale = getLocaleFromPath();
-    const newLocale = pathLocale || locale || 'en';
+    const newLocale = pathLocale || locale || DEFAULT_LOCALE;
     setCurrentLocale(newLocale);
   }, [locale, pathname]);
 
@@ -77,9 +67,9 @@ export default function LocaleSwitcher() {
           className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           disabled
         >
-          {enabledLocales.map((loc) => (
+          {ENABLED_LOCALES.map((loc) => (
             <option key={loc} value={loc}>
-              {localeNames[loc as keyof typeof localeNames]}
+              {LOCALE_NAMES[loc] || loc}
             </option>
           ))}
         </select>
@@ -99,9 +89,9 @@ export default function LocaleSwitcher() {
         onChange={(e) => handleLocaleChange(e.target.value)}
         className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
-        {enabledLocales.map((loc) => (
+        {ENABLED_LOCALES.map((loc) => (
           <option key={loc} value={loc}>
-            {localeNames[loc as keyof typeof localeNames]}
+            {LOCALE_NAMES[loc] || loc}
           </option>
         ))}
       </select>

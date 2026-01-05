@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -9,6 +9,8 @@ import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
+import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
+import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 import { 
   Phone, 
   Mail, 
@@ -38,6 +40,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchContactRequested } from '@/store/slices/contactSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { contactService } from '@/lib/contactService';
+import { CONTACT_INFO } from '@/lib/constants';
 
 export default function Contact() {
   const { openChatbot } = useChatbot();
@@ -65,6 +68,21 @@ export default function Contact() {
   React.useEffect(() => {
     if (!contact && !contactLoading) dispatch(fetchContactRequested());
   }, [contact, contactLoading, dispatch]);
+
+  // Handle hash navigation to scroll to specific sections
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash === '#contact-methods' || hash === '#contact-form' || hash === '#location') {
+        const section = document.getElementById(hash.substring(1));
+        if (section) {
+          setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 100);
+        }
+      }
+    }
+  }, []);
 
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -121,9 +139,9 @@ export default function Contact() {
 
   // Location details
   const locationDetails = contact?.locationDetails ?? {
-    phone: '(925) 456-4606',
-    googleMapsUrl: 'https://maps.google.com/?q=4564+Dublin+Blvd,+Dublin,+CA',
-    directionsUrl: 'https://maps.google.com/?daddr=4564+Dublin+Blvd,+Dublin,+CA'
+    phone: CONTACT_INFO.phone,
+    googleMapsUrl: `https://maps.google.com/?q=${encodeURIComponent(CONTACT_INFO.address)}`,
+    directionsUrl: `https://maps.google.com/?daddr=${encodeURIComponent(CONTACT_INFO.address)}`
   };
 
   if (isSubmitted) {
@@ -150,7 +168,7 @@ export default function Contact() {
                 className="w-full border-[#F16112] text-[#F16112] hover:bg-[#F16112] hover:text-white"
               >
                 <Phone className="w-4 h-4 mr-2" />
-                Call (925) 456-4606
+                Call {CONTACT_INFO.phone}
               </Button>
             </div>
           </CardContent>
@@ -176,7 +194,7 @@ export default function Contact() {
               className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-6 py-3"
             >
               <a 
-                href={`tel:${contact?.contactInfo?.[0]?.primary?.replace(/[\s\(\)\-]/g, '') || '19254564606'}`}
+                href={`tel:${contact?.contactInfo?.[0]?.primary?.replace(/[\s\(\)\-]/g, '') || CONTACT_INFO.phone.replace(/[\s\(\)\-]/g, '')}`}
                 title="Click to call"
               >
                 <Phone className="w-5 h-5 mr-2" />
@@ -196,7 +214,7 @@ export default function Contact() {
       </section>
 
       {/* Contact Information Cards */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section id="contact-methods" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -256,7 +274,7 @@ export default function Contact() {
       </section>
 
       {/* Main Contact Form and Info Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <section id="contact-form" className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
 
@@ -522,7 +540,7 @@ export default function Contact() {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <Users className="w-5 h-5 text-[#F1894F]" />
-                      <span className="text-sm">300+ Happy Students</span>
+                      <span className="text-sm">325+ Happy Students</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <Star className="w-5 h-5 text-[#F1894F]" />
@@ -545,14 +563,14 @@ export default function Contact() {
       </section>
 
       {/* Map Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section id="location" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
               Visit Our <span className="text-[#F16112]">Center</span>
             </h2>
             <p className="text-lg text-gray-600">
-              Located in the heart of Dublin, CA, our facility provides an optimal learning environment
+              Located in the heart of {CONTACT_INFO.city}, our facility provides an optimal learning environment
             </p>
           </div>
 
@@ -655,6 +673,12 @@ export default function Contact() {
 
       {/* FAQ Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        {faqs.length > 0 && (
+          <StructuredDataScript 
+            data={generateFAQPageSchema(faqs)} 
+            id="contact-faq-structured-data" 
+          />
+        )}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
@@ -710,7 +734,7 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-[#F16112] hover:bg-[#d54f0a] text-white px-8 py-3 text-lg">
               <Phone className="w-5 h-5 mr-2" />
-              Call (925) 456-4606
+              Call {CONTACT_INFO.phone}
             </Button>
             <Button 
               onClick={openChatbot}

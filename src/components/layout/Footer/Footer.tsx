@@ -38,21 +38,24 @@ export default function Footer({ data }: FooterProps) {
       <div className="absolute bottom-20 left-10 w-40 h-40 bg-[#F1894F]/10 rounded-full blur-3xl"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="flex flex-col md:flex-row gap-10 items-start">
           {/* Logo and Contact Section */}
-          <FooterLogo 
-            logo={footer.logo}
-            description={footer.description}
-            contact={footer.contact}
-          />
+          <div className="flex-1">
+            <FooterLogo 
+              logo={footer.logo}
+              description={footer.description}
+              contact={footer.contact}
+            />
+          </div>
 
           {/* Footer Sections */}
           {footer.sections.map((section, index) => (
-            <FooterSection
-              key={index}
-              section={section}
-              createLocaleUrl={createLocaleUrlHelper}
-            />
+            <div key={index} className="flex-1">
+              <FooterSection
+                section={section}
+                createLocaleUrl={createLocaleUrlHelper}
+              />
+            </div>
           ))}
         </div>
 

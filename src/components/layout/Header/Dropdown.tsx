@@ -40,6 +40,25 @@ export default function Dropdown({
   const v = getVariant(item.variant);
   const visibleItems = getVisibleDropdownItems(item.dropdown?.items || []);
 
+  // Prevent navigation for "Camps" menu item
+  const isCamps = item.key === 'camps';
+  
+  const linkContent = (
+    <>
+      {item.label}
+      {visibleItems.length > 0 && (
+        <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
+          isOpen ? 'rotate-180' : ''
+        }`} />
+      )}
+      
+      {/* Subtle highlight indicator */}
+      <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r ${v.indicator} rounded-full transition-all duration-300 ${
+        isOpen ? 'w-8' : 'group-hover:w-4'
+      }`}></div>
+    </>
+  );
+
   return (
     <div
       key={item.key}
@@ -47,29 +66,30 @@ export default function Dropdown({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <Link
-        href={createLocaleUrl(item.href)}
-        className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
-          isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
-        }`}
-        onClick={() => onItemClick()}
-      >
-        {item.label}
-        {visibleItems.length > 0 && (
-          <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
-            isOpen ? 'rotate-180' : ''
-          }`} />
-        )}
-        
-        {/* Subtle highlight indicator */}
-        <div className={`absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r ${v.indicator} rounded-full transition-all duration-300 ${
-          isOpen ? 'w-8' : 'group-hover:w-4'
-        }`}></div>
-      </Link>
+      {isCamps ? (
+        <span
+          className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap cursor-default ${
+            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
+          }`}
+          onClick={() => onItemClick()}
+        >
+          {linkContent}
+        </span>
+      ) : (
+        <Link
+          href={createLocaleUrl(item.href)}
+          className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
+            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
+          }`}
+          onClick={() => onItemClick()}
+        >
+          {linkContent}
+        </Link>
+      )}
 
       {/* Dropdown Content - only show if there are items */}
       {visibleItems.length > 0 && (
-        <div className={`absolute top-full left-0 mt-2 w-80 bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-white/30 overflow-visible ${
+        <div className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
           isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
         }`}>
         {/* Header Section */}
