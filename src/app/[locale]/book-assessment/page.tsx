@@ -19,7 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
-import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, BarChart3, Globe, Video, CheckSquare, Heart, Calculator, X } from 'lucide-react';
+import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, BarChart3, Globe, Video, CheckSquare, Heart, Calculator, X, AlertCircle } from 'lucide-react';
 import CountryCodeSelector from '@/components/CountryCodeSelector';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -45,6 +45,7 @@ export default function BookAssessmentPage() {
   const [scrollY, setScrollY] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
@@ -116,26 +117,68 @@ export default function BookAssessmentPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    setTimeout(() => {
-      setFormData({
-        parentName: '',
-        email: '',
-        countryCode: '+1',
-        phone: '',
-        studentName: '',
-        grade: '',
-        subjects: [],
-        assessmentType: '',
-        mode: '',
-        schedule: '',
-        notes: ''
+    setErrorMessage('');
+
+    try {
+      const assessmentData = {
+        parentName: formData.parentName,
+        email: formData.email,
+        countryCode: formData.countryCode,
+        phone: formData.phone,
+        studentName: formData.studentName,
+        grade: formData.grade,
+        subjects: formData.subjects,
+        assessmentType: formData.assessmentType,
+        mode: formData.mode,
+        schedule: formData.schedule,
+        notes: formData.notes
+      };
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/assessment`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(assessmentData),
       });
-      setIsSubmitted(false);
-    }, 5000);
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setErrorMessage(result.error || result.message || `Server error (${response.status})`);
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (result.success) {
+        setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Reset form after success
+        setTimeout(() => {
+          setFormData({
+            parentName: '',
+            email: '',
+            countryCode: '+1',
+            phone: '',
+            studentName: '',
+            grade: '',
+            subjects: [],
+            assessmentType: '',
+            mode: '',
+            schedule: '',
+            notes: ''
+          });
+          setIsSubmitted(false);
+        }, 5000);
+      } else {
+        setErrorMessage(result.error || 'Failed to submit assessment booking');
+      }
+    } catch (error) {
+      console.error('Assessment submission error:', error);
+      setErrorMessage('Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const assessmentFeatures = [
@@ -469,6 +512,14 @@ export default function BookAssessmentPage() {
                           </>
                         )}
                       </Button>
+                      {errorMessage && (
+                        <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+                          <p className="text-red-700 text-sm flex items-center gap-2">
+                            <AlertCircle className="w-4 h-4" />
+                            {errorMessage}
+                          </p>
+                        </div>
+                      )}
                       <p className="text-center text-gray-500 mt-6 flex items-center justify-center gap-2"><Shield className="w-4 h-4 text-green-600" />By submitting, you agree to be contacted by GrowWise School</p>
                     </div>
                   </form>
