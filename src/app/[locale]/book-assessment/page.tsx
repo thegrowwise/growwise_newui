@@ -95,13 +95,21 @@ export default function BookAssessmentPage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubjectChange = (subject: string, checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      subjects: checked
-        ? [...prev.subjects, subject]
-        : prev.subjects.filter(s => s !== subject)
-    }));
+  const handleSubjectChange = (subject: string, checked: boolean | 'indeterminate' | undefined) => {
+    // Ensure checked is a boolean
+    const isChecked = checked === true;
+    
+    setFormData(prev => {
+      // Ensure subjects is always an array
+      const currentSubjects = Array.isArray(prev.subjects) ? prev.subjects : [];
+      
+      return {
+        ...prev,
+        subjects: isChecked
+          ? [...currentSubjects, subject]
+          : currentSubjects.filter(s => s !== subject)
+      };
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -367,12 +375,35 @@ export default function BookAssessmentPage() {
                       <div>
                         <Label className="text-gray-700 font-medium mb-4 block flex items-center gap-2 text-base"><CheckSquare className="w-4 h-4 text-[#F16112]" />Areas of Focus <span className="text-red-500">*</span></Label>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                          {availableSubjects.map((subject) => (
-                            <div key={subject.value} onClick={() => handleSubjectChange(subject.value, !formData.subjects.includes(subject.value))} className={`flex items-center space-x-3 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${formData.subjects.includes(subject.value) ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}>
-                              <Checkbox id={subject.value} checked={formData.subjects.includes(subject.value)} onCheckedChange={(checked) => handleSubjectChange(subject.value, checked as boolean)} className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor={subject.value} className="cursor-pointer text-gray-700 font-medium flex-1 flex items-center gap-2 pointer-events-none"><span>{subject.icon}</span>{subject.value}</Label>
-                            </div>
-                          ))}
+                          {availableSubjects.map((subject) => {
+                            const isSelected = Array.isArray(formData.subjects) && formData.subjects.includes(subject.value);
+                            
+                            return (
+                              <div 
+                                key={subject.value} 
+                                onClick={() => handleSubjectChange(subject.value, !isSelected)} 
+                                className={`flex items-center space-x-3 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${isSelected ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}
+                              >
+                                <Checkbox 
+                                  id={subject.value} 
+                                  checked={isSelected} 
+                                  onCheckedChange={(checked) => {
+                                    // Prevent event bubbling to avoid double toggle
+                                    handleSubjectChange(subject.value, checked);
+                                  }} 
+                                  className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5" 
+                                  onClick={(e) => e.stopPropagation()}
+                                />
+                                <Label 
+                                  htmlFor={subject.value} 
+                                  className="cursor-pointer text-gray-700 font-medium flex-1 flex items-center gap-2"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <span>{subject.icon}</span>{subject.value}
+                                </Label>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
