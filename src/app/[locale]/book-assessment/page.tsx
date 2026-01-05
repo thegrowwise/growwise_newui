@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,7 @@ import CountryCodeSelector from '@/components/CountryCodeSelector';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 
 interface FormData {
   parentName: string;
@@ -74,14 +75,15 @@ export default function BookAssessmentPage() {
     'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'
   ];
 
-  const availableSubjects = [
+  // Move availableSubjects outside component or use useMemo to prevent recreation
+  const availableSubjects = useMemo(() => [
     { value: 'Math', icon: '📐' },
     { value: 'English', icon: '📚' },
     { value: 'Reading Comprehension', icon: '📖' },
     { value: 'Writing', icon: '✍️' },
     { value: 'Science', icon: '🔬' },
     { value: 'SAT/ACT', icon: '🎯' }
-  ];
+  ], []);
 
   const scheduleOptions = [
     'Weekdays Morning', 'Weekdays After School', 'Weekends Morning', 'Weekends Afternoon'
@@ -97,24 +99,28 @@ export default function BookAssessmentPage() {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubjectChange = (subject: string, checked: boolean | 'indeterminate' | undefined) => {
-    // Ensure checked is a boolean
-    const isChecked = checked === true;
-    
-    setFormData(prev => {
-      // Ensure subjects is always an array
-      const currentSubjects = Array.isArray(prev.subjects) ? prev.subjects : [];
-      
-      return {
-        ...prev,
-        subjects: isChecked
-          ? [...currentSubjects, subject]
-          : currentSubjects.filter(s => s !== subject)
+  // Use ref to store handlers to prevent recreation
+  const handlersRef = useRef<Record<string, (checked: boolean | 'indeterminate') => void>>({});
+  
+  // Initialize handlers only once
+  if (Object.keys(handlersRef.current).length === 0) {
+    availableSubjects.forEach(subject => {
+      handlersRef.current[subject.value] = (checked: boolean | 'indeterminate') => {
+        const isChecked = checked === true;
+        setFormData(prev => {
+          const currentSubjects = Array.isArray(prev.subjects) ? prev.subjects : [];
+          return {
+            ...prev,
+            subjects: isChecked
+              ? [...currentSubjects, subject.value]
+              : currentSubjects.filter(s => s !== subject.value)
+          };
+        });
       };
     });
-  };
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage('');
@@ -179,7 +185,7 @@ export default function BookAssessmentPage() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData]);
 
   const assessmentFeatures = [
     { icon: FileText, title: 'Detailed Report', description: 'Comprehensive analysis of strengths and growth areas', color: 'from-blue-500 to-blue-600', stats: '15+ Pages' },
@@ -223,7 +229,7 @@ export default function BookAssessmentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50" suppressHydrationWarning>
       <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }} className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></motion.div>
@@ -363,35 +369,35 @@ export default function BookAssessmentPage() {
             <h2 className="text-gray-900 mb-4">Book Your <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Free Assessment</span></h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">Fill out the form below and our academic advisors will contact you within 24 hours</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-2xl rounded-3xl overflow-hidden">
-              <CardContent className="p-10 lg:p-14">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} suppressHydrationWarning>
+            <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-2xl rounded-xl md:rounded-3xl overflow-hidden" suppressHydrationWarning>
+              <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 pt-4 sm:pt-6 md:pt-8 lg:pt-10" suppressHydrationWarning>
                 {!isSubmitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-8">
-                    <div className="space-y-6 p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-2xl border-2 border-[#1F396D]/10">
-                      <div className="flex items-center gap-3 pb-4 border-b-2 border-[#1F396D]/20">
-                        <div className="p-3 bg-gradient-to-br from-[#1F396D] to-[#29335C] rounded-xl"><User className="w-6 h-6 text-white" /></div>
-                        <div><h3 className="text-gray-900 text-xl">Parent Information</h3><p className="text-sm text-gray-500">Tell us about yourself</p></div>
+                  <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8" suppressHydrationWarning>
+                    <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
+                      <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#1F396D]/20">
+                        <div className="p-2 sm:p-3 bg-gradient-to-br from-[#1F396D] to-[#29335C] rounded-lg md:rounded-xl"><User className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
+                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Parent Information</h3><p className="text-xs sm:text-sm text-gray-500">Tell us about yourself</p></div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-3">
-                          <Label htmlFor="parentName" className="text-gray-700 font-medium text-base flex items-center gap-2"><User className="w-4 h-4 text-[#F16112]" />Parent Name <span className="text-red-500">*</span></Label>
-                          <Input id="parentName" type="text" value={formData.parentName} onChange={(e) => handleInputChange('parentName', e.target.value)} onFocus={() => setFocusedField('parentName')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-xl transition-all duration-300 h-14 text-base ${focusedField === 'parentName' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10 scale-[1.02]' : 'border-gray-300 hover:border-gray-400'}`} placeholder="John Doe" required />
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="parentName" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><User className="w-4 h-4 text-[#F16112]" />Parent Name <span className="text-red-500">*</span></Label>
+                          <Input id="parentName" type="text" value={formData.parentName} onChange={(e) => handleInputChange('parentName', e.target.value)} onFocus={() => setFocusedField('parentName')} onBlur={() => setFocusedField(null)} className={cn("bg-white border-2 rounded-lg md:rounded-xl transition-all h-12 md:h-14 text-sm sm:text-base", focusedField === 'parentName' ? 'border-[#F16112] shadow-md ring-2 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400')} placeholder="John Doe" required />
                         </div>
-                        <div className="space-y-3">
-                          <Label htmlFor="email" className="text-gray-700 font-medium text-base flex items-center gap-2"><Mail className="w-4 h-4 text-[#1F396D]" />Email Address <span className="text-red-500">*</span></Label>
-                          <Input id="email" type="email" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-xl transition-all duration-300 h-14 text-base ${focusedField === 'email' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10 scale-[1.02]' : 'border-gray-300 hover:border-gray-400'}`} placeholder="john@example.com" required />
+                        <div className="space-y-2">
+                          <Label htmlFor="email" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><Mail className="w-4 h-4 text-[#1F396D]" />Email Address <span className="text-red-500">*</span></Label>
+                          <Input id="email" type="email" value={formData.email} onChange={(e) => handleInputChange('email', e.target.value)} onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)} className={cn("bg-white border-2 rounded-lg md:rounded-xl transition-all h-12 md:h-14 text-sm sm:text-base", focusedField === 'email' ? 'border-[#F16112] shadow-md ring-2 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400')} placeholder="john@example.com" required />
                         </div>
                       </div>
-                      <div className="space-y-3">
-                        <Label htmlFor="phone" className="text-gray-700 font-medium text-base flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-[#F16112]" />Phone Number <span className="text-red-500">*</span></Label>
-                        <div className="flex items-stretch gap-0">
+                      <div className="space-y-2">
+                        <Label htmlFor="phone" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-[#F16112]" />Phone Number <span className="text-red-500">*</span></Label>
+                        <div className="flex items-center gap-0 border-2 border-gray-300 rounded-lg md:rounded-xl bg-white overflow-hidden focus-within:border-[#F16112] focus-within:ring-2 focus-within:ring-[#F16112]/10 transition-all">
                           <CountryCodeSelector 
                             value={formData.countryCode} 
                             onChange={(countryCode) => handleInputChange('countryCode', countryCode)} 
-                            className={`flex-shrink-0 ${focusedField === 'phone' ? 'border-[#F16112]' : ''}`}
+                            className={cn("flex-shrink-0", focusedField === 'phone' && 'border-[#F16112]')}
                           />
-                          <div className="w-px h-14 bg-gray-300 flex-shrink-0 self-center"></div>
+                          <div className="w-px h-8 md:h-10 bg-gray-300 flex-shrink-0"></div>
                           <Input 
                             id="phone" 
                             type="tel" 
@@ -399,24 +405,48 @@ export default function BookAssessmentPage() {
                             onChange={(e) => handleInputChange('phone', e.target.value)} 
                             onFocus={() => setFocusedField('phone')} 
                             onBlur={() => setFocusedField(null)} 
-                            className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 h-14 text-base text-gray-900 ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400'}`} 
+                            className={cn(
+                              "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
+                            ).trim()} 
                             placeholder={PHONE_PLACEHOLDER || "(555) 123-4567"} 
-                            required 
+                            required
+                            suppressHydrationWarning
                           />
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-6 p-8 bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/5 rounded-2xl border-2 border-[#F16112]/10">
-                      <div className="flex items-center gap-3 pb-4 border-b-2 border-[#F16112]/20"><div className="p-3 bg-gradient-to-br from-[#F16112] to-[#F1894F] rounded-xl"><GraduationCap className="w-6 h-6 text-white" /></div><div><h3 className="text-gray-900 text-xl">Student Information</h3><p className="text-sm text-gray-500">Tell us about your child</p></div></div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-3"><Label htmlFor="studentName" className="text-gray-700 font-medium text-base flex items-center gap-2"><GraduationCap className="w-4 h-4 text-[#F16112]" />Student Name <span className="text-red-500">*</span></Label><Input id="studentName" type="text" value={formData.studentName} onChange={(e) => handleInputChange('studentName', e.target.value)} onFocus={() => setFocusedField('studentName')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-xl transition-all duration-300 h-14 text-base ${focusedField === 'studentName' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10 scale-[1.02]' : 'border-gray-300 hover:border-gray-400'}`} placeholder="Jane Doe" required /></div>
-                        <div className="space-y-3"><Label htmlFor="grade" className="text-gray-700 font-medium text-base flex items-center gap-2"><BookOpen className="w-4 h-4 text-[#1F396D]" />Grade / Level <span className="text-red-500">*</span></Label><Select onValueChange={(value) => handleInputChange('grade', value)} required><SelectTrigger className="bg-white border-2 border-gray-300 rounded-xl hover:border-gray-400 transition-all h-14 text-base"><SelectValue placeholder="Select grade" /></SelectTrigger><SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">{grades.map((grade) => (<SelectItem key={grade} value={grade} className="hover:bg-[#F16112]/10 py-3">{grade}</SelectItem>))}</SelectContent></Select></div>
+                    <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/5 rounded-xl md:rounded-2xl border-2 border-[#F16112]/10">
+                      <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#F16112]/20">
+                        <div className="p-2 sm:p-3 bg-gradient-to-br from-[#F16112] to-[#F1894F] rounded-lg md:rounded-xl"><GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
+                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Student Information</h3><p className="text-xs sm:text-sm text-gray-500">Tell us about your child</p></div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                        <div className="space-y-2">
+                          <Label htmlFor="studentName" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><GraduationCap className="w-4 h-4 text-[#F16112]" />Student Name <span className="text-red-500">*</span></Label>
+                          <Input id="studentName" type="text" value={formData.studentName} onChange={(e) => handleInputChange('studentName', e.target.value)} onFocus={() => setFocusedField('studentName')} onBlur={() => setFocusedField(null)} className={cn("bg-white border-2 rounded-lg md:rounded-xl transition-all h-12 md:h-14 text-sm sm:text-base", focusedField === 'studentName' ? 'border-[#F16112] shadow-md ring-2 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400')} placeholder="Jane Doe" required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="grade" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><BookOpen className="w-4 h-4 text-[#1F396D]" />Grade / Level <span className="text-red-500">*</span></Label>
+                          <Select onValueChange={(value) => handleInputChange('grade', value)} required>
+                            <SelectTrigger className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base">
+                              <SelectValue placeholder="Select grade" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
+                              {grades.map((grade) => (
+                                <SelectItem key={grade} value={grade} className="hover:bg-[#F16112]/10 py-3">{grade}</SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="space-y-6 p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-2xl border-2 border-[#1F396D]/10">
-                      <div className="flex items-center gap-3 pb-4 border-b-2 border-[#1F396D]/20"><div className="p-3 bg-gradient-to-br from-[#1F396D] to-[#F16112] rounded-xl"><BookMarked className="w-6 h-6 text-white" /></div><div><h3 className="text-gray-900 text-xl">Assessment Preferences</h3><p className="text-sm text-gray-500">Customize your assessment experience</p></div></div>
+                    <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
+                      <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#1F396D]/20">
+                        <div className="p-2 sm:p-3 bg-gradient-to-br from-[#1F396D] to-[#F16112] rounded-lg md:rounded-xl"><BookMarked className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
+                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Assessment Preferences</h3><p className="text-xs sm:text-sm text-gray-500">Customize your assessment experience</p></div>
+                      </div>
                       <div className="space-y-3">
                         <Label htmlFor="assessmentType" className="text-gray-700 font-medium text-base flex items-center gap-2"><Target className="w-4 h-4 text-[#F16112]" />Assessment Type <span className="text-red-500">*</span></Label>
                         <Select onValueChange={(value) => handleInputChange('assessmentType', value)} required>
@@ -431,31 +461,31 @@ export default function BookAssessmentPage() {
                         </Select>
                       </div>
                       <div>
-                        <Label className="text-gray-700 font-medium mb-4 block flex items-center gap-2 text-base"><CheckSquare className="w-4 h-4 text-[#F16112]" />Areas of Focus <span className="text-red-500">*</span></Label>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <Label className="text-gray-700 font-medium mb-3 md:mb-4 block flex items-center gap-2 text-sm sm:text-base"><CheckSquare className="w-4 h-4 text-[#F16112]" />Areas of Focus <span className="text-red-500">*</span></Label>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                           {availableSubjects.map((subject) => {
                             const isSelected = Array.isArray(formData.subjects) && formData.subjects.includes(subject.value);
                             
                             return (
                               <div 
                                 key={subject.value} 
-                                onClick={() => handleSubjectChange(subject.value, !isSelected)} 
-                                className={`flex items-center space-x-3 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.02] active:scale-[0.98] ${isSelected ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}
+                                className={cn(
+                                  "flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer",
+                                  isSelected 
+                                    ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' 
+                                    : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm'
+                                )}
                               >
                                 <Checkbox 
                                   id={subject.value} 
                                   checked={isSelected} 
-                                  onCheckedChange={(checked) => {
-                                    // Prevent event bubbling to avoid double toggle
-                                    handleSubjectChange(subject.value, checked);
-                                  }} 
-                                  className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5" 
-                                  onClick={(e) => e.stopPropagation()}
+                                  onCheckedChange={handlersRef.current[subject.value]}
+                                  className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5 flex-shrink-0" 
+                                  suppressHydrationWarning
                                 />
                                 <Label 
                                   htmlFor={subject.value} 
                                   className="cursor-pointer text-gray-700 font-medium flex-1 flex items-center gap-2"
-                                  onClick={(e) => e.stopPropagation()}
                                 >
                                   <span>{subject.icon}</span>{subject.value}
                                 </Label>
@@ -464,40 +494,49 @@ export default function BookAssessmentPage() {
                           })}
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <Label className="text-gray-700 font-medium flex items-center gap-2 text-base"><Globe className="w-4 h-4 text-[#1F396D]" />Preferred Mode <span className="text-red-500">*</span></Label>
-                          <RadioGroup value={formData.mode} onValueChange={(value) => handleInputChange('mode', value)} className="flex flex-col gap-4">
-                            <div onClick={() => handleInputChange('mode', 'in-person')} className={`flex items-center space-x-4 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.01] active:scale-[0.99] ${formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div className="space-y-3 md:space-y-4">
+                          <Label className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Globe className="w-4 h-4 text-[#1F396D]" />Preferred Mode <span className="text-red-500">*</span></Label>
+                          <RadioGroup value={formData.mode} onValueChange={(value) => handleInputChange('mode', value)} className="flex flex-col gap-3 md:gap-4">
+                            <div onClick={() => handleInputChange('mode', 'in-person')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
                               <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium flex-1 pointer-events-none">In-person at {CONTACT_INFO.city}</Label>
+                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 pointer-events-none">In-person at {CONTACT_INFO.city}</Label>
                             </div>
-                            <div onClick={() => handleInputChange('mode', 'online')} className={`flex items-center space-x-4 p-4 bg-white rounded-xl border-2 transition-all duration-300 cursor-pointer hover:scale-[1.01] active:scale-[0.99] ${formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-lg' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-md'}`}>
+                            <div onClick={() => handleInputChange('mode', 'online')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
                               <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium flex-1 flex items-center gap-2 pointer-events-none"><Video className="w-4 h-4" />Online (Virtual)</Label>
+                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2 pointer-events-none"><Video className="w-4 h-4" />Online (Virtual)</Label>
                             </div>
                           </RadioGroup>
                         </div>
-                        <div className="space-y-3">
-                          <Label htmlFor="schedule" className="text-gray-700 font-medium flex items-center gap-2 text-base"><Calendar className="w-4 h-4 text-[#F16112]" />Preferred Schedule <span className="text-red-500">*</span></Label>
+                        <div className="space-y-2">
+                          <Label htmlFor="schedule" className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Calendar className="w-4 h-4 text-[#F16112]" />Preferred Schedule <span className="text-red-500">*</span></Label>
                           <Select onValueChange={(value) => handleInputChange('schedule', value)} required>
-                            <SelectTrigger className="bg-white border-2 border-gray-300 rounded-xl hover:border-gray-400 transition-all h-14 text-base"><SelectValue placeholder="Select preferred time" /></SelectTrigger>
-                            <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">{scheduleOptions.map((option) => (<SelectItem key={option} value={option} className="hover:bg-[#F16112]/10 py-3">{option}</SelectItem>))}</SelectContent>
+                            <SelectTrigger className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base">
+                              <SelectValue placeholder="Select preferred time" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
+                              {scheduleOptions.map((option) => (
+                                <SelectItem key={option} value={option} className="hover:bg-[#F16112]/10 py-3">{option}</SelectItem>
+                              ))}
+                            </SelectContent>
                           </Select>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-6 p-8 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl border-2 border-blue-200/50">
-                      <div className="flex items-center gap-3 pb-4 border-b-2 border-blue-300/50"><div className="p-3 bg-blue-500 rounded-xl"><MessageSquare className="w-6 h-6 text-white" /></div><div><h3 className="text-gray-900 text-xl">Additional Information</h3><p className="text-sm text-gray-600">Any special requirements or questions?</p></div></div>
-                      <div className="space-y-3">
-                        <Label htmlFor="notes" className="text-gray-700 font-medium flex items-center gap-2 text-base"><PenTool className="w-4 h-4 text-blue-600" />Special Requirements or Questions (Optional)</Label>
-                        <Textarea id="notes" value={formData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} onFocus={() => setFocusedField('notes')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-xl transition-all duration-300 min-h-[140px] resize-none text-base ${focusedField === 'notes' ? 'border-blue-500 shadow-lg ring-4 ring-blue-500/10' : 'border-gray-300 hover:border-gray-400'}`} placeholder="Let us know if you have any specific concerns or questions about the assessment..." />
+                    <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl md:rounded-2xl border-2 border-blue-200/50">
+                      <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-blue-300/50">
+                        <div className="p-2 sm:p-3 bg-blue-500 rounded-lg md:rounded-xl"><MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
+                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Additional Information</h3><p className="text-xs sm:text-sm text-gray-600">Any special requirements or questions?</p></div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="notes" className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><PenTool className="w-4 h-4 text-blue-600" />Special Requirements or Questions (Optional)</Label>
+                        <Textarea id="notes" value={formData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} onFocus={() => setFocusedField('notes')} onBlur={() => setFocusedField(null)} className={cn("bg-white border-2 rounded-lg md:rounded-xl transition-all min-h-[100px] sm:min-h-[140px] resize-none text-sm sm:text-base", focusedField === 'notes' ? 'border-blue-500 shadow-md ring-2 ring-blue-500/10' : 'border-gray-300 hover:border-gray-400')} placeholder="Let us know if you have any specific concerns or questions about the assessment..." />
                       </div>
                     </div>
 
-                    <div className="pt-4">
-                      <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-16 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-lg font-semibold group relative overflow-hidden">
+                    <div className="pt-2 md:pt-4">
+                      <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>

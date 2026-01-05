@@ -149,7 +149,15 @@ export const TrackedForm = forwardRef<HTMLFormElement, TrackedFormProps>(
     children, 
     ...props 
   }, ref) => {
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    // Use useRef to store the onFormStart callback to avoid dependency issues
+    const onFormStartRef = React.useRef(onFormStart);
+    const hasTrackedRef = React.useRef(false);
+
+    React.useEffect(() => {
+      onFormStartRef.current = onFormStart;
+    }, [onFormStart]);
+
+    const handleSubmit = React.useCallback((e: React.FormEvent<HTMLFormElement>) => {
       // Track form start if not already tracked
       analyticsTracker.trackFormStart(formName);
       
@@ -157,15 +165,18 @@ export const TrackedForm = forwardRef<HTMLFormElement, TrackedFormProps>(
       if (onSubmit) {
         onSubmit(e);
       }
-    };
+    }, [formName, onSubmit]);
 
-    // Track form start when component mounts
+    // Track form start when component mounts (only once)
     React.useEffect(() => {
-      analyticsTracker.trackFormStart(formName);
-      if (onFormStart) {
-        onFormStart();
+      if (!hasTrackedRef.current) {
+        hasTrackedRef.current = true;
+        analyticsTracker.trackFormStart(formName);
+        if (onFormStartRef.current) {
+          onFormStartRef.current();
+        }
       }
-    }, [formName, onFormStart]);
+    }, [formName]);
 
     return (
       <form ref={ref} onSubmit={handleSubmit} {...props}>

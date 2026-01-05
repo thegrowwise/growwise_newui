@@ -111,25 +111,31 @@ class FirebaseAnalyticsService {
    * Log a custom event (safe to call before init finishes)
    */
   public logEvent(eventName: string, parameters?: Record<string, any>): void {
+    // Guard against SSR
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     if (this.isAvailable() && this.analytics) {
       try {
         const logEventFn = (this as any)._logEvent;
-        if (logEventFn) {
+        if (logEventFn && typeof logEventFn === 'function') {
           logEventFn(this.analytics, eventName, parameters);
         } else {
-          console.warn('logEvent function not available');
+          // Queue if function not available yet
+          this.queue.push({ kind: 'event', name: eventName, params: parameters });
         }
       } catch (e) {
-        console.error('Failed to log event:', eventName, e);
+        // Silently fail in production, log in development
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('Failed to log event:', eventName, e);
+        }
       }
       return;
     }
 
     // Not ready yet — queue it
     this.queue.push({ kind: 'event', name: eventName, params: parameters });
-    if (!this.initStarted) {
-      console.warn(`Analytics not initialized yet, queued event: ${eventName}`);
-    }
   }
 
   /**
@@ -138,47 +144,59 @@ class FirebaseAnalyticsService {
    * User properties should be sent as custom parameters in events.
    */
   public setUserProperties(properties: Record<string, string | number | boolean>): void {
+    // Guard against SSR
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     if (this.isAvailable() && this.analytics) {
       try {
         // Log user properties as a custom event
         const logEventFn = (this as any)._logEvent;
-        if (logEventFn) {
+        if (logEventFn && typeof logEventFn === 'function') {
           logEventFn(this.analytics, 'user_properties_set', properties);
         } else {
-          console.warn('logEvent function not available for user properties');
+          // Queue if function not available yet
+          this.queue.push({ kind: 'props', props: properties });
         }
       } catch (e) {
-        console.error('Failed to set user properties:', e);
+        // Silently fail in production, log in development
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('Failed to set user properties:', e);
+        }
       }
       return;
     }
     this.queue.push({ kind: 'props', props: properties });
-    if (!this.initStarted) {
-      console.warn('Analytics not initialized yet, queued user properties.');
-    }
   }
 
   /**
    * Set user ID (safe before init)
    */
   public setUserId(userId: string): void {
+    // Guard against SSR
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     if (this.isAvailable() && this.analytics) {
       try {
         const setUserIdFn = (this as any)._setUserId;
-        if (setUserIdFn) {
+        if (setUserIdFn && typeof setUserIdFn === 'function') {
           setUserIdFn(this.analytics, userId);
         } else {
-          console.warn('setUserId function not available');
+          // Queue if function not available yet
+          this.queue.push({ kind: 'uid', uid: userId });
         }
       } catch (e) {
-        console.error('Failed to set user ID:', e);
+        // Silently fail in production, log in development
+        if (process.env.NODE_ENV !== 'production') {
+          console.error('Failed to set user ID:', e);
+        }
       }
       return;
     }
     this.queue.push({ kind: 'uid', uid: userId });
-    if (!this.initStarted) {
-      console.warn('Analytics not initialized yet, queued user id.');
-    }
   }
 
   /**
@@ -192,7 +210,7 @@ class FirebaseAnalyticsService {
    * Flush buffered calls after init
    */
   private flushQueue(): void {
-    if (!this.analytics) return;
+    if (!this.analytics || typeof window === 'undefined') return;
     const a = this.analytics;
     const logEventFn = (this as any)._logEvent;
     const setUserIdFn = (this as any)._setUserId;
@@ -201,24 +219,27 @@ class FirebaseAnalyticsService {
       try {
         switch (job.kind) {
           case 'event':
-            if (logEventFn) {
+            if (logEventFn && typeof logEventFn === 'function') {
               logEventFn(a, job.name, job.params);
             }
             break;
           case 'props':
             // Log user properties as a custom event
-            if (logEventFn) {
+            if (logEventFn && typeof logEventFn === 'function') {
               logEventFn(a, 'user_properties_set', job.props);
             }
             break;
           case 'uid':
-            if (setUserIdFn) {
+            if (setUserIdFn && typeof setUserIdFn === 'function') {
               setUserIdFn(a, job.uid);
             }
             break;
         }
       } catch (e) {
-        console.warn('Deferred analytics call failed:', job, e);
+        // Silently fail in production, log in development
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn('Deferred analytics call failed:', job, e);
+        }
       }
     }
     this.queue = [];
