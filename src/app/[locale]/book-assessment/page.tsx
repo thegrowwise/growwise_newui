@@ -356,7 +356,7 @@ export default function BookAssessmentPage() {
                             onChange={(e) => handleInputChange('phone', e.target.value)} 
                             onFocus={() => setFocusedField('phone')} 
                             onBlur={() => setFocusedField(null)} 
-                            className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 h-14 text-base ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400'}`} 
+                            className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 h-14 text-base text-gray-900 ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400'}`} 
                             placeholder={PHONE_PLACEHOLDER || "(555) 123-4567"} 
                             required 
                           />
