@@ -342,7 +342,6 @@ export default function BookAssessmentPage() {
                       </div>
                       <div className="space-y-3">
                         <Label htmlFor="phone" className="text-gray-700 font-medium text-base flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-[#F16112]" />Phone Number <span className="text-red-500">*</span></Label>
-<<<<<<< HEAD
                         <div className="flex items-stretch gap-0">
                           <CountryCodeSelector 
                             value={formData.countryCode} 
