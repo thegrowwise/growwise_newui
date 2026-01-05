@@ -341,10 +341,24 @@ export default function BookAssessmentPage() {
                       </div>
                       <div className="space-y-3">
                         <Label htmlFor="phone" className="text-gray-700 font-medium text-base flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-[#F16112]" />Phone Number <span className="text-red-500">*</span></Label>
-                        <div className="flex items-stretch">
-                          <CountryCodeSelector value={formData.countryCode} onChange={(countryCode) => handleInputChange('countryCode', countryCode)} className="flex-shrink-0" />
-                          <div className="w-px h-14 bg-gray-300 flex-shrink-0"></div>
-                          <Input id="phone" type="tel" value={formData.phone} onChange={(e) => handleInputChange('phone', e.target.value)} onFocus={() => setFocusedField('phone')} onBlur={() => setFocusedField(null)} className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 border-l-0 h-14 text-base ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10 scale-[1.02]' : 'border-gray-300 hover:border-gray-400'}`} placeholder="(555) 123-4567" required />
+                        <div className="flex items-stretch gap-0">
+                          <CountryCodeSelector 
+                            value={formData.countryCode} 
+                            onChange={(countryCode) => handleInputChange('countryCode', countryCode)} 
+                            className={`flex-shrink-0 ${focusedField === 'phone' ? 'border-[#F16112]' : ''}`}
+                          />
+                          <div className="w-px h-14 bg-gray-300 flex-shrink-0 self-center"></div>
+                          <Input 
+                            id="phone" 
+                            type="tel" 
+                            value={formData.phone} 
+                            onChange={(e) => handleInputChange('phone', e.target.value)} 
+                            onFocus={() => setFocusedField('phone')} 
+                            onBlur={() => setFocusedField(null)} 
+                            className={`bg-white border-2 rounded-r-xl rounded-l-none transition-all duration-300 flex-1 h-14 text-base ${focusedField === 'phone' ? 'border-[#F16112] shadow-lg ring-4 ring-[#F16112]/10' : 'border-gray-300 hover:border-gray-400'}`} 
+                            placeholder="(555) 123-4567" 
+                            required 
+                          />
                         </div>
                       </div>
                     </div>
