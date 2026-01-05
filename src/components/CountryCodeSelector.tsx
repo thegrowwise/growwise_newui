@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronDown, Search } from 'lucide-react';
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 
 interface Country {
   code: string;
@@ -214,119 +214,259 @@ const countries: Country[] = [
   { code: 'VE', name: 'Venezuela', dialCode: '+58', flag: '🇻🇪' }
 ];
 
-const CountryCodeSelector: React.FC<CountryCodeSelectorProps> = ({ 
-  value, 
-  onChange, 
-  className = "" 
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
+// Dropdown component rendered via Portal
+function Dropdown({ 
+  isOpen, 
+  onClose, 
+  onSelect, 
+  selectedCountry, 
+  buttonRef 
+}: { 
+  isOpen: boolean;
+  onClose: () => void;
+  onSelect: (country: Country) => void;
+  selectedCountry: Country;
+  buttonRef: React.RefObject<HTMLButtonElement | null>;
+}) {
   const [searchTerm, setSearchTerm] = useState('');
+  const [position, setPosition] = useState({ top: 0, left: 0, width: 280 });
+  const [isMobile, setIsMobile] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Memoize selectedCountry to ensure it updates when value changes
-  const selectedCountry = useMemo(() => {
-    const found = countries.find(country => country.dialCode === value);
-    return found || countries[0];
-  }, [value]);
-  
-  // Check if focused state is passed via className
-  const isFocused = className.includes('border-[#F16112]');
+  // Filter countries
+  const filteredCountries = useMemo(() => {
+    if (!searchTerm.trim()) return countries;
+    const search = searchTerm.toLowerCase().trim();
+    return countries.filter(country =>
+      country.name.toLowerCase().includes(search) ||
+      country.dialCode.includes(searchTerm) ||
+      country.code.toLowerCase().includes(search)
+    );
+  }, [searchTerm]);
 
-  const filteredCountries = countries.filter(country =>
-    country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    country.dialCode.includes(searchTerm) ||
-    country.code.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  // Set mounted state
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest('[data-country-selector]')) {
-        setIsOpen(false);
-        setSearchTerm('');
+    setMounted(true);
+  }, []);
+
+  // Calculate position and check if mobile
+  useEffect(() => {
+    if (!isOpen || !buttonRef.current) return;
+    
+    const updatePosition = () => {
+      const rect = buttonRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      
+      const mobile = window.innerWidth < 640;
+      setIsMobile(mobile);
+      
+      if (!mobile) {
+        setPosition({
+          top: rect.bottom + window.scrollY + 4,
+          left: rect.left + window.scrollX,
+          width: 280
+        });
+      }
+    };
+    
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isOpen, buttonRef]);
+
+  // Focus search input when opened
+  useEffect(() => {
+    if (isOpen && searchInputRef.current) {
+      const timer = setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  // Handle click outside
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+      if (
+        dropdownRef.current && 
+        !dropdownRef.current.contains(target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(target)
+      ) {
+        onClose();
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    // Small delay to prevent immediate close
+    const timer = setTimeout(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+    }, 10);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose, buttonRef]);
+
+  // Reset search when closed
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchTerm('');
+    }
+  }, [isOpen]);
+
+  if (!isOpen || !mounted) return null;
+
+  const dropdownContent = (
+    <div
+      ref={dropdownRef}
+      className={cn(
+        "bg-white border border-gray-200 shadow-2xl overflow-hidden flex flex-col",
+        isMobile 
+          ? "fixed inset-x-0 bottom-0 rounded-t-2xl max-h-[70vh] z-[10000]" 
+          : "absolute rounded-xl max-h-80 z-[10000]"
+      )}
+      style={isMobile ? undefined : { 
+        top: position.top, 
+        left: position.left, 
+        width: position.width 
+      }}
+    >
+      {/* Mobile drag handle */}
+      {isMobile && (
+        <div className="flex justify-center pt-2 pb-1">
+          <div className="w-10 h-1 bg-gray-300 rounded-full" />
+        </div>
+      )}
+      
+      {/* Search Input */}
+      <div className="p-3 border-b border-gray-200 bg-white">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            inputMode="search"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            placeholder="Search countries..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                onClose();
+              }
+            }}
+            className="w-full h-10 pl-10 pr-3 bg-gray-50 border border-gray-200 rounded-lg text-base outline-none focus:border-[#F16112] focus:ring-2 focus:ring-[#F16112]/20 transition-colors"
+          />
+        </div>
+      </div>
+
+      {/* Countries List */}
+      <div className="flex-1 overflow-y-auto overscroll-contain">
+        {filteredCountries.length > 0 ? (
+          filteredCountries.map((country) => (
+            <button
+              key={country.code}
+              type="button"
+              onClick={() => {
+                onSelect(country);
+                onClose();
+              }}
+              className={cn(
+                "w-full px-4 py-3 text-left flex items-center gap-3 text-sm border-0 outline-none transition-colors",
+                "hover:bg-[#F16112]/10 active:bg-[#F16112]/20",
+                selectedCountry.code === country.code 
+                  ? "bg-[#F16112]/10 text-[#F16112]" 
+                  : "text-gray-700"
+              )}
+            >
+              <span className="text-lg w-6 text-center flex-shrink-0">{country.flag}</span>
+              <span className="font-medium min-w-[50px]">{country.dialCode}</span>
+              <span className="text-gray-500 text-xs truncate flex-1">{country.name}</span>
+            </button>
+          ))
+        ) : (
+          <div className="px-4 py-8 text-center text-gray-500 text-sm">
+            No countries found for &quot;{searchTerm}&quot;
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  // Render via portal to escape parent overflow:hidden
+  if (typeof document !== 'undefined') {
+    return createPortal(dropdownContent, document.body);
+  }
+  
+  return null;
+}
+
+const CountryCodeSelector: React.FC<CountryCodeSelectorProps> = ({ 
+  value, 
+  onChange, 
+  className 
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // Find selected country
+  const selectedCountry = useMemo(() => {
+    return countries.find(country => country.dialCode === value) || countries[0];
+  }, [value]);
+
+  // Handle country selection
+  const handleSelect = useCallback((country: Country) => {
+    onChange(country.dialCode);
+  }, [onChange]);
+
+  const handleToggle = useCallback(() => {
+    setIsOpen(prev => !prev);
   }, []);
 
-  const handleCountrySelect = (country: Country, e?: React.MouseEvent) => {
-    e?.preventDefault();
-    e?.stopPropagation();
-    // Call onChange with the dial code to update parent component
-    onChange(country.dialCode);
+  const handleClose = useCallback(() => {
     setIsOpen(false);
-    setSearchTerm('');
-  };
+  }, []);
 
-  const handleToggle = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsOpen(!isOpen);
-  };
+  // Build className - keep it simple and static
+  const baseClassName = "relative flex-shrink-0";
+  const finalClassName = className ? `${baseClassName} ${className}` : baseClassName;
 
   return (
-    <div className={`relative ${className}`} data-country-selector>
-      {/* Selected Country Display */}
-      <Button
+    <div className={finalClassName}>
+      {/* Trigger Button */}
+      <button
+        ref={buttonRef}
         type="button"
         onClick={handleToggle}
-        className={`h-14 px-3 bg-white border-2 rounded-l-xl rounded-r-none transition-colors flex items-center gap-2 min-w-[100px] justify-start ${
-          isFocused 
-            ? 'border-[#F16112]' 
-            : 'border-gray-300 hover:border-gray-400'
-        }`}
+        className="h-12 md:h-14 px-3 bg-transparent border-0 rounded-none transition-colors flex items-center gap-2 min-w-[100px] justify-start hover:bg-gray-50 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-[#F16112]/20"
       >
         <span className="text-lg flex-shrink-0">{selectedCountry.flag}</span>
         <span className="text-sm font-medium text-gray-900">{selectedCountry.dialCode}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-      </Button>
+        <ChevronDown className={cn("w-4 h-4 transition-transform", isOpen && "rotate-180")} />
+      </button>
 
-      {/* Dropdown */}
-      {isOpen && (
-        <div className="absolute top-full left-0 z-[100] mt-1 w-[280px] bg-white border-2 border-gray-200 rounded-xl shadow-2xl overflow-hidden">
-          {/* Search Input */}
-          <div className="p-3 border-b border-gray-200 bg-white">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
-              <Input
-                type="text"
-                placeholder="Search countries..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white border-2 border-gray-200 rounded-lg focus:border-[#F16112] transition-colors text-sm"
-                autoFocus
-              />
-            </div>
-          </div>
-
-          {/* Countries List */}
-          <div className="max-h-48 overflow-y-auto bg-white">
-            {filteredCountries.length > 0 ? (
-              filteredCountries.map((country) => (
-                <button
-                  key={country.code}
-                  type="button"
-                  onClick={(e) => handleCountrySelect(country, e)}
-                  className={`w-full px-4 py-3 text-left hover:bg-[#F16112]/10 transition-colors flex items-center gap-3 text-sm border-0 outline-none ${
-                    selectedCountry.code === country.code ? 'bg-[#F16112]/10 text-[#F16112]' : 'text-gray-700'
-                  }`}
-                >
-                  <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg w-6 flex-shrink-0 text-center">{country.flag}</span>
-                      <span className="font-medium text-left min-w-[50px]">{country.dialCode}</span>
-                    </div>
-                  </div>
-                </button>
-              ))
-            ) : (
-              <div className="px-4 py-6 text-center text-gray-500 text-sm">
-                No countries found
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Dropdown via Portal */}
+      <Dropdown
+        isOpen={isOpen}
+        onClose={handleClose}
+        onSelect={handleSelect}
+        selectedCountry={selectedCountry}
+        buttonRef={buttonRef}
+      />
     </div>
   );
 };

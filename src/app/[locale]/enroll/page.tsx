@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -23,6 +23,11 @@ export default function EnrollPage() {
   // Analytics hooks
   usePageTracking('Enrollment Page');
   const { trackFormStart, trackFormSubmit, trackFormAbandon } = useFormTracking();
+
+  // Memoize checkbox handler to prevent infinite loops
+  const handleAgreeChange = useCallback((checked: boolean | 'indeterminate') => {
+    setAgree(checked === true);
+  }, []);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -242,7 +247,7 @@ export default function EnrollPage() {
           </div>
 
           <div className="mt-4 flex items-start gap-2">
-            <Checkbox id="agree" checked={agree} onCheckedChange={(v) => setAgree(Boolean(v))} />
+            <Checkbox id="agree" checked={agree} onCheckedChange={handleAgreeChange} />
             <Label htmlFor="agree" className="text-sm text-gray-700">I agree to receive communications from GrowWise.</Label>
           </div>
 
