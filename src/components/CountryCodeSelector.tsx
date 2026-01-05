@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronDown, Search } from 'lucide-react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -211,9 +211,7 @@ const countries: Country[] = [
   { code: 'BO', name: 'Bolivia', dialCode: '+591', flag: '🇧🇴' },
   { code: 'PY', name: 'Paraguay', dialCode: '+595', flag: '🇵🇾' },
   { code: 'UY', name: 'Uruguay', dialCode: '+598', flag: '🇺🇾' },
-  { code: 'VE', name: 'Venezuela', dialCode: '+58', flag: '🇻🇪' },
-  { code: 'TT', name: 'Trinidad and Tobago', dialCode: '+1', flag: '🇹🇹' },
-  { code: 'FJ', name: 'Fiji', dialCode: '+679', flag: '🇫🇯' }
+  { code: 'VE', name: 'Venezuela', dialCode: '+58', flag: '🇻🇪' }
 ];
 
 const CountryCodeSelector: React.FC<CountryCodeSelectorProps> = ({ 
@@ -224,7 +222,14 @@ const CountryCodeSelector: React.FC<CountryCodeSelectorProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const selectedCountry = countries.find(country => country.dialCode === value) || countries[0];
+  // Memoize selectedCountry to ensure it updates when value changes
+  const selectedCountry = useMemo(() => {
+    const found = countries.find(country => country.dialCode === value);
+    return found || countries[0];
+  }, [value]);
+  
+  // Check if focused state is passed via className
+  const isFocused = className.includes('border-[#F16112]');
 
   const filteredCountries = countries.filter(country =>
     country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -245,7 +250,10 @@ const CountryCodeSelector: React.FC<CountryCodeSelectorProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleCountrySelect = (country: Country) => {
+  const handleCountrySelect = (country: Country, e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+    // Call onChange with the dial code to update parent component
     onChange(country.dialCode);
     setIsOpen(false);
     setSearchTerm('');
@@ -262,38 +270,43 @@ const CountryCodeSelector: React.FC<CountryCodeSelectorProps> = ({
       <Button
         type="button"
         onClick={handleToggle}
-        className="h-10 px-3 bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-l-xl focus:border-[#F16112] transition-colors flex items-center gap-2 min-w-[100px] justify-start"
+        className={`h-14 px-3 bg-white border-2 rounded-l-xl rounded-r-none transition-colors flex items-center gap-2 min-w-[100px] justify-start ${
+          isFocused 
+            ? 'border-[#F16112]' 
+            : 'border-gray-300 hover:border-gray-400'
+        }`}
       >
-        <span className="text-lg">{selectedCountry.flag}</span>
-        <span className="text-sm font-medium">{selectedCountry.dialCode}</span>
+        <span className="text-lg flex-shrink-0">{selectedCountry.flag}</span>
+        <span className="text-sm font-medium text-gray-900">{selectedCountry.dialCode}</span>
         <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </Button>
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl overflow-hidden">
+        <div className="absolute top-full left-0 z-[100] mt-1 w-[280px] bg-white border-2 border-gray-200 rounded-xl shadow-2xl overflow-hidden">
           {/* Search Input */}
-          <div className="p-3 border-b border-gray-200">
+          <div className="p-3 border-b border-gray-200 bg-white">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 z-10" />
               <Input
                 type="text"
                 placeholder="Search countries..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-lg focus:border-[#F16112] transition-colors text-sm"
+                className="pl-10 bg-white border-2 border-gray-200 rounded-lg focus:border-[#F16112] transition-colors text-sm"
+                autoFocus
               />
             </div>
           </div>
 
           {/* Countries List */}
-          <div className="max-h-48 overflow-y-scroll scrollbar-hide">
+          <div className="max-h-48 overflow-y-auto bg-white">
             {filteredCountries.length > 0 ? (
               filteredCountries.map((country) => (
                 <button
                   key={country.code}
                   type="button"
-                  onClick={() => handleCountrySelect(country)}
+                  onClick={(e) => handleCountrySelect(country, e)}
                   className={`w-full px-4 py-3 text-left hover:bg-[#F16112]/10 transition-colors flex items-center gap-3 text-sm border-0 outline-none ${
                     selectedCountry.code === country.code ? 'bg-[#F16112]/10 text-[#F16112]' : 'text-gray-700'
                   }`}
