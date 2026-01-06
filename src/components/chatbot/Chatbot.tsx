@@ -8,6 +8,7 @@ import { useChatbot } from '../../contexts/ChatbotContext';
 import ContactForm, { ContactFormData } from './ContactForm';
 import { contactService } from '../../lib/contactService';
 import { ChatMessageSkeleton } from '../ui/loading-skeletons';
+import { CONTACT_INFO } from '@/lib/constants';
 
 interface Message {
   id: string;
@@ -245,7 +246,7 @@ export default function Chatbot() {
     
     // Contact Information
     if (input.includes('contact') || input.includes('phone') || input.includes('email') || input.includes('address') || input.includes('location')) {
-      return { text: "You can reach us through:\n\n🌐 Our website contact form\n📞 Direct phone contact\n📧 Email support\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours." };
+      return { text: `You can reach us at:\n\n📞 Phone: ${CONTACT_INFO.phone}\n📧 Email: ${CONTACT_INFO.email}\n📍 Address: ${CONTACT_INFO.address}\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.` };
     }
     
     // Testimonials
