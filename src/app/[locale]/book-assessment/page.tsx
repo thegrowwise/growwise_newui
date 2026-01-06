@@ -408,7 +408,7 @@ export default function BookAssessmentPage() {
                             className={cn(
                               "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
                             ).trim()} 
-                            placeholder={PHONE_PLACEHOLDER || "(555) 123-4567"} 
+                            placeholder={PHONE_PLACEHOLDER || CONTACT_INFO.phone} 
                             required
                             suppressHydrationWarning
                           />

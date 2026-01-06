@@ -8,9 +8,18 @@ interface LLMResponse {
   error?: string;
 }
 
+import { CONTACT_INFO } from './constants';
+
 // GrowWise specific context for the LLM
+// Keep this minimal to reduce token costs - only essential information
 const GROWWISE_CONTEXT = `
 You are a helpful assistant for GrowWise, an educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses.
+
+CONTACT INFORMATION (IMPORTANT - Always use these exact details):
+- Phone: ${CONTACT_INFO.phone}
+- Email: ${CONTACT_INFO.email}
+- Address: ${CONTACT_INFO.address}
+- Business Hours: Contact us for current hours
 
 About GrowWise:
 - We serve 325+ students with 25+ courses
@@ -47,7 +56,9 @@ Testimonials:
 - Michael Chen (Student): "The STEAM programs opened up a whole new world. I'm now pursuing computer science in college!"
 - Lisa Rodriguez (Parent): "The personalized attention and innovative teaching methods make GrowWise stand out."
 
-Always be helpful, friendly, and informative. If you don't know something specific, direct them to contact GrowWise directly for more information.
+IMPORTANT: When asked about contact information, ALWAYS provide the exact phone number: ${CONTACT_INFO.phone}, email: ${CONTACT_INFO.email}, and address: ${CONTACT_INFO.address}. Never make up or guess contact information.
+
+Always be helpful, friendly, and informative. If you don't know something specific, direct them to contact GrowWise directly using the contact information above.
 `;
 
 export class LLMService {
@@ -61,6 +72,24 @@ export class LLMService {
     this.baseUrl = 'https://api.openai.com/v1';
   }
 
+  /**
+   * Query knowledge base API for specific information
+   * This allows dynamic retrieval without bloating the context
+   */
+  private async queryKnowledgeBase(query: string): Promise<any> {
+    try {
+      const response = await fetch(`/api/knowledge-base?q=${encodeURIComponent(query)}`);
+      if (!response.ok) {
+        return null;
+      }
+      const data = await response.json();
+      return data.success ? data.data : null;
+    } catch (error) {
+      console.error('Knowledge Base query error:', error);
+      return null;
+    }
+  }
+
   async generateResponse(messages: ChatMessage[]): Promise<LLMResponse> {
     if (!this.apiKey) {
       return {
@@ -70,6 +99,10 @@ export class LLMService {
     }
 
     try {
+      // Check if the last message might need knowledge base lookup
+      // For now, we'll rely on the context which includes contact info
+      // Future: Can implement function calling here for complex queries
+      
       // Add system context to messages
       const systemMessage: ChatMessage = {
         role: 'system',
@@ -130,7 +163,7 @@ export class LLMService {
     }
     
     if (input.includes('contact') || input.includes('phone') || input.includes('email')) {
-      return "You can reach us through our website contact form, phone, or email. We're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.";
+      return `You can reach us at:\n\n📞 Phone: ${CONTACT_INFO.phone}\n📧 Email: ${CONTACT_INFO.email}\n📍 Address: ${CONTACT_INFO.address}\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.`;
     }
     
     return "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?";
