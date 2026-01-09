@@ -37,7 +37,9 @@
         { "label": "Acerca de Nosotros", "href": "/about", "active": true },
         { "label": "Contáctanos", "href": "/contact", "active": true },
         { "label": "Resumen de Programas", "href": "/programs", "active": true },
-        { "label": "Inscripción General", "href": "/enroll", "active": true }
+        { "label": "Inscripción General", "href": "/enroll", "active": true },
+        { "label": "Términos y Condiciones", "href": "/terms-conditions", "active": true },
+        { "label": "Política de Privacidad", "href": "/privacy-policy", "active": true }
       ]
     }
   ],

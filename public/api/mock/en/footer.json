@@ -37,7 +37,9 @@
         { "label": "About Us", "href": "/about", "active": true },
         { "label": "Contact Us", "href": "/contact", "active": true },
         { "label": "Programs Overview", "href": "/programs", "active": true },
-        { "label": "General Enroll", "href": "/enroll", "active": true }
+        { "label": "General Enroll", "href": "/enroll", "active": true },
+        { "label": "Terms & Conditions", "href": "/terms-conditions", "active": true },
+        { "label": "Privacy Policy", "href": "/privacy-policy", "active": true }
       ]
     }
   ],

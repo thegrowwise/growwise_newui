@@ -37,7 +37,9 @@
         { "label": "हमारे बारे में", "href": "/about", "active": true },
         { "label": "संपर्क करें", "href": "/contact", "active": true },
         { "label": "कार्यक्रम अवलोकन", "href": "/programs", "active": true },
-        { "label": "सामान्य नामांकन", "href": "/enroll", "active": true }
+        { "label": "सामान्य नामांकन", "href": "/enroll", "active": true },
+        { "label": "नियम और शर्तें", "href": "/terms-conditions", "active": true },
+        { "label": "गोपनीयता नीति", "href": "/privacy-policy", "active": true }
       ]
     }
   ],
