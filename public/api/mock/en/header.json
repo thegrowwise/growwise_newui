@@ -153,13 +153,6 @@
       "visible": false
     },
     {
-      "key": "blogs",
-      "label": "Blogs",
-      "href": "/growwise-blogs",
-      "type": "simple",
-      "variant": "orange"
-    },
-    {
       "key": "about",
       "label": "About Us",
       "href": "/about",
