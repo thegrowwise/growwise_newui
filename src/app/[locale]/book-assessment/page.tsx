@@ -25,6 +25,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import { validatePhone, getPhonePlaceholder, getCallingCode } from '@/lib/phoneValidation';
 
 interface FormData {
   parentName: string;
@@ -47,6 +48,7 @@ export default function BookAssessmentPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
@@ -95,8 +97,49 @@ export default function BookAssessmentPage() {
     { value: 'Complete Academic Assessment', price: '$89', icon: '🎓', popular: true }
   ];
 
+  // Map dial code to ISO2 country code
+  const dialCodeToIso2: Record<string, string> = {
+    '+1': 'US', // Default to US for +1 (could be CA too)
+    '+91': 'IN',
+    '+44': 'GB',
+    '+971': 'AE',
+    '+65': 'SG',
+    '+61': 'AU',
+    '+49': 'DE',
+    '+33': 'FR'
+  };
+
+  const getCountryIso2 = (dialCode: string): string => {
+    return dialCodeToIso2[dialCode] || 'US';
+  };
+
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Clear phone error when user starts typing
+    if (field === 'phone' && phoneError) {
+      setPhoneError(null);
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const countryIso2 = getCountryIso2(formData.countryCode);
+      const result = validatePhone(countryIso2, formData.phone);
+      setPhoneError(result.errorMessage);
+    } else {
+      setPhoneError(null);
+    }
+  };
+
+  const handleCountryCodeChange = (dialCode: string) => {
+    handleInputChange('countryCode', dialCode);
+    // Re-validate phone when country changes
+    if (formData.phone.trim()) {
+      const countryIso2 = getCountryIso2(dialCode);
+      const result = validatePhone(countryIso2, formData.phone);
+      setPhoneError(result.errorMessage);
+    }
   };
 
   // Use ref to store handlers to prevent recreation
@@ -124,13 +167,24 @@ export default function BookAssessmentPage() {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage('');
+    setPhoneError(null);
+
+    // Validate phone number before submission
+    const countryIso2 = getCountryIso2(formData.countryCode);
+    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    
+    if (!phoneValidation.isValid) {
+      setPhoneError(phoneValidation.errorMessage);
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const assessmentData = {
         parentName: formData.parentName,
         email: formData.email,
         countryCode: formData.countryCode,
-        phone: formData.phone,
+        phone: phoneValidation.e164 || formData.phone, // Use E.164 format if available
         studentName: formData.studentName,
         grade: formData.grade,
         subjects: formData.subjects,
@@ -391,10 +445,13 @@ export default function BookAssessmentPage() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="phone" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-[#F16112]" />Phone Number <span className="text-red-500">*</span></Label>
-                        <div className="flex items-center gap-0 border-2 border-gray-300 rounded-lg md:rounded-xl bg-white overflow-hidden focus-within:border-[#F16112] focus-within:ring-2 focus-within:ring-[#F16112]/10 transition-all">
+                        <div className={cn(
+                          "flex items-center gap-0 border-2 rounded-lg md:rounded-xl bg-white overflow-hidden transition-all",
+                          phoneError ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/10' : 'border-gray-300 focus-within:border-[#F16112] focus-within:ring-2 focus-within:ring-[#F16112]/10'
+                        )}>
                           <CountryCodeSelector 
                             value={formData.countryCode} 
-                            onChange={(countryCode) => handleInputChange('countryCode', countryCode)} 
+                            onChange={handleCountryCodeChange} 
                             className={cn("flex-shrink-0", focusedField === 'phone' && 'border-[#F16112]')}
                           />
                           <div className="w-px h-8 md:h-10 bg-gray-300 flex-shrink-0"></div>
@@ -404,15 +461,25 @@ export default function BookAssessmentPage() {
                             value={formData.phone} 
                             onChange={(e) => handleInputChange('phone', e.target.value)} 
                             onFocus={() => setFocusedField('phone')} 
-                            onBlur={() => setFocusedField(null)} 
+                            onBlur={() => {
+                              setFocusedField(null);
+                              handlePhoneBlur();
+                            }}
                             className={cn(
                               "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
+                              phoneError && "text-red-600"
                             ).trim()} 
-                            placeholder={PHONE_PLACEHOLDER || CONTACT_INFO.phone} 
+                            placeholder={getPhonePlaceholder(getCountryIso2(formData.countryCode))} 
                             required
                             suppressHydrationWarning
                           />
                         </div>
+                        {phoneError && (
+                          <p className="text-sm text-red-600 mt-1 flex items-center gap-1">
+                            <AlertCircle className="w-4 h-4" />
+                            {phoneError}
+                          </p>
+                        )}
                       </div>
                     </div>
 
