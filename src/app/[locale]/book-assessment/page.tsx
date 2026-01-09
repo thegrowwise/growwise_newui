@@ -140,7 +140,7 @@ export default function BookAssessmentPage() {
         notes: formData.notes
       };
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/assessment`, {
+      const response = await fetch('/api/assessment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
