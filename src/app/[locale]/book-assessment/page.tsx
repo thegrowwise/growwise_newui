@@ -25,6 +25,7 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import { validatePhone, getPhonePlaceholder, getCallingCode } from '@/lib/phoneValidation';
 
 interface FormData {
   parentName: string;
@@ -47,6 +48,8 @@ export default function BookAssessmentPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
@@ -95,8 +98,58 @@ export default function BookAssessmentPage() {
     { value: 'Complete Academic Assessment', price: '$89', icon: '🎓', popular: true }
   ];
 
+  // Map dial code to ISO2 country code
+  const dialCodeToIso2: Record<string, string> = {
+    '+1': 'US', // Default to US for +1 (could be CA too)
+    '+91': 'IN',
+    '+44': 'GB',
+    '+971': 'AE',
+    '+65': 'SG',
+    '+61': 'AU',
+    '+49': 'DE',
+    '+33': 'FR'
+  };
+
+  const getCountryIso2 = (dialCode: string): string => {
+    return dialCodeToIso2[dialCode] || 'US';
+  };
+
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    
+    // Clear errors when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+    
+    // Clear phone error when user starts typing
+    if (field === 'phone' && phoneError) {
+      setPhoneError(null);
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const countryIso2 = getCountryIso2(formData.countryCode);
+      const result = validatePhone(countryIso2, formData.phone);
+      setPhoneError(result.errorMessage);
+    } else {
+      setPhoneError(null);
+    }
+  };
+
+  const handleCountryCodeChange = (dialCode: string) => {
+    handleInputChange('countryCode', dialCode);
+    // Re-validate phone when country changes
+    if (formData.phone.trim()) {
+      const countryIso2 = getCountryIso2(dialCode);
+      const result = validatePhone(countryIso2, formData.phone);
+      setPhoneError(result.errorMessage);
+    }
   };
 
   // Use ref to store handlers to prevent recreation
@@ -120,17 +173,116 @@ export default function BookAssessmentPage() {
     });
   }
 
+  // Validate all form fields
+  const validateForm = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
+    const errors: Record<string, string> = {};
+    
+    // Validate parent name
+    if (!formData.parentName.trim()) {
+      errors.parentName = 'Parent name is required';
+    }
+    
+    // Validate email
+    if (!formData.email.trim()) {
+      errors.email = 'Email address is required';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        errors.email = 'Please enter a valid email address';
+      }
+    }
+    
+    // Validate phone
+    const countryIso2 = getCountryIso2(formData.countryCode);
+    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    if (!phoneValidation.isValid) {
+      errors.phone = phoneValidation.errorMessage || 'Phone number is invalid';
+    }
+    
+    // Validate student name
+    if (!formData.studentName.trim()) {
+      errors.studentName = 'Student name is required';
+    }
+    
+    // Validate grade
+    if (!formData.grade.trim()) {
+      errors.grade = 'Grade level is required';
+    }
+    
+    // Validate assessment type
+    if (!formData.assessmentType.trim()) {
+      errors.assessmentType = 'Please select an assessment type';
+    }
+    
+    // Validate mode
+    if (!formData.mode.trim()) {
+      errors.mode = 'Please select a mode (Online or In-Person)';
+    }
+    
+    // Validate schedule
+    if (!formData.schedule.trim()) {
+      errors.schedule = 'Please select a preferred schedule';
+    }
+    
+    setFormErrors(errors);
+    setPhoneError(errors.phone || null);
+    
+    return { isValid: Object.keys(errors).length === 0, errors };
+  }, [formData]);
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    e.stopPropagation(); // Prevent any event bubbling
+    
+    // Clear previous general errors
     setErrorMessage('');
+    
+    // Validate all form fields
+    const validation = validateForm();
+    
+    if (!validation.isValid) {
+      // Scroll to first error field after state update
+      setTimeout(() => {
+        const firstErrorId = Object.keys(validation.errors)[0];
+        if (firstErrorId) {
+          // Map field names to input IDs
+          const fieldIdMap: Record<string, string> = {
+            parentName: 'parentName',
+            email: 'email',
+            phone: 'phone',
+            studentName: 'studentName',
+            grade: 'grade',
+            assessmentType: 'assessmentType',
+            mode: 'mode',
+            schedule: 'schedule'
+          };
+          const inputId = fieldIdMap[firstErrorId] || firstErrorId;
+          const errorInput = document.getElementById(inputId);
+          if (errorInput) {
+            errorInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            errorInput.focus();
+          }
+        }
+      }, 100);
+      return; // CRITICAL: Prevent form submission - don't set isSubmitting
+    }
+    
+    // Clear all errors if validation passes
+    setFormErrors({});
+    setPhoneError(null);
+    
+    // Validate phone and get E.164 format
+    const countryIso2 = getCountryIso2(formData.countryCode);
+    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    
+    setIsSubmitting(true);
 
     try {
       const assessmentData = {
         parentName: formData.parentName,
         email: formData.email,
         countryCode: formData.countryCode,
-        phone: formData.phone,
+        phone: phoneValidation.e164 || formData.phone, // Use E.164 format if available
         studentName: formData.studentName,
         grade: formData.grade,
         subjects: formData.subjects,
@@ -140,7 +292,7 @@ export default function BookAssessmentPage() {
         notes: formData.notes
       };
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/assessment`, {
+      const response = await fetch('/api/assessment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -373,7 +525,7 @@ export default function BookAssessmentPage() {
             <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-2xl rounded-xl md:rounded-3xl overflow-hidden" suppressHydrationWarning>
               <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 pt-4 sm:pt-6 md:pt-8 lg:pt-10" suppressHydrationWarning>
                 {!isSubmitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8" suppressHydrationWarning>
+                  <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8" suppressHydrationWarning noValidate>
                     <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
                       <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#1F396D]/20">
                         <div className="p-2 sm:p-3 bg-gradient-to-br from-[#1F396D] to-[#29335C] rounded-lg md:rounded-xl"><User className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
@@ -391,10 +543,13 @@ export default function BookAssessmentPage() {
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="phone" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-[#F16112]" />Phone Number <span className="text-red-500">*</span></Label>
-                        <div className="flex items-center gap-0 border-2 border-gray-300 rounded-lg md:rounded-xl bg-white overflow-hidden focus-within:border-[#F16112] focus-within:ring-2 focus-within:ring-[#F16112]/10 transition-all">
+                        <div className={cn(
+                          "flex items-center gap-0 border-2 rounded-lg md:rounded-xl bg-white overflow-hidden transition-all",
+                          phoneError ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/10' : 'border-gray-300 focus-within:border-[#F16112] focus-within:ring-2 focus-within:ring-[#F16112]/10'
+                        )}>
                           <CountryCodeSelector 
                             value={formData.countryCode} 
-                            onChange={(countryCode) => handleInputChange('countryCode', countryCode)} 
+                            onChange={handleCountryCodeChange} 
                             className={cn("flex-shrink-0", focusedField === 'phone' && 'border-[#F16112]')}
                           />
                           <div className="w-px h-8 md:h-10 bg-gray-300 flex-shrink-0"></div>
@@ -404,15 +559,25 @@ export default function BookAssessmentPage() {
                             value={formData.phone} 
                             onChange={(e) => handleInputChange('phone', e.target.value)} 
                             onFocus={() => setFocusedField('phone')} 
-                            onBlur={() => setFocusedField(null)} 
+                            onBlur={() => {
+                              setFocusedField(null);
+                              handlePhoneBlur();
+                            }}
                             className={cn(
                               "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
+                              phoneError && "text-red-600"
                             ).trim()} 
-                            placeholder={PHONE_PLACEHOLDER || CONTACT_INFO.phone} 
+                            placeholder={getPhonePlaceholder(getCountryIso2(formData.countryCode))} 
                             required
                             suppressHydrationWarning
                           />
                         </div>
+                        {phoneError && (
+                          <p className="text-sm text-red-600 mt-1 flex items-center gap-1">
+                            <AlertCircle className="w-4 h-4" />
+                            {phoneError}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -535,8 +700,82 @@ export default function BookAssessmentPage() {
                       </div>
                     </div>
 
+                    {/* Form Validation Errors Summary */}
+                    {Object.keys(formErrors).length > 0 && (
+                      <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl md:rounded-2xl">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            <h3 className="text-red-800 font-semibold text-sm sm:text-base mb-2">
+                              Please fix the following issues to submit the form:
+                            </h3>
+                            <ul className="space-y-1.5 text-sm text-red-700">
+                              {formErrors.parentName && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Parent Name:</strong> {formErrors.parentName}</span>
+                                </li>
+                              )}
+                              {formErrors.email && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Email:</strong> {formErrors.email}</span>
+                                </li>
+                              )}
+                              {formErrors.phone && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Phone Number:</strong> {formErrors.phone}</span>
+                                </li>
+                              )}
+                              {formErrors.studentName && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Student Name:</strong> {formErrors.studentName}</span>
+                                </li>
+                              )}
+                              {formErrors.grade && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Grade:</strong> {formErrors.grade}</span>
+                                </li>
+                              )}
+                              {formErrors.assessmentType && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Assessment Type:</strong> {formErrors.assessmentType}</span>
+                                </li>
+                              )}
+                              {formErrors.mode && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Mode:</strong> {formErrors.mode}</span>
+                                </li>
+                              )}
+                              {formErrors.schedule && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Schedule:</strong> {formErrors.schedule}</span>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* General Error Message */}
+                    {errorMessage && (
+                      <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl md:rounded-2xl">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                          <p className="text-red-700 text-sm sm:text-base">{errorMessage}</p>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="pt-2 md:pt-4">
-                      <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
+                      <Button type="submit" disabled={isSubmitting || Object.keys(formErrors).length > 0} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
