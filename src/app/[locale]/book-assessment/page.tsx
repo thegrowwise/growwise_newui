@@ -49,6 +49,7 @@ export default function BookAssessmentPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
@@ -116,6 +117,15 @@ export default function BookAssessmentPage() {
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
+    // Clear errors when user starts typing
+    if (formErrors[field]) {
+      setFormErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+    
     // Clear phone error when user starts typing
     if (field === 'phone' && phoneError) {
       setPhoneError(null);
@@ -163,6 +173,63 @@ export default function BookAssessmentPage() {
     });
   }
 
+  // Validate all form fields
+  const validateForm = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
+    const errors: Record<string, string> = {};
+    
+    // Validate parent name
+    if (!formData.parentName.trim()) {
+      errors.parentName = 'Parent name is required';
+    }
+    
+    // Validate email
+    if (!formData.email.trim()) {
+      errors.email = 'Email address is required';
+    } else {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        errors.email = 'Please enter a valid email address';
+      }
+    }
+    
+    // Validate phone
+    const countryIso2 = getCountryIso2(formData.countryCode);
+    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    if (!phoneValidation.isValid) {
+      errors.phone = phoneValidation.errorMessage || 'Phone number is invalid';
+    }
+    
+    // Validate student name
+    if (!formData.studentName.trim()) {
+      errors.studentName = 'Student name is required';
+    }
+    
+    // Validate grade
+    if (!formData.grade.trim()) {
+      errors.grade = 'Grade level is required';
+    }
+    
+    // Validate assessment type
+    if (!formData.assessmentType.trim()) {
+      errors.assessmentType = 'Please select an assessment type';
+    }
+    
+    // Validate mode
+    if (!formData.mode.trim()) {
+      errors.mode = 'Please select a mode (Online or In-Person)';
+    }
+    
+    // Validate schedule
+    if (!formData.schedule.trim()) {
+      errors.schedule = 'Please select a preferred schedule';
+    }
+    
+    setFormErrors(errors);
+    setPhoneError(errors.phone || null);
+    
+    return { isValid: Object.keys(errors).length === 0, errors };
+  }, [formData]);
+
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation(); // Prevent any event bubbling
@@ -170,26 +237,44 @@ export default function BookAssessmentPage() {
     // Clear previous general errors
     setErrorMessage('');
     
-    // Validate phone number before submission (always validate, even if empty)
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    // Validate all form fields
+    const validation = validateForm();
     
-    // If phone validation fails, set error and prevent submission
-    if (!phoneValidation.isValid) {
-      setPhoneError(phoneValidation.errorMessage);
-      // Scroll to phone field if there's an error
+    if (!validation.isValid) {
+      // Scroll to first error field after state update
       setTimeout(() => {
-        const phoneInput = document.getElementById('phone');
-        if (phoneInput) {
-          phoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          phoneInput.focus();
+        const firstErrorId = Object.keys(validation.errors)[0];
+        if (firstErrorId) {
+          // Map field names to input IDs
+          const fieldIdMap: Record<string, string> = {
+            parentName: 'parentName',
+            email: 'email',
+            phone: 'phone',
+            studentName: 'studentName',
+            grade: 'grade',
+            assessmentType: 'assessmentType',
+            mode: 'mode',
+            schedule: 'schedule'
+          };
+          const inputId = fieldIdMap[firstErrorId] || firstErrorId;
+          const errorInput = document.getElementById(inputId);
+          if (errorInput) {
+            errorInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            errorInput.focus();
+          }
         }
       }, 100);
       return; // CRITICAL: Prevent form submission - don't set isSubmitting
     }
     
-    // Clear phone error if validation passes
+    // Clear all errors if validation passes
+    setFormErrors({});
     setPhoneError(null);
+    
+    // Validate phone and get E.164 format
+    const countryIso2 = getCountryIso2(formData.countryCode);
+    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    
     setIsSubmitting(true);
 
     try {
@@ -615,8 +700,82 @@ export default function BookAssessmentPage() {
                       </div>
                     </div>
 
+                    {/* Form Validation Errors Summary */}
+                    {Object.keys(formErrors).length > 0 && (
+                      <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl md:rounded-2xl">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            <h3 className="text-red-800 font-semibold text-sm sm:text-base mb-2">
+                              Please fix the following issues to submit the form:
+                            </h3>
+                            <ul className="space-y-1.5 text-sm text-red-700">
+                              {formErrors.parentName && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Parent Name:</strong> {formErrors.parentName}</span>
+                                </li>
+                              )}
+                              {formErrors.email && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Email:</strong> {formErrors.email}</span>
+                                </li>
+                              )}
+                              {formErrors.phone && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Phone Number:</strong> {formErrors.phone}</span>
+                                </li>
+                              )}
+                              {formErrors.studentName && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Student Name:</strong> {formErrors.studentName}</span>
+                                </li>
+                              )}
+                              {formErrors.grade && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Grade:</strong> {formErrors.grade}</span>
+                                </li>
+                              )}
+                              {formErrors.assessmentType && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Assessment Type:</strong> {formErrors.assessmentType}</span>
+                                </li>
+                              )}
+                              {formErrors.mode && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Mode:</strong> {formErrors.mode}</span>
+                                </li>
+                              )}
+                              {formErrors.schedule && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Schedule:</strong> {formErrors.schedule}</span>
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* General Error Message */}
+                    {errorMessage && (
+                      <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl md:rounded-2xl">
+                        <div className="flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                          <p className="text-red-700 text-sm sm:text-base">{errorMessage}</p>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="pt-2 md:pt-4">
-                      <Button type="submit" disabled={isSubmitting || !!phoneError} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
+                      <Button type="submit" disabled={isSubmitting || Object.keys(formErrors).length > 0} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
