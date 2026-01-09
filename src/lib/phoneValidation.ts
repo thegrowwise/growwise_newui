@@ -1,15 +1,19 @@
 /**
  * Phone Number Validation Utility
  * 
- * Validates phone numbers according to E.164 format with country-specific rules.
- * Supports normalization of user input (spaces, dashes, parentheses) and
- * returns structured validation results.
+ * Validates phone numbers where:
+ * - User enters ONLY the national number (no "+" and no country code)
+ * - Country selector provides the calling code
+ * - Final output is in E.164 format: callingCode + nationalDigitsOnly
  */
 
 export interface ValidationResult {
   isValid: boolean;
   e164: string | null;
+  nationalNumber: string | null; // Normalized national digits only
+  callingCode: string | null;
   errorMessage: string | null;
+  warningMessage?: string | null; // For unknown countries
 }
 
 export interface CountryRule {
@@ -17,7 +21,7 @@ export interface CountryRule {
   nationalDigitsLength: number | { min: number; max: number };
   leadingDigitConstraints?: number[]; // Allowed first digits (e.g., [6, 7, 8, 9] for India)
   removeLeadingZero?: boolean; // Remove trunk prefix "0" if present
-  example: string; // Example placeholder for UX
+  example: string; // Example placeholder for UX (national number only)
 }
 
 // Country-specific validation rules
@@ -26,12 +30,12 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
   US: {
     callingCode: '+1',
     nationalDigitsLength: 10,
-    example: '+1 (555) 123-4567'
+    example: '(555) 123-4567'
   },
   CA: {
     callingCode: '+1',
     nationalDigitsLength: 10,
-    example: '+1 (555) 123-4567'
+    example: '(555) 123-4567'
   },
 
   // India
@@ -39,7 +43,7 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
     callingCode: '+91',
     nationalDigitsLength: 10,
     leadingDigitConstraints: [6, 7, 8, 9], // Mobile numbers start with 6-9
-    example: '+91 98765 43210'
+    example: '98765 43210'
   },
 
   // United Kingdom
@@ -47,21 +51,21 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
     callingCode: '+44',
     nationalDigitsLength: 10,
     removeLeadingZero: true, // Remove leading "0" if present (e.g., 07123... -> 7123...)
-    example: '+44 7123 456789'
+    example: '7123 456789'
   },
 
   // United Arab Emirates
   AE: {
     callingCode: '+971',
     nationalDigitsLength: 9,
-    example: '+971 50 123 4567'
+    example: '50 123 4567'
   },
 
   // Singapore
   SG: {
     callingCode: '+65',
     nationalDigitsLength: 8,
-    example: '+65 9123 4567'
+    example: '9123 4567'
   },
 
   // Australia
@@ -69,7 +73,7 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
     callingCode: '+61',
     nationalDigitsLength: 9,
     removeLeadingZero: true, // Remove leading "0" if present
-    example: '+61 412 345 678'
+    example: '412 345 678'
   },
 
   // Germany
@@ -77,7 +81,7 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
     callingCode: '+49',
     nationalDigitsLength: { min: 10, max: 11 },
     removeLeadingZero: true, // Remove leading "0" if present
-    example: '+49 30 12345678'
+    example: '30 12345678'
   },
 
   // France
@@ -85,7 +89,7 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
     callingCode: '+33',
     nationalDigitsLength: 9,
     removeLeadingZero: true, // Remove leading "0" if present
-    example: '+33 6 12 34 56 78'
+    example: '6 12 34 56 78'
   }
 };
 
@@ -95,43 +99,6 @@ const COUNTRY_RULES: Record<string, CountryRule> = {
 function getCountryRule(countryIso2: string | null | undefined): CountryRule | null {
   if (!countryIso2) return null;
   return COUNTRY_RULES[countryIso2.toUpperCase()] || null;
-}
-
-/**
- * Get country rule by calling code
- */
-function getCountryRuleByCallingCode(callingCode: string | null | undefined): CountryRule | null {
-  if (!callingCode) return null;
-  
-  // Normalize calling code (ensure it starts with +)
-  const normalized = callingCode.startsWith('+') ? callingCode : `+${callingCode}`;
-  
-  // Find country by calling code
-  for (const [iso2, rule] of Object.entries(COUNTRY_RULES)) {
-    if (rule.callingCode === normalized) {
-      return rule;
-    }
-  }
-  
-  return null;
-}
-
-/**
- * Normalize phone input: strip all non-digits except leading "+"
- */
-function normalizeInput(rawInput: string): { normalized: string; hasPlus: boolean } {
-  const trimmed = rawInput.trim();
-  
-  // Check if input starts with "+"
-  const hasPlus = trimmed.startsWith('+');
-  
-  // Extract all digits
-  const digits = trimmed.replace(/\D/g, '');
-  
-  // If there was a leading "+", preserve it
-  const normalized = hasPlus ? `+${digits}` : digits;
-  
-  return { normalized, hasPlus };
 }
 
 /**
@@ -167,89 +134,171 @@ function matchesLeadingDigitConstraint(
 }
 
 /**
- * Remove leading zero (trunk prefix) if present
+ * Check if input contains a "+" or starts with a calling code
+ * Returns true if input should be rejected
  */
-function removeTrunkPrefix(digits: string): string {
-  if (digits.length > 0 && digits[0] === '0') {
-    return digits.substring(1);
+function containsCountryCode(rawInput: string, callingCode: string): boolean {
+  const trimmed = rawInput.trim();
+  
+  // Reject if contains "+"
+  if (trimmed.includes('+')) {
+    return true;
   }
-  return digits;
+  
+  // Extract digits only
+  const digitsOnly = trimmed.replace(/\D/g, '');
+  const callingCodeDigits = callingCode.substring(1); // Remove "+" from calling code
+  
+  // Reject if starts with calling code digits
+  if (digitsOnly.startsWith(callingCodeDigits)) {
+    return true;
+  }
+  
+  return false;
+}
+
+/**
+ * Normalize national number input:
+ * - Trim
+ * - Reject if contains "+"
+ * - Convert to digits-only
+ * - Remove ONE leading "0" for trunk-prefix countries
+ */
+function normalizeNationalInput(
+  rawInput: string,
+  removeLeadingZero: boolean
+): { normalized: string; error: string | null } {
+  const trimmed = rawInput.trim();
+  
+  // Reject if contains "+"
+  if (trimmed.includes('+')) {
+    return {
+      normalized: '',
+      error: 'Do not include country code. Select it from the dropdown.'
+    };
+  }
+  
+  // Convert to digits-only
+  const digitsOnly = trimmed.replace(/\D/g, '');
+  
+  // Reject if no digits after normalization
+  if (digitsOnly.length === 0) {
+    return {
+      normalized: '',
+      error: 'Please enter a phone number'
+    };
+  }
+  
+  // Remove ONE leading "0" for trunk-prefix countries
+  let normalized = digitsOnly;
+  if (removeLeadingZero && normalized.length > 0 && normalized[0] === '0') {
+    normalized = normalized.substring(1);
+  }
+  
+  return {
+    normalized,
+    error: null
+  };
 }
 
 /**
  * Validate phone number with country-specific rules
  * 
- * @param countryIso2 - ISO2 country code (e.g., "US", "IN", "GB")
- * @param rawInput - Raw user input (may contain spaces, dashes, parentheses)
- * @returns ValidationResult with isValid, e164, and errorMessage
+ * @param countryIso2 - ISO2 country code (e.g., "US", "IN", "GB") - REQUIRED
+ * @param rawNationalInput - Raw user input (national number only, may contain spaces, dashes, parentheses)
+ * @returns ValidationResult with isValid, e164, nationalNumber, callingCode, errorMessage, warningMessage
  */
 export function validatePhone(
   countryIso2: string | null | undefined,
-  rawInput: string
+  rawNationalInput: string
 ): ValidationResult {
-  // Step 1: Normalize input
-  const { normalized, hasPlus } = normalizeInput(rawInput);
-  
-  // Step 2: Check if input has "+" (required for E.164)
-  if (!hasPlus && normalized.length > 0) {
+  // Step 1: Require country selection
+  if (!countryIso2) {
     return {
       isValid: false,
       e164: null,
-      errorMessage: 'Include country code, e.g., +1XXXXXXXXXX'
+      nationalNumber: null,
+      callingCode: null,
+      errorMessage: 'Please select a country',
+      warningMessage: null
     };
   }
   
-  // Step 3: Extract digits after "+"
-  const digitsAfterPlus = normalized.startsWith('+') 
-    ? normalized.substring(1) 
-    : normalized;
-  
-  // Step 4: Basic E.164 validation (8-15 digits total)
-  if (digitsAfterPlus.length < 8 || digitsAfterPlus.length > 15) {
-    return {
-      isValid: false,
-      e164: null,
-      errorMessage: 'Phone number must be between 8 and 15 digits'
-    };
-  }
-  
-  // Step 5: Get country rule
+  // Step 2: Get country rule
   const rule = getCountryRule(countryIso2);
   
-  // If no country rule found, do generic E.164 validation only
+  // Step 3: If country not recognized, return error (or fallback with warning)
   if (!rule) {
-    // Generic E.164 format check
-    if (!/^\+\d{8,15}$/.test(normalized)) {
+    // Fallback: try to validate with generic E.164 rules
+    const trimmed = rawNationalInput.trim();
+    
+    // Reject if contains "+"
+    if (trimmed.includes('+')) {
       return {
         isValid: false,
         e164: null,
-        errorMessage: 'Invalid phone number format'
+        nationalNumber: null,
+        callingCode: null,
+        errorMessage: 'Do not include country code. Select it from the dropdown.',
+        warningMessage: null
       };
     }
     
+    // Convert to digits-only
+    const digitsOnly = trimmed.replace(/\D/g, '');
+    
+    if (digitsOnly.length === 0) {
+      return {
+        isValid: false,
+        e164: null,
+        nationalNumber: null,
+        callingCode: null,
+        errorMessage: 'Please enter a phone number',
+        warningMessage: null
+      };
+    }
+    
+    // For unknown country, we can't build E.164 without a calling code
     return {
-      isValid: true,
-      e164: normalized,
-      errorMessage: null
+      isValid: false,
+      e164: null,
+      nationalNumber: digitsOnly,
+      callingCode: null,
+      errorMessage: 'Country not supported. Please select a supported country.',
+      warningMessage: 'Country-specific format not applied.'
     };
   }
   
-  // Step 6: Extract national number (remove calling code if present)
-  let nationalDigits = digitsAfterPlus;
-  const callingCodeDigits = rule.callingCode.substring(1); // Remove "+" from calling code
-  
-  // Check if calling code is already in the input
-  if (nationalDigits.startsWith(callingCodeDigits)) {
-    // Remove calling code from input
-    nationalDigits = nationalDigits.substring(callingCodeDigits.length);
+  // Step 4: Check if user included country code (reject if so)
+  if (containsCountryCode(rawNationalInput, rule.callingCode)) {
+    return {
+      isValid: false,
+      e164: null,
+      nationalNumber: null,
+      callingCode: rule.callingCode,
+      errorMessage: 'Do not include country code. Select it from the dropdown.',
+      warningMessage: null
+    };
   }
   
-  // Step 7: Remove trunk prefix if needed (e.g., GB, FR, DE, AU)
-  if (rule.removeLeadingZero) {
-    nationalDigits = removeTrunkPrefix(nationalDigits);
+  // Step 5: Normalize national input
+  const { normalized: nationalDigits, error: normalizeError } = normalizeNationalInput(
+    rawNationalInput,
+    rule.removeLeadingZero || false
+  );
+  
+  if (normalizeError) {
+    return {
+      isValid: false,
+      e164: null,
+      nationalNumber: null,
+      callingCode: rule.callingCode,
+      errorMessage: normalizeError,
+      warningMessage: null
+    };
   }
   
-  // Step 8: Validate national number length
+  // Step 6: Validate national number length
   if (!matchesLengthConstraint(nationalDigits, rule.nationalDigitsLength)) {
     const expectedLength = typeof rule.nationalDigitsLength === 'number'
       ? `${rule.nationalDigitsLength} digits`
@@ -258,177 +307,64 @@ export function validatePhone(
     return {
       isValid: false,
       e164: null,
-      errorMessage: `Phone number must have ${expectedLength} after country code`
+      nationalNumber: nationalDigits,
+      callingCode: rule.callingCode,
+      errorMessage: `Phone number must have ${expectedLength}`,
+      warningMessage: null
     };
   }
   
-  // Step 9: Validate leading digit constraints (if any)
+  // Step 7: Validate leading digit constraints (if any)
   if (!matchesLeadingDigitConstraint(nationalDigits, rule.leadingDigitConstraints)) {
     const allowedDigits = rule.leadingDigitConstraints?.join(', ') || '';
     return {
       isValid: false,
       e164: null,
-      errorMessage: `Phone number must start with ${allowedDigits}`
+      nationalNumber: nationalDigits,
+      callingCode: rule.callingCode,
+      errorMessage: `Phone number must start with ${allowedDigits}`,
+      warningMessage: null
     };
   }
   
-  // Step 10: Build E.164 format
+  // Step 8: Build E.164 format
   const e164 = `${rule.callingCode}${nationalDigits}`;
   
-  // Step 11: Final E.164 format validation
+  // Step 9: Final E.164 format validation (safety check)
   if (!/^\+\d{8,15}$/.test(e164)) {
     return {
       isValid: false,
       e164: null,
-      errorMessage: 'Invalid phone number format'
+      nationalNumber: nationalDigits,
+      callingCode: rule.callingCode,
+      errorMessage: 'Invalid phone number format',
+      warningMessage: null
     };
   }
   
+  // Step 10: Success
   return {
     isValid: true,
     e164,
-    errorMessage: null
+    nationalNumber: nationalDigits,
+    callingCode: rule.callingCode,
+    errorMessage: null,
+    warningMessage: null
   };
 }
 
 /**
- * Validate phone number using calling code directly
- * 
- * @param callingCode - Calling code (e.g., "+1", "+91", "+44")
- * @param rawInput - Raw user input (may contain spaces, dashes, parentheses)
- * @returns ValidationResult with isValid, e164, and errorMessage
- */
-export function validatePhoneByCallingCode(
-  callingCode: string | null | undefined,
-  rawInput: string
-): ValidationResult {
-  // Find country by calling code
-  const rule = getCountryRuleByCallingCode(callingCode);
-  
-  if (!rule) {
-    // Fallback to generic validation
-    const { normalized, hasPlus } = normalizeInput(rawInput);
-    
-    if (!hasPlus && normalized.length > 0) {
-      return {
-        isValid: false,
-        e164: null,
-        errorMessage: 'Include country code, e.g., +1XXXXXXXXXX'
-      };
-    }
-    
-    const digitsAfterPlus = normalized.startsWith('+') 
-      ? normalized.substring(1) 
-      : normalized;
-    
-    if (digitsAfterPlus.length < 8 || digitsAfterPlus.length > 15) {
-      return {
-        isValid: false,
-        e164: null,
-        errorMessage: 'Phone number must be between 8 and 15 digits'
-      };
-    }
-    
-    const e164 = normalized.startsWith('+') ? normalized : `+${normalized}`;
-    
-    return {
-      isValid: /^\+\d{8,15}$/.test(e164),
-      e164: /^\+\d{8,15}$/.test(e164) ? e164 : null,
-      errorMessage: /^\+\d{8,15}$/.test(e164) ? null : 'Invalid phone number format'
-    };
-  }
-  
-  // Use the rule's calling code (normalized)
-  const normalizedCallingCode = rule.callingCode;
-  
-  // Normalize input
-  const { normalized, hasPlus } = normalizeInput(rawInput);
-  
-  if (!hasPlus && normalized.length > 0) {
-    return {
-      isValid: false,
-      e164: null,
-      errorMessage: 'Include country code, e.g., +1XXXXXXXXXX'
-    };
-  }
-  
-  let digitsAfterPlus = normalized.startsWith('+') 
-    ? normalized.substring(1) 
-    : normalized;
-  
-  const callingCodeDigits = normalizedCallingCode.substring(1); // Remove "+" from calling code
-  
-  // Remove calling code if present in input
-  if (digitsAfterPlus.startsWith(callingCodeDigits)) {
-    digitsAfterPlus = digitsAfterPlus.substring(callingCodeDigits.length);
-  }
-  
-  // Remove trunk prefix if needed
-  if (rule.removeLeadingZero) {
-    digitsAfterPlus = removeTrunkPrefix(digitsAfterPlus);
-  }
-  
-  // Validate length
-  if (!matchesLengthConstraint(digitsAfterPlus, rule.nationalDigitsLength)) {
-    const expectedLength = typeof rule.nationalDigitsLength === 'number'
-      ? `${rule.nationalDigitsLength} digits`
-      : `${rule.nationalDigitsLength.min}-${rule.nationalDigitsLength.max} digits`;
-    
-    return {
-      isValid: false,
-      e164: null,
-      errorMessage: `Phone number must have ${expectedLength} after country code`
-    };
-  }
-  
-  // Validate leading digit
-  if (!matchesLeadingDigitConstraint(digitsAfterPlus, rule.leadingDigitConstraints)) {
-    const allowedDigits = rule.leadingDigitConstraints?.join(', ') || '';
-    return {
-      isValid: false,
-      e164: null,
-      errorMessage: `Phone number must start with ${allowedDigits}`
-    };
-  }
-  
-  // Build E.164
-  const e164 = `${normalizedCallingCode}${digitsAfterPlus}`;
-  
-  if (!/^\+\d{8,15}$/.test(e164)) {
-    return {
-      isValid: false,
-      e164: null,
-      errorMessage: 'Invalid phone number format'
-    };
-  }
-  
-  return {
-    isValid: true,
-    e164,
-    errorMessage: null
-  };
-}
-
-/**
- * Get example placeholder for a country
+ * Get example placeholder for a country (national number only)
  */
 export function getPhonePlaceholder(countryIso2: string | null | undefined): string {
   const rule = getCountryRule(countryIso2);
-  return rule?.example || '+1 (555) 123-4567';
+  return rule?.example || '(555) 123-4567';
 }
 
 /**
- * Get example placeholder by calling code
+ * Get calling code for a country
  */
-export function getPhonePlaceholderByCallingCode(callingCode: string | null | undefined): string {
-  const rule = getCountryRuleByCallingCode(callingCode);
-  return rule?.example || '+1 (555) 123-4567';
+export function getCallingCode(countryIso2: string | null | undefined): string | null {
+  const rule = getCountryRule(countryIso2);
+  return rule?.callingCode || null;
 }
-
-/**
- * Extract calling code from dial code string (e.g., "+1" -> "+1")
- */
-export function extractCallingCodeFromDialCode(dialCode: string): string {
-  return dialCode.startsWith('+') ? dialCode : `+${dialCode}`;
-}
-
