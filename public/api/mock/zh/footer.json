@@ -37,7 +37,9 @@
         { "label": "关于我们", "href": "/about", "active": true },
         { "label": "联系我们", "href": "/contact", "active": true },
         { "label": "课程概览", "href": "/programs", "active": true },
-        { "label": "一般注册", "href": "/enroll", "active": true }
+        { "label": "一般注册", "href": "/enroll", "active": true },
+        { "label": "条款和条件", "href": "/terms-conditions", "active": true },
+        { "label": "隐私政策", "href": "/privacy-policy", "active": true }
       ]
     }
   ],
