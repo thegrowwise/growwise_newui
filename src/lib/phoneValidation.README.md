@@ -183,3 +183,4 @@ npm test phoneValidation.test.ts
 - Unknown countries fall back to generic E.164 validation (8-15 digits)
 - E.164 format is always returned when valid (ready for database storage)
 
+
