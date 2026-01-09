@@ -165,19 +165,32 @@ export default function BookAssessmentPage() {
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    e.stopPropagation(); // Prevent any event bubbling
+    
+    // Clear previous general errors
     setErrorMessage('');
-    setPhoneError(null);
-
-    // Validate phone number before submission
+    
+    // Validate phone number before submission (always validate, even if empty)
     const countryIso2 = getCountryIso2(formData.countryCode);
     const phoneValidation = validatePhone(countryIso2, formData.phone);
     
+    // If phone validation fails, set error and prevent submission
     if (!phoneValidation.isValid) {
       setPhoneError(phoneValidation.errorMessage);
-      setIsSubmitting(false);
-      return;
+      // Scroll to phone field if there's an error
+      setTimeout(() => {
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+          phoneInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          phoneInput.focus();
+        }
+      }, 100);
+      return; // CRITICAL: Prevent form submission - don't set isSubmitting
     }
+    
+    // Clear phone error if validation passes
+    setPhoneError(null);
+    setIsSubmitting(true);
 
     try {
       const assessmentData = {
@@ -427,7 +440,7 @@ export default function BookAssessmentPage() {
             <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-2xl rounded-xl md:rounded-3xl overflow-hidden" suppressHydrationWarning>
               <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 pt-4 sm:pt-6 md:pt-8 lg:pt-10" suppressHydrationWarning>
                 {!isSubmitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8" suppressHydrationWarning>
+                  <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8" suppressHydrationWarning noValidate>
                     <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
                       <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#1F396D]/20">
                         <div className="p-2 sm:p-3 bg-gradient-to-br from-[#1F396D] to-[#29335C] rounded-lg md:rounded-xl"><User className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
@@ -603,7 +616,7 @@ export default function BookAssessmentPage() {
                     </div>
 
                     <div className="pt-2 md:pt-4">
-                      <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
+                      <Button type="submit" disabled={isSubmitting || !!phoneError} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
