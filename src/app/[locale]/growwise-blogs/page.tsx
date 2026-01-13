@@ -28,7 +28,7 @@ const blogPosts: BlogPost[] = [
     category: 'academic',
     title: 'Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help',
     excerpt: 'Understanding the challenges and solutions for improving student performance in core subjects.',
-    href: '#',
+    href: '/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments',
     readMore: 'Read More »'
   },
   {
