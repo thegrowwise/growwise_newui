@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
-import { BookOpen, ArrowRight, ArrowLeft } from 'lucide-react'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
