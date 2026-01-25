@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { ClientAnalyticsProvider } from "@/components/providers/ClientAnalyticsProvider";
-
+import { GoogleAnalytics } from "@next/third-parties/google";
 // Optimize font loading with next/font
 const inter = Inter({
   subsets: ['latin'],
@@ -31,6 +30,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log("GA ID:", process.env.NEXT_PUBLIC_GA_ID);
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -96,9 +96,8 @@ export default function RootLayout({
             `,
           }}
         />
-        <ClientAnalyticsProvider>
-          {children}
-        </ClientAnalyticsProvider>
+        {children}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
       </body>
     </html>
   );

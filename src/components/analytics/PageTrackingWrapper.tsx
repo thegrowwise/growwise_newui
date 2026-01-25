@@ -1,12 +1,11 @@
 /**
  * Page Tracking Wrapper
- * Automatically tracks page views and session lifecycle
+ * Automatically tracks page views with Google Analytics 4
  */
 
 'use client';
 
 import React, { useEffect } from 'react';
-import { usePageTracking, useSessionTracking } from '@/lib/analytics/hooks';
 import { usePathname } from 'next/navigation';
 
 interface PageTrackingWrapperProps {
@@ -16,18 +15,14 @@ interface PageTrackingWrapperProps {
 export function PageTrackingWrapper({ children }: PageTrackingWrapperProps) {
   const pathname = usePathname();
   
-  // Track page views automatically
-  usePageTracking();
-  
-  // Track session lifecycle
-  useSessionTracking();
-
-  // Track page title changes
+  // Track page views with Google Analytics
   useEffect(() => {
-    const pageTitle = document.title;
-    if (pathname && pageTitle) {
-      // Additional page tracking logic can be added here
-      console.log(`Analytics: Page view tracked - ${pathname} (${pageTitle})`);
+    // gtag is automatically available via the GoogleAnalytics component
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'page_view', {
+        page_path: pathname,
+        page_title: document.title,
+      });
     }
   }, [pathname]);
 
