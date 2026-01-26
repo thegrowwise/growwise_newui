@@ -2,8 +2,15 @@ import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
+import { BlogImage } from '@/components/blogs/BlogImage'
+import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, Code, Brain, Target, Users, Zap, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+
+// Image path - update this to your actual image location
+// Option 1: Local image in public folder: '/images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp'
+// Option 2: S3 image: getS3ImageUrl('images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp')
+const BLOG_IMAGE_URL = '/images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp' // or use getS3ImageUrl('images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp') for S3
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -31,8 +38,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
       />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
+        <section className="relative bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+          {/* Cover Image Background */}
+          <div className="absolute inset-0 opacity-20 overflow-hidden">
+            <BlogImage
+              src={BLOG_IMAGE_URL}
+              alt="Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+            />
+          </div>
+          <div className="relative max-w-4xl mx-auto z-10">
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -71,6 +89,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
               <p className="text-gray-700 mb-8">
                 Enter <strong>GrowWise</strong>—an AI-powered learning platform designed to personalize your coding journey, provide instant feedback, and accelerate your growth. Whether you're a beginner or a seasoned programmer, GrowWise ensures you stay ahead in the ever-changing world of technology.
               </p>
+
+              {/* Featured Image */}
+              <div className="my-8 rounded-xl overflow-hidden shadow-lg bg-gray-50">
+                <div className="relative w-full" style={{ aspectRatio: '16/9', minHeight: '400px' }}>
+                  <BlogImage
+                    src={BLOG_IMAGE_URL}
+                    alt="Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise"
+                    fill
+                    className="object-cover rounded-xl"
+                    priority
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+                  />
+                </div>
+              </div>
 
               <p className="text-gray-700 mb-8">
                 Let's explore how this cutting-edge platform can transform the way you learn and master coding.
