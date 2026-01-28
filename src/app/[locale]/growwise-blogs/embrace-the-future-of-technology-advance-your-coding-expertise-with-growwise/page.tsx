@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 // Image path - update this to your actual image location
 // Option 1: Local image in public folder: '/images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp'
 // Option 2: S3 image: getS3ImageUrl('images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp')
-const BLOG_IMAGE_URL = '/images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp' // or use getS3ImageUrl('images/blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise.webp') for S3
+const BLOG_IMAGE_URL = '/images/blogs/embracethefuture.png.webp'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params

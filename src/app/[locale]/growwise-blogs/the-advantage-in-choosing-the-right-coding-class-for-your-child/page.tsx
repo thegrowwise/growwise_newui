@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 // Image path - update this to your actual image location
 // Option 1: Local image in public folder: '/images/blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child.webp'
 // Option 2: S3 image: getS3ImageUrl('images/blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child.webp')
-const BLOG_IMAGE_URL = '\images\blogs\coding-class-for-children.jpg' // or use getS3ImageUrl('images/blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child.webp') for S3
+const BLOG_IMAGE_URL = '/images/blogs/coding-class-for-children.jpg' // or use getS3ImageUrl('images/blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child.webp') for S3
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
