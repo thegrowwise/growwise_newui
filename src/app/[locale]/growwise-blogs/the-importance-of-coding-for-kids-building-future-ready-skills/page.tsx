@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 // Image path - update this to your actual image location
 // Option 1: Local image in public folder: '/images/blogs/the-importance-of-coding-for-kids-building-future-ready-skills.webp'
 // Option 2: S3 image: getS3ImageUrl('images/blogs/the-importance-of-coding-for-kids-building-future-ready-skills.webp')
-const BLOG_IMAGE_URL = '/images/blogs/the-importance-of-coding-for-kids-building-future-ready-skills.webp' // or use getS3ImageUrl('images/blogs/the-importance-of-coding-for-kids-building-future-ready-skills.webp') for S3
+const BLOG_IMAGE_URL = '/images/blogs/importanceofcoding.png.webp' // or use getS3ImageUrl('images/blogs/the-importance-of-coding-for-kids-building-future-ready-skills.webp') for S3
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
