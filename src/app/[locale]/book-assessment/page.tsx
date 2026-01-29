@@ -93,9 +93,9 @@ export default function BookAssessmentPage() {
   ];
 
   const assessmentTypes = [
-    { value: 'English Reading Assessment', price: '$49', icon: '📚', popular: false },
-    { value: 'Math Skills Assessment', price: '$49', icon: '📐', popular: false },
-    { value: 'Complete Academic Assessment', price: '$89', icon: '🎓', popular: true }
+    { value: 'English Reading Assessment', icon: '📚' },
+    { value: 'Math Skills Assessment', icon: '📐' },
+    { value: 'Complete Academic Assessment', icon: '🎓' }
   ];
 
   // Map dial code to ISO2 country code
@@ -619,7 +619,12 @@ export default function BookAssessmentPage() {
                           <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
                             {assessmentTypes.map((type) => (
                               <SelectItem key={type.value} value={type.value} className="hover:bg-[#F16112]/10 py-4 text-base">
-                                <div className="flex items-center justify-between w-full gap-4"><span className="flex items-center gap-2"><span>{type.icon}</span>{type.value}</span><div className="flex items-center gap-2"><Badge className="bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white border-0">{type.price}</Badge>{type.popular && (<Badge className="bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0"><Star className="w-3 h-3 mr-1" />Popular</Badge>)}</div></div>
+                                <div className="flex items-center w-full gap-4">
+                                  <span className="flex items-center gap-2">
+                                    <span>{type.icon}</span>
+                                    {type.value}
+                                  </span>
+                                </div>
                               </SelectItem>
                             ))}
                           </SelectContent>
