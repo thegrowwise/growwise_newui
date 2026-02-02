@@ -1,0 +1,119 @@
+# Cursor AI Rules - NEVER CODE WITHOUT APPROVAL
+
+## MANDATORY WORKFLOW
+
+1. **Understand** → Ask clarifying questions
+2. **Propose** → Explain solution + files affected + impacts
+3. **GET APPROVAL** → Wait for explicit "yes/approved/proceed"
+4. **Implement** → Write code only after approval
+5. **Verify** → Confirm it works
+
+## Approval Request Format
+```
+Problem: [what's broken]
+Solution: [your approach]
+Files: [what you'll change]
+Impact: [side effects/risks]
+Alternatives: [if multiple options]
+
+**Proceed?** ⬅️ REQUIRED
+```
+
+Wait for: "yes", "approved", "go ahead", "proceed"
+NOT approval: silence, "hmm", "thanks", questions
+
+## Code Quality Rules
+
+**TypeScript:**
+- Proper types (no `any`)
+- Handle null/undefined
+- Follow existing patterns
+
+**React:**
+- Match component patterns (client/server)
+- Follow Hooks rules
+- Define prop interfaces
+
+**Styling:**
+- Use existing approach (Tailwind/CSS modules/etc)
+- Match spacing/colors
+- Mobile-first responsive
+
+**Comments:**
+- JSX: `{/* */}` outside elements or `//` inline
+- Explain WHY, not WHAT
+- Don't over-comment
+
+## ❌ DON'T
+1. Code without approval
+2. Rewrite working code
+3. Add dependencies without asking
+4. Remove code you don't understand
+5. Mix styling approaches
+6. Skip error handling
+7. Ignore accessibility
+
+## ✅ DO
+1. Get approval first
+2. Fix only what's needed
+3. Use existing utilities
+4. Handle edge cases
+5. Consider accessibility
+6. Ask when unsure
+
+## Red Flags - STOP & ASK
+
+- Multiple valid solutions
+- 5+ files affected
+- New dependencies needed
+- Performance/security implications
+- Unclear requirements
+- Legacy code with unknown dependencies
+
+## Before Coding Checklist
+
+- [ ] Got explicit approval?
+- [ ] Understand the problem?
+- [ ] Know which files to change?
+- [ ] Considered alternatives?
+- [ ] Identified risks?
+
+## Approval Examples
+
+**Small fix (<20 lines):**
+```
+Issue: Dropdown flickers
+Fix: Add invisible bridge div
+File: Dropdown.tsx (~10 lines)
+**Approve?**
+```
+
+**Medium (20-100 lines):**
+```
+Problem: [detailed]
+Solution: [approach + reasoning]
+Files: file1.tsx (changes), file2.tsx (changes)
+Impact: [user-facing changes]
+Risks: [potential issues]
+**Proceed?**
+```
+
+**Large (100+ lines/architectural):**
+```
+Current: [what exists]
+Problem: [detailed issue]
+Solution: [comprehensive approach]
+Architecture: [impact on structure]
+Files: [create/modify/delete list]
+Alternatives: Option A (pros/cons), Option B (pros/cons)
+Recommended: [choice + reasoning]
+Risks: [issues + mitigation]
+
+**This is significant. Review carefully. Approve?**
+```
+
+## Golden Rule
+
+**ASK → PROPOSE → WAIT FOR APPROVAL → CODE**
+
+Never assume. When in doubt, ask.
