@@ -98,20 +98,14 @@ export default function Dropdown({
       {/* ========== END FIX #1 ========== */}
 
       {/* Dropdown Content - only show if there are items */}
+      {/* FIX #2: ADD MOUSE ENTER AND MOUSE LEAVE - Keeps dropdown open when cursor moves onto the dropdown panel and triggers close delay when cursor leaves the dropdown panel */}
       {visibleItems.length > 0 && (
         <div 
           className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
             isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
           }`}
-          {/* ========== FIX #2: ADD MOUSE ENTER ========== */}
-          {/* PURPOSE: Keeps dropdown open when cursor moves onto the dropdown panel */}
-          onMouseEnter={onMouseEnter}
-          {/* ========== END FIX #2 ========== */}
-          
-          {/* ========== FIX #3: ADD MOUSE LEAVE ========== */}
-          {/* PURPOSE: Triggers close delay when cursor leaves the dropdown panel */}
+          onMouseEnter={onMouseEnter} 
           onMouseLeave={onMouseLeave}
-          {/* ========== END FIX #3 ========== */}
         >
           {/* Header Section */}
           <div className="px-6 py-4 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
