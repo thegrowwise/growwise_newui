@@ -28,10 +28,7 @@
           }
         ],
         "fingerprint": "",
-        "monitoringMetadata": {
-          "type": "" 
-        },
-        "tagFiringOption": "oncePerEvent",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "firingTriggerId": ["2147479550"]
       },
       {
