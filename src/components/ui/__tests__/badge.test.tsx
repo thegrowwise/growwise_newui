@@ -59,7 +59,7 @@ describe('Badge Component', () => {
       </Badge>
     )
     
-    expect(screen.getByText('Count: ')).toBeInTheDocument()
+    expect(screen.getByText(/Count:/)).toBeInTheDocument()
     expect(screen.getByText('42')).toBeInTheDocument()
   })
 
@@ -87,7 +87,10 @@ describe('Badge Component', () => {
     expect(screen.getByText('true')).toBeInTheDocument()
 
     render(<Badge>{null}</Badge>)
-    expect(screen.getByText('')).toBeInTheDocument()
+    const badges = document.querySelectorAll('[data-slot="badge"]')
+    const lastBadge = badges[badges.length - 1]
+    expect(lastBadge).toBeInTheDocument()
+    expect(lastBadge?.textContent).toBe('')
   })
 })
 

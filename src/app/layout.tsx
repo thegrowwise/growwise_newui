@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import GTM from '../components/analytics/GTM';
 // Optimize font loading with next/font
 const inter = Inter({
   subsets: ['latin'],
@@ -96,8 +97,14 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* If GTM is configured, load GTM (script + noscript) immediately after opening <body> so the noscript iframe is available for no-JS users. */}
+        {process.env.NEXT_PUBLIC_GTM_ID ? (
+          <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        ) : null}
         {children}
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
+        {/* If GTM isn't configured, fall back to direct GoogleAnalytics integration */}
+        {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
+        }
       </body>
     </html>
   );
