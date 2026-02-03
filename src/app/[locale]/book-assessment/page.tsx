@@ -346,12 +346,12 @@ export default function BookAssessmentPage() {
     { icon: Calendar, title: 'Flexible Scheduling', description: 'Book at your convenience', color: 'from-green-500 to-green-600', stats: '24/7 Booking' }
   ];
 
-  const processSteps = [
-    { number: '1', title: 'Book Your Assessment', description: 'Choose your package and schedule a convenient time', icon: Calendar, color: 'from-[#1F396D] to-[#29335C]' },
-    { number: '2', title: 'Take the Assessment', description: 'Complete the evaluation with our expert teachers', icon: PenTool, color: 'from-[#F16112] to-[#F1894F]' },
-    { number: '3', title: 'Receive Your Report', description: 'Get detailed insights within 48 hours', icon: FileText, color: 'from-[#1F396D] to-[#F16112]' },
-    { number: '4', title: 'Plan Your Path', description: 'Schedule a consultation to discuss next steps', icon: Lightbulb, color: 'from-[#F1894F] to-[#1F396D]' }
-  ];
+  // const processSteps = [
+  //   { number: '1', title: 'Book Your Assessment', description: 'Choose your package and schedule a convenient time', icon: Calendar, color: 'from-[#1F396D] to-[#29335C]' },
+  //   { number: '2', title: 'Take the Assessment', description: 'Complete the evaluation with our expert teachers', icon: PenTool, color: 'from-[#F16112] to-[#F1894F]' },
+  //   { number: '3', title: 'Receive Your Report', description: 'Get detailed insights within 48 hours', icon: FileText, color: 'from-[#1F396D] to-[#F16112]' },
+  //   { number: '4', title: 'Plan Your Path', description: 'Schedule a consultation to discuss next steps', icon: Lightbulb, color: 'from-[#F1894F] to-[#1F396D]' }
+  // ];
 
   const testimonials = [
     { name: 'Sarah Johnson', role: 'Parent of 5th Grader', content: 'The assessment was incredibly thorough and helped us identify exactly where our daughter needed support. Highly recommend!', rating: 5 },
@@ -360,20 +360,20 @@ export default function BookAssessmentPage() {
   ];
 
   const stats = [
-    { number: '5000+', label: 'Assessments Completed', icon: BarChart3 },
+    { number: '500+', label: 'Assessments Completed', icon: BarChart3 },
     { number: '98%', label: 'Parent Satisfaction', icon: Heart },
     { number: '48hr', label: 'Report Delivery', icon: Clock },
     { number: '15+', label: 'Years Experience', icon: Award }
   ];
 
-  const benefits = [
-    { icon: Clock, text: 'Flexible scheduling' },
-    { icon: Video, text: 'Online & in-person' },
-    { icon: FileText, text: 'Detailed reports' },
-    { icon: Target, text: 'Personalized insights' },
-    { icon: Shield, text: '100% confidential' },
-    { icon: Award, text: 'Expert evaluators' }
-  ];
+  // const benefits = [
+  //   { icon: Clock, text: 'Flexible scheduling' },
+  //   { icon: Video, text: 'Online & in-person' },
+  //   { icon: FileText, text: 'Detailed reports' },
+  //   { icon: Target, text: 'Personalized insights' },
+  //   { icon: Shield, text: '100% confidential' },
+  //   { icon: Award, text: 'Expert evaluators' }
+  // ];
 
   const scrollToForm = () => {
     const formSection = document.getElementById('assessment-form');
@@ -382,65 +382,9 @@ export default function BookAssessmentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50" suppressHydrationWarning>
-      <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }} className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></motion.div>
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2.5, repeat: Infinity, repeatType: 'reverse', delay: 0.5 }} className="absolute bottom-20 right-10 w-[700px] h-[700px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl"></motion.div>
-        </div>
+      
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-16">
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}>
-              <Badge className="mb-8 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-8 py-3 shadow-2xl">
-                <Sparkles className="w-5 h-5 mr-2" />
-                Professional Assessment Services
-              </Badge>
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-white mb-8 text-5xl lg:text-6xl">
-              Discover Your Child's <br />
-              <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Potential</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="text-white/90 max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
-              Get a comprehensive evaluation from certified educators. Understand strengths, identify growth areas, and receive a personalized learning roadmap for your child's success.
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-12">
-              <Button onClick={scrollToForm} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 sm:px-10 py-6 sm:py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 group text-base sm:text-lg w-full sm:w-auto">
-                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 group-hover:rotate-12 transition-transform" />
-                Book Free Assessment
-                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button onClick={() => setIsExploreCoursesModalOpen(true)} variant="outline" className="border-2 border-white bg-white/20 text-white hover:bg-white hover:text-[#1F396D] px-8 sm:px-10 py-6 sm:py-7 rounded-2xl transition-all duration-300 hover:scale-105 backdrop-blur-xl text-base sm:text-lg w-full sm:w-auto">
-                <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-                Explore Courses
-              </Button>
-            </motion.div>
-
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }} className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              {stats.map((stat, index) => {
-                const IconComponent = stat.icon as any;
-                return (
-                  <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }} whileHover={{ scale: 1.05 }}>
-                    <Card className="bg-white/10 backdrop-blur-xl border-2 border-white/20 shadow-2xl hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-6 text-center">
-                        <div className="inline-flex p-3 bg-white/20 rounded-2xl mb-3">
-                          <IconComponent className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="text-4xl font-bold text-white mb-1">{stat.number}</div>
-                        <div className="text-sm text-white/80">{stat.label}</div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          </motion.div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" className="w-full h-auto"><path fill="#F9FAFB" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>
-        </div>
-      </section>
-
-      <section className="py-16 bg-white">
+      {/* <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-12">
             <Badge className="mb-4 bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0 px-6 py-2">Why Book With Us</Badge>
@@ -464,9 +408,9 @@ export default function BookAssessmentPage() {
             })}
           </div>
         </div>
-      </section>
+      </section> */}
 
-      <section className="py-24 bg-white">
+      {/* <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-16">
             <Badge className="mb-4 bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white border-0 px-6 py-2">Simple Process</Badge>
@@ -505,7 +449,7 @@ export default function BookAssessmentPage() {
             })}
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section id="assessment-form" className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
@@ -804,6 +748,7 @@ export default function BookAssessmentPage() {
                 ) : (
                   <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="text-center py-20">
                     <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, delay: 0.2 }} className="w-28 h-28 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"><CheckCircle className="w-14 h-14 text-white" /></motion.div>
+                    <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} className="text-green-700 font-semibold mb-2">Submission completed successfully.</motion.p>
                     <motion.h3 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="text-gray-900 mb-6 text-4xl">🎉 Thank You for Your Request!</motion.h3>
                     <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="text-gray-600 max-w-lg mx-auto mb-10 text-xl leading-relaxed">We've received your free assessment booking request. Our team will contact you within 24 hours to confirm your appointment.</motion.p>
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="space-y-4">
@@ -849,6 +794,64 @@ export default function BookAssessmentPage() {
               );
             })}
           </motion.div>
+        </div>
+      </section>
+
+      <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }} className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></motion.div>
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2.5, repeat: Infinity, repeatType: 'reverse', delay: 0.5 }} className="absolute bottom-20 right-10 w-[700px] h-[700px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl"></motion.div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-16">
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}>
+              <Badge className="mb-8 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-8 py-3 shadow-2xl">
+                <Sparkles className="w-5 h-5 mr-2" />
+                Professional Assessment Services
+              </Badge>
+            </motion.div>
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-white mb-8 text-5xl lg:text-6xl">
+              Discover Your Child's <br />
+              <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Potential</span>
+            </motion.h1>
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="text-white/90 max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
+              Get a comprehensive evaluation from certified educators. Understand strengths, identify growth areas, and receive a personalized learning roadmap for your child's success.
+            </motion.p>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-12">
+              <Button onClick={scrollToForm} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 sm:px-10 py-6 sm:py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 group text-base sm:text-lg w-full sm:w-auto">
+                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 group-hover:rotate-12 transition-transform" />
+                Book Free Assessment
+                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button onClick={() => setIsExploreCoursesModalOpen(true)} variant="outline" className="border-2 border-white bg-white/20 text-white hover:bg-white hover:text-[#1F396D] px-8 sm:px-10 py-6 sm:py-7 rounded-2xl transition-all duration-300 hover:scale-105 backdrop-blur-xl text-base sm:text-lg w-full sm:w-auto">
+                <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
+                Explore Courses
+              </Button>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }} className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+              {stats.map((stat, index) => {
+                const IconComponent = stat.icon as any;
+                return (
+                  <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }} whileHover={{ scale: 1.05 }}>
+                    <Card className="bg-white/10 backdrop-blur-xl border-2 border-white/20 shadow-2xl hover:shadow-xl transition-all duration-300">
+                      <CardContent className="p-6 text-center">
+                        <div className="inline-flex p-3 bg-white/20 rounded-2xl mb-3">
+                          <IconComponent className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="text-4xl font-bold text-white mb-1">{stat.number}</div>
+                        <div className="text-sm text-white/80">{stat.label}</div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          </motion.div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg viewBox="0 0 1440 120" className="w-full h-auto"><path fill="#F9FAFB" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>
         </div>
       </section>
 
