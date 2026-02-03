@@ -1,0 +1,153 @@
+{
+  "exportFormatVersion": 2,
+  "container": {
+    "containerId": "GTM-TNFBBQJM",
+    "publicId": "GTM-TNFBBQJM",
+    "name": "GrowWise - Import: virtual_page_view",
+    "usageContext": ["web"]
+  },
+  "containerVersion": {
+    "container": {
+      "publicId": "GTM-TNFBBQJM"
+    },
+    "tag": [
+      {
+        "accountId": "",
+        "containerId": "GTM-TNFBBQJM",
+        "tagId": "1",
+        "name": "GA4 - Configuration (Imported)",
+        "type": "ga4config",
+        "parameter": [
+          {
+            "key": "measurementId",
+            "value": "G-HP143C77W2"
+          },
+          {
+            "key": "send_page_view",
+            "value": "false"
+          }
+        ],
+        "fingerprint": "",
+        "monitoringMetadata": {
+          "type": "" 
+        },
+        "tagFiringOption": "oncePerEvent",
+        "firingTriggerId": ["2147479550"]
+      },
+      {
+        "accountId": "",
+        "containerId": "GTM-TNFBBQJM",
+        "tagId": "2",
+        "name": "GA4 - virtual_page_view",
+        "type": "ga4event",
+        "parameter": [
+          {
+            "key": "event_name",
+            "value": "virtual_page_view"
+          },
+          {
+            "key": "event_parameters",
+            "map": [
+              {
+                "key": "page_path",
+                "value": "{{DL - page_path}}"
+              },
+              {
+                "key": "page_title",
+                "value": "{{DL - page_title}}"
+              },
+              {
+                "key": "debug_mode",
+                "value": "{{DL - debug_mode}}"
+              }
+            ]
+          },
+          {
+            "key": "measurementId",
+            "value": "G-HP143C77W2"
+          }
+        ],
+        "firingTriggerId": ["2147483647"]
+      }
+    ],
+    "trigger": [
+      {
+        "triggerId": "2147479550",
+        "name": "All Pages (Imported)",
+        "type": "PAGEVIEW",
+        "filter": []
+      },
+      {
+        "triggerId": "2147483647",
+        "name": "virtual_page_view",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "equals",
+            "parameter": [
+              {
+                "key": "arg0",
+                "type": "template",
+                "value": "virtual_page_view"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "accountId": "",
+        "containerId": "GTM-TNFBBQJM",
+        "variableId": "1",
+        "name": "DL - page_path",
+        "type": "vtdlvar",
+        "parameter": [
+          {
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "key": "name",
+            "value": "page_path"
+          }
+        ]
+      },
+      {
+        "accountId": "",
+        "containerId": "GTM-TNFBBQJM",
+        "variableId": "2",
+        "name": "DL - page_title",
+        "type": "vtdlvar",
+        "parameter": [
+          {
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "key": "name",
+            "value": "page_title"
+          }
+        ]
+      },
+      {
+        "accountId": "",
+        "containerId": "GTM-TNFBBQJM",
+        "variableId": "3",
+        "name": "DL - debug_mode",
+        "type": "vtdlvar",
+        "parameter": [
+          {
+            "key": "dataLayerVersion",
+            "value": "2"
+          },
+          {
+            "key": "name",
+            "value": "debug_mode"
+          }
+        ]
+      }
+    ],
+    "folder": []
+  }
+}
