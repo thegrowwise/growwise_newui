@@ -1,16 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { useLocale } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import {
   SUMMER_CAMP_PROGRAMS,
+  LEARNING_MODE_KEYS,
+  LEARNING_MODE_FORMAT,
+  LEARNING_MODE_TIME,
+  ADV_MATH_PROGRAM_KEYS,
+  MATH_OLYMPIAD_TIER_CONFIGS,
   type Program,
   type Level,
   type Slot,
+  type LearningModeKey,
+  type AdvMathProgramKey,
+  type OlympiadTierId,
 } from '@/lib/summer-camp-data';
 import { Button } from '@/components/ui/button';
-import { Check, X, ShoppingBag, Clock } from 'lucide-react';
+import { Check, X, ShoppingBag, Clock, Info, CalendarDays, CheckCircle2 } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -18,6 +27,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
 
 const CART_STORAGE_KEY = 'growwise-summer-camp-cart';
 
@@ -87,87 +104,359 @@ export function ProgramList({
   onSelectProgram: (p: Program) => void;
   selectedProgramId: string | null;
 }) {
+  const t = useTranslations('summerCamp');
+
   const categories = Array.from(
     new Set(SUMMER_CAMP_PROGRAMS.map((p) => p.category))
   );
 
+  const isHalfDay = (category: Program['category']) => category === 'Half-Day Camps';
+
   return (
-    <div className="space-y-12">
-      {categories.map((category) => (
-        <div key={category} className="space-y-6">
-          <h3 className="font-heading font-bold text-lg text-slate-400 uppercase tracking-[0.2em] pl-1">
-            {category}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {SUMMER_CAMP_PROGRAMS.filter((p) => p.category === category).map(
-              (program) => (
-                <button
-                  key={program.id}
-                  type="button"
-                  onClick={() => onSelectProgram(program)}
-                  className={`text-left rounded-xl border transition-all duration-300 group relative overflow-hidden flex flex-col h-full
-                    ${
-                      selectedProgramId === program.id
-                        ? 'border-[#1F396D] shadow-lg ring-1 ring-[#1F396D]/20 scale-[1.02]'
+    <div className="space-y-8" role="list" aria-label={t('page.title')}>
+      {categories.map((category) => {
+        const programs = SUMMER_CAMP_PROGRAMS.filter(
+          (p) => p.category === category
+        );
+        const hasOddCount = programs.length % 2 !== 0;
+        const halfDay = isHalfDay(category);
+
+        return (
+          <div key={category} className="space-y-3" role="listitem">
+            {/* Category heading */}
+            <div
+              aria-label={category}
+              className={`flex items-center gap-4 px-5 py-4 rounded-2xl border-2
+                ${halfDay
+                  ? 'bg-[#1F396D]/10 border-[#1F396D]/30'
+                  : 'bg-orange-100 border-orange-400'
+                }
+              `}
+            >
+              <span
+                aria-hidden="true"
+                className={`w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-sm ${
+                  halfDay ? 'bg-[#1F396D]' : 'bg-orange-500'
+                }`}
+              />
+              <h3
+                className={`font-heading font-black text-xl uppercase tracking-widest
+                  ${halfDay ? 'text-[#1F396D]' : 'text-orange-700'}
+                `}
+              >
+                {category}
+              </h3>
+              <span
+                className={`ml-auto text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider
+                  ${halfDay
+                    ? 'bg-[#1F396D]/20 text-[#1F396D]'
+                    : 'bg-orange-200 text-orange-700'
+                  }
+                `}
+              >
+                {t('category.programs', { count: programs.length })}
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3" role="list">
+              {programs.map((program, idx) => {
+                const isSelected = selectedProgramId === program.id;
+                const isLastAndAlone = hasOddCount && idx === programs.length - 1;
+                return (
+                  <button
+                    key={program.id}
+                    type="button"
+                    role="listitem"
+                    aria-pressed={isSelected}
+                    aria-label={program.title}
+                    onClick={() => onSelectProgram(program)}
+                    className={`text-left flex flex-col rounded-xl overflow-hidden border-2 transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 bg-white
+                      ${isLastAndAlone ? 'col-span-2' : ''}
+                      ${isSelected
+                        ? 'border-[#1F396D] shadow-lg'
                         : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
-                    }
-                    ${category === 'Half-Day Camps' ? 'bg-sky-50/50' : 'bg-orange-50/50'}
-                  `}
-                >
-                  <div className="w-full h-32 overflow-hidden bg-slate-100 relative">
+                      }
+                    `}
+                  >
+                    {/* Image — aspect ratio set directly on the img for reliable rendering */}
                     <img
                       src={program.image}
-                      alt={program.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                      alt=""
+                      draggable={false}
+                      className="w-full object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-500 bg-slate-200"
+                      style={{
+                        display: 'block',
+                        aspectRatio: '650/450',
+                        maxHeight: isLastAndAlone ? '200px' : undefined,
+                      }}
                     />
-                  </div>
 
-                  <div className="p-4 flex-1 flex flex-col">
-                    <div className="mb-2">
+                    {/* Content — white area below image */}
+                    <div className="px-4 py-3 flex flex-col flex-1">
                       <h4
-                        className={`font-black text-base leading-tight uppercase tracking-tight
-                          ${selectedProgramId === program.id ? 'text-[#1F396D]' : 'text-slate-900'}
-                          bg-white/50 backdrop-blur-sm inline-block px-2 py-1 rounded-md
+                        className={`font-black text-sm uppercase tracking-tight leading-snug line-clamp-2
+                          ${isSelected ? 'text-[#1F396D]' : 'text-slate-900'}
                         `}
                       >
                         {program.title}
                       </h4>
-                    </div>
-
-                    <p className="text-xs text-slate-500 leading-relaxed line-clamp-2 mb-3">
-                      {program.description}
-                    </p>
-
-                    <div className="mt-auto flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 text-[10px] font-bold text-slate-600 uppercase tracking-widest">
-                        <Clock className="w-3 h-3 text-[#1F396D]" />
-                        {program.hoursPerWeek}
-                      </div>
-                      {selectedProgramId === program.id && (
-                        <div className="flex items-center text-[#1F396D] text-[10px] font-bold uppercase tracking-widest">
-                          Active <Check className="w-3 h-3 ml-1" />
+                      <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
+                        {program.description}
+                      </p>
+                      {isSelected && (
+                        <div
+                          aria-live="polite"
+                          className="mt-2 flex items-center gap-1 text-[#1F396D] text-[10px] font-black uppercase tracking-widest"
+                        >
+                          {t('card.active')} <Check className="w-3 h-3" aria-hidden="true" />
                         </div>
                       )}
                     </div>
-                  </div>
-                </button>
-              )
-            )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Config constants are defined in summer-camp-data.ts (SSOT).
+// Display labels are resolved via useTranslations('summerCamp') inside each component.
+
+function InfoModal({
+  program,
+  onClose,
+}: {
+  program: Program;
+  onClose: () => void;
+}) {
+  const t = useTranslations('summerCamp');
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) return null;
+
+  const details = program.details ?? null;
+
+  const modalContent = (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${program.title} — program details`}
+    >
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      {/* Modal card */}
+      <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-[320px] overflow-hidden">
+        {/* Header */}
+        <div className="bg-[#1F396D] px-5 py-4">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-0.5">
+                Program Details
+              </p>
+              <h3 className="font-heading font-black text-white text-base leading-tight">
+                {program.title}
+              </h3>
+            </div>
+            <button
+              onClick={onClose}
+              aria-label="Close details"
+              className="flex-shrink-0 mt-0.5 text-white/70 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
-      ))}
+
+        {details ? (
+          <>
+            {/* Schedule strip — days per week, schedule, daily hours */}
+            <div className="flex flex-wrap items-center gap-4 px-5 py-3 bg-[#1F396D]/5 border-b border-slate-100">
+              <div className="flex items-center gap-2 text-[#1F396D]">
+                <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Days per week</p>
+                  <p className="text-xs font-bold text-slate-800">{details.daysPerWeek} days</p>
+                </div>
+              </div>
+              <div className="w-px h-8 bg-slate-200" aria-hidden="true" />
+              <div className="flex items-center gap-2 text-[#1F396D]">
+                <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Schedule</p>
+                  <p className="text-xs font-bold text-slate-800">{details.schedule}</p>
+                </div>
+              </div>
+              <div className="w-px h-8 bg-slate-200" aria-hidden="true" />
+              <div className="flex items-center gap-2 text-[#1F396D]">
+                <Clock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Daily hours</p>
+                  <p className="text-xs font-bold text-slate-800">{details.dailyHours}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* What's included */}
+            <div className="px-5 py-4">
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">
+                What&apos;s Included
+              </p>
+              <ul className="space-y-2">
+                {(details.includes ?? []).map((item, i) => (
+                  <li key={i} className="flex items-start gap-2.5">
+                    <CheckCircle2
+                      className="w-4 h-4 text-[#1F396D] flex-shrink-0 mt-0.5"
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm text-slate-700 leading-snug">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </>
+        ) : (
+          <div className="px-5 py-6">
+            <p className="text-sm text-slate-600">{t('infoModal.detailsUnavailable')}</p>
+          </div>
+        )}
+
+        {/* Age group footer */}
+        <div className="px-5 py-3 bg-slate-50 border-t border-slate-100">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Age Group: </span>
+          <span className="text-[10px] font-black text-slate-700">{program.ageGroup}</span>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Render into document.body via portal — keeps the modal completely outside
+  // the SSR component tree, so it can never cause a hydration mismatch.
+  return createPortal(modalContent, document.body);
+}
+
+function SlotRow({
+  slot,
+  level,
+  program,
+  cartItems,
+  onAdd,
+  onRemove,
+}: {
+  slot: Slot;
+  level: Level;
+  program: Program;
+  cartItems: CartItem[];
+  onAdd: (level: Level, slot: Slot) => void;
+  onRemove: (slotId: string) => void;
+}) {
+  const t = useTranslations('summerCamp');
+  const inCart = cartItems.some((i) => i.id === slot.id);
+
+  return (
+    <div
+      className={`
+        relative flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border transition-all duration-300
+        ${inCart
+          ? 'bg-green-50/30 border-green-200'
+          : 'bg-white border-slate-100 hover:border-slate-200 hover:shadow-sm'
+        }
+      `}
+    >
+      <div className="space-y-0.5">
+        <div className="font-bold text-slate-800 text-sm">{slot.label}</div>
+        <div className="text-[9px] text-slate-400 flex items-center gap-2 font-medium uppercase tracking-wider">
+          <span className="flex items-center gap-1">
+            <span
+              aria-hidden="true"
+              className={`w-1.5 h-1.5 rounded-full ${
+                slot.format === 'Online' ? 'bg-sky-400' : 'bg-amber-400'
+              }`}
+            />
+            {slot.format}
+          </span>
+          <span>{slot.time}</span>
+        </div>
+      </div>
+      <div className="flex items-center gap-3 mt-3 sm:mt-0">
+        <div className="font-black text-slate-900 text-base" aria-label={`$${slot.price}`}>
+          ${slot.price}
+        </div>
+        {inCart ? (
+          <Button
+            variant="ghost"
+            size="sm"
+            aria-label={`${t('slots.remove')} ${slot.label}`}
+            onClick={() => onRemove(slot.id)}
+            className="text-red-500 hover:text-red-600 hover:bg-red-50 font-bold h-8 text-[10px]"
+          >
+            {t('slots.remove')}
+          </Button>
+        ) : (
+          <Button
+            size="sm"
+            aria-label={`${t('slots.add')} ${slot.label}`}
+            onClick={() => onAdd(level, slot)}
+            className="bg-slate-900 text-white hover:bg-[#1F396D] h-8 px-4 text-[10px] font-bold rounded-full"
+          >
+            {t('slots.add')}
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
 
 export function SlotsPanel({ program }: { program: Program }) {
+  const t = useTranslations('summerCamp');
+
   const [cartItems, setCartItems] = useState(summerCampCartStore.items);
+  const [advMathMode, setAdvMathMode] = useState<LearningModeKey>('inPerson');
+  const [advMathProgram, setAdvMathProgram] = useState<AdvMathProgramKey>('algebra');
+  const [olympiadMode, setOlympiadMode] = useState<LearningModeKey>('inPerson');
+  const [olympiadTier, setOlympiadTier] = useState<OlympiadTierId>('tier1');
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     return summerCampCartStore.subscribe(
       () => setCartItems([...summerCampCartStore.items])
     );
   }, []);
+
+  // Resolved display labels — derived from i18n, stable per render via useMemo.
+  const modeLabels = useMemo<Record<LearningModeKey, string>>(
+    () => ({
+      inPerson: t('mode.inPerson'),
+      online: t('mode.online'),
+    }),
+    [t]
+  );
+
+  const programLabels = useMemo<Record<AdvMathProgramKey, string>>(
+    () => ({
+      algebra: t('advMathProgram.algebra'),
+      precalculus: t('advMathProgram.precalculus'),
+    }),
+    [t]
+  );
+
+  const tierLabels = useMemo<Record<OlympiadTierId, { name: string; description: string }>>(
+    () => ({
+      tier1: { name: t('tier.tier1.name'), description: t('tier.tier1.description') },
+      tier2: { name: t('tier.tier2.name'), description: t('tier.tier2.description') },
+    }),
+    [t]
+  );
 
   const handleAdd = (level: Level, slot: Slot) => {
     summerCampCartStore.add(program, level, slot);
@@ -177,107 +466,266 @@ export function SlotsPanel({ program }: { program: Program }) {
     summerCampCartStore.remove(slotId);
   };
 
+  const isAdvMath = program.id === 'adv-math';
+  const isMathOlympiad = program.id === 'math-olympiad';
+
+  const advMathSlots: Slot[] = useMemo(() => {
+    if (!isAdvMath || !program.levels[0]) return [];
+    const formatMap = LEARNING_MODE_FORMAT ?? {};
+    const timeMap = LEARNING_MODE_TIME ?? {};
+    return program.levels[0].slots.map((s) => ({
+      ...s,
+      id: `${s.id}-${advMathMode}-${advMathProgram}`,
+      label: `${s.label} — ${programLabels[advMathProgram]}, ${modeLabels[advMathMode]}`,
+      format: (formatMap[advMathMode] ?? 'In-Person') as Slot['format'],
+      time: timeMap[advMathMode] ?? '9:00 AM - 12:00 PM',
+    }));
+  }, [isAdvMath, program.levels, advMathMode, advMathProgram, programLabels, modeLabels]);
+
+  const olympiadTierConfig = useMemo(
+    () => (MATH_OLYMPIAD_TIER_CONFIGS ?? []).find((c) => c.id === olympiadTier),
+    [olympiadTier]
+  );
+
+  const olympiadSlots: Slot[] = useMemo(() => {
+    if (!isMathOlympiad || !olympiadTierConfig) return [];
+    const formatMap = LEARNING_MODE_FORMAT ?? {};
+    const timeMap = LEARNING_MODE_TIME ?? {};
+    return Array.from({ length: olympiadTierConfig.slotCount }).map((_, i) => {
+      const baseLabel =
+        olympiadTierConfig.weeksPerSlot === 1
+          ? t('slotLabel.singleWeek', { week: i + 1, hours: olympiadTierConfig.hoursPerSlot })
+          : t('slotLabel.weekRange', {
+              start: i * 2 + 1,
+              end: i * 2 + 2,
+              hours: olympiadTierConfig.hoursPerSlot,
+            });
+      return {
+        id: `${olympiadTierConfig.slotId(i)}-${olympiadMode}`,
+        label: `${baseLabel} — ${tierLabels[olympiadTierConfig.id].name}, ${modeLabels[olympiadMode]}`,
+        time: timeMap[olympiadMode] ?? '9:00 AM - 12:00 PM',
+        format: (formatMap[olympiadMode] ?? 'In-Person') as Slot['format'],
+        price: olympiadTierConfig.price,
+      };
+    });
+  }, [isMathOlympiad, olympiadTierConfig, olympiadMode, t, tierLabels, modeLabels]);
+
   return (
     <div
       id="slots-panel"
+      role="region"
+      aria-label={program.title}
       className="bg-white rounded-[2rem] shadow-2xl border border-slate-100 overflow-hidden h-full flex flex-col"
     >
+      {/* Info modal */}
+      {showInfo && <InfoModal program={program} onClose={() => setShowInfo(false)} />}
+
       <div className="p-6 border-b border-slate-50 bg-slate-50/30">
-        <h3 className="font-heading font-extrabold text-xl text-slate-900">
-          {program.title}
-        </h3>
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-heading font-extrabold text-xl text-slate-900 leading-tight">
+            {program.title}
+          </h3>
+          <button
+            onClick={() => setShowInfo(true)}
+            aria-label={`View details for ${program.title}`}
+            className="flex-shrink-0 w-7 h-7 rounded-full bg-[#1F396D]/10 hover:bg-[#1F396D]/20 text-[#1F396D] flex items-center justify-center transition-colors mt-0.5"
+          >
+            <Info className="w-4 h-4" aria-hidden="true" />
+          </button>
+        </div>
         <p className="text-slate-500 mt-2 text-xs leading-relaxed">
           {program.description}
         </p>
         <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F396D]/10 text-[#1F396D] text-[10px] font-bold uppercase tracking-widest">
-          <Clock className="w-3 h-3" /> {program.hoursPerWeek}
+          <Clock className="w-3 h-3" aria-hidden="true" /> {program.hoursPerWeek}
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
-        {program.levels.map((level) => (
-          <div key={level.id} className="space-y-4">
-            <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
-              <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
-                {level.name}
-              </h4>
-              <span className="text-[10px] text-muted-foreground">
-                {level.description}
-              </span>
+        {isAdvMath && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="adv-math-mode" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  {t('slots.learningMode')}
+                </Label>
+                <Select
+                  value={advMathMode}
+                  onValueChange={(v) => setAdvMathMode(v as LearningModeKey)}
+                >
+                  <SelectTrigger id="adv-math-mode" className="rounded-lg text-sm">
+                    <SelectValue placeholder={t('slots.selectMode')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(LEARNING_MODE_KEYS ?? []).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {modeLabels[key]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="adv-math-program" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  {t('slots.program')}
+                </Label>
+                <Select
+                  value={advMathProgram}
+                  onValueChange={(v) => setAdvMathProgram(v as AdvMathProgramKey)}
+                >
+                  <SelectTrigger id="adv-math-program" className="rounded-lg text-sm">
+                    <SelectValue placeholder={t('slots.selectProgram')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(ADV_MATH_PROGRAM_KEYS ?? []).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {programLabels[key]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-
-            <div className="grid gap-2">
-              {level.slots.map((slot) => {
-                const inCart = cartItems.some((i) => i.id === slot.id);
-
-                return (
-                  <div
+            <div className="space-y-4">
+              <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
+                <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
+                  {programLabels[advMathProgram]} • {modeLabels[advMathMode]}
+                </h4>
+                <span className="text-[10px] text-muted-foreground">
+                  {t('slots.weeklyIntensiveNote')}
+                </span>
+              </div>
+              <div className="grid gap-2">
+                {advMathSlots.map((slot) => (
+                  <SlotRow
                     key={slot.id}
-                    className={`
-                      relative flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border transition-all duration-300
-                      ${
-                        inCart
-                          ? 'bg-green-50/30 border-green-200'
-                          : 'bg-white border-slate-100 hover:border-slate-200 hover:shadow-sm'
-                      }
-                    `}
-                  >
-                    <div className="space-y-0.5">
-                      <div className="font-bold text-slate-800 text-sm">
-                        {slot.label}
-                      </div>
-                      <div className="text-[9px] text-slate-400 flex items-center gap-2 font-medium uppercase tracking-wider">
-                        <span className="flex items-center gap-1">
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${
-                              slot.format === 'Online'
-                                ? 'bg-sky-400'
-                                : 'bg-amber-400'
-                            }`}
-                          />
-                          {slot.format}
-                        </span>
-                        <span>{slot.time}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 mt-3 sm:mt-0">
-                      <div className="font-black text-slate-900 text-base">
-                        ${slot.price}
-                      </div>
-                      {inCart ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleRemove(slot.id)}
-                          className="text-red-500 hover:text-red-600 hover:bg-red-50 font-bold h-8 text-[10px]"
-                        >
-                          Remove
-                        </Button>
-                      ) : (
-                        <Button
-                          size="sm"
-                          onClick={() => handleAdd(level, slot)}
-                          className="bg-slate-900 text-white hover:bg-[#1F396D] h-8 px-4 text-[10px] font-bold rounded-full"
-                        >
-                          Add
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
+                    slot={slot}
+                    level={{
+                      ...program.levels[0],
+                      name: `${programLabels[advMathProgram]} • ${modeLabels[advMathMode]}`,
+                    }}
+                    program={program}
+                    cartItems={cartItems}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          </>
+        )}
+
+        {isMathOlympiad && olympiadTierConfig && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="olympiad-mode" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  {t('slots.learningMode')}
+                </Label>
+                <Select
+                  value={olympiadMode}
+                  onValueChange={(v) => setOlympiadMode(v as LearningModeKey)}
+                >
+                  <SelectTrigger id="olympiad-mode" className="rounded-lg text-sm">
+                    <SelectValue placeholder={t('slots.selectMode')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(LEARNING_MODE_KEYS ?? []).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {modeLabels[key]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="olympiad-tier" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                  {t('slots.tier')}
+                </Label>
+                <Select
+                  value={olympiadTier}
+                  onValueChange={(v) => setOlympiadTier(v as OlympiadTierId)}
+                >
+                  <SelectTrigger id="olympiad-tier" className="rounded-lg text-sm">
+                    <SelectValue placeholder={t('slots.selectTier')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {(MATH_OLYMPIAD_TIER_CONFIGS ?? []).map((cfg) => (
+                      <SelectItem key={cfg.id} value={cfg.id}>
+                        {tierLabels[cfg.id].name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
+                <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
+                  {tierLabels[olympiadTierConfig.id].name}
+                </h4>
+                <span className="text-[10px] text-muted-foreground">
+                  {tierLabels[olympiadTierConfig.id].description}
+                </span>
+              </div>
+              <div className="grid gap-2">
+                {olympiadSlots.map((slot) => (
+                  <SlotRow
+                    key={slot.id}
+                    slot={slot}
+                    level={{
+                      id: olympiadTierConfig.id,
+                      name: tierLabels[olympiadTierConfig.id].name,
+                      description: tierLabels[olympiadTierConfig.id].description,
+                      slots: [],
+                    }}
+                    program={program}
+                    cartItems={cartItems}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {!isAdvMath && !isMathOlympiad &&
+          program.levels.map((level) => (
+            <div key={level.id} className="space-y-4">
+              <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
+                <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
+                  {level.name}
+                </h4>
+                <span className="text-[10px] text-muted-foreground">
+                  {level.description}
+                </span>
+              </div>
+              <div className="grid gap-2">
+                {level.slots.map((slot) => (
+                  <SlotRow
+                    key={slot.id}
+                    slot={slot}
+                    level={level}
+                    program={program}
+                    cartItems={cartItems}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
 }
 
 export function CartDrawer() {
+  const t = useTranslations('summerCamp');
   const [items, setItems] = useState(summerCampCartStore.items);
   const [isOpen, setIsOpen] = useState(false);
+  const locale = useLocale();
 
   useEffect(() => {
     return summerCampCartStore.subscribe(
@@ -286,7 +734,6 @@ export function CartDrawer() {
   }, []);
 
   const total = items.reduce((sum, item) => sum + item.price, 0);
-  const locale = useLocale();
 
   return (
     <div className="fixed bottom-8 right-8 z-40">
@@ -294,22 +741,21 @@ export function CartDrawer() {
         <SheetTrigger asChild>
           <Button
             size="lg"
+            aria-label={t('cart.title')}
             className="rounded-full shadow-2xl h-14 px-6 bg-[#1F396D] text-white hover:bg-[#1F396D]/90 hover:scale-105 active:scale-95 transition-all"
           >
             <div className="flex items-center gap-3">
-              <ShoppingBag className="w-5 h-5" />
-              <div className="flex flex-col items-start leading-none">
-                <span className="font-black text-base">${total}</span>
-              </div>
+              <ShoppingBag className="w-5 h-5" aria-hidden="true" />
+              <span className="font-black text-base" aria-live="polite">${total}</span>
             </div>
           </Button>
         </SheetTrigger>
         <SheetContent className="w-full sm:max-w-md flex flex-col h-full border-none shadow-2xl">
           <SheetHeader className="border-b border-slate-50 pb-4 mb-4">
             <SheetTitle className="font-heading font-black text-xl flex items-center gap-2">
-              Cart{' '}
+              {t('cart.title')}{' '}
               <span className="text-[10px] font-bold text-muted-foreground bg-slate-100 px-2 py-0.5 rounded-full uppercase">
-                {items.length} items
+                {t('cart.items', { count: items.length })}
               </span>
             </SheetTitle>
           </SheetHeader>
@@ -317,9 +763,9 @@ export function CartDrawer() {
           <div className="flex-1 overflow-y-auto space-y-3 pr-2">
             {items.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                <ShoppingBag className="w-10 h-10 text-slate-200" />
+                <ShoppingBag className="w-10 h-10 text-slate-200" aria-hidden="true" />
                 <p className="text-xs text-slate-500 uppercase tracking-widest">
-                  Empty Cart
+                  {t('cart.empty')}
                 </p>
                 <Button
                   variant="outline"
@@ -327,7 +773,7 @@ export function CartDrawer() {
                   className="rounded-full text-[10px]"
                   onClick={() => setIsOpen(false)}
                 >
-                  Continue Browsing
+                  {t('cart.continueBrowsing')}
                 </Button>
               </div>
             ) : (
@@ -336,13 +782,14 @@ export function CartDrawer() {
                   key={item.id}
                   className="group bg-white rounded-xl p-4 border border-slate-100 relative transition-all hover:shadow-sm"
                 >
-                  <div className="absolute top-0 left-0 w-1 h-full bg-[#1F396D]" />
+                  <div className="absolute top-0 left-0 w-1 h-full bg-[#1F396D]" aria-hidden="true" />
                   <button
                     type="button"
+                    aria-label={`${t('cart.removeItem')}: ${item.programTitle}`}
                     onClick={() => summerCampCartStore.remove(item.id)}
                     className="absolute top-3 right-3 p-1 text-slate-300 hover:text-red-500 rounded-full transition-all"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-3 h-3" aria-hidden="true" />
                   </button>
                   <h4 className="font-black text-slate-900 text-[10px] mb-0.5 uppercase tracking-tight">
                     {item.programTitle}
@@ -354,7 +801,7 @@ export function CartDrawer() {
                     <span className="font-bold text-slate-400 text-[10px]">
                       {item.label}
                     </span>
-                    <span className="font-black text-sm text-slate-900">
+                    <span className="font-black text-sm text-slate-900" aria-label={`$${item.price}`}>
                       ${item.price}
                     </span>
                   </div>
@@ -366,9 +813,9 @@ export function CartDrawer() {
           <div className="border-t border-slate-50 pt-6 mt-auto">
             <div className="flex items-center justify-between mb-4 px-1">
               <span className="font-bold text-slate-400 uppercase tracking-widest text-[10px]">
-                Total
+                {t('cart.total')}
               </span>
-              <span className="font-heading font-black text-3xl tracking-tighter">
+              <span className="font-heading font-black text-3xl tracking-tighter" aria-live="polite">
                 ${total}
               </span>
             </div>
@@ -377,7 +824,7 @@ export function CartDrawer() {
               disabled={items.length === 0}
               asChild
             >
-              <Link href={`/${locale}/checkout`}>BOOK NOW</Link>
+              <Link href={`/${locale}/checkout`}>{t('cart.bookNow')}</Link>
             </Button>
           </div>
         </SheetContent>

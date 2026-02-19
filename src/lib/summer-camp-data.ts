@@ -16,6 +16,16 @@ export type Level = {
   slots: Slot[];
 };
 
+export type ProgramDetails = {
+  /** e.g. "Monday – Friday" */
+  schedule: string;
+  daysPerWeek: number;
+  /** e.g. "3 hours / day" */
+  dailyHours: string;
+  /** Bullet-point list of what is included */
+  includes: string[];
+};
+
 export type Program = {
   id: string;
   title: string;
@@ -27,7 +37,73 @@ export type Program = {
   startingPrice: number;
   image: string;
   levels: Level[];
+  details: ProgramDetails;
 };
+
+// ---------------------------------------------------------------------------
+// Configurable program-variant types — structural data only, no display text.
+// Display strings are owned by the i18n layer (summerCamp namespace).
+// ---------------------------------------------------------------------------
+
+/** Identifies a learner's delivery preference. Used as an i18n key suffix. */
+export type LearningModeKey = 'inPerson' | 'online';
+
+/** Identifies the Advanced Math sub-program. Used as an i18n key suffix. */
+export type AdvMathProgramKey = 'algebra' | 'precalculus';
+
+/** Identifies a Math Olympiad pricing tier. Used as an i18n key suffix. */
+export type OlympiadTierId = 'tier1' | 'tier2';
+
+/** Ordered list of learning mode selection keys. */
+export const LEARNING_MODE_KEYS: LearningModeKey[] = ['inPerson', 'online'];
+
+/** Ordered list of Advanced Math program selection keys. */
+export const ADV_MATH_PROGRAM_KEYS: AdvMathProgramKey[] = ['algebra', 'precalculus'];
+
+/** Maps a learning mode key to the canonical Slot.format value. */
+export const LEARNING_MODE_FORMAT: Record<LearningModeKey, Slot['format']> = {
+  inPerson: 'In-Person',
+  online: 'Online',
+};
+
+/** Maps a learning mode key to the default session time string. */
+export const LEARNING_MODE_TIME: Record<LearningModeKey, string> = {
+  inPerson: '9:00 AM - 12:00 PM',
+  online: '1:00 PM - 4:00 PM',
+};
+
+export type OlympiadTierConfig = {
+  readonly id: OlympiadTierId;
+  /** Total number of bookable slots offered under this tier. */
+  readonly slotCount: number;
+  /** Calendar weeks covered per slot (1 for Tier 1, 2 for Tier 2). */
+  readonly weeksPerSlot: number;
+  /** Training hours included per slot. */
+  readonly hoursPerSlot: number;
+  /** Generates a stable, unique slot ID for the given slot index. */
+  readonly slotId: (index: number) => string;
+  readonly price: number;
+};
+
+/** Ordered, exhaustive list of Olympiad tier configurations. */
+export const MATH_OLYMPIAD_TIER_CONFIGS: OlympiadTierConfig[] = [
+  {
+    id: 'tier1',
+    slotCount: 8,
+    weeksPerSlot: 1,
+    hoursPerSlot: 15,
+    slotId: (i: number) => `math-olympiad-tier1-w${i + 1}`,
+    price: 449,
+  },
+  {
+    id: 'tier2',
+    slotCount: 4,
+    weeksPerSlot: 2,
+    hoursPerSlot: 30,
+    slotId: (i: number) => `math-olympiad-tier2-w${i * 2 + 1}-${i * 2 + 2}`,
+    price: 449,
+  },
+];
 
 const generateWeeklySlots = (
   programId: string,
@@ -55,7 +131,19 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '9 hours a week',
     ageGroup: 'Grades 7-10',
     startingPrice: 299,
-    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400',
+    image: '/images/camps/advanced-math.png',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: '3 hours / day',
+      includes: [
+        'Algebra or Pre-Calculus curriculum (your choice)',
+        'Expert instructor-led sessions',
+        'Daily practice problem sets',
+        'Weekly progress report for parents',
+        'Certificate of completion',
+      ],
+    },
     levels: [
       {
         id: 'math-weekly',
@@ -74,7 +162,19 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '15 hours a week',
     ageGroup: 'Grades 4-8',
     startingPrice: 449,
-    image: 'https://images.unsplash.com/photo-1509228468518-180dd482180c?auto=format&fit=crop&q=80&w=400',
+    image: '/images/camps/math-olympiad.png',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: 'Tier 1: 3 hrs / day · Tier 2: 6 hrs / day',
+      includes: [
+        'AMC8 & MOEMS-aligned curriculum',
+        'Timed mock competition tests',
+        'Competition strategy & problem-solving techniques',
+        'Detailed score analysis after each test',
+        'Take-home practice workbook',
+      ],
+    },
     levels: [
       {
         id: 'mo-weekly',
@@ -93,7 +193,19 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '30 hours a week',
     ageGroup: 'Grades 8-12',
     startingPrice: 349,
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=400',
+    image: '/images/camps/ai-entrepreneur.png',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: '6 hours / day',
+      includes: [
+        'Hands-on AI tools: ChatGPT, Midjourney, automation platforms',
+        'Business model canvas & pitch deck creation',
+        'Prompt engineering fundamentals',
+        'Live demo day — present your startup idea',
+        'Mentor feedback sessions',
+      ],
+    },
     levels: [
       {
         id: 'ai-weekly',
@@ -113,6 +225,18 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     ageGroup: 'Ages 7-10',
     startingPrice: 249,
     image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&q=80&w=400',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: '1.5 hours / day',
+      includes: [
+        'Scratch visual programming environment',
+        'Animated story & interactive game projects',
+        'Introduction to loops, conditionals & variables',
+        'Shareable project portfolio at end of week',
+        'Live online sessions with screen-share support',
+      ],
+    },
     levels: [
       {
         id: 'scratch-weekly',
@@ -133,7 +257,19 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '30 hours per week',
     ageGroup: 'Ages 9-14',
     startingPrice: 539,
-    image: 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?auto=format&fit=crop&q=80&w=400',
+    image: '/images/camps/robotics.png',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: '6 hours / day',
+      includes: [
+        'Build & program a working robot from scratch',
+        'Sensor arrays: ultrasonic, IR & colour sensors',
+        'Mechanical design + logic programming',
+        'Daily team engineering challenges',
+        'Final robot showcase on Friday',
+      ],
+    },
     levels: [
       {
         id: 'bot-weekly',
@@ -158,7 +294,19 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '30 hours per week',
     ageGroup: 'Grades 3-7',
     startingPrice: 499,
-    image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=400',
+    image: '/images/camps/young-authors.png',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: '6 hours / day',
+      includes: [
+        'Story structure, plot & character development',
+        'Daily creative writing workshops',
+        'Peer review & revision sessions',
+        'Illustration basics for your story',
+        'Professionally printed copy of your finished book',
+      ],
+    },
     levels: [
       {
         id: 'author-weekly',
@@ -174,25 +322,38 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
       },
     ],
   },
+  // Roblox (In-Person) — Half-Day
   {
     id: 'roblox-in-person',
     title: 'Roblox (In-Person)',
     description: 'Master Lua scripting in a collaborative on-site environment.',
     icon: Gamepad2,
-    category: 'Full Day Camps',
-    hoursPerWeek: '30 hours per week',
+    category: 'Half-Day Camps',
+    hoursPerWeek: '15 hours per week',
     ageGroup: 'Ages 8-12',
     startingPrice: 399,
-    image: 'https://images.unsplash.com/photo-1605898399738-4e3a9870630b?auto=format&fit=crop&q=80&w=400',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800',
+    details: {
+      schedule: 'Monday – Friday',
+      daysPerWeek: 5,
+      dailyHours: '3 hours / day',
+      includes: [
+        'Lua scripting fundamentals in Roblox Studio',
+        'Game mechanics design & world-building',
+        'Multiplayer scripting & game testing',
+        'Collaborative team game project',
+        'Published game on Roblox platform by end of week',
+      ],
+    },
     levels: [
       {
         id: 'rob-ip-weekly',
         name: 'Dev Studio',
         description: 'Deep dive into game mechanics and multiplayer scripting.',
         slots: Array.from({ length: 8 }).map((_, i) => ({
-          id: `roblox-f-w${i + 1}`,
-          label: `Week ${i + 1} (30 hrs/wk)`,
-          time: '9:00 AM - 4:00 PM',
+          id: `roblox-h-w${i + 1}`,
+          label: `Week ${i + 1} (15 hrs/wk)`,
+          time: '9:00 AM - 12:00 PM',
           format: 'In-Person' as const,
           price: 399,
         })),

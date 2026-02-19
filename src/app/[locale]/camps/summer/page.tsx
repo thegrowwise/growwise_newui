@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import { SUMMER_CAMP_PROGRAMS, type Program } from '@/lib/summer-camp-data';
 import {
   ProgramList,
@@ -28,6 +29,7 @@ const FAQS = [
 ];
 
 export default function SummerCampPage() {
+  const t = useTranslations('summerCamp');
   const [selectedProgram, setSelectedProgram] = useState<Program>(
     SUMMER_CAMP_PROGRAMS[0]
   );
@@ -104,18 +106,32 @@ export default function SummerCampPage() {
         <section
           id="slots-section"
           ref={slotsSectionRef}
-          className="py-20 bg-slate-50/50 border-y border-slate-100"
+          className="py-20 relative border-y border-slate-100"
+          style={{
+            background:
+              'linear-gradient(135deg, #dbeafe 0%, #eff6ff 30%, #fff7ed 70%, #fed7aa 100%)',
+          }}
         >
-          <div className="container mx-auto px-4 md:px-6">
+          {/* Subtle radial accents — overflow is clipped by the section's clip-path wrapper below */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{ zIndex: 0, overflow: 'clip' }}
+            aria-hidden="true"
+          >
+            <div className="absolute top-0 left-0 w-[45%] h-[50%] rounded-full blur-3xl opacity-40 bg-[#1F396D]/20" />
+            <div className="absolute bottom-0 right-0 w-[45%] h-[50%] rounded-full blur-3xl opacity-40 bg-orange-400/20" />
+          </div>
+
+          <div className="container mx-auto px-4 md:px-6" style={{ position: 'relative', zIndex: 1 }}>
             <div className="grid lg:grid-cols-12 gap-8 items-start relative">
               {/* Left Column: Program List */}
               <div className="lg:col-span-7">
                 <div className="mb-10">
                   <h2 className="font-heading font-black text-3xl text-slate-900 mb-2 uppercase tracking-tight">
-                    Choose Your Path
+                    {t('page.title')}
                   </h2>
                   <p className="text-slate-500 text-sm font-medium">
-                    Select a camp to view available weeks.
+                    {t('page.subtitle')}
                   </p>
                 </div>
                 <ProgramList
@@ -132,7 +148,10 @@ export default function SummerCampPage() {
               </div>
 
               {/* Right Column: Slots Panel (Sticky) */}
-              <div className="lg:col-span-5 lg:sticky lg:top-24 lg:h-[calc(100vh-8rem)]">
+              <div
+                className="lg:col-span-5 lg:sticky lg:top-24"
+                style={{ height: 'calc(100vh - 7rem)' }}
+              >
                 <SlotsPanel program={selectedProgram} />
               </div>
             </div>
