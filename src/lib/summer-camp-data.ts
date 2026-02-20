@@ -131,7 +131,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '9 hours a week',
     ageGroup: 'Grades 7-10',
     startingPrice: 299,
-    image: '/images/camps/advanced-math.png',
+    image: '/images/camps/banners/advanced-math-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -162,7 +162,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '15 hours a week',
     ageGroup: 'Grades 4-8',
     startingPrice: 449,
-    image: '/images/camps/math-olympiad.png',
+    image: '/images/camps/banners/olympiad-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -193,7 +193,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '30 hours a week',
     ageGroup: 'Grades 8-12',
     startingPrice: 349,
-    image: '/images/camps/ai-entrepreneur.png',
+    image: '/images/camps/banners/ai-entrepreneur-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -224,7 +224,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '9 hours a week',
     ageGroup: 'Ages 7-10',
     startingPrice: 249,
-    image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&q=85&w=650&h=450',
+    image: '/images/camps/banners/scratch-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -257,7 +257,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '30 hours per week',
     ageGroup: 'Ages 9-14',
     startingPrice: 539,
-    image: '/images/camps/robotics.png',
+    image: '/images/camps/banners/robotics-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -294,7 +294,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '30 hours per week',
     ageGroup: 'Grades 3-7',
     startingPrice: 499,
-    image: '/images/camps/young-authors.png',
+    image: '/images/camps/banners/young-authors-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -332,7 +332,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '15 hours per week',
     ageGroup: 'Ages 8-12',
     startingPrice: 399,
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=85&w=650&h=450',
+    image: '/images/camps/banners/roblox-banner.webp',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
