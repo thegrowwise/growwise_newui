@@ -125,7 +125,6 @@ export function ProgramList({
           <div key={category} className="space-y-3" role="listitem">
             {/* Category heading */}
             <div
-              aria-label={category}
               className={`flex items-center gap-4 px-5 py-4 rounded-2xl border-2
                 ${halfDay
                   ? 'bg-[#1F396D]/10 border-[#1F396D]/30'
@@ -147,10 +146,10 @@ export function ProgramList({
                 {category}
               </h3>
               <span
-                className={`ml-auto text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider
+                className={`ml-auto text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider
                   ${halfDay
-                    ? 'bg-[#1F396D]/20 text-[#1F396D]'
-                    : 'bg-orange-200 text-orange-700'
+                    ? 'bg-[#1F396D]/30 text-[#1F396D]'
+                    : 'bg-orange-300 text-orange-900'
                   }
                 `}
               >
@@ -181,8 +180,9 @@ export function ProgramList({
                     {/* Image — aspect ratio set directly on the img for reliable rendering */}
                     <img
                       src={program.image}
-                      alt=""
+                      alt={`${program.title}: ${program.description}`}
                       draggable={false}
+                      loading="lazy"
                       className="w-full object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-500 bg-slate-200"
                       style={{
                         display: 'block',
@@ -271,9 +271,9 @@ function InfoModal({
             <button
               onClick={onClose}
               aria-label="Close details"
-              className="flex-shrink-0 mt-0.5 text-white/70 hover:text-white transition-colors"
+              className="flex-shrink-0 mt-0.5 p-1 text-white/70 hover:text-white transition-colors rounded-full hover:bg-white/10 w-9 h-9 flex items-center justify-center min-w-9 min-h-9"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -285,31 +285,31 @@ function InfoModal({
               <div className="flex items-center gap-2 text-[#1F396D]">
                 <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Days per week</p>
-                  <p className="text-xs font-bold text-slate-800">{details.daysPerWeek} days</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Days per week</p>
+                  <p className="text-xs font-bold text-slate-900">{details.daysPerWeek} days</p>
                 </div>
               </div>
               <div className="w-px h-8 bg-slate-200" aria-hidden="true" />
               <div className="flex items-center gap-2 text-[#1F396D]">
                 <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Schedule</p>
-                  <p className="text-xs font-bold text-slate-800">{details.schedule}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Schedule</p>
+                  <p className="text-xs font-bold text-slate-900">{details.schedule}</p>
                 </div>
               </div>
               <div className="w-px h-8 bg-slate-200" aria-hidden="true" />
               <div className="flex items-center gap-2 text-[#1F396D]">
                 <Clock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Daily hours</p>
-                  <p className="text-xs font-bold text-slate-800">{details.dailyHours}</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Daily hours</p>
+                  <p className="text-xs font-bold text-slate-900">{details.dailyHours}</p>
                 </div>
               </div>
             </div>
 
             {/* What's included */}
             <div className="px-5 py-4">
-              <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">
+              <p className="text-[10px] font-black uppercase tracking-widest text-slate-700 mb-3">
                 What&apos;s Included
               </p>
               <ul className="space-y-2">
@@ -333,8 +333,8 @@ function InfoModal({
 
         {/* Age group footer */}
         <div className="px-5 py-3 bg-slate-50 border-t border-slate-100">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Age Group: </span>
-          <span className="text-[10px] font-black text-slate-700">{program.ageGroup}</span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Age Group: </span>
+          <span className="text-[10px] font-black text-slate-900">{program.ageGroup}</span>
         </div>
       </div>
     </div>
@@ -375,7 +375,7 @@ function SlotRow({
     >
       <div className="space-y-0.5">
         <div className="font-bold text-slate-800 text-sm">{slot.label}</div>
-        <div className="text-[9px] text-slate-400 flex items-center gap-2 font-medium uppercase tracking-wider">
+        <div className="text-[9px] text-slate-600 flex items-center gap-2 font-medium uppercase tracking-wider">
           <span className="flex items-center gap-1">
             <span
               aria-hidden="true"
@@ -389,16 +389,16 @@ function SlotRow({
         </div>
       </div>
       <div className="flex items-center gap-3 mt-3 sm:mt-0">
-        <div className="font-black text-slate-900 text-base" aria-label={`$${slot.price}`}>
+        <span className="font-black text-slate-900 text-base">
           ${slot.price}
-        </div>
+        </span>
         {inCart ? (
           <Button
             variant="ghost"
             size="sm"
             aria-label={`${t('slots.remove')} ${slot.label}`}
             onClick={() => onRemove(slot.id)}
-            className="text-red-500 hover:text-red-600 hover:bg-red-50 font-bold h-8 text-[10px]"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50 font-bold h-10 min-w-10 px-4 text-[10px] rounded-full transition-colors"
           >
             {t('slots.remove')}
           </Button>
@@ -407,7 +407,7 @@ function SlotRow({
             size="sm"
             aria-label={`${t('slots.add')} ${slot.label}`}
             onClick={() => onAdd(level, slot)}
-            className="bg-slate-900 text-white hover:bg-[#1F396D] h-8 px-4 text-[10px] font-bold rounded-full"
+            className="bg-slate-900 text-white hover:bg-[#1F396D] h-10 min-w-10 px-4 text-[10px] font-bold rounded-full transition-colors"
           >
             {t('slots.add')}
           </Button>
@@ -528,15 +528,15 @@ export function SlotsPanel({ program }: { program: Program }) {
           <button
             onClick={() => setShowInfo(true)}
             aria-label={`View details for ${program.title}`}
-            className="flex-shrink-0 w-7 h-7 rounded-full bg-[#1F396D]/10 hover:bg-[#1F396D]/20 text-[#1F396D] flex items-center justify-center transition-colors mt-0.5"
+            className="flex-shrink-0 w-10 h-10 rounded-full bg-[#1F396D]/10 hover:bg-[#1F396D]/20 text-[#1F396D] flex items-center justify-center transition-colors mt-0.5 min-w-10 min-h-10"
           >
-            <Info className="w-4 h-4" aria-hidden="true" />
+            <Info className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
-        <p className="text-slate-500 mt-2 text-xs leading-relaxed">
+        <p className="text-slate-600 mt-2 text-xs leading-relaxed">
           {program.description}
         </p>
-        <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F396D]/10 text-[#1F396D] text-[10px] font-bold uppercase tracking-widest">
+        <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1F396D]/10 text-[#1F396D] text-[10px] font-bold uppercase tracking-widest">
           <Clock className="w-3 h-3" aria-hidden="true" /> {program.hoursPerWeek}
         </div>
       </div>
@@ -588,10 +588,10 @@ export function SlotsPanel({ program }: { program: Program }) {
             </div>
             <div className="space-y-4">
               <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
-                <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
+                <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight">
                   {programLabels[advMathProgram]} • {modeLabels[advMathMode]}
                 </h4>
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-slate-600">
                   {t('slots.weeklyIntensiveNote')}
                 </span>
               </div>
@@ -661,10 +661,10 @@ export function SlotsPanel({ program }: { program: Program }) {
             </div>
             <div className="space-y-4">
               <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
-                <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
+                <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight">
                   {tierLabels[olympiadTierConfig.id].name}
                 </h4>
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-slate-600">
                   {tierLabels[olympiadTierConfig.id].description}
                 </span>
               </div>
@@ -694,10 +694,10 @@ export function SlotsPanel({ program }: { program: Program }) {
           program.levels.map((level) => (
             <div key={level.id} className="space-y-4">
               <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
-                <h4 className="font-bold text-sm text-slate-800 uppercase tracking-tight">
+                <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight">
                   {level.name}
                 </h4>
-                <span className="text-[10px] text-muted-foreground">
+                <span className="text-[10px] text-slate-600">
                   {level.description}
                 </span>
               </div>
@@ -754,7 +754,7 @@ export function CartDrawer() {
           <SheetHeader className="border-b border-slate-50 pb-4 mb-4">
             <SheetTitle className="font-heading font-black text-xl flex items-center gap-2">
               {t('cart.title')}{' '}
-              <span className="text-[10px] font-bold text-muted-foreground bg-slate-100 px-2 py-0.5 rounded-full uppercase">
+              <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full uppercase">
                 {t('cart.items', { count: items.length })}
               </span>
             </SheetTitle>
@@ -787,9 +787,9 @@ export function CartDrawer() {
                     type="button"
                     aria-label={`${t('cart.removeItem')}: ${item.programTitle}`}
                     onClick={() => summerCampCartStore.remove(item.id)}
-                    className="absolute top-3 right-3 p-1 text-slate-300 hover:text-red-500 rounded-full transition-all"
+                    className="absolute top-3 right-3 p-2 text-slate-400 hover:text-red-600 rounded-full transition-all h-9 w-9 min-w-9 min-h-9 flex items-center justify-center hover:bg-red-50"
                   >
-                    <X className="w-3 h-3" aria-hidden="true" />
+                    <X className="w-4 h-4" aria-hidden="true" />
                   </button>
                   <h4 className="font-black text-slate-900 text-[10px] mb-0.5 uppercase tracking-tight">
                     {item.programTitle}
@@ -798,10 +798,10 @@ export function CartDrawer() {
                     {item.levelName}
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-400 text-[10px]">
+                    <span className="font-bold text-slate-600 text-[10px]">
                       {item.label}
                     </span>
-                    <span className="font-black text-sm text-slate-900" aria-label={`$${item.price}`}>
+                    <span className="font-black text-sm text-slate-900">
                       ${item.price}
                     </span>
                   </div>
@@ -812,7 +812,7 @@ export function CartDrawer() {
 
           <div className="border-t border-slate-50 pt-6 mt-auto">
             <div className="flex items-center justify-between mb-4 px-1">
-              <span className="font-bold text-slate-400 uppercase tracking-widest text-[10px]">
+              <span className="font-bold text-slate-600 uppercase tracking-widest text-[10px]">
                 {t('cart.total')}
               </span>
               <span className="font-heading font-black text-3xl tracking-tighter" aria-live="polite">

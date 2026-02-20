@@ -224,7 +224,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '9 hours a week',
     ageGroup: 'Ages 7-10',
     startingPrice: 249,
-    image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&q=80&w=400',
+    image: 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&q=85&w=650&h=450',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
@@ -332,7 +332,7 @@ export const SUMMER_CAMP_PROGRAMS: Program[] = [
     hoursPerWeek: '15 hours per week',
     ageGroup: 'Ages 8-12',
     startingPrice: 399,
-    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=800',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=85&w=650&h=450',
     details: {
       schedule: 'Monday – Friday',
       daysPerWeek: 5,
