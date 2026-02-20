@@ -21,7 +21,6 @@ import {
 } from '@/components/ui/alert-dialog';
 import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, BarChart3, Globe, Video, CheckSquare, Heart, Calculator, X, AlertCircle } from 'lucide-react';
 import CountryCodeSelector from '@/components/CountryCodeSelector';
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -386,15 +385,15 @@ export default function BookAssessmentPage() {
 
       {/* <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-12">
+          <div className="text-center mb-12">
             <Badge className="mb-4 bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0 px-6 py-2">Why Book With Us</Badge>
             <h2 className="text-gray-900 mb-4">Everything You Need to Know</h2>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
             {benefits.map((benefit, index) => {
               const IconComponent = benefit.icon as any;
               return (
-                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }} whileHover={{ y: -5 }}>
+                <div key={index}>
                   <Card className="bg-gradient-to-br from-white to-gray-50 border-2 border-gray-100 hover:border-[#F16112]/30 shadow-md hover:shadow-xl transition-all duration-300 h-full">
                     <CardContent className="p-6 text-center">
                       <div className="inline-flex p-4 bg-gradient-to-br from-[#1F396D]/10 to-[#F16112]/10 rounded-2xl mb-4">
@@ -403,7 +402,7 @@ export default function BookAssessmentPage() {
                       <p className="text-sm text-gray-700 font-medium leading-snug">{benefit.text}</p>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -412,23 +411,23 @@ export default function BookAssessmentPage() {
 
       {/* <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-16">
+          <div className="text-center mb-16">
             <Badge className="mb-4 bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white border-0 px-6 py-2">Simple Process</Badge>
             <h2 className="text-gray-900 mb-4">How It Works</h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">Our streamlined 4-step process makes it easy to get the insights you need</p>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
             <div className="hidden lg:block absolute top-[72px] left-0 right-0 h-1 bg-gradient-to-r from-[#1F396D] via-[#F16112] to-[#1F396D] opacity-20"></div>
             {processSteps.map((step, index) => {
               const IconComponent = step.icon as any;
               return (
-                <motion.div key={index} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: index * 0.15 }} className="relative">
+                <div key={index} className="relative">
                   <Card className="bg-white/90 backdrop-blur-xl border-2 border-white/60 shadow-lg hover:shadow-2xl transition-all duration-300 h-full group hover:-translate-y-2">
                     <CardContent className="p-8 text-center">
                       <div className="relative inline-block mb-6">
-                        <motion.div className={`w-20 h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center text-white mb-2 mx-auto shadow-2xl group-hover:shadow-xl transition-all`} whileHover={{ rotate: 360, scale: 1.1 }} transition={{ duration: 0.6 }}>
+                        <div className={`w-20 h-20 bg-gradient-to-r ${step.color} rounded-2xl flex items-center justify-center text-white mb-2 mx-auto shadow-2xl group-hover:shadow-xl transition-all`}>
                           <span className="text-3xl font-bold">{step.number}</span>
-                        </motion.div>
+                        </div>
                         <div className="absolute -bottom-3 -right-3 bg-white/95 backdrop-blur-xl p-3 rounded-xl shadow-lg border-2 border-white/60">
                           <IconComponent className="w-6 h-6 text-[#F16112]" />
                         </div>
@@ -439,12 +438,12 @@ export default function BookAssessmentPage() {
                   </Card>
                   {index < processSteps.length - 1 && (
                     <div className="hidden lg:block absolute top-[56px] -right-4 z-10">
-                      <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.3, delay: index * 0.15 + 0.3 }}>
+                      <div>
                         <ChevronRight className="w-8 h-8 text-[#F16112]/40" />
-                      </motion.div>
+                      </div>
                     </div>
                   )}
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -457,15 +456,15 @@ export default function BookAssessmentPage() {
           <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-[#F16112]/10 to-transparent rounded-full blur-3xl"></div>
         </div>
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-12">
+          <div className="text-center mb-12">
             <Badge className="mb-6 bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0 px-8 py-3 shadow-lg">
               <Sparkles className="w-5 h-5 mr-2" />
               100% Free - No Credit Card Required
             </Badge>
             <h2 className="text-gray-900 mb-4">Book Your <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Free Assessment</span></h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">Fill out the form below and our academic advisors will contact you within 24 hours</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.2 }} suppressHydrationWarning>
+          </div>
+          <div suppressHydrationWarning>
             <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-2xl rounded-xl md:rounded-3xl overflow-hidden" suppressHydrationWarning>
               <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 pt-4 sm:pt-6 md:pt-8 lg:pt-10" suppressHydrationWarning>
                 {!isSubmitted ? (
@@ -728,7 +727,7 @@ export default function BookAssessmentPage() {
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
-                            <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: 'linear' }} className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full mr-3"></motion.div>
+                            <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full mr-3"></div>
                             Processing Your Request...
                           </>
                         ) : (
@@ -751,12 +750,12 @@ export default function BookAssessmentPage() {
                     </div>
                   </form>
                 ) : (
-                  <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6 }} className="text-center py-20">
-                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, delay: 0.2 }} className="w-28 h-28 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"><CheckCircle className="w-14 h-14 text-white" /></motion.div>
-                    <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.25 }} className="text-green-700 font-semibold mb-2">Submission completed successfully.</motion.p>
-                    <motion.h3 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="text-gray-900 mb-6 text-4xl">🎉 Thank You for Your Request!</motion.h3>
-                    <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} className="text-gray-600 max-w-lg mx-auto mb-10 text-xl leading-relaxed">We've received your free assessment booking request. Our team will contact you within 24 hours to confirm your appointment.</motion.p>
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 }} className="space-y-4">
+                  <div className="text-center py-20">
+                    <div className="w-28 h-28 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"><CheckCircle className="w-14 h-14 text-white" /></div>
+                    <p className="text-green-700 font-semibold mb-2">Submission completed successfully.</p>
+                    <h3 className="text-gray-900 mb-6 text-4xl">🎉 Thank You for Your Request!</h3>
+                    <p className="text-gray-600 max-w-lg mx-auto mb-10 text-xl leading-relaxed">We've received your free assessment booking request. Our team will contact you within 24 hours to confirm your appointment.</p>
+                    <div className="space-y-4">
                       <div className="flex flex-wrap justify-center gap-4">
                         <Button onClick={() => setIsSubmitted(false)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-10 py-7 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"><Calendar className="w-6 h-6 mr-2" />Book Another Assessment</Button>
                       </div>
@@ -775,14 +774,14 @@ export default function BookAssessmentPage() {
                           );
                         })}
                       </div>
-                    </motion.div>
-                  </motion.div>
+                    </div>
+                  </div>
                 )}
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.3 }} className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { icon: Clock, text: '24-hour response time guaranteed', color: 'from-blue-500 to-blue-600' },
               { icon: Shield, text: 'SSL Encrypted & 100% Secure', color: 'from-green-500 to-green-600' },
@@ -790,40 +789,40 @@ export default function BookAssessmentPage() {
             ].map((item, index) => {
               const IconComponent = item.icon as any;
               return (
-                <motion.div key={index} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }} whileHover={{ y: -5, scale: 1.02 }} className="text-center">
-                  <motion.div className={`inline-flex p-5 bg-gradient-to-r ${item.color} rounded-2xl shadow-xl mb-4`} whileHover={{ rotate: 360, scale: 1.1 }} transition={{ duration: 0.6 }}>
+                <div key={index} className="text-center">
+                  <div className={`inline-flex p-5 bg-gradient-to-r ${item.color} rounded-2xl shadow-xl mb-4`}>
                     <IconComponent className="w-8 h-8 text-white" />
-                  </motion.div>
+                  </div>
                   <p className="text-gray-700 font-semibold text-lg">{item.text}</p>
-                </motion.div>
+                </div>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </section>
 
       <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2, repeat: Infinity, repeatType: 'reverse' }} className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></motion.div>
-          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 0.15 }} transition={{ duration: 2.5, repeat: Infinity, repeatType: 'reverse', delay: 0.5 }} className="absolute bottom-20 right-10 w-[700px] h-[700px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl"></motion.div>
+          <div className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-[700px] h-[700px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-center mb-16">
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200, delay: 0.3 }}>
+          <div className="text-center mb-16">
+            <div>
               <Badge className="mb-8 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-8 py-3 shadow-2xl">
                 <Sparkles className="w-5 h-5 mr-2" />
                 Professional Assessment Services
               </Badge>
-            </motion.div>
-            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }} className="text-white mb-8 text-5xl lg:text-6xl">
+            </div>
+            <h1 className="text-white mb-8 text-5xl lg:text-6xl">
               Discover Your Child's <br />
               <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Potential</span>
-            </motion.h1>
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.5 }} className="text-white/90 max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
+            </h1>
+            <p className="text-white/90 max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
               Get a comprehensive evaluation from certified educators. Understand strengths, identify growth areas, and receive a personalized learning roadmap for your child's success.
-            </motion.p>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.6 }} className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-12">
+            </p>
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-12">
               <Button onClick={scrollToForm} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 sm:px-10 py-6 sm:py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 group text-base sm:text-lg w-full sm:w-auto">
                 <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 group-hover:rotate-12 transition-transform" />
                 Book Free Assessment
@@ -833,13 +832,13 @@ export default function BookAssessmentPage() {
                 <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
                 Explore Courses
               </Button>
-            </motion.div>
+            </div>
 
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.7 }} className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               {stats.map((stat, index) => {
                 const IconComponent = stat.icon as any;
                 return (
-                  <motion.div key={index} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }} whileHover={{ scale: 1.05 }}>
+                  <div key={index}>
                     <Card className="bg-white/10 backdrop-blur-xl border-2 border-white/20 shadow-2xl hover:shadow-xl transition-all duration-300">
                       <CardContent className="p-6 text-center">
                         <div className="inline-flex p-3 bg-white/20 rounded-2xl mb-3">
@@ -849,11 +848,11 @@ export default function BookAssessmentPage() {
                         <div className="text-sm text-white/80">{stat.label}</div>
                       </CardContent>
                     </Card>
-                  </motion.div>
+                  </div>
                 );
               })}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
           <svg viewBox="0 0 1440 120" className="w-full h-auto"><path fill="#F9FAFB" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>
@@ -862,14 +861,14 @@ export default function BookAssessmentPage() {
 
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-16">
+          <div className="text-center mb-16">
             <Badge className="mb-4 bg-gradient-to-r from-[#1F396D] to-[#F16112] text-white border-0 px-6 py-2">Parent Reviews</Badge>
             <h2 className="text-gray-900 mb-4">What Parents Are Saying</h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">Hear from families who have benefited from our assessment services</p>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <motion.div key={index} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: index * 0.1 }} whileHover={{ y: -10, scale: 1.02 }}>
+              <div key={index}>
                 <Card className="bg-white backdrop-blur-xl border-2 border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 h-full">
                   <CardContent className="p-8">
                     <div className="flex gap-1 mb-6">{[...Array(testimonial.rating)].map((_, i) => (<Star key={i} className="w-5 h-5 fill-[#F16112] text-[#F16112]" />))}</div>
@@ -877,7 +876,7 @@ export default function BookAssessmentPage() {
                     <div className="border-t-2 border-gray-100 pt-6"><p className="font-bold text-gray-900 text-lg">{testimonial.name}</p><p className="text-sm text-gray-500 mt-1">{testimonial.role}</p></div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -885,11 +884,11 @@ export default function BookAssessmentPage() {
 
       <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-16">
+          <div className="text-center mb-16">
             <Badge className="mb-4 bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0 px-6 py-2">Why Choose Us</Badge>
             <h2 className="text-gray-900 mb-4">Why GrowWise Assessments?</h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">We combine expertise, technology, and personalized attention to deliver exceptional results</p>
-          </motion.div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
               { icon: Award, title: 'Expert Educators', description: 'Certified teachers with 10+ years of experience in academic assessment and curriculum design', color: 'from-[#F16112] to-[#F1894F]' },
@@ -898,17 +897,17 @@ export default function BookAssessmentPage() {
             ].map((item, index) => {
               const IconComponent = item.icon as any;
               return (
-                <motion.div key={index} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: index * 0.15 }} whileHover={{ y: -10 }}>
+                <div key={index}>
                   <Card className="bg-white backdrop-blur-xl border-2 border-white/60 shadow-xl hover:shadow-2xl transition-all duration-300 h-full group">
                     <CardContent className="p-10 text-center">
-                      <motion.div className={`inline-flex p-6 bg-gradient-to-r ${item.color} rounded-3xl mb-6 shadow-2xl group-hover:shadow-xl transition-all`} whileHover={{ rotate: 360, scale: 1.15 }} transition={{ duration: 0.8 }}>
+                      <div className={`inline-flex p-6 bg-gradient-to-r ${item.color} rounded-3xl mb-6 shadow-2xl group-hover:shadow-xl transition-all`}>
                         <IconComponent className="w-12 h-12 text-white" />
-                      </motion.div>
+                      </div>
                       <h3 className="text-gray-900 mb-4 group-hover:text-[#F16112] transition-colors text-xl">{item.title}</h3>
                       <p className="text-gray-600 leading-relaxed text-base">{item.description}</p>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -918,14 +917,14 @@ export default function BookAssessmentPage() {
       <section className="py-24 bg-gradient-to-r from-[#1F396D] via-[#29335C] to-[#1F396D] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10"><div className="absolute top-10 left-10 w-96 h-96 bg-white rounded-full blur-3xl animate-pulse"></div><div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#F16112] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div></div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+          <div>
             <h2 className="text-white mb-6 text-4xl lg:text-5xl">Ready to Unlock Your Child's Potential?</h2>
             <p className="text-white/90 mb-10 text-xl leading-relaxed">Book a free assessment today and get personalized insights into your child's academic journey</p>
             <div className="flex flex-wrap justify-center gap-6">
               <Button onClick={scrollToForm} className="bg-white text-[#1F396D] hover:bg-gray-100 px-10 py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-200 hover:scale-105 group text-lg"><Calendar className="w-6 h-6 mr-3 group-hover:rotate-12 transition-transform" />Book Free Assessment<ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" /></Button>
               <Button variant="outline" className="bg-transparent border-2 border-white text-white hover:bg-white/10 px-10 py-7 rounded-2xl transition-all duration-200 text-lg backdrop-blur-xl"><PhoneIcon className="w-5 h-5 mr-2" />{CONTACT_INFO.phone}</Button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
