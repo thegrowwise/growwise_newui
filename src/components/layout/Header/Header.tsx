@@ -118,7 +118,7 @@ export default function Header() {
       </div>
 
       {/* Main Navigation */}
-      <div className="container-7xl">
+      <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div 
           className="header-mainrow transition-all duration-300 ease-out flex-wrap lg:flex-nowrap" 
           style={{ height: isScrolled ? '5rem' : '8rem', minHeight: isScrolled ? '5rem' : '8rem' }}
@@ -133,8 +133,8 @@ export default function Header() {
                 width={280}
                 height={110}
                 style={{
-                  height: isScrolled ? '70px' : '110px',
-                  width: isScrolled ? '180px' : '280px',
+                  height: isScrolled ? '60px' : '90px',
+                  width: isScrolled ? '160px' : '230px',
                 }}
               />
             </Link>
