@@ -1,13 +1,31 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { SUMMER_CAMP_PROGRAMS, type Program } from '@/lib/summer-camp-data';
-import {
-  ProgramList,
-  SlotsPanel,
-  CartDrawer,
-} from '@/components/camps/SummerCampUI';
+
+const ProgramList = dynamic(
+  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.ProgramList })),
+  { ssr: true }
+);
+// Radix Select/Dialog generate non-deterministic aria-controls IDs; render only on client to avoid hydration mismatch.
+const SlotsPanel = dynamic(
+  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.SlotsPanel })),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="rounded-2xl border border-slate-200 bg-white/80 p-6 animate-pulse min-h-[320px]"
+        aria-hidden
+      />
+    ),
+  }
+);
+const CartDrawer = dynamic(
+  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.CartDrawer })),
+  { ssr: false }
+);
 
 const FAQS = [
   {
