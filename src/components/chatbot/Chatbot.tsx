@@ -152,9 +152,10 @@ export default function Chatbot() {
       setFloatPosition(next);
     };
     const onPointerUp = () => {
-      const wasClick = !didDragRef.current;
+      if (!isDraggingRef.current) return;
+      const wasDrag = didDragRef.current;
       isDraggingRef.current = false;
-      if (wasClick) openChatbotRef.current();
+      if (!wasDrag) openChatbotRef.current();
     };
     const capture = true;
     window.addEventListener('pointermove', onPointerMove, capture);
@@ -434,15 +435,11 @@ export default function Chatbot() {
         </div>
       )}
 
-      {/* Chat Window — same position as button */}
+      {/* Chat Window — anchored bottom-right so it stays on-screen */}
       {isOpen && (
         <div
-          className="fixed z-50 w-[420px] h-[600px]"
-          style={
-            floatPosition
-              ? { left: floatPosition.left, bottom: floatPosition.bottom }
-              : { right: FLOATING_CHAT_CONFIG.defaultRight, bottom: FLOATING_CHAT_CONFIG.defaultBottom }
-          }
+          className="fixed z-50 w-[min(420px,calc(100vw-2rem))] h-[min(600px,calc(100vh-6rem))]"
+          style={{ right: FLOATING_CHAT_CONFIG.defaultRight, bottom: FLOATING_CHAT_CONFIG.defaultBottom }}
         >
           <Card className="bg-white/95 backdrop-blur-3xl rounded-2xl shadow-2xl border-2 border-white/50 ring-1 ring-white/30 h-full flex flex-col">
             {/* Header */}
