@@ -1,14 +1,31 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { SUMMER_CAMP_PROGRAMS, type Program } from '@/lib/summer-camp-data';
-import {
-  ProgramList,
-  SlotsPanel,
-  CartDrawer,
-} from '@/components/camps/SummerCampUI';
+
+const ProgramList = dynamic(
+  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.ProgramList })),
+  { ssr: true }
+);
+// Radix Select/Dialog generate non-deterministic aria-controls IDs; render only on client to avoid hydration mismatch.
+const SlotsPanel = dynamic(
+  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.SlotsPanel })),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="rounded-2xl border border-slate-200 bg-white/80 p-6 animate-pulse min-h-[320px]"
+        aria-hidden
+      />
+    ),
+  }
+);
+const CartDrawer = dynamic(
+  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.CartDrawer })),
+  { ssr: false }
+);
 
 const FAQS = [
   {
@@ -81,11 +98,11 @@ export default function SummerCampPage() {
           </div>
 
           <div className="container mx-auto px-4 md:px-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="max-w-3xl mx-auto"
+          <div
+              className="max-w-3xl mx-auto animate-fade-in"
+              style={{
+                animation: 'fadeInUp 0.6s ease-out forwards',
+              }}
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#1F396D] text-[10px] font-black uppercase tracking-[0.2em] mb-6 border border-blue-100">
                 Enrollment Open for Summer 2026
@@ -98,7 +115,19 @@ export default function SummerCampPage() {
                 Accredited courses in Math, Coding, and Robotics. Small cohorts
                 designed to give your child a head start.
               </p>
-            </motion.div>
+            </div>
+            <style>{`
+              @keyframes fadeInUp {
+                from {
+                  opacity: 0;
+                  transform: translateY(20px);
+                }
+                to {
+                  opacity: 1;
+                  transform: translateY(0);
+                }
+              }
+            `}</style>
           </div>
         </section>
 

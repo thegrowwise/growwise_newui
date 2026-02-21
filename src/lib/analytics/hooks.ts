@@ -136,16 +136,13 @@ export function useSessionTracking() {
     // Track session start
     analyticsTracker.trackSessionStart();
 
-    // Track session end on page unload
-    const handleBeforeUnload = () => {
-      analyticsTracker.trackSessionEnd();
-    };
-
     // Track bounce if user leaves quickly (less than 10 seconds)
     const bounceTimeout = setTimeout(() => {
       // If user is still on the page after 10 seconds, they didn't bounce
     }, 10000);
 
+    // Track session end using pagehide instead of beforeunload to preserve bfcache
+    // beforeunload breaks browser back/forward cache, so we use pagehide instead
     const handlePageHide = () => {
       clearTimeout(bounceTimeout);
       const sessionDuration = Date.now() - performance.now();
@@ -155,12 +152,10 @@ export function useSessionTracking() {
       analyticsTracker.trackSessionEnd();
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('pagehide', handlePageHide);
 
     return () => {
       clearTimeout(bounceTimeout);
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('pagehide', handlePageHide);
     };
   }, []);

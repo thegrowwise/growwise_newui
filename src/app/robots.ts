@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://growwiseschool.org'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://growwiseschool.org'
   
   return {
     rules: [
@@ -14,6 +14,8 @@ export default function robots(): MetadataRoute.Robots {
           '/cart/',
           '/student-login/',
           '/admin/',
+          '/*.json$',
+          '/*?*',
         ],
       },
     ],
