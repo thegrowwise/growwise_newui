@@ -15,6 +15,7 @@ interface MobileNavigationProps {
   createLocaleUrl: (path: string) => string;
   pathname: string | null;
   cartItemCount: number;
+  showCart: boolean;
 }
 
 export default function MobileNavigation({
@@ -24,7 +25,8 @@ export default function MobileNavigation({
   onCloseMobileMenu,
   createLocaleUrl,
   pathname,
-  cartItemCount
+  cartItemCount,
+  showCart
 }: MobileNavigationProps) {
   const [expandedDropdowns, setExpandedDropdowns] = useState<{ [key: string]: boolean }>({});
 
@@ -71,19 +73,21 @@ export default function MobileNavigation({
     <>
       {/* Mobile menu button & cart icon */}
       <div className="lg:hidden flex items-center space-x-4 z-[55] relative">
-        <Link
-          href={createLocaleUrl('/cart')}
-          className="relative text-gray-700 hover:text-[#F16112] transition-colors p-2 -mr-2"
-          onClick={onCloseMobileMenu}
-          aria-label="Shopping cart"
-        >
-          <ShoppingCart className="w-6 h-6" />
-          {cartItemCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium min-w-[1.25rem]">
-              {cartItemCount}
-            </span>
-          )}
-        </Link>
+        {showCart && (
+          <Link
+            href={createLocaleUrl('/cart')}
+            className="relative text-gray-700 hover:text-[#F16112] transition-colors p-2 -mr-2"
+            onClick={onCloseMobileMenu}
+            aria-label={cartItemCount > 0 ? `Shopping cart, ${cartItemCount} items` : 'Shopping cart'}
+          >
+            <ShoppingCart className="w-6 h-6" aria-hidden />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium min-w-[1.25rem]" aria-hidden>
+                {cartItemCount}
+              </span>
+            )}
+          </Link>
+        )}
 
         <button
           type="button"

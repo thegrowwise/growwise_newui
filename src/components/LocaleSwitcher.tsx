@@ -63,7 +63,9 @@ export default function LocaleSwitcher() {
     return (
       <div className="relative">
         <select
+          id="locale-switcher-sr"
           defaultValue={preHydrationLocale}
+          aria-label="Language"
           className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           disabled
         >
@@ -85,8 +87,10 @@ export default function LocaleSwitcher() {
   return (
     <div className="relative">
       <select
+        id="locale-switcher"
         value={currentLocale}
         onChange={(e) => handleLocaleChange(e.target.value)}
+        aria-label="Language"
         className="appearance-none bg-white border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       >
         {ENABLED_LOCALES.map((loc) => (

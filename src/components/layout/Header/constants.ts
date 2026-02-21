@@ -9,7 +9,7 @@ import {
   UserCheck,
   Calendar
 } from 'lucide-react';
-import { VariantStyles } from './types';
+import { VariantStyles, type MenuItem } from './types';
 import { CONTACT_INFO } from '@/lib/constants';
 
 // Icon mapping for dynamic icon rendering
@@ -63,3 +63,31 @@ export const DEFAULT_HEADER_DATA = {
 
 // Dropdown close delay for hover intent
 export const DROPDOWN_CLOSE_DELAY = 180;
+
+/** Path suffixes (locale-agnostic) where the header cart icon is hidden. SSOT for cart visibility by route. */
+export const ROUTE_PATH_PATTERNS_HIDE_CART: readonly string[] = [];
+
+/** Fallback menu when backend header/menu is unavailable. SSOT for camps menu fallback (Summer Camp only). */
+export const FALLBACK_MENU_ITEMS: MenuItem[] = [
+  {
+    key: 'camps',
+    label: 'Camps',
+    href: '/camps',
+    type: 'dropdown',
+    variant: 'orange',
+    dropdown: {
+      title: 'Camps & Programs',
+      subtitle: 'Join our exciting camp experiences',
+      items: [
+        {
+          key: 'summerCamp',
+          title: 'Summer Camp',
+          description: 'Accredited summer programs in Math, Coding, and Robotics',
+          icon: 'Calendar',
+          href: '/camps/summer',
+          gradient: 'from-[#F16112] to-[#F1894F]',
+        },
+      ],
+    },
+  },
+];

@@ -121,6 +121,9 @@
   },
   "chatbot": {
     "title": "GrowWise Assistant",
+    "openChat": "Abrir chat",
+    "closeChat": "Cerrar chat",
+    "sendMessage": "Enviar mensaje",
     "placeholder": "Ask me anything about our programs...",
     "suggestions": {
       "k12Programs": "What K-12 programs do you offer?",

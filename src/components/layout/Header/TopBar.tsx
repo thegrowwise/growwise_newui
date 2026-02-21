@@ -50,14 +50,14 @@ export default function TopBar({ phone, email, address, followLabel, social }: T
             <div className="header-social-group">
               <span className="header-social-label">{followLabel}</span>
               <div className="header-social-links">
-                <Link href={social.facebook} target="_blank" className="header-social-link">
-                  <Facebook className="w-4 h-4" />
+                <Link href={social.facebook} target="_blank" rel="noopener noreferrer" className="header-social-link" aria-label="Facebook (opens in new tab)">
+                  <Facebook className="w-4 h-4" aria-hidden />
                 </Link>
-                <Link href={social.instagram} target="_blank" className="header-social-link">
-                  <Instagram className="w-4 h-4" />
+                <Link href={social.instagram} target="_blank" rel="noopener noreferrer" className="header-social-link" aria-label="Instagram (opens in new tab)">
+                  <Instagram className="w-4 h-4" aria-hidden />
                 </Link>
-                <Link href={social.linkedin} target="_blank" className="header-social-link">
-                  <Linkedin className="w-4 h-4" />
+                <Link href={social.linkedin} target="_blank" rel="noopener noreferrer" className="header-social-link" aria-label="LinkedIn (opens in new tab)">
+                  <Linkedin className="w-4 h-4" aria-hidden />
                 </Link>
               </div>
             </div>

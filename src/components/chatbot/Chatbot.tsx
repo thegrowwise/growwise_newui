@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -10,12 +10,47 @@ import { contactService } from '../../lib/contactService';
 import { ChatMessageSkeleton } from '../ui/loading-skeletons';
 import { CONTACT_INFO } from '@/lib/constants';
 
+/** SSOT: default offset (px) and storage key for floating chat position. */
+const FLOATING_CHAT_CONFIG = {
+  defaultBottom: 24,
+  defaultRight: 24,
+  buttonSizePx: 64,
+  storageKey: 'growwise_chat_floating_position',
+} as const;
+
 interface Message {
   id: string;
   text: string;
   sender: 'user' | 'bot';
   timestamp: Date;
   showContactForm?: boolean;
+}
+
+type FloatingPosition = { left: number; bottom: number };
+
+function loadStoredPosition(): FloatingPosition | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(FLOATING_CHAT_CONFIG.storageKey);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Record<string, unknown>;
+    const left = parsed.left;
+    const bottom = parsed.bottom;
+    if (typeof left !== 'number' || typeof bottom !== 'number') return null;
+    return { left, bottom };
+  } catch {
+    return null;
+  }
+}
+
+function clampPosition(pos: FloatingPosition): FloatingPosition {
+  const { buttonSizePx } = FLOATING_CHAT_CONFIG;
+  const maxLeft = typeof window !== 'undefined' ? window.innerWidth - buttonSizePx : 0;
+  const maxBottom = typeof window !== 'undefined' ? window.innerHeight - buttonSizePx : 0;
+  return {
+    left: Math.max(0, Math.min(pos.left, maxLeft)),
+    bottom: Math.max(0, Math.min(pos.bottom, maxBottom)),
+  };
 }
 
 export default function Chatbot() {
@@ -37,6 +72,14 @@ export default function Chatbot() {
   const [contactError, setContactError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  const [floatPosition, setFloatPosition] = useState<FloatingPosition | null>(null);
+  const isDraggingRef = useRef(false);
+  const didDragRef = useRef(false);
+  const dragStartRef = useRef({ x: 0, y: 0, left: 0, bottom: 0 });
+  const floatButtonWrapRef = useRef<HTMLDivElement>(null);
+  const openChatbotRef = useRef(openChatbot);
+  openChatbotRef.current = openChatbot;
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -45,7 +88,90 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    const stored = loadStoredPosition();
+    if (stored) {
+      setFloatPosition(clampPosition(stored));
+      return;
+    }
+    const { defaultRight, defaultBottom, buttonSizePx } = FLOATING_CHAT_CONFIG;
+    setFloatPosition({
+      left: window.innerWidth - defaultRight - buttonSizePx,
+      bottom: defaultBottom,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!floatPosition || typeof window === 'undefined') return;
+    try {
+      window.localStorage.setItem(
+        FLOATING_CHAT_CONFIG.storageKey,
+        JSON.stringify(floatPosition)
+      );
+    } catch {
+      /* ignore */
+    }
+  }, [floatPosition]);
+
+  useEffect(() => {
+    if (!floatPosition) return;
+    const onResize = () => setFloatPosition((prev) => (prev ? clampPosition(prev) : prev));
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [floatPosition]);
+
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      e.preventDefault();
+      didDragRef.current = false;
+      isDraggingRef.current = true;
+      const pos = floatPosition ?? {
+        left: window.innerWidth - FLOATING_CHAT_CONFIG.defaultRight - FLOATING_CHAT_CONFIG.buttonSizePx,
+        bottom: FLOATING_CHAT_CONFIG.defaultBottom,
+      };
+      dragStartRef.current = {
+        x: e.clientX,
+        y: e.clientY,
+        left: pos.left,
+        bottom: pos.bottom,
+      };
+      floatButtonWrapRef.current?.setPointerCapture(e.pointerId);
+    },
+    [floatPosition]
+  );
+
+  useEffect(() => {
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDraggingRef.current) return;
+      didDragRef.current = true;
+      const { x, y, left, bottom } = dragStartRef.current;
+      const next = clampPosition({
+        left: left + (e.clientX - x),
+        bottom: bottom - (e.clientY - y),
+      });
+      setFloatPosition(next);
+    };
+    const onPointerUp = () => {
+      const wasClick = !didDragRef.current;
+      isDraggingRef.current = false;
+      if (wasClick) openChatbotRef.current();
+    };
+    const capture = true;
+    window.addEventListener('pointermove', onPointerMove, capture);
+    window.addEventListener('pointerup', onPointerUp, capture);
+    window.addEventListener('pointercancel', onPointerUp, capture);
+    return () => {
+      window.removeEventListener('pointermove', onPointerMove, capture);
+      window.removeEventListener('pointerup', onPointerUp, capture);
+      window.removeEventListener('pointercancel', onPointerUp, capture);
+    };
+  }, []);
+
   const handleStartChat = () => {
+    if (didDragRef.current) {
+      didDragRef.current = false;
+      return;
+    }
     openChatbot();
   };
 
@@ -285,22 +411,39 @@ export default function Chatbot() {
 
   return (
     <>
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button — draggable; position persisted */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div
+          ref={floatButtonWrapRef}
+          className="fixed z-50 cursor-grab active:cursor-grabbing touch-none"
+          style={
+            floatPosition
+              ? { left: floatPosition.left, bottom: floatPosition.bottom }
+              : { right: FLOATING_CHAT_CONFIG.defaultRight, bottom: FLOATING_CHAT_CONFIG.defaultBottom }
+          }
+          onPointerDown={handlePointerDown}
+        >
           <Button
             onClick={handleStartChat}
+            aria-label={t('chatbot.openChat')}
             className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 border-2 border-white/20 backdrop-blur-sm flex items-center justify-center p-0 [&_svg]:!size-7"
             size="lg"
           >
-            <MessageCircle className="size-7" style={{ width: '28px', height: '28px' }} />
+            <MessageCircle className="size-7" style={{ width: '28px', height: '28px' }} aria-hidden />
           </Button>
         </div>
       )}
 
-      {/* Chat Window */}
+      {/* Chat Window — same position as button */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-[420px] h-[600px]">
+        <div
+          className="fixed z-50 w-[420px] h-[600px]"
+          style={
+            floatPosition
+              ? { left: floatPosition.left, bottom: floatPosition.bottom }
+              : { right: FLOATING_CHAT_CONFIG.defaultRight, bottom: FLOATING_CHAT_CONFIG.defaultBottom }
+          }
+        >
           <Card className="bg-white/95 backdrop-blur-3xl rounded-2xl shadow-2xl border-2 border-white/50 ring-1 ring-white/30 h-full flex flex-col">
             {/* Header */}
             <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] text-white p-4 rounded-t-2xl flex items-center justify-between">
@@ -319,9 +462,10 @@ export default function Chatbot() {
                 onClick={handleCloseChat}
                 variant="ghost"
                 size="sm"
+                aria-label={t('chatbot.closeChat')}
                 className="text-white hover:bg-white/20 rounded-full w-8 h-8 p-0"
               >
-                <X className="w-5 h-5" />
+                <X className="w-5 h-5" aria-hidden />
               </Button>
             </div>
 
@@ -443,9 +587,10 @@ export default function Chatbot() {
                 <Button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim()}
+                  aria-label={t('chatbot.sendMessage')}
                   className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-full w-10 h-10 p-0 disabled:opacity-50"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4" aria-hidden />
                 </Button>
               </div>
             </div>

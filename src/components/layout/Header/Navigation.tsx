@@ -16,6 +16,7 @@ interface NavigationProps {
   createLocaleUrl: (path: string) => string;
   pathname: string | null;
   cartItemCount: number;
+  showCart: boolean;
   footerHelper: string;
   footerContactCta: string;
 }
@@ -33,6 +34,7 @@ export default function Navigation({
   createLocaleUrl,
   pathname,
   cartItemCount,
+  showCart,
   footerHelper,
   footerContactCta
 }: NavigationProps) {
@@ -67,6 +69,7 @@ export default function Navigation({
       <UtilityIcons 
         cartItemCount={cartItemCount}
         createLocaleUrl={createLocaleUrl}
+        showCart={showCart}
       />
     </>
   );

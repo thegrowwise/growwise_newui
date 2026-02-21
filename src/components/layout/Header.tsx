@@ -568,10 +568,10 @@ export default function Header() {
               <div className="header-social-group">
                 <span className="header-social-label">{followLabel}</span>
                 <div className="header-social-links">
-                  <Link href={social.facebook} target="_blank" className="header-social-link"><Facebook className="w-4 h-4" /></Link>
-                  <Link href={social.twitter} className="header-social-link"><Twitter className="w-4 h-4" /></Link>
-                  <Link href={social.instagram} target="_blank" className="header-social-link"><Instagram className="w-4 h-4" /></Link>
-                  <Link href={social.linkedin} target="_blank" className="header-social-link"><Linkedin className="w-4 h-4" /></Link>
+                  <Link href={social.facebook} target="_blank" rel="noopener noreferrer" className="header-social-link" aria-label="Facebook (opens in new tab)"><Facebook className="w-4 h-4" aria-hidden /></Link>
+                  <Link href={social.twitter} className="header-social-link" aria-label="Twitter"><Twitter className="w-4 h-4" aria-hidden /></Link>
+                  <Link href={social.instagram} target="_blank" rel="noopener noreferrer" className="header-social-link" aria-label="Instagram (opens in new tab)"><Instagram className="w-4 h-4" aria-hidden /></Link>
+                  <Link href={social.linkedin} target="_blank" rel="noopener noreferrer" className="header-social-link" aria-label="LinkedIn (opens in new tab)"><Linkedin className="w-4 h-4" aria-hidden /></Link>
                 </div>
               </div>
               <div className="header-address">{topAddress}</div>
@@ -586,7 +586,13 @@ export default function Header() {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="cursor-pointer" aria-label="GrowWise home">
-              <div className="header-logo" style={{ backgroundImage: "url('/assets/growwise-logo.png')" }} />
+              <img
+                src="/assets/growwise-logo.png"
+                alt="GrowWise"
+                className="header-logo"
+                width={280}
+                height={110}
+              />
             </Link>
           </div>
 
@@ -620,13 +626,13 @@ export default function Header() {
           <div className="hidden lg:flex items-center space-x-6">
             {/* Utility Icons */}
             <div className="flex items-center space-x-4">
-              <button className="text-gray-700 hover:text-[#F16112] transition-colors">
-                <Search className="w-5 h-5" />
+              <button type="button" className="text-gray-700 hover:text-[#F16112] transition-colors" aria-label="Search">
+                <Search className="w-5 h-5" aria-hidden />
               </button>
-              <Link href="/cart" className="relative text-gray-700 hover:text-[#F16112] transition-colors">
-                <ShoppingCart className="w-5 h-5" />
+              <Link href="/cart" className="relative text-gray-700 hover:text-[#F16112] transition-colors" aria-label={cartState.itemCount > 0 ? `Shopping cart, ${cartState.itemCount} items` : 'Shopping cart'}>
+                <ShoppingCart className="w-5 h-5" aria-hidden />
                 {cartState.itemCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                  <span className="absolute -top-2 -right-2 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium" aria-hidden>
                     {cartState.itemCount}
                   </span>
                 )}

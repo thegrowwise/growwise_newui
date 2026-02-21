@@ -8,9 +8,10 @@ import { useTranslations } from 'next-intl';
 interface UtilityIconsProps {
   cartItemCount: number;
   createLocaleUrl: (path: string) => string;
+  showCart: boolean;
 }
 
-export default function UtilityIcons({ cartItemCount, createLocaleUrl }: UtilityIconsProps) {
+export default function UtilityIcons({ cartItemCount, createLocaleUrl, showCart }: UtilityIconsProps) {
   const t = useTranslations('navigation');
   const { trackButtonClick } = useButtonTracking();
   // Student login is now handled by our custom page
@@ -28,18 +29,20 @@ export default function UtilityIcons({ cartItemCount, createLocaleUrl }: Utility
       {/* Utility Icons */}
       <div className="flex items-center space-x-4">
         <SearchBar />
-        <Link 
-          href={createLocaleUrl('/cart')} 
-          className="relative text-gray-700 hover:text-[#F16112] transition-colors"
-        >
-          <ShoppingCart className="w-5 h-5" />
-          {cartItemCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-              {cartItemCount}
-            </span>
-          )}
-        </Link>
-        
+        {showCart && (
+          <Link 
+            href={createLocaleUrl('/cart')} 
+            className="relative text-gray-700 hover:text-[#F16112] transition-colors"
+            aria-label={cartItemCount > 0 ? `Shopping cart, ${cartItemCount} items` : 'Shopping cart'}
+          >
+            <ShoppingCart className="w-5 h-5" aria-hidden />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium" aria-hidden>
+                {cartItemCount}
+              </span>
+            )}
+          </Link>
+        )}
         {/* Enroll Now Button */}
         <Link
           href={createLocaleUrl('/enroll')}

@@ -1,0 +1,124 @@
+{
+  "faqs": [
+    {
+      "question": "What grades does GrowWise serve for summer camp?",
+      "answer": "GrowWise summer camps in Dublin, CA serve Grades 3–12. Programs are grouped by age and readiness: Grades 3–6 (Robotics, Young Authors, Scratch Coding), Grades 4–8 (Math Olympiad Prep), Grades 7–12 (AI Entrepreneur Studio), and High School (Advanced Math: Algebra + Precalculus)."
+    },
+    {
+      "question": "Are GrowWise summer camps in-person or online?",
+      "answer": "We offer in-person and online options depending on the program. Robotics and Young Authors are full-day, in-person only in Dublin, CA. Scratch Coding, Math Olympiad Prep, AI Entrepreneur Studio, and Advanced Math may be available in-person or online by session."
+    },
+    {
+      "question": "Are the programs full-day or half-day?",
+      "answer": "Full-day, in-person: Robotics (Grades 3–6) and Young Authors (Grades 3–6). Other programs vary by session length—check the schedule on the program page."
+    },
+    {
+      "question": "Where are GrowWise summer camps located?",
+      "answer": "Our in-person camps are held at 4564 Dublin Blvd, Dublin, CA. Select programs also offer online sessions."
+    },
+    {
+      "question": "How do you group students by level?",
+      "answer": "We group students by grade and readiness. For math and advanced programs, a brief placement check may be used so students feel challenged and supported."
+    },
+    {
+      "question": "What should my child bring to camp?",
+      "answer": "Most campers should bring a water bottle, snack/lunch (if applicable), and a notebook/pencil. For tech programs (AI or coding), a laptop/device + charger may be required—see program details."
+    },
+    {
+      "question": "Do you offer sibling or multi-week discounts?",
+      "answer": "Yes—sibling and multi-week discounts may be available on select programs. Discount details appear during registration."
+    },
+    {
+      "question": "What is your refund/cancellation policy?",
+      "answer": "Refund and transfer options depend on the session. Please refer to the registration page for deadlines, deposits (if any), and transfer rules."
+    },
+    {
+      "question": "How do I register for GrowWise summer camp?",
+      "answer": "Choose a program and session on thegrowwise.com, then complete checkout. If you have questions, contact GrowWise for support before enrolling."
+    },
+    {
+      "question": "What is AI Entrepreneur Studio?",
+      "answer": "AI Entrepreneur Studio is a project-based AI summer program for Grades 7–12 where students build, test, and pitch real-world ideas using modern AI tools and entrepreneurship frameworks."
+    },
+    {
+      "question": "Do students need coding experience for AI camp?",
+      "answer": "No. The program supports beginners through advanced. Beginners can use no-code tools and focus on product thinking, while advanced students can build more technical projects."
+    },
+    {
+      "question": "What will students create in AI Entrepreneur Studio?",
+      "answer": "Students complete a portfolio-ready project, such as an AI-powered app/tool/chatbot/workflow, plus a validated business concept and a pitch deck + demo for a final presentation."
+    },
+    {
+      "question": "Does AI camp teach responsible AI use?",
+      "answer": "Yes. Students learn safe use, accuracy checking, bias awareness, and ethical guidelines so they can use AI responsibly and effectively."
+    },
+    {
+      "question": "What skills will my teen gain in AI camp?",
+      "answer": "Students build AI literacy, problem-solving, product design, entrepreneurship (validation + pitching), communication, and teamwork."
+    },
+    {
+      "question": "Do students need a laptop for AI camp?",
+      "answer": "Typically yes. A laptop/Chromebook + charger is recommended for building and presenting AI projects (see program page for requirements)."
+    },
+    {
+      "question": "What is the Robotics summer camp?",
+      "answer": "Robotics is a full-day, in-person STEM camp for Grades 3–6 focused on hands-on builds, engineering challenges, and teamwork."
+    },
+    {
+      "question": "Is Robotics camp beginner-friendly?",
+      "answer": "Yes—no prior robotics experience is needed. Students learn step-by-step and progress through fun challenges."
+    },
+    {
+      "question": "What will kids do in Robotics camp?",
+      "answer": "Campers work on building and testing projects that develop engineering thinking, creativity, and problem-solving, including motion/design challenges and team builds."
+    },
+    {
+      "question": "What is Young Authors Camp (Book Publishing)?",
+      "answer": "Young Authors is a full-day, in-person writing and book publishing camp for Grades 3–6 where students plan, draft, revise, and produce a final \"published-style\" writing project."
+    },
+    {
+      "question": "Is this writing camp good for reluctant writers?",
+      "answer": "Yes. We use a storytelling-first approach with supportive coaching to build confidence and help students find their voice."
+    },
+    {
+      "question": "What will my child produce by the end of camp?",
+      "answer": "Most campers leave with a completed writing project and a portfolio-style final piece they can share with family."
+    },
+    {
+      "question": "Who is Math Olympiad Prep for?",
+      "answer": "Math Olympiad Prep is for Grades 4–8, ideal for students who enjoy challenges and want to improve contest-style problem solving."
+    },
+    {
+      "question": "What does Math Olympiad Prep cover?",
+      "answer": "It focuses on math reasoning, strategy, and problem-solving commonly seen in Olympiad/competition math (logic, number sense, algebraic thinking, geometry, and more)."
+    },
+    {
+      "question": "Is it only for students already doing competitions?",
+      "answer": "No. Beginners are welcome. We teach strategies and thinking tools so students can grow quickly."
+    },
+    {
+      "question": "Who is Scratch Coding best for?",
+      "answer": "Scratch is a great fit for beginner coders, commonly Grades 3–6, and supports older beginners too."
+    },
+    {
+      "question": "What will students build in Scratch?",
+      "answer": "Students create games, animations, and interactive stories while learning foundational coding concepts like loops, conditionals, variables, and debugging."
+    },
+    {
+      "question": "Do students need a device for Scratch?",
+      "answer": "If required, bring a laptop/Chromebook + charger (confirm device requirements on the program page)."
+    },
+    {
+      "question": "Who should enroll in Advanced Math?",
+      "answer": "Advanced Math is for high school students who want to strengthen Algebra and Precalculus foundations, accelerate learning, and build confidence for higher-level math."
+    },
+    {
+      "question": "Is Advanced Math only for \"advanced\" students?",
+      "answer": "Not necessarily. Motivated students at different levels can succeed. Placement may be used to match the right group."
+    },
+    {
+      "question": "What topics are covered?",
+      "answer": "Topics include key Algebra and Precalculus skills such as functions, equations, graphs, and foundational trigonometry concepts, depending on level."
+    }
+  ]
+}

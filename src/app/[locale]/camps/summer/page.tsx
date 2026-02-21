@@ -2,8 +2,14 @@
 
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { SUMMER_CAMP_PROGRAMS, type Program } from '@/lib/summer-camp-data';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 const ProgramList = dynamic(
   () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.ProgramList })),
@@ -22,35 +28,56 @@ const SlotsPanel = dynamic(
     ),
   }
 );
-const CartDrawer = dynamic(
-  () => import('@/components/camps/SummerCampUI').then((m) => ({ default: m.CartDrawer })),
-  { ssr: false }
-);
 
-const FAQS = [
-  {
-    question: 'What is the student-to-teacher ratio?',
-    answer:
-      'We maintain small cohorts with a maximum of 8:1 ratio to ensure personalized attention.',
-  },
-  {
-    question: 'Are the instructors qualified?',
-    answer:
-      'Yes, all our instructors are industry professionals or top-tier university students.',
-  },
-  {
-    question: 'Can I switch weeks if my schedule changes?',
-    answer:
-      'Yes, we allow one free schedule change up to 14 days before the camp start date.',
-  },
-];
+export interface SummerCampFaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface SummerCampFaqData {
+  faqs: SummerCampFaqItem[];
+}
 
 export default function SummerCampPage() {
   const t = useTranslations('summerCamp');
+  const locale = useLocale();
   const [selectedProgram, setSelectedProgram] = useState<Program>(
     SUMMER_CAMP_PROGRAMS[0]
   );
+  const [faqs, setFaqs] = useState<SummerCampFaqItem[]>([]);
+  const [faqsLoading, setFaqsLoading] = useState(true);
+  const [openFaqValue, setOpenFaqValue] = useState<string | undefined>('faq-0');
   const slotsSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadFaqs = async () => {
+      setFaqsLoading(true);
+      try {
+        const res = await fetch(`/api/mock/${locale}/summer-camp-faq.json`);
+        if (!res.ok) {
+          const fallback = locale !== 'en' ? await fetch('/api/mock/en/summer-camp-faq.json') : null;
+          if (fallback?.ok && !cancelled) {
+            const data: SummerCampFaqData = await fallback.json();
+            setFaqs(data.faqs ?? []);
+          } else if (!cancelled) {
+            setFaqs([]);
+          }
+        } else {
+          const data: SummerCampFaqData = await res.json();
+          if (!cancelled) setFaqs(data.faqs ?? []);
+        }
+      } catch {
+        if (!cancelled) setFaqs([]);
+      } finally {
+        if (!cancelled) setFaqsLoading(false);
+      }
+    };
+    loadFaqs();
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
 
   const scrollToSlots = () => {
     slotsSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -71,23 +98,25 @@ export default function SummerCampPage() {
 
   return (
     <div className="min-h-screen bg-background font-sans selection:bg-[#1F396D]/20 selection:text-[#1F396D]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'FAQPage',
-            mainEntity: FAQS.map((faq) => ({
-              '@type': 'Question',
-              name: faq.question,
-              acceptedAnswer: {
-                '@type': 'Answer',
-                text: faq.answer,
-              },
-            })),
-          }),
-        }}
-      />
+      {faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              mainEntity: faqs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.answer,
+                },
+              })),
+            }),
+          }}
+        />
+      )}
 
       <main>
         {/* Hero Section */}
@@ -187,32 +216,67 @@ export default function SummerCampPage() {
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4 md:px-6 max-w-2xl">
-            <h2 className="font-heading font-black text-3xl text-center mb-12 uppercase tracking-tight">
-              FAQ
-            </h2>
-            <div className="space-y-4">
-              {FAQS.map((faq, i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl border border-slate-100 bg-slate-50/30 p-6"
-                >
-                  <h3 className="font-black text-sm uppercase tracking-wider mb-2 text-slate-900">
-                    {faq.question}
-                  </h3>
-                  <p className="text-slate-500 text-sm leading-relaxed">
-                    {faq.answer}
-                  </p>
-                </div>
-              ))}
-            </div>
+        {/* FAQ Section — content from public/api/mock/{locale}/summer-camp-faq.json */}
+        <section
+          className="py-16 md:py-24 bg-white border-t border-slate-200"
+          aria-labelledby="faq-heading"
+        >
+          <div className="w-full px-4 sm:px-6 lg:px-8">
+            <header className="text-center mb-12 md:mb-14">
+              <h2
+                id="faq-heading"
+                className="font-heading font-black text-3xl md:text-4xl uppercase tracking-tight text-slate-900 mb-3"
+              >
+                {t('faq.title')}
+              </h2>
+              <p className="text-slate-600 text-base md:text-lg max-w-xl mx-auto">
+                {t('faq.subtitle')}
+              </p>
+            </header>
+            {faqsLoading ? (
+              <div
+                className="max-w-4xl mx-auto space-y-3 animate-pulse"
+                aria-busy="true"
+                aria-label="Loading FAQs"
+              >
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <div
+                    key={i}
+                    className="h-20 bg-slate-100 rounded-xl"
+                  />
+                ))}
+              </div>
+            ) : (
+              <Accordion
+                type="single"
+                collapsible
+                value={openFaqValue}
+                onValueChange={(next) =>
+                  setOpenFaqValue((prev) => (next === prev ? undefined : next))
+                }
+                className="max-w-4xl mx-auto space-y-3"
+              >
+                {faqs.map((faq, i) => (
+                  <AccordionItem
+                    key={i}
+                    value={`faq-${i}`}
+                    className="rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden data-[state=open]:border-[#1F396D]/30 data-[state=open]:bg-white data-[state=open]:shadow-sm data-[state=open]:ring-1 data-[state=open]:ring-[#1F396D]/10"
+                  >
+                    <AccordionTrigger className="py-4 px-5 md:py-5 md:px-6 text-left hover:no-underline hover:bg-slate-100/50 focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-inset focus-visible:outline-none rounded-xl [&[data-state=open]]:bg-white [&[data-state=open]]:rounded-b-none">
+                      <span className="font-semibold text-base md:text-lg text-slate-900 pr-6 leading-snug block">
+                        {faq.question}
+                      </span>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-5 md:px-6 pb-5 md:pb-6 pt-0 text-slate-600 text-sm md:text-base leading-relaxed">
+                      {faq.answer}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            )}
           </div>
         </section>
       </main>
-
-      <CartDrawer />
     </div>
   );
 }

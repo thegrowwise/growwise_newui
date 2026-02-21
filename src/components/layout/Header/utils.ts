@@ -1,5 +1,11 @@
 import { MenuItem, VariantStyles } from './types';
-import { VARIANT_STYLES } from './constants';
+import { VARIANT_STYLES, ROUTE_PATH_PATTERNS_HIDE_CART } from './constants';
+
+/** True when the current path is one where the header cart should not be shown. */
+export function isCartHiddenOnPath(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return ROUTE_PATH_PATTERNS_HIDE_CART.some((pattern) => pathname.includes(pattern));
+}
 
 export function createLocaleUrl(path: string, locale: string): string {
   return `/${locale}${path}`;
