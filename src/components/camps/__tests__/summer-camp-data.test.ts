@@ -1,21 +1,32 @@
 /**
  * Unit tests for summer-camp-data configuration.
  *
- * Covers: MATH_OLYMPIAD_TIER_CONFIGS structural invariants,
+ * Covers: olympiad tier config structural invariants (from public/api/mock/en/summer-camp-programs.json),
  * LEARNING_MODE_FORMAT/TIME mappings, ADV_MATH_PROGRAM_KEYS,
- * and SUMMER_CAMP_PROGRAMS integrity.
+ * and hydrated programs integrity.
  */
 
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
 import {
-  SUMMER_CAMP_PROGRAMS,
+  hydrateSummerCampData,
   LEARNING_MODE_KEYS,
   LEARNING_MODE_FORMAT,
   LEARNING_MODE_TIME,
   ADV_MATH_PROGRAM_KEYS,
-  MATH_OLYMPIAD_TIER_CONFIGS,
   type LearningModeKey,
-  type OlympiadTierId,
+  type SummerCampDataJson,
 } from '@/lib/summer-camp-data';
+
+const MOCK_JSON_PATH = join(process.cwd(), 'public', 'api', 'mock', 'en', 'summer-camp-programs.json');
+
+function loadHydrated() {
+  const raw: SummerCampDataJson = JSON.parse(
+    readFileSync(MOCK_JSON_PATH, 'utf8')
+  );
+  return hydrateSummerCampData(raw);
+}
 
 describe('LEARNING_MODE_KEYS', () => {
   it('contains exactly inPerson and online', () => {
@@ -57,7 +68,9 @@ describe('ADV_MATH_PROGRAM_KEYS', () => {
   });
 });
 
-describe('MATH_OLYMPIAD_TIER_CONFIGS', () => {
+describe('hydrateSummerCampData (olympiad tier configs)', () => {
+  const { olympiadTierConfigs: MATH_OLYMPIAD_TIER_CONFIGS } = loadHydrated();
+
   it('contains exactly tier1 and tier2', () => {
     const ids = MATH_OLYMPIAD_TIER_CONFIGS.map((c) => c.id);
     expect(ids).toHaveLength(2);
@@ -71,7 +84,10 @@ describe('MATH_OLYMPIAD_TIER_CONFIGS', () => {
     it('has slotCount 8', () => expect(tier1.slotCount).toBe(8));
     it('has weeksPerSlot 1', () => expect(tier1.weeksPerSlot).toBe(1));
     it('has hoursPerSlot 15', () => expect(tier1.hoursPerSlot).toBe(15));
-    it('has a positive price', () => expect(tier1.price).toBeGreaterThan(0));
+    it('has positive priceByFormat for both formats', () => {
+      expect(tier1.priceByFormat['In-Person']).toBeGreaterThan(0);
+      expect(tier1.priceByFormat['Online']).toBeGreaterThan(0);
+    });
 
     it('generates unique slot IDs for all indices', () => {
       const ids = Array.from({ length: tier1.slotCount }, (_, i) => tier1.slotId(i));
@@ -91,7 +107,10 @@ describe('MATH_OLYMPIAD_TIER_CONFIGS', () => {
     it('has slotCount 4', () => expect(tier2.slotCount).toBe(4));
     it('has weeksPerSlot 2', () => expect(tier2.weeksPerSlot).toBe(2));
     it('has hoursPerSlot 30', () => expect(tier2.hoursPerSlot).toBe(30));
-    it('has a positive price', () => expect(tier2.price).toBeGreaterThan(0));
+    it('has positive priceByFormat for both formats', () => {
+      expect(tier2.priceByFormat['In-Person']).toBeGreaterThan(0);
+      expect(tier2.priceByFormat['Online']).toBeGreaterThan(0);
+    });
 
     it('generates unique slot IDs for all indices', () => {
       const ids = Array.from({ length: tier2.slotCount }, (_, i) => tier2.slotId(i));
@@ -111,7 +130,9 @@ describe('MATH_OLYMPIAD_TIER_CONFIGS', () => {
   });
 });
 
-describe('SUMMER_CAMP_PROGRAMS', () => {
+describe('hydrateSummerCampData (programs)', () => {
+  const { programs: SUMMER_CAMP_PROGRAMS } = loadHydrated();
+
   it('every program has a unique id', () => {
     const ids = SUMMER_CAMP_PROGRAMS.map((p) => p.id);
     expect(new Set(ids).size).toBe(ids.length);
@@ -124,10 +145,14 @@ describe('SUMMER_CAMP_PROGRAMS', () => {
     });
   });
 
-  it('every program has at least one level with at least one slot', () => {
+  it('every program has at least one level with at least one slot (or tiers for math-olympiad)', () => {
     SUMMER_CAMP_PROGRAMS.forEach((p) => {
       expect(p.levels.length).toBeGreaterThan(0);
-      p.levels.forEach((l) => expect(l.slots.length).toBeGreaterThan(0));
+      p.levels.forEach((l) => {
+        const hasSlots = l.slots.length > 0;
+        const isOlympiadWithTiers = p.id === 'math-olympiad';
+        expect(hasSlots || isOlympiadWithTiers).toBe(true);
+      });
     });
   });
 

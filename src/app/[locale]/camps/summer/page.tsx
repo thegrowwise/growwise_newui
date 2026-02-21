@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useTranslations, useLocale } from 'next-intl';
-import { SUMMER_CAMP_PROGRAMS, type Program } from '@/lib/summer-camp-data';
+import { fetchSummerCampData, type Program, type OlympiadTierConfig } from '@/lib/summer-camp-data';
 import {
   Accordion,
   AccordionContent,
@@ -41,13 +41,41 @@ export interface SummerCampFaqData {
 export default function SummerCampPage() {
   const t = useTranslations('summerCamp');
   const locale = useLocale();
-  const [selectedProgram, setSelectedProgram] = useState<Program>(
-    SUMMER_CAMP_PROGRAMS[0]
-  );
+  const [programs, setPrograms] = useState<Program[]>([]);
+  const [olympiadTierConfigs, setOlympiadTierConfigs] = useState<OlympiadTierConfig[]>([]);
+  const [programsLoading, setProgramsLoading] = useState(true);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   const [faqs, setFaqs] = useState<SummerCampFaqItem[]>([]);
   const [faqsLoading, setFaqsLoading] = useState(true);
   const [openFaqValue, setOpenFaqValue] = useState<string | undefined>('faq-0');
   const slotsSectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const load = async () => {
+      setProgramsLoading(true);
+      try {
+        const { programs: p, olympiadTierConfigs: o } = await fetchSummerCampData(locale);
+        if (!cancelled) {
+          setPrograms(p);
+          setOlympiadTierConfigs(o);
+          setSelectedProgram((prev) => (prev ? p.find((x) => x.id === prev.id) ?? p[0] : p[0]));
+        }
+      } catch {
+        if (!cancelled) {
+          setPrograms([]);
+          setOlympiadTierConfigs([]);
+          setSelectedProgram(null);
+        }
+      } finally {
+        if (!cancelled) setProgramsLoading(false);
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [locale]);
 
   useEffect(() => {
     let cancelled = false;
@@ -189,38 +217,61 @@ export default function SummerCampPage() {
           </div>
 
           <div className="container mx-auto px-4 md:px-6" style={{ position: 'relative', zIndex: 1 }}>
-            <div className="grid lg:grid-cols-12 gap-8 items-start relative">
-              {/* Left Column: Program List */}
-              <div className="lg:col-span-7">
-                <div className="mb-10">
-                  <h2 className="font-heading font-black text-3xl text-slate-900 mb-2 uppercase tracking-tight">
-                    {t('page.title')}
-                  </h2>
-                  <p className="text-slate-500 text-sm font-medium">
-                    {t('page.subtitle')}
-                  </p>
+            {programsLoading ? (
+              <div className="grid lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-7 space-y-4 animate-pulse" aria-busy="true" aria-label="Loading programs">
+                  <div className="h-10 bg-slate-200 rounded w-48" />
+                  <div className="grid grid-cols-2 gap-3">
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                      <div key={i} className="h-48 bg-slate-100 rounded-xl" />
+                    ))}
+                  </div>
                 </div>
-                <ProgramList
-                  onSelectProgram={(p) => {
-                    setSelectedProgram(p);
-                    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
-                      document
-                        .getElementById('slots-panel')
-                        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  }}
-                  selectedProgramId={selectedProgram.id}
+                <div
+                  className="lg:col-span-5 rounded-2xl border border-slate-200 bg-white/80 p-6 animate-pulse min-h-[320px]"
+                  aria-hidden
                 />
               </div>
+            ) : (
+              <div className="grid lg:grid-cols-12 gap-8 items-start relative">
+                {/* Left Column: Program List */}
+                <div className="lg:col-span-7">
+                  <div className="mb-10">
+                    <h2 className="font-heading font-black text-3xl text-slate-900 mb-2 uppercase tracking-tight">
+                      {t('page.title')}
+                    </h2>
+                    <p className="text-slate-500 text-sm font-medium">
+                      {t('page.subtitle')}
+                    </p>
+                  </div>
+                  <ProgramList
+                    programs={programs}
+                    onSelectProgram={(p) => {
+                      setSelectedProgram(p);
+                      if (typeof window !== 'undefined' && window.innerWidth < 1024) {
+                        document
+                          .getElementById('slots-panel')
+                          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                    selectedProgramId={selectedProgram?.id ?? null}
+                  />
+                </div>
 
-              {/* Right Column: Slots Panel (Sticky) */}
-              <div
-                className="lg:col-span-5 lg:sticky lg:top-24"
-                style={{ height: 'calc(100vh - 7rem)' }}
-              >
-                <SlotsPanel program={selectedProgram} />
+                {/* Right Column: Slots Panel (Sticky) */}
+                <div
+                  className="lg:col-span-5 lg:sticky lg:top-24"
+                  style={{ height: 'calc(100vh - 7rem)' }}
+                >
+                  {selectedProgram && (
+                    <SlotsPanel
+                      program={selectedProgram}
+                      olympiadTierConfigs={olympiadTierConfigs}
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
 
