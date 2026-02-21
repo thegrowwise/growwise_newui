@@ -138,6 +138,13 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     keywords: "winter camp schedule, winter camp calendar, workshop schedule, December camp schedule, winter break activities",
     path: '/camps/winter/calendar',
   },
+
+  '/camps/summer': {
+    title: "Summer Camp 2026 - Math, Coding & Robotics | GrowWise",
+    description: "Enrollment open for Summer 2026! Accredited courses in Math, Coding, and Robotics. Half-day and full-day camps. Small cohorts. Dublin, CA.",
+    keywords: "summer camp 2026, summer coding camp, math olympiad camp, robotics camp, young authors, GrowWise Dublin CA",
+    path: '/camps/summer',
+  },
 }
 
 /**

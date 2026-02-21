@@ -618,6 +618,65 @@
       "gameDev": "Game Development",
       "robotics": "Robotics"
     }
+  },
+  "summerCamp": {
+    "page": {
+      "title": "Choose Your Camp",
+      "subtitle": "Select a camp to view available weeks."
+    },
+    "category": {
+      "programs": "{count} programs",
+      "halfDayLabel": "Half-Day",
+      "fullDayLabel": "Full-Day"
+    },
+    "card": {
+      "active": "Active"
+    },
+    "slots": {
+      "learningMode": "Learning mode",
+      "program": "Program",
+      "tier": "Tier",
+      "selectMode": "Select mode",
+      "selectProgram": "Select program",
+      "selectTier": "Select tier",
+      "weeklyIntensiveNote": "Weekly intensive — same pricing for all combinations",
+      "remove": "Remove",
+      "add": "Add"
+    },
+    "mode": {
+      "inPerson": "In-Person",
+      "online": "Online"
+    },
+    "advMathProgram": {
+      "algebra": "Algebra",
+      "precalculus": "Precalculus"
+    },
+    "tier": {
+      "tier1": {
+        "name": "Tier 1",
+        "description": "One week, 15 hours camp includes— Math Olympiad program grade 4-6, AMC8 and MOEMS Aligned."
+      },
+      "tier2": {
+        "name": "Tier 2",
+        "description": "Two week, 30 hours camp includes— Math Olympiad program grade 4-6, AMC8 and MOEMS Aligned."
+      }
+    },
+    "slotLabel": {
+      "singleWeek": "Week {week} ({hours} hrs)",
+      "weekRange": "Weeks {start}-{end} ({hours} hrs)"
+    },
+    "cart": {
+      "title": "Cart",
+      "items": "{count} items",
+      "empty": "Empty Cart",
+      "continueBrowsing": "Continue Browsing",
+      "total": "Total",
+      "bookNow": "Book Now",
+      "removeItem": "Remove item"
+    },
+    "infoModal": {
+      "detailsUnavailable": "Details are not available for this program."
+    }
   }
 }
 

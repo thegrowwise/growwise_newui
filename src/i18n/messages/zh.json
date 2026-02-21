@@ -152,7 +152,6 @@
       "subtitle": "Future-ready skills through hands-on learning"
     }
   },
-  
   "contact": {
     "title": "Get in Touch",
     "subtitle": "Ready to start your child's learning journey? Contact us today for a free consultation.",
@@ -207,7 +206,7 @@
         "other": "Other"
       }
     }
-    },
+  },
   "steam": {
     "hero": {
       "title": "STEAM Programs",
@@ -457,33 +456,33 @@
       "title": "About GrowWise",
       "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
     },
-    "foundation": { 
+    "foundation": {
       "title": "Our Foundation",
       "subtitle": "Everything we do is guided by our core mission, vision, and values that put student success at the center."
     },
-    "story": { 
+    "story": {
       "title": "Our Story",
       "p1": "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
       "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Dr. Sarah Chen, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
       "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     },
-    "achievements": { 
+    "achievements": {
       "title": "Our Achievements",
       "subtitle": "Numbers that reflect our commitment to student success and educational excellence."
     },
-    "approach": { 
+    "approach": {
       "title": "Our Educational Approach",
       "subtitle": "We believe effective education requires more than delivering content. Our approach is built on four core principles that ensure every student receives the support they need to succeed."
     },
-    "team": { 
+    "team": {
       "title": "Meet Our Team",
       "subtitle": "Our passionate educators bring years of experience and genuine care for student success to every lesson."
     },
-    "community": { 
+    "community": {
       "title": "Community Impact",
       "subtitle": "We believe in giving back to the community that supports us, creating opportunities for all students to succeed."
     },
-    "testimonials": { 
+    "testimonials": {
       "title": "Why Parents Love GrowWise",
       "subtitle": "Personalized learning. Real growth. Measurable success — every student, every grade."
     },
@@ -502,8 +501,7 @@
       "phone": "Phone",
       "email": "Email"
     }
-  }
-  ,
+  },
   "aboutPage": {
     "discover": {
       "title": "Discover GrowWise",
@@ -564,6 +562,64 @@
       "primaryButton": "Get Started",
       "secondaryButton": "Contact Us"
     }
+  },
+  "summerCamp": {
+    "page": {
+      "title": "Choose Your Camp",
+      "subtitle": "Select a camp to view available weeks."
+    },
+    "category": {
+      "programs": "{count} programs",
+      "halfDayLabel": "Half-Day",
+      "fullDayLabel": "Full-Day"
+    },
+    "card": {
+      "active": "Active"
+    },
+    "slots": {
+      "learningMode": "Learning mode",
+      "program": "Program",
+      "tier": "Tier",
+      "selectMode": "Select mode",
+      "selectProgram": "Select program",
+      "selectTier": "Select tier",
+      "weeklyIntensiveNote": "Weekly intensive — same pricing for all combinations",
+      "remove": "Remove",
+      "add": "Add"
+    },
+    "mode": {
+      "inPerson": "In-Person",
+      "online": "Online"
+    },
+    "advMathProgram": {
+      "algebra": "Algebra",
+      "precalculus": "Precalculus"
+    },
+    "tier": {
+      "tier1": {
+        "name": "Tier 1",
+        "description": "One week, 15 hours camp includes— Math Olympiad program grade 4-6, AMC8 and MOEMS Aligned."
+      },
+      "tier2": {
+        "name": "Tier 2",
+        "description": "Two week, 30 hours camp includes— Math Olympiad program grade 4-6, AMC8 and MOEMS Aligned."
+      }
+    },
+    "slotLabel": {
+      "singleWeek": "Week {week} ({hours} hrs)",
+      "weekRange": "Weeks {start}-{end} ({hours} hrs)"
+    },
+    "cart": {
+      "title": "Cart",
+      "items": "{count} items",
+      "empty": "Empty Cart",
+      "continueBrowsing": "Continue Browsing",
+      "total": "Total",
+      "bookNow": "Book Now",
+      "removeItem": "Remove item"
+    },
+    "infoModal": {
+      "detailsUnavailable": "此课程暂无详细信息。"
+    }
   }
 }
-
