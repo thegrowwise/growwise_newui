@@ -114,7 +114,7 @@
             "count": 8,
             "defaultFormat": "Online",
             "priceByProgramAndFormat": {
-              "default": { "In-Person": 349, "Online": 349 }
+              "default": { "In-Person": 399, "Online": 349 }
             }
           }
         }

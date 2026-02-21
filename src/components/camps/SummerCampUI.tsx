@@ -378,6 +378,7 @@ export function SlotsPanel({
   const [advMathProgram, setAdvMathProgram] = useState<AdvMathProgramKey>('algebra');
   const [olympiadMode, setOlympiadMode] = useState<LearningModeKey>('inPerson');
   const [olympiadTier, setOlympiadTier] = useState<OlympiadTierId>('tier1');
+  const [aiEntrepreneurMode, setAiEntrepreneurMode] = useState<LearningModeKey>('online');
   const [showInfo, setShowInfo] = useState(false);
 
   const summerCampItemIds = useMemo(
@@ -421,6 +422,7 @@ export function SlotsPanel({
 
   const isAdvMath = program.id === 'adv-math';
   const isMathOlympiad = program.id === 'math-olympiad';
+  const isAiEntrepreneur = program.id === 'ai-entrepreneur';
 
   const advMathSlots: Slot[] = useMemo(() => {
     if (!isAdvMath || !program.levels[0]) return [];
@@ -440,6 +442,25 @@ export function SlotsPanel({
       price,
     }));
   }, [isAdvMath, program, advMathMode, advMathProgram, programLabels, modeLabels]);
+
+  const aiEntrepreneurSlots: Slot[] = useMemo(() => {
+    if (!isAiEntrepreneur || !program.levels[0]) return [];
+    const level = program.levels[0];
+    const formatMap = LEARNING_MODE_FORMAT ?? {};
+    const timeMap = LEARNING_MODE_TIME ?? {};
+    const format: Slot['format'] = formatMap[aiEntrepreneurMode] ?? 'Online';
+    const priceByProgramAndFormat = level.priceByProgramAndFormat;
+    const price =
+      (priceByProgramAndFormat?.default?.[format] ?? level.slots[0]?.price) ?? 0;
+    return level.slots.map((s) => ({
+      ...s,
+      id: `${s.id}-${aiEntrepreneurMode}`,
+      label: `${s.label} — ${modeLabels[aiEntrepreneurMode]}`,
+      format,
+      time: timeMap[aiEntrepreneurMode] ?? '1:00 PM - 4:00 PM',
+      price,
+    }));
+  }, [isAiEntrepreneur, program, aiEntrepreneurMode, modeLabels]);
 
   const olympiadTierConfig = useMemo(
     () => (olympiadTierConfigs ?? []).find((c) => c.id === olympiadTier),
@@ -575,6 +596,54 @@ export function SlotsPanel({
           </>
         )}
 
+        {isAiEntrepreneur && program.levels[0] && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="ai-entrepreneur-mode" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                {t('slots.learningMode')}
+              </Label>
+              <Select
+                value={aiEntrepreneurMode}
+                onValueChange={(v) => setAiEntrepreneurMode(v as LearningModeKey)}
+              >
+                <SelectTrigger id="ai-entrepreneur-mode" className="rounded-lg text-sm">
+                  <SelectValue placeholder={t('slots.selectMode')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {(LEARNING_MODE_KEYS ?? []).map((key) => (
+                    <SelectItem key={key} value={key}>
+                      {modeLabels[key]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
+                <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight">
+                  {program.levels[0].name} • {modeLabels[aiEntrepreneurMode]}
+                </h4>
+              </div>
+              <div className="grid gap-2">
+                {aiEntrepreneurSlots.map((slot) => (
+                  <SlotRow
+                    key={slot.id}
+                    slot={slot}
+                    level={{
+                      ...program.levels[0],
+                      name: `${program.levels[0].name} • ${modeLabels[aiEntrepreneurMode]}`,
+                    }}
+                    program={program}
+                    cartItemIds={summerCampItemIds}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
         {isMathOlympiad && olympiadTierConfig && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -650,7 +719,7 @@ export function SlotsPanel({
           </>
         )}
 
-        {!isAdvMath && !isMathOlympiad &&
+        {!isAdvMath && !isMathOlympiad && !isAiEntrepreneur &&
           program.levels.map((level) => (
             <div key={level.id} className="space-y-4">
               <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
