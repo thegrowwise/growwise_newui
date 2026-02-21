@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
-import { useLocale, useTranslations } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import {
   SUMMER_CAMP_PROGRAMS,
   LEARNING_MODE_KEYS,
@@ -18,15 +18,9 @@ import {
   type AdvMathProgramKey,
   type OlympiadTierId,
 } from '@/lib/summer-camp-data';
+import { useCart } from '@/components/gw/CartContext';
 import { Button } from '@/components/ui/button';
-import { Check, X, ShoppingBag, Clock, Info, CalendarDays, CheckCircle2 } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Check, X, Clock, Info, CalendarDays, CheckCircle2 } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -35,67 +29,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-
-const CART_STORAGE_KEY = 'growwise-summer-camp-cart';
-
-type CartItem = Slot & {
-  programTitle: string;
-  levelName: string;
-  programId: string;
-};
-
-let cartListeners: (() => void)[] = [];
-
-export const summerCampCartStore = {
-  items: [] as CartItem[],
-
-  subscribe(listener: () => void) {
-    cartListeners.push(listener);
-    return () => {
-      cartListeners = cartListeners.filter((l) => l !== listener);
-    };
-  },
-
-  notify() {
-    cartListeners.forEach((l) => l());
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(this.items));
-    }
-  },
-
-  add(program: Program, level: Level, slot: Slot) {
-    const exists = this.items.find((i) => i.id === slot.id);
-    if (exists) return;
-    this.items.push({
-      ...slot,
-      programTitle: program.title,
-      levelName: level.name,
-      programId: program.id,
-    });
-    this.notify();
-  },
-
-  remove(slotId: string) {
-    this.items = this.items.filter((i) => i.id !== slotId);
-    this.notify();
-  },
-
-  init() {
-    if (typeof window === 'undefined') return;
-    const stored = localStorage.getItem(CART_STORAGE_KEY);
-    if (stored) {
-      try {
-        this.items = JSON.parse(stored);
-      } catch {
-        this.items = [];
-      }
-    }
-  },
-};
-
-if (typeof window !== 'undefined') {
-  summerCampCartStore.init();
-}
 
 export function ProgramList({
   onSelectProgram,
@@ -113,7 +46,7 @@ export function ProgramList({
   const isHalfDay = (category: Program['category']) => category === 'Half-Day Camps';
 
   return (
-    <div className="space-y-8" role="list" aria-label={t('page.title')}>
+    <div className="space-y-8" role="group" aria-label={t('page.title')}>
       {categories.map((category) => {
         const programs = SUMMER_CAMP_PROGRAMS.filter(
           (p) => p.category === category
@@ -122,7 +55,7 @@ export function ProgramList({
         const halfDay = isHalfDay(category);
 
         return (
-          <div key={category} className="space-y-3" role="listitem">
+          <div key={category} className="space-y-3" role="group">
             {/* Category heading */}
             <div
               className={`flex items-center gap-4 px-5 py-4 rounded-2xl border-2
@@ -157,65 +90,64 @@ export function ProgramList({
               </span>
             </div>
 
-            <div className="grid grid-cols-2 gap-3" role="list">
+            <ul className="grid grid-cols-2 gap-3 list-none p-0 m-0" aria-label={t('category.programs', { count: programs.length })}>
               {programs.map((program, idx) => {
                 const isSelected = selectedProgramId === program.id;
                 const isLastAndAlone = hasOddCount && idx === programs.length - 1;
                 return (
-                  <button
-                    key={program.id}
-                    type="button"
-                    role="listitem"
-                    aria-pressed={isSelected}
-                    aria-label={program.title}
-                    onClick={() => onSelectProgram(program)}
-                    className={`text-left flex flex-col rounded-xl overflow-hidden border-2 transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 bg-white
-                      ${isLastAndAlone ? 'col-span-2' : ''}
-                      ${isSelected
-                        ? 'border-[#1F396D] shadow-lg'
-                        : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
-                      }
-                    `}
-                  >
-                    {/* Image — aspect ratio set directly on the img for reliable rendering */}
-                    <img
-                      src={program.image}
-                      alt={`${program.title}: ${program.description}`}
-                      draggable={false}
-                      loading="lazy"
-                      className="w-full object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-500 bg-slate-200"
-                      style={{
-                        display: 'block',
-                        aspectRatio: '650/450',
-                        maxHeight: isLastAndAlone ? '200px' : undefined,
-                      }}
-                    />
+                  <li key={program.id} className={isLastAndAlone ? 'col-span-2' : ''}>
+                    <button
+                      type="button"
+                      aria-pressed={isSelected}
+                      aria-label={program.title}
+                      onClick={() => onSelectProgram(program)}
+                      className={`text-left flex flex-col rounded-xl overflow-hidden border-2 transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 bg-white w-full
+                        ${isSelected
+                          ? 'border-[#1F396D] shadow-lg'
+                          : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
+                        }
+                      `}
+                    >
+                      {/* Image — aspect ratio set directly on the img for reliable rendering */}
+                      <img
+                        src={program.image}
+                        alt={`${program.title}: ${program.description}`}
+                        draggable={false}
+                        loading="lazy"
+                        className="w-full object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-500 bg-slate-200"
+                        style={{
+                          display: 'block',
+                          aspectRatio: '650/450',
+                          maxHeight: isLastAndAlone ? '200px' : undefined,
+                        }}
+                      />
 
-                    {/* Content — white area below image */}
-                    <div className="px-4 py-3 flex flex-col flex-1">
-                      <h4
-                        className={`font-black text-sm uppercase tracking-tight leading-snug line-clamp-2
-                          ${isSelected ? 'text-[#1F396D]' : 'text-slate-900'}
-                        `}
-                      >
-                        {program.title}
-                      </h4>
-                      <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
-                        {program.description}
-                      </p>
-                      {isSelected && (
-                        <div
-                          aria-live="polite"
-                          className="mt-2 flex items-center gap-1 text-[#1F396D] text-[10px] font-black uppercase tracking-widest"
+                      {/* Content — white area below image */}
+                      <div className="px-4 py-3 flex flex-col flex-1">
+                        <h4
+                          className={`font-black text-sm uppercase tracking-tight leading-snug line-clamp-2
+                            ${isSelected ? 'text-[#1F396D]' : 'text-slate-900'}
+                          `}
                         >
-                          {t('card.active')} <Check className="w-3 h-3" aria-hidden="true" />
-                        </div>
-                      )}
-                    </div>
-                  </button>
+                          {program.title}
+                        </h4>
+                        <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
+                          {program.description}
+                        </p>
+                        {isSelected && (
+                          <div
+                            aria-live="polite"
+                            className="mt-2 flex items-center gap-1 text-[#1F396D] text-[10px] font-black uppercase tracking-widest"
+                          >
+                            {t('card.active')} <Check className="w-3 h-3" aria-hidden="true" />
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           </div>
         );
       })}
@@ -349,19 +281,19 @@ function SlotRow({
   slot,
   level,
   program,
-  cartItems,
+  cartItemIds,
   onAdd,
   onRemove,
 }: {
   slot: Slot;
   level: Level;
   program: Program;
-  cartItems: CartItem[];
+  cartItemIds: Set<string>;
   onAdd: (level: Level, slot: Slot) => void;
   onRemove: (slotId: string) => void;
 }) {
   const t = useTranslations('summerCamp');
-  const inCart = cartItems.some((i) => i.id === slot.id);
+  const inCart = cartItemIds.has(slot.id);
 
   return (
     <div
@@ -417,21 +349,33 @@ function SlotRow({
   );
 }
 
+function toGlobalCartItem(program: Program, level: Level, slot: Slot) {
+  return {
+    id: slot.id,
+    name: `${program.title} — ${level.name} — ${slot.label}`,
+    price: slot.price,
+    quantity: 1,
+    image: program.image,
+    category: program.category,
+    type: 'summer-camp' as const,
+    level: level.name,
+  };
+}
+
 export function SlotsPanel({ program }: { program: Program }) {
   const t = useTranslations('summerCamp');
+  const { state: cartState, addItem, removeItem } = useCart();
 
-  const [cartItems, setCartItems] = useState(summerCampCartStore.items);
   const [advMathMode, setAdvMathMode] = useState<LearningModeKey>('inPerson');
   const [advMathProgram, setAdvMathProgram] = useState<AdvMathProgramKey>('algebra');
   const [olympiadMode, setOlympiadMode] = useState<LearningModeKey>('inPerson');
   const [olympiadTier, setOlympiadTier] = useState<OlympiadTierId>('tier1');
   const [showInfo, setShowInfo] = useState(false);
 
-  useEffect(() => {
-    return summerCampCartStore.subscribe(
-      () => setCartItems([...summerCampCartStore.items])
-    );
-  }, []);
+  const summerCampItemIds = useMemo(
+    () => new Set(cartState.items.filter((i) => i.type === 'summer-camp').map((i) => i.id)),
+    [cartState.items]
+  );
 
   // Resolved display labels — derived from i18n, stable per render via useMemo.
   const modeLabels = useMemo<Record<LearningModeKey, string>>(
@@ -459,11 +403,12 @@ export function SlotsPanel({ program }: { program: Program }) {
   );
 
   const handleAdd = (level: Level, slot: Slot) => {
-    summerCampCartStore.add(program, level, slot);
+    if (summerCampItemIds.has(slot.id)) return;
+    addItem(toGlobalCartItem(program, level, slot));
   };
 
   const handleRemove = (slotId: string) => {
-    summerCampCartStore.remove(slotId);
+    removeItem(slotId);
   };
 
   const isAdvMath = program.id === 'adv-math';
@@ -605,7 +550,7 @@ export function SlotsPanel({ program }: { program: Program }) {
                       name: `${programLabels[advMathProgram]} • ${modeLabels[advMathMode]}`,
                     }}
                     program={program}
-                    cartItems={cartItems}
+                    cartItemIds={summerCampItemIds}
                     onAdd={handleAdd}
                     onRemove={handleRemove}
                   />
@@ -680,7 +625,7 @@ export function SlotsPanel({ program }: { program: Program }) {
                       slots: [],
                     }}
                     program={program}
-                    cartItems={cartItems}
+                    cartItemIds={summerCampItemIds}
                     onAdd={handleAdd}
                     onRemove={handleRemove}
                   />
@@ -708,7 +653,7 @@ export function SlotsPanel({ program }: { program: Program }) {
                     slot={slot}
                     level={level}
                     program={program}
-                    cartItems={cartItems}
+                    cartItemIds={summerCampItemIds}
                     onAdd={handleAdd}
                     onRemove={handleRemove}
                   />
@@ -717,118 +662,6 @@ export function SlotsPanel({ program }: { program: Program }) {
             </div>
           ))}
       </div>
-    </div>
-  );
-}
-
-export function CartDrawer() {
-  const t = useTranslations('summerCamp');
-  const [items, setItems] = useState(summerCampCartStore.items);
-  const [isOpen, setIsOpen] = useState(false);
-  const locale = useLocale();
-
-  useEffect(() => {
-    return summerCampCartStore.subscribe(
-      () => setItems([...summerCampCartStore.items])
-    );
-  }, []);
-
-  const total = items.reduce((sum, item) => sum + item.price, 0);
-
-  return (
-    <div className="fixed bottom-8 right-8 z-40">
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            size="lg"
-            aria-label={t('cart.title')}
-            className="rounded-full shadow-2xl h-14 px-6 bg-[#1F396D] text-white hover:bg-[#1F396D]/90 hover:scale-105 active:scale-95 transition-all"
-          >
-            <div className="flex items-center gap-3">
-              <ShoppingBag className="w-5 h-5" aria-hidden="true" />
-              <span className="font-black text-base" aria-live="polite">${total}</span>
-            </div>
-          </Button>
-        </SheetTrigger>
-        <SheetContent className="w-full sm:max-w-md flex flex-col h-full border-none shadow-2xl">
-          <SheetHeader className="border-b border-slate-50 pb-4 mb-4">
-            <SheetTitle className="font-heading font-black text-xl flex items-center gap-2">
-              {t('cart.title')}{' '}
-              <span className="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full uppercase">
-                {t('cart.items', { count: items.length })}
-              </span>
-            </SheetTitle>
-          </SheetHeader>
-
-          <div className="flex-1 overflow-y-auto space-y-3 pr-2">
-            {items.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
-                <ShoppingBag className="w-10 h-10 text-slate-200" aria-hidden="true" />
-                <p className="text-xs text-slate-500 uppercase tracking-widest">
-                  {t('cart.empty')}
-                </p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="rounded-full text-[10px]"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {t('cart.continueBrowsing')}
-                </Button>
-              </div>
-            ) : (
-              items.map((item) => (
-                <div
-                  key={item.id}
-                  className="group bg-white rounded-xl p-4 border border-slate-100 relative transition-all hover:shadow-sm"
-                >
-                  <div className="absolute top-0 left-0 w-1 h-full bg-[#1F396D]" aria-hidden="true" />
-                  <button
-                    type="button"
-                    aria-label={`${t('cart.removeItem')}: ${item.programTitle}`}
-                    onClick={() => summerCampCartStore.remove(item.id)}
-                    className="absolute top-3 right-3 p-2 text-slate-400 hover:text-red-600 rounded-full transition-all h-9 w-9 min-w-9 min-h-9 flex items-center justify-center hover:bg-red-50"
-                  >
-                    <X className="w-4 h-4" aria-hidden="true" />
-                  </button>
-                  <h4 className="font-black text-slate-900 text-[10px] mb-0.5 uppercase tracking-tight">
-                    {item.programTitle}
-                  </h4>
-                  <div className="text-[8px] text-[#1F396D] font-bold uppercase tracking-widest mb-2">
-                    {item.levelName}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-slate-600 text-[10px]">
-                      {item.label}
-                    </span>
-                    <span className="font-black text-sm text-slate-900">
-                      ${item.price}
-                    </span>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          <div className="border-t border-slate-50 pt-6 mt-auto">
-            <div className="flex items-center justify-between mb-4 px-1">
-              <span className="font-bold text-slate-600 uppercase tracking-widest text-[10px]">
-                {t('cart.total')}
-              </span>
-              <span className="font-heading font-black text-3xl tracking-tighter" aria-live="polite">
-                ${total}
-              </span>
-            </div>
-            <Button
-              className="w-full h-14 text-lg font-black rounded-xl shadow-lg bg-[#1F396D] hover:bg-[#1F396D]/90"
-              disabled={items.length === 0}
-              asChild
-            >
-              <Link href={`/${locale}/checkout`}>{t('cart.bookNow')}</Link>
-            </Button>
-          </div>
-        </SheetContent>
-      </Sheet>
     </div>
   );
 }

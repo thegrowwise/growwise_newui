@@ -117,6 +117,9 @@
   },
   "chatbot": {
     "title": "GrowWise Assistant",
+    "openChat": "Open chat",
+    "closeChat": "Close chat",
+    "sendMessage": "Send message",
     "placeholder": "Ask me anything about our programs...",
     "suggestions": {
       "k12Programs": "What K-12 programs do you offer?",
@@ -676,6 +679,10 @@
     },
     "infoModal": {
       "detailsUnavailable": "Details are not available for this program."
+    },
+    "faq": {
+      "title": "FAQ",
+      "subtitle": "Common questions about Summer Camps, programs, and enrollment."
     }
   }
 }

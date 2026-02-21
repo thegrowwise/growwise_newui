@@ -233,13 +233,13 @@ html {
   .header-contact-item { @apply flex items-center space-x-2; }
   .header-social-row { @apply flex items-center space-x-4; }
   .header-social-group { @apply hidden md:flex items-center space-x-3; }
-  .header-social-label { @apply text-white/70 text-xs; }
-  .header-social-links { @apply flex space-x-2; }
-  .header-social-link { @apply text-white/70 hover:text-white transition-colors; }
+  .header-social-label { @apply text-white/90 text-xs; }
+  .header-social-links { @apply flex gap-3; }
+  .header-social-link { @apply text-white/90 hover:text-white transition-colors inline-flex items-center justify-center min-w-[44px] min-h-[44px] rounded; }
   .header-address { @apply text-white/90 text-xs hidden lg:block; }
 
   .header-mainrow { @apply flex items-center justify-between h-32 flex-wrap gap-2; }
-  .header-logo { @apply bg-center bg-contain bg-no-repeat h-[110px] w-[280px] max-w-full; }
+  .header-logo { @apply h-[110px] w-[280px] max-w-full object-contain object-center; }
   
   @media (max-width: 640px) {
     .header-logo { 

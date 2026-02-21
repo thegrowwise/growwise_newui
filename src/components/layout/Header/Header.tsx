@@ -8,8 +8,8 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchHeaderRequested } from '@/store/slices/headerSlice';
 import { useCart } from '@/components/gw/CartContext';
 import { useDropdownState, useMobileMenu } from './hooks';
-import { createLocaleUrl, getVisibleMenuItems } from './utils';
-import { DEFAULT_HEADER_DATA } from './constants';
+import { createLocaleUrl, getVisibleMenuItems, isCartHiddenOnPath } from './utils';
+import { DEFAULT_HEADER_DATA, FALLBACK_MENU_ITEMS } from './constants';
 import TopBar from './TopBar';
 import Navigation from './Navigation';
 import MobileNavigation from './MobileNavigation';
@@ -40,12 +40,13 @@ export default function Header() {
     closeMobileMenu
   } = useMobileMenu();
 
-  // Get menu items from Redux store with fallbacks and filter by visibility
-  const allMenuItems = header?.menuItems || [];
+  // Get menu items from Redux store (backend); fallback to frontend when missing
+  const allMenuItems = header?.menuItems?.length ? header.menuItems : FALLBACK_MENU_ITEMS;
   const menuItems = getVisibleMenuItems(allMenuItems);
 
   // Create locale-aware URL helper
   const createLocaleUrlHelper = (path: string) => createLocaleUrl(path, locale);
+  const showCart = !isCartHiddenOnPath(pathname);
 
   // Fetch header data if not available
   useEffect(() => {
@@ -122,16 +123,19 @@ export default function Header() {
           className="header-mainrow transition-all duration-300 ease-out flex-wrap lg:flex-nowrap" 
           style={{ height: isScrolled ? '5rem' : '8rem', minHeight: isScrolled ? '5rem' : '8rem' }}
         >
-          {/* Logo */}
-          <div className="flex items-center">
+          {/* Logo — flex-shrink-0 keeps the logo visible when nav is long */}
+          <div className="flex items-center flex-shrink-0">
             <Link href={createLocaleUrlHelper('/')} className="cursor-pointer" aria-label="GrowWise home">
-              <div 
-                className="header-logo transition-all duration-300 ease-out" 
-                style={{ 
-                  backgroundImage: "url('/assets/growwise-logo.png')",
+              <img
+                src="/assets/growwise-logo.png"
+                alt="GrowWise"
+                className="header-logo transition-all duration-300 ease-out"
+                width={280}
+                height={110}
+                style={{
                   height: isScrolled ? '70px' : '110px',
-                  width: isScrolled ? '180px' : '280px'
-                }} 
+                  width: isScrolled ? '180px' : '280px',
+                }}
               />
             </Link>
           </div>
@@ -150,6 +154,7 @@ export default function Header() {
             createLocaleUrl={createLocaleUrlHelper}
             pathname={pathname}
             cartItemCount={cartState.itemCount}
+            showCart={showCart}
             footerHelper={footerHelper}
             footerContactCta={footerContactCta}
           />
@@ -163,6 +168,7 @@ export default function Header() {
             createLocaleUrl={createLocaleUrlHelper}
             pathname={pathname}
             cartItemCount={cartState.itemCount}
+            showCart={showCart}
           />
         </div>
       </div>

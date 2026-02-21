@@ -139,6 +139,15 @@
             "description": "Engaging winter programs for students",
             "icon": "Calendar",
             "href": "/camps/winter",
+            "gradient": "from-[#F16112] to-[#F1894F]",
+            "visible": false
+          },
+          {
+            "key": "summerCamp",
+            "title": "Summer Camp",
+            "description": "Accredited summer programs in Math, Coding, and Robotics",
+            "icon": "Calendar",
+            "href": "/camps/summer",
             "gradient": "from-[#F16112] to-[#F1894F]"
           }
         ]
