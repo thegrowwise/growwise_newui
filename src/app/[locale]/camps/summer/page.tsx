@@ -119,45 +119,53 @@ export default function SummerCampPage() {
       )}
 
       <main>
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-16 md:pt-40 md:pb-24 overflow-hidden">
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-blue-100/30 rounded-full blur-3xl opacity-60 translate-x-1/4 -translate-y-1/4" />
-            <div className="absolute bottom-0 left-0 w-[50%] h-[50%] bg-orange-100/20 rounded-full blur-3xl opacity-60 -translate-x-1/4 translate-y-1/4" />
-          </div>
-
-          <div className="container mx-auto px-4 md:px-6 text-center">
-          <div
-              className="max-w-3xl mx-auto animate-fade-in"
-              style={{
-                animation: 'fadeInUp 0.6s ease-out forwards',
-              }}
+        {/* Hero Banner */}
+        <section className="relative w-full overflow-hidden" style={{ maxHeight: '65vh' }}>
+          <img
+            src="/assets/camps/summer-camp-banner.png"
+            alt="Summer Camp 2026"
+            className="w-full h-full object-cover object-top block"
+            draggable={false}
+            fetchPriority="high"
+          />
+          <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
+          <div className="absolute inset-0 flex items-end justify-center pb-[12%]">
+            <div
+              className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5"
+              style={{ animation: 'fadeInUp 0.6s ease-out forwards' }}
             >
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#1F396D] text-[10px] font-black uppercase tracking-[0.2em] mb-6 border border-blue-100">
-                Enrollment Open for Summer 2026
-              </div>
-              <h1 className="font-heading font-black text-5xl md:text-7xl tracking-tighter text-slate-900 mb-6 leading-none">
-                Summer Camps that <br />
-                <span className="text-[#1F396D]">Spark Genius.</span>
-              </h1>
-              <p className="text-lg text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
-                Accredited courses in Math, Coding, and Robotics. Small cohorts
-                designed to give your child a head start.
-              </p>
+              <button
+                onClick={scrollToSlots}
+                className="px-10 py-4 rounded-full bg-[#1F396D] text-white font-extrabold text-base md:text-lg uppercase tracking-wider hover:bg-[#162d57] transition-all duration-300 animate-glow-blue"
+              >
+                Explore
+              </button>
+              <a
+                href="/assets/camps/summer-camp-brochure.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-10 py-4 rounded-full bg-white/90 backdrop-blur text-[#1F396D] font-extrabold text-base md:text-lg uppercase tracking-wider hover:bg-white transition-all duration-300 border border-white/50 animate-glow-white"
+              >
+                Download Brochure
+              </a>
             </div>
-            <style>{`
-              @keyframes fadeInUp {
-                from {
-                  opacity: 0;
-                  transform: translateY(20px);
-                }
-                to {
-                  opacity: 1;
-                  transform: translateY(0);
-                }
-              }
-            `}</style>
           </div>
+          <style>{`
+            @keyframes fadeInUp {
+              from { opacity: 0; transform: translateY(20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes glowBlue {
+              0%, 100% { box-shadow: 0 0 8px rgba(31,57,109,0.4), 0 0 20px rgba(31,57,109,0.2); }
+              50% { box-shadow: 0 0 16px rgba(31,57,109,0.6), 0 0 40px rgba(31,57,109,0.35); }
+            }
+            @keyframes glowWhite {
+              0%, 100% { box-shadow: 0 0 8px rgba(255,255,255,0.4), 0 0 20px rgba(255,255,255,0.2); }
+              50% { box-shadow: 0 0 16px rgba(255,255,255,0.7), 0 0 40px rgba(255,255,255,0.4); }
+            }
+            .animate-glow-blue { animation: glowBlue 2s ease-in-out infinite; }
+            .animate-glow-white { animation: glowWhite 2s ease-in-out infinite; }
+          `}</style>
         </section>
 
         {/* Programs & Slots Section */}
