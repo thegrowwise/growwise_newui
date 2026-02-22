@@ -44,37 +44,31 @@ export async function createCheckoutSession(
     });
 
     if (!response.ok) {
-      let errorMessage = 'Failed to create checkout session';
-      let errorDetails = '';
-      
+      let serverError = '';
       try {
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
           const error = await response.json();
-          errorMessage = error.error || error.message || errorMessage;
-          errorDetails = error.message || error.details || '';
+          serverError = error.message || error.error || '';
         } else {
-          const text = await response.text();
-          errorMessage = text || errorMessage;
+          serverError = await response.text() || response.statusText;
         }
-      } catch (parseError) {
-        // If parsing fails, use status text
-        errorMessage = response.statusText || errorMessage;
+      } catch {
+        serverError = response.statusText;
       }
-      
-      // Include status code in error message for debugging
-      const fullErrorMessage = errorDetails 
-        ? `${errorMessage} (Status: ${response.status}) - ${errorDetails}`
-        : `${errorMessage} (Status: ${response.status})`;
-      
+      // Log full details for debugging; never show technical messages to the user
       console.error('Checkout session creation failed:', {
         status: response.status,
         statusText: response.statusText,
-        error: errorMessage,
+        serverError,
         url,
       });
-      
-      throw new Error(fullErrorMessage);
+      // User-friendly message only (503 = temporary, 5xx = generic)
+      const userMessage =
+        response.status === 503
+          ? "We're having a temporary issue. Please try again in a few minutes."
+          : 'Something went wrong. Please try again.';
+      throw new Error(userMessage);
     }
 
     return response.json();
@@ -103,21 +97,20 @@ export async function getCheckoutSession(sessionId: string) {
   });
 
   if (!response.ok) {
-    let errorMessage = 'Failed to retrieve session';
     try {
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
         const error = await response.json();
-        errorMessage = error.error || error.message || errorMessage;
-      } else {
-        const text = await response.text();
-        errorMessage = text || errorMessage;
+        console.error('Session retrieval failed:', { status: response.status, serverError: error.message || error.error });
       }
-    } catch (parseError) {
-      // If parsing fails, use status text
-      errorMessage = response.statusText || errorMessage;
+    } catch {
+      /* ignore */
     }
-    throw new Error(errorMessage);
+    const userMessage =
+      response.status === 503
+        ? "We're having a temporary issue. Please try again in a few minutes."
+        : 'Something went wrong. Please try again.';
+    throw new Error(userMessage);
   }
 
   return response.json();
