@@ -1,9 +1,4 @@
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
-
-// Debug: Log the backend URL (only in development)
-if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
-  console.log('Backend URL:', BACKEND_URL);
-}
+import { BACKEND_URL } from './config';
 
 export interface CheckoutSessionRequest {
   items: Array<{

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
+import { BACKEND_URL } from '@/lib/config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -52,7 +53,7 @@ export default function EnrollPage() {
         agree: agree
       };
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/enrollment`, {
+      const response = await fetch(`${BACKEND_URL}/api/enrollment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

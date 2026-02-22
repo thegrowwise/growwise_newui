@@ -3,6 +3,7 @@
  */
 
 import defaultTestimonials from '@/data/defaultTestimonials.json';
+import { BACKEND_URL } from './config';
 
 export interface TestimonialVM {
   name: string;
@@ -64,9 +65,7 @@ class TestimonialsApiService {
   private defaultTestimonials: TestimonialVM[];
 
   constructor() {
-    // Use environment variable or default to localhost
-    // Try NEXT_PUBLIC_BACKEND_URL first (more common), then NEXT_PUBLIC_API_URL, then localhost
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    this.baseUrl = BACKEND_URL;
     this.timeout = 10000; // 10 seconds
     this.defaultTestimonials = defaultTestimonials.testimonials;
   }
