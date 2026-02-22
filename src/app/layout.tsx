@@ -44,7 +44,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://tlm2laiw0j.execute-api.us-west-1.amazonaws.com" />
+        <link rel="dns-prefetch" href="https://api.growwiseschool.org" />
       </head>
       <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
         <Script

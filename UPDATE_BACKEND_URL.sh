@@ -5,7 +5,7 @@
 
 set -e
 
-BACKEND_URL="https://tlm2laiw0j.execute-api.us-west-1.amazonaws.com"
+BACKEND_URL="https://api.growwiseschool.org"
 
 echo "🔧 Updating frontend backend URL to: $BACKEND_URL"
 echo ""
