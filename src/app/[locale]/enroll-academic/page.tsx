@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { BACKEND_URL } from "@/lib/config";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -91,7 +92,7 @@ export default function EnrollAcademicPage() {
         return;
       }
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001'}/api/enrollment`, {
+      const response = await fetch(`${BACKEND_URL}/api/enrollment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

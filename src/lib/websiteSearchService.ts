@@ -1,3 +1,5 @@
+import { BACKEND_URL } from './config';
+
 interface SearchResult {
   id: string;
   title: string;
@@ -29,7 +31,7 @@ export class WebsiteSearchService {
   private baseUrl: string;
 
   private constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    this.baseUrl = BACKEND_URL;
   }
 
   public static getInstance(): WebsiteSearchService {

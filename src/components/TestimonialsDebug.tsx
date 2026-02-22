@@ -3,10 +3,11 @@
 import { useState, useEffect } from 'react';
 import { useTestimonials } from '@/hooks/useTestimonials';
 import { testimonialsApi } from '@/lib/testimonialsApi';
+import { BACKEND_URL } from '@/lib/config';
 
 export default function TestimonialsDebug() {
   const [serverStatus, setServerStatus] = useState<'checking' | 'online' | 'offline'>('checking');
-  const [apiUrl, setApiUrl] = useState(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001');
+  const [apiUrl, setApiUrl] = useState(BACKEND_URL);
   
   const { 
     testimonials, 

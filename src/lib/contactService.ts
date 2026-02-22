@@ -1,4 +1,5 @@
 import { ContactFormData } from '@/components/chatbot/ContactForm';
+import { BACKEND_URL } from './config';
 
 export interface ContactSubmissionResult {
   success: boolean;
@@ -12,7 +13,7 @@ export class ContactService {
   private baseUrl: string;
 
   private constructor() {
-    this.baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    this.baseUrl = BACKEND_URL;
   }
 
   public static getInstance(): ContactService {
