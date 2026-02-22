@@ -379,6 +379,8 @@ export function SlotsPanel({
   const [olympiadMode, setOlympiadMode] = useState<LearningModeKey>('inPerson');
   const [olympiadTier, setOlympiadTier] = useState<OlympiadTierId>('tier1');
   const [aiEntrepreneurMode, setAiEntrepreneurMode] = useState<LearningModeKey>('online');
+  const [scratchMode, setScratchMode] = useState<LearningModeKey>('online');
+  const [robloxMode, setRobloxMode] = useState<LearningModeKey>('inPerson');
   const [showInfo, setShowInfo] = useState(false);
 
   const summerCampItemIds = useMemo(
@@ -423,6 +425,8 @@ export function SlotsPanel({
   const isAdvMath = program.id === 'adv-math';
   const isMathOlympiad = program.id === 'math-olympiad';
   const isAiEntrepreneur = program.id === 'ai-entrepreneur';
+  const isScratch = program.id === 'scratch-online' || program.id === 'scratch';
+  const isRoblox = program.id === 'roblox-in-person';
 
   const advMathSlots: Slot[] = useMemo(() => {
     if (!isAdvMath || !program.levels[0]) return [];
@@ -461,6 +465,44 @@ export function SlotsPanel({
       price,
     }));
   }, [isAiEntrepreneur, program, aiEntrepreneurMode, modeLabels]);
+
+  const scratchSlots: Slot[] = useMemo(() => {
+    if (!isScratch || !program.levels[0]) return [];
+    const level = program.levels[0];
+    const formatMap = LEARNING_MODE_FORMAT ?? {};
+    const timeMap = LEARNING_MODE_TIME ?? {};
+    const format: Slot['format'] = formatMap[scratchMode] ?? 'Online';
+    const priceByProgramAndFormat = level.priceByProgramAndFormat;
+    const price =
+      (priceByProgramAndFormat?.default?.[format] ?? level.slots[0]?.price) ?? 0;
+    return level.slots.map((s) => ({
+      ...s,
+      id: `${s.id}-${scratchMode}`,
+      label: `${s.label} — ${modeLabels[scratchMode]}`,
+      format,
+      time: timeMap[scratchMode] ?? '1:00 PM - 4:00 PM',
+      price,
+    }));
+  }, [isScratch, program, scratchMode, modeLabels]);
+
+  const robloxSlots: Slot[] = useMemo(() => {
+    if (!isRoblox || !program.levels[0]) return [];
+    const level = program.levels[0];
+    const formatMap = LEARNING_MODE_FORMAT ?? {};
+    const timeMap = LEARNING_MODE_TIME ?? {};
+    const format: Slot['format'] = formatMap[robloxMode] ?? 'In-Person';
+    const priceByProgramAndFormat = level.priceByProgramAndFormat;
+    const price =
+      (priceByProgramAndFormat?.default?.[format] ?? level.slots[0]?.price) ?? 0;
+    return level.slots.map((s) => ({
+      ...s,
+      id: `${s.id}-${robloxMode}`,
+      label: `${s.label} — ${modeLabels[robloxMode]}`,
+      format,
+      time: timeMap[robloxMode] ?? '9:00 AM - 12:00 PM',
+      price,
+    }));
+  }, [isRoblox, program, robloxMode, modeLabels]);
 
   const olympiadTierConfig = useMemo(
     () => (olympiadTierConfigs ?? []).find((c) => c.id === olympiadTier),
@@ -523,6 +565,90 @@ export function SlotsPanel({
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
+        {/* Scratch: In-Person $349 / Online $329 — render first so it's always visible when Scratch selected */}
+        {isScratch && program.levels[0] && (
+          <>
+            <div className="space-y-3">
+              <p className="text-sm font-bold text-slate-700">
+                Choose format
+              </p>
+              <select
+                id="scratch-format"
+                value={scratchMode}
+                onChange={(e) => setScratchMode(e.target.value as LearningModeKey)}
+                className="w-full rounded-lg border-2 border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 focus:border-[#1F396D] focus:outline-none focus:ring-2 focus:ring-[#1F396D]/20"
+                aria-label="Scratch format: In-Person or Online"
+              >
+                <option value="inPerson">In-Person</option>
+                <option value="online">Online</option>
+              </select>
+            </div>
+            <div className="space-y-4">
+              <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight border-l-2 border-[#1F396D] pl-3">
+                {program.levels[0].name} • {modeLabels[scratchMode]}
+              </h4>
+              <div className="grid gap-2">
+                {scratchSlots.map((slot) => (
+                  <SlotRow
+                    key={slot.id}
+                    slot={slot}
+                    level={{
+                      ...program.levels[0],
+                      name: `${program.levels[0].name} • ${modeLabels[scratchMode]}`,
+                    }}
+                    program={program}
+                    cartItemIds={summerCampItemIds}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
+        {/* Roblox: In-Person $349 (default) / Online $329 */}
+        {isRoblox && program.levels[0] && (
+          <>
+            <div className="space-y-3">
+              <p className="text-sm font-bold text-slate-700">
+                Choose format
+              </p>
+              <select
+                id="roblox-format"
+                value={robloxMode}
+                onChange={(e) => setRobloxMode(e.target.value as LearningModeKey)}
+                className="w-full rounded-lg border-2 border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-900 focus:border-[#1F396D] focus:outline-none focus:ring-2 focus:ring-[#1F396D]/20"
+                aria-label="Roblox format: In-Person or Online"
+              >
+                <option value="inPerson">In-Person</option>
+                <option value="online">Online</option>
+              </select>
+            </div>
+            <div className="space-y-4">
+              <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight border-l-2 border-[#1F396D] pl-3">
+                {program.levels[0].name} • {modeLabels[robloxMode]}
+              </h4>
+              <div className="grid gap-2">
+                {robloxSlots.map((slot) => (
+                  <SlotRow
+                    key={slot.id}
+                    slot={slot}
+                    level={{
+                      ...program.levels[0],
+                      name: `${program.levels[0].name} • ${modeLabels[robloxMode]}`,
+                    }}
+                    program={program}
+                    cartItemIds={summerCampItemIds}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
         {isAdvMath && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -719,7 +845,7 @@ export function SlotsPanel({
           </>
         )}
 
-        {!isAdvMath && !isMathOlympiad && !isAiEntrepreneur &&
+        {!isAdvMath && !isMathOlympiad && !isAiEntrepreneur && !isScratch && !isRoblox &&
           program.levels.map((level) => (
             <div key={level.id} className="space-y-4">
               <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">

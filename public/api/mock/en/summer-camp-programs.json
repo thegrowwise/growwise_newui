@@ -122,13 +122,13 @@
     },
     {
       "id": "scratch-online",
-      "title": "Scratch (Online)",
+      "title": "Scratch",
       "description": "Introductory visual programming for young creators.",
       "iconId": "Code2",
       "category": "Half-Day Camps",
       "hoursPerWeek": "9 hours a week",
       "ageGroup": "Ages 7-10",
-      "startingPrice": 249,
+      "startingPrice": 329,
       "image": "/images/camps/banners/scratch-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
@@ -152,7 +152,7 @@
             "count": 8,
             "defaultFormat": "Online",
             "priceByProgramAndFormat": {
-              "default": { "In-Person": 249, "Online": 249 }
+              "default": { "In-Person": 349, "Online": 329 }
             }
           }
         }
@@ -166,7 +166,7 @@
       "category": "Full Day Camps",
       "hoursPerWeek": "30 hours per week",
       "ageGroup": "Ages 9-14",
-      "startingPrice": 539,
+      "startingPrice": 639,
       "image": "/images/camps/banners/robotics-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
@@ -190,7 +190,7 @@
             "count": 8,
             "defaultFormat": "In-Person",
             "priceByProgramAndFormat": {
-              "default": { "In-Person": 539, "Online": 539 }
+              "default": { "In-Person": 639, "Online": 639 }
             },
             "time": "9:00 AM - 4:00 PM"
           }
@@ -205,7 +205,7 @@
       "category": "Full Day Camps",
       "hoursPerWeek": "30 hours per week",
       "ageGroup": "Grades 3-7",
-      "startingPrice": 499,
+      "startingPrice": 999,
       "image": "/images/camps/banners/young-authors-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
@@ -229,7 +229,7 @@
             "count": 8,
             "defaultFormat": "In-Person",
             "priceByProgramAndFormat": {
-              "default": { "In-Person": 499, "Online": 499 }
+              "default": { "In-Person": 999, "Online": 999 }
             },
             "time": "9:00 AM - 4:00 PM"
           }
@@ -238,13 +238,13 @@
     },
     {
       "id": "roblox-in-person",
-      "title": "Roblox (In-Person)",
+      "title": "Roblox",
       "description": "Master Lua scripting in a collaborative on-site environment.",
       "iconId": "Gamepad2",
       "category": "Half-Day Camps",
       "hoursPerWeek": "15 hours per week",
       "ageGroup": "Ages 8-12",
-      "startingPrice": 399,
+      "startingPrice": 329,
       "image": "/images/camps/banners/roblox-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
@@ -268,7 +268,7 @@
             "count": 8,
             "defaultFormat": "In-Person",
             "priceByProgramAndFormat": {
-              "default": { "In-Person": 399, "Online": 399 }
+              "default": { "In-Person": 349, "Online": 329 }
             },
             "time": "9:00 AM - 12:00 PM"
           }
