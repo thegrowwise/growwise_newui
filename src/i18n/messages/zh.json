@@ -609,8 +609,8 @@
       }
     },
     "slotLabel": {
-      "singleWeek": "Week {week} ({hours} hrs)",
-      "weekRange": "Weeks {start}-{end} ({hours} hrs)"
+      "singleWeek": "Week {week}",
+      "weekRange": "Weeks {start}-{end}"
     },
     "cart": {
       "title": "Cart",

@@ -1,0 +1,279 @@
+{
+  "programs": [
+    {
+      "id": "adv-math",
+      "title": "Advanced Math (Algebra II + Precalculus)",
+      "description": "Accelerated track covering Algebra 2 and Pre-Calculus fundamentals.",
+      "iconId": "Calculator",
+      "category": "Half-Day Camps",
+      "hoursPerWeek": "9 hours a week",
+      "ageGroup": "Grades 7-10",
+      "startingPrice": 259,
+      "image": "/images/camps/banners/advanced-math-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "3 hours / day",
+        "includes": [
+          "Algebra or Pre-Calculus curriculum (your choice)",
+          "Expert instructor-led sessions",
+          "Daily practice problem sets",
+          "Weekly progress report for parents",
+          "Certificate of completion"
+        ]
+      },
+      "levels": [
+        {
+          "id": "math-weekly",
+          "name": "Weekly Intensive",
+          "description": "Master one major topic per week with expert guidance.",
+          "slotTemplate": {
+            "slotIdPrefix": "adv-math",
+            "count": 8,
+            "defaultFormat": "In-Person",
+            "priceByProgramAndFormat": {
+              "algebra": { "In-Person": 299, "Online": 259 },
+              "precalculus": { "In-Person": 349, "Online": 321 }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "math-olympiad",
+      "title": "Math Olympiad (AMC8/MOEMS)",
+      "description": "Competitive math strategies focusing on AMC8 and MOEMS.",
+      "iconId": "Brain",
+      "category": "Half-Day Camps",
+      "hoursPerWeek": "15 hours a week",
+      "ageGroup": "Grades 4-8",
+      "startingPrice": 399,
+      "image": "/images/camps/banners/olympiad-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "Tier 1: 3 hrs / day · Tier 2: 6 hrs / day",
+        "includes": [
+          "AMC8 & MOEMS-aligned curriculum",
+          "Timed mock competition tests",
+          "Competition strategy & problem-solving techniques",
+          "Detailed score analysis after each test",
+          "Take-home practice workbook"
+        ]
+      },
+      "tiers": [
+        { "id": "tier1", "slotCount": 8, "weeksPerSlot": 1, "hoursPerSlot": 15 },
+        { "id": "tier2", "slotCount": 4, "weeksPerSlot": 2, "hoursPerSlot": 30 }
+      ],
+      "levels": [
+        {
+          "id": "mo-weekly",
+          "name": "Competition Track",
+          "description": "High-intensity problem solving and rally races.",
+          "slotTemplate": {
+            "slotIdPrefix": "math-olympiad",
+            "count": 0,
+            "defaultFormat": "In-Person",
+            "priceByProgramAndFormat": {
+              "tier1": { "In-Person": 449, "Online": 399 },
+              "tier2": { "In-Person": 799, "Online": 759 }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "ai-entrepreneur",
+      "title": "AI Entrepreneur Studio",
+      "description": "Learn to build businesses leveraging AI automation tools.",
+      "iconId": "Lightbulb",
+      "category": "Half-Day Camps",
+      "hoursPerWeek": "30 hours a week",
+      "ageGroup": "Grades 8-12",
+      "startingPrice": 349,
+      "image": "/images/camps/banners/ai-entrepreneur-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "6 hours / day",
+        "includes": [
+          "Hands-on AI tools: ChatGPT, Midjourney, automation platforms",
+          "Business model canvas & pitch deck creation",
+          "Prompt engineering fundamentals",
+          "Live demo day — present your startup idea",
+          "Mentor feedback sessions"
+        ]
+      },
+      "levels": [
+        {
+          "id": "ai-weekly",
+          "name": "Startup Lab",
+          "description": "Prompt engineering meets business development.",
+          "slotTemplate": {
+            "slotIdPrefix": "ai-entrepreneur",
+            "count": 8,
+            "defaultFormat": "Online",
+            "priceByProgramAndFormat": {
+              "default": { "In-Person": 399, "Online": 349 }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "scratch-online",
+      "title": "Scratch (Online)",
+      "description": "Introductory visual programming for young creators.",
+      "iconId": "Code2",
+      "category": "Half-Day Camps",
+      "hoursPerWeek": "9 hours a week",
+      "ageGroup": "Ages 7-10",
+      "startingPrice": 249,
+      "image": "/images/camps/banners/scratch-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "1.5 hours / day",
+        "includes": [
+          "Scratch visual programming environment",
+          "Animated story & interactive game projects",
+          "Introduction to loops, conditionals & variables",
+          "Shareable project portfolio at end of week",
+          "Live online sessions with screen-share support"
+        ]
+      },
+      "levels": [
+        {
+          "id": "scratch-weekly",
+          "name": "Visual Coding",
+          "description": "Fundamental logic through drag-and-drop games.",
+          "slotTemplate": {
+            "slotIdPrefix": "scratch-online",
+            "count": 8,
+            "defaultFormat": "Online",
+            "priceByProgramAndFormat": {
+              "default": { "In-Person": 249, "Online": 249 }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "robotics-camp",
+      "title": "Robotics Camp",
+      "description": "Full-day engineering immersive with advanced sensor arrays.",
+      "iconId": "Bot",
+      "category": "Full Day Camps",
+      "hoursPerWeek": "30 hours per week",
+      "ageGroup": "Ages 9-14",
+      "startingPrice": 539,
+      "image": "/images/camps/banners/robotics-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "6 hours / day",
+        "includes": [
+          "Build & program a working robot from scratch",
+          "Sensor arrays: ultrasonic, IR & colour sensors",
+          "Mechanical design + logic programming",
+          "Daily team engineering challenges",
+          "Final robot showcase on Friday"
+        ]
+      },
+      "levels": [
+        {
+          "id": "bot-weekly",
+          "name": "Engineering Lab",
+          "description": "Full day on-site mechanical design and logic programming.",
+          "slotTemplate": {
+            "slotIdPrefix": "robotics-camp-f",
+            "count": 8,
+            "defaultFormat": "In-Person",
+            "priceByProgramAndFormat": {
+              "default": { "In-Person": 539, "Online": 539 }
+            },
+            "time": "9:00 AM - 4:00 PM"
+          }
+        }
+      ]
+    },
+    {
+      "id": "young-authors",
+      "title": "Young Authors Camp",
+      "description": "Immersive full-day writing studio for aspiring novelists.",
+      "iconId": "PenTool",
+      "category": "Full Day Camps",
+      "hoursPerWeek": "30 hours per week",
+      "ageGroup": "Grades 3-7",
+      "startingPrice": 499,
+      "image": "/images/camps/banners/young-authors-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "6 hours / day",
+        "includes": [
+          "Story structure, plot & character development",
+          "Daily creative writing workshops",
+          "Peer review & revision sessions",
+          "Illustration basics for your story",
+          "Professionally printed copy of your finished book"
+        ]
+      },
+      "levels": [
+        {
+          "id": "author-weekly",
+          "name": "Writing Studio",
+          "description": "Comprehensive daily workshop to publish your own story.",
+          "slotTemplate": {
+            "slotIdPrefix": "authors-f",
+            "count": 8,
+            "defaultFormat": "In-Person",
+            "priceByProgramAndFormat": {
+              "default": { "In-Person": 499, "Online": 499 }
+            },
+            "time": "9:00 AM - 4:00 PM"
+          }
+        }
+      ]
+    },
+    {
+      "id": "roblox-in-person",
+      "title": "Roblox (In-Person)",
+      "description": "Master Lua scripting in a collaborative on-site environment.",
+      "iconId": "Gamepad2",
+      "category": "Half-Day Camps",
+      "hoursPerWeek": "15 hours per week",
+      "ageGroup": "Ages 8-12",
+      "startingPrice": 399,
+      "image": "/images/camps/banners/roblox-banner.webp",
+      "details": {
+        "schedule": "Monday – Friday",
+        "daysPerWeek": 5,
+        "dailyHours": "3 hours / day",
+        "includes": [
+          "Lua scripting fundamentals in Roblox Studio",
+          "Game mechanics design & world-building",
+          "Multiplayer scripting & game testing",
+          "Collaborative team game project",
+          "Published game on Roblox platform by end of week"
+        ]
+      },
+      "levels": [
+        {
+          "id": "rob-ip-weekly",
+          "name": "Dev Studio",
+          "description": "Deep dive into game mechanics and multiplayer scripting.",
+          "slotTemplate": {
+            "slotIdPrefix": "roblox-h",
+            "count": 8,
+            "defaultFormat": "In-Person",
+            "priceByProgramAndFormat": {
+              "default": { "In-Person": 399, "Online": 399 }
+            },
+            "time": "9:00 AM - 12:00 PM"
+          }
+        }
+      ]
+    }
+  ]
+}

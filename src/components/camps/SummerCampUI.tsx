@@ -5,18 +5,17 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
-  SUMMER_CAMP_PROGRAMS,
   LEARNING_MODE_KEYS,
   LEARNING_MODE_FORMAT,
   LEARNING_MODE_TIME,
   ADV_MATH_PROGRAM_KEYS,
-  MATH_OLYMPIAD_TIER_CONFIGS,
   type Program,
   type Level,
   type Slot,
   type LearningModeKey,
   type AdvMathProgramKey,
   type OlympiadTierId,
+  type OlympiadTierConfig,
 } from '@/lib/summer-camp-data';
 import { useCart } from '@/components/gw/CartContext';
 import { Button } from '@/components/ui/button';
@@ -31,16 +30,19 @@ import {
 import { Label } from '@/components/ui/label';
 
 export function ProgramList({
+  programs = [],
   onSelectProgram,
   selectedProgramId,
 }: {
+  programs?: Program[] | null;
   onSelectProgram: (p: Program) => void;
   selectedProgramId: string | null;
 }) {
   const t = useTranslations('summerCamp');
+  const list = programs ?? [];
 
   const categories = Array.from(
-    new Set(SUMMER_CAMP_PROGRAMS.map((p) => p.category))
+    new Set(list.map((p) => p.category))
   );
 
   const isHalfDay = (category: Program['category']) => category === 'Half-Day Camps';
@@ -48,10 +50,10 @@ export function ProgramList({
   return (
     <div className="space-y-8" role="group" aria-label={t('page.title')}>
       {categories.map((category) => {
-        const programs = SUMMER_CAMP_PROGRAMS.filter(
+        const categoryPrograms = list.filter(
           (p) => p.category === category
         );
-        const hasOddCount = programs.length % 2 !== 0;
+        const hasOddCount = categoryPrograms.length % 2 !== 0;
         const halfDay = isHalfDay(category);
 
         return (
@@ -86,14 +88,14 @@ export function ProgramList({
                   }
                 `}
               >
-                {t('category.programs', { count: programs.length })}
+                {t('category.programs', { count: categoryPrograms.length })}
               </span>
             </div>
 
-            <ul className="grid grid-cols-2 gap-3 list-none p-0 m-0" aria-label={t('category.programs', { count: programs.length })}>
-              {programs.map((program, idx) => {
+            <ul className="grid grid-cols-2 gap-3 list-none p-0 m-0" aria-label={t('category.programs', { count: categoryPrograms.length })}>
+              {categoryPrograms.map((program, idx) => {
                 const isSelected = selectedProgramId === program.id;
-                const isLastAndAlone = hasOddCount && idx === programs.length - 1;
+                const isLastAndAlone = hasOddCount && idx === categoryPrograms.length - 1;
                 return (
                   <li key={program.id} className={isLastAndAlone ? 'col-span-2' : ''}>
                     <button
@@ -362,7 +364,13 @@ function toGlobalCartItem(program: Program, level: Level, slot: Slot) {
   };
 }
 
-export function SlotsPanel({ program }: { program: Program }) {
+export function SlotsPanel({
+  program,
+  olympiadTierConfigs,
+}: {
+  program: Program;
+  olympiadTierConfigs: OlympiadTierConfig[];
+}) {
   const t = useTranslations('summerCamp');
   const { state: cartState, addItem, removeItem } = useCart();
 
@@ -370,6 +378,7 @@ export function SlotsPanel({ program }: { program: Program }) {
   const [advMathProgram, setAdvMathProgram] = useState<AdvMathProgramKey>('algebra');
   const [olympiadMode, setOlympiadMode] = useState<LearningModeKey>('inPerson');
   const [olympiadTier, setOlympiadTier] = useState<OlympiadTierId>('tier1');
+  const [aiEntrepreneurMode, setAiEntrepreneurMode] = useState<LearningModeKey>('online');
   const [showInfo, setShowInfo] = useState(false);
 
   const summerCampItemIds = useMemo(
@@ -413,44 +422,71 @@ export function SlotsPanel({ program }: { program: Program }) {
 
   const isAdvMath = program.id === 'adv-math';
   const isMathOlympiad = program.id === 'math-olympiad';
+  const isAiEntrepreneur = program.id === 'ai-entrepreneur';
 
   const advMathSlots: Slot[] = useMemo(() => {
     if (!isAdvMath || !program.levels[0]) return [];
+    const level = program.levels[0];
     const formatMap = LEARNING_MODE_FORMAT ?? {};
     const timeMap = LEARNING_MODE_TIME ?? {};
-    return program.levels[0].slots.map((s) => ({
+    const format: Slot['format'] = formatMap[advMathMode] ?? 'In-Person';
+    const priceByProgramAndFormat = level.priceByProgramAndFormat;
+    const price =
+      (priceByProgramAndFormat?.[advMathProgram]?.[format] ?? level.slots[0]?.price) ?? 0;
+    return level.slots.map((s) => ({
       ...s,
       id: `${s.id}-${advMathMode}-${advMathProgram}`,
       label: `${s.label} — ${programLabels[advMathProgram]}, ${modeLabels[advMathMode]}`,
-      format: (formatMap[advMathMode] ?? 'In-Person') as Slot['format'],
+      format,
       time: timeMap[advMathMode] ?? '9:00 AM - 12:00 PM',
+      price,
     }));
-  }, [isAdvMath, program.levels, advMathMode, advMathProgram, programLabels, modeLabels]);
+  }, [isAdvMath, program, advMathMode, advMathProgram, programLabels, modeLabels]);
+
+  const aiEntrepreneurSlots: Slot[] = useMemo(() => {
+    if (!isAiEntrepreneur || !program.levels[0]) return [];
+    const level = program.levels[0];
+    const formatMap = LEARNING_MODE_FORMAT ?? {};
+    const timeMap = LEARNING_MODE_TIME ?? {};
+    const format: Slot['format'] = formatMap[aiEntrepreneurMode] ?? 'Online';
+    const priceByProgramAndFormat = level.priceByProgramAndFormat;
+    const price =
+      (priceByProgramAndFormat?.default?.[format] ?? level.slots[0]?.price) ?? 0;
+    return level.slots.map((s) => ({
+      ...s,
+      id: `${s.id}-${aiEntrepreneurMode}`,
+      label: `${s.label} — ${modeLabels[aiEntrepreneurMode]}`,
+      format,
+      time: timeMap[aiEntrepreneurMode] ?? '1:00 PM - 4:00 PM',
+      price,
+    }));
+  }, [isAiEntrepreneur, program, aiEntrepreneurMode, modeLabels]);
 
   const olympiadTierConfig = useMemo(
-    () => (MATH_OLYMPIAD_TIER_CONFIGS ?? []).find((c) => c.id === olympiadTier),
-    [olympiadTier]
+    () => (olympiadTierConfigs ?? []).find((c) => c.id === olympiadTier),
+    [olympiadTierConfigs, olympiadTier]
   );
 
   const olympiadSlots: Slot[] = useMemo(() => {
     if (!isMathOlympiad || !olympiadTierConfig) return [];
     const formatMap = LEARNING_MODE_FORMAT ?? {};
     const timeMap = LEARNING_MODE_TIME ?? {};
+    const format = (formatMap[olympiadMode] ?? 'In-Person') as Slot['format'];
+    const price = olympiadTierConfig.priceByFormat[format];
     return Array.from({ length: olympiadTierConfig.slotCount }).map((_, i) => {
       const baseLabel =
         olympiadTierConfig.weeksPerSlot === 1
-          ? t('slotLabel.singleWeek', { week: i + 1, hours: olympiadTierConfig.hoursPerSlot })
+          ? t('slotLabel.singleWeek', { week: i + 1 })
           : t('slotLabel.weekRange', {
               start: i * 2 + 1,
               end: i * 2 + 2,
-              hours: olympiadTierConfig.hoursPerSlot,
             });
       return {
         id: `${olympiadTierConfig.slotId(i)}-${olympiadMode}`,
         label: `${baseLabel} — ${tierLabels[olympiadTierConfig.id].name}, ${modeLabels[olympiadMode]}`,
         time: timeMap[olympiadMode] ?? '9:00 AM - 12:00 PM',
-        format: (formatMap[olympiadMode] ?? 'In-Person') as Slot['format'],
-        price: olympiadTierConfig.price,
+        format,
+        price,
       };
     });
   }, [isMathOlympiad, olympiadTierConfig, olympiadMode, t, tierLabels, modeLabels]);
@@ -560,6 +596,54 @@ export function SlotsPanel({ program }: { program: Program }) {
           </>
         )}
 
+        {isAiEntrepreneur && program.levels[0] && (
+          <>
+            <div className="space-y-2">
+              <Label htmlFor="ai-entrepreneur-mode" className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
+                {t('slots.learningMode')}
+              </Label>
+              <Select
+                value={aiEntrepreneurMode}
+                onValueChange={(v) => setAiEntrepreneurMode(v as LearningModeKey)}
+              >
+                <SelectTrigger id="ai-entrepreneur-mode" className="rounded-lg text-sm">
+                  <SelectValue placeholder={t('slots.selectMode')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {(LEARNING_MODE_KEYS ?? []).map((key) => (
+                    <SelectItem key={key} value={key}>
+                      {modeLabels[key]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-4">
+              <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">
+                <h4 className="font-bold text-sm text-slate-900 uppercase tracking-tight">
+                  {program.levels[0].name} • {modeLabels[aiEntrepreneurMode]}
+                </h4>
+              </div>
+              <div className="grid gap-2">
+                {aiEntrepreneurSlots.map((slot) => (
+                  <SlotRow
+                    key={slot.id}
+                    slot={slot}
+                    level={{
+                      ...program.levels[0],
+                      name: `${program.levels[0].name} • ${modeLabels[aiEntrepreneurMode]}`,
+                    }}
+                    program={program}
+                    cartItemIds={summerCampItemIds}
+                    onAdd={handleAdd}
+                    onRemove={handleRemove}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+
         {isMathOlympiad && olympiadTierConfig && (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -595,7 +679,7 @@ export function SlotsPanel({ program }: { program: Program }) {
                     <SelectValue placeholder={t('slots.selectTier')} />
                   </SelectTrigger>
                   <SelectContent>
-                    {(MATH_OLYMPIAD_TIER_CONFIGS ?? []).map((cfg) => (
+                    {(olympiadTierConfigs ?? []).map((cfg) => (
                       <SelectItem key={cfg.id} value={cfg.id}>
                         {tierLabels[cfg.id].name}
                       </SelectItem>
@@ -635,7 +719,7 @@ export function SlotsPanel({ program }: { program: Program }) {
           </>
         )}
 
-        {!isAdvMath && !isMathOlympiad &&
+        {!isAdvMath && !isMathOlympiad && !isAiEntrepreneur &&
           program.levels.map((level) => (
             <div key={level.id} className="space-y-4">
               <div className="flex flex-col gap-0.5 border-l-2 border-[#1F396D] pl-3">

@@ -9,20 +9,25 @@ export type Slot = {
   price: number;
 };
 
+/** Price by delivery format; used when the same program/level is offered online and in-person at different prices. */
+export type PriceByFormat = Record<'Online' | 'In-Person', number>;
+
 export type Level = {
   id: string;
   name: string;
   description: string;
   slots: Slot[];
+  /**
+   * Price by program key and format. Use "default" for single-variant programs;
+   * use "algebra" / "precalculus" for Adv Math. Resolves slot price in the UI.
+   */
+  priceByProgramAndFormat?: Record<string, PriceByFormat>;
 };
 
 export type ProgramDetails = {
-  /** e.g. "Monday – Friday" */
   schedule: string;
   daysPerWeek: number;
-  /** e.g. "3 hours / day" */
   dailyHours: string;
-  /** Bullet-point list of what is included */
   includes: string[];
 };
 
@@ -74,290 +79,185 @@ export const LEARNING_MODE_TIME: Record<LearningModeKey, string> = {
 
 export type OlympiadTierConfig = {
   readonly id: OlympiadTierId;
-  /** Total number of bookable slots offered under this tier. */
   readonly slotCount: number;
-  /** Calendar weeks covered per slot (1 for Tier 1, 2 for Tier 2). */
   readonly weeksPerSlot: number;
-  /** Training hours included per slot. */
   readonly hoursPerSlot: number;
-  /** Generates a stable, unique slot ID for the given slot index. */
   readonly slotId: (index: number) => string;
-  readonly price: number;
+  /** Price by delivery format (online vs in-person). */
+  readonly priceByFormat: PriceByFormat;
 };
 
-/** Ordered, exhaustive list of Olympiad tier configurations. */
-export const MATH_OLYMPIAD_TIER_CONFIGS: OlympiadTierConfig[] = [
-  {
-    id: 'tier1',
-    slotCount: 8,
-    weeksPerSlot: 1,
-    hoursPerSlot: 15,
-    slotId: (i: number) => `math-olympiad-tier1-w${i + 1}`,
-    price: 449,
-  },
-  {
-    id: 'tier2',
-    slotCount: 4,
-    weeksPerSlot: 2,
-    hoursPerSlot: 30,
-    slotId: (i: number) => `math-olympiad-tier2-w${i * 2 + 1}-${i * 2 + 2}`,
-    price: 449,
-  },
-];
+// ---------------------------------------------------------------------------
+// JSON schema types (data only; icons and slotId functions added at load).
+// Data source: public/api/mock/{locale}/summer-camp-programs.json
+// ---------------------------------------------------------------------------
 
-const generateWeeklySlots = (
-  programId: string,
-  basePrice: number,
-  format: 'Online' | 'In-Person',
-  hours: string
-): Slot[] => {
-  return Array.from({ length: 8 }).map((_, i) => ({
-    id: `${programId}-w${i + 1}`,
-    label: `Week ${i + 1} (${hours})`,
-    time: format === 'Online' ? '1:00 PM - 4:00 PM' : '9:00 AM - 12:00 PM',
-    format,
-    price: basePrice,
+export type SlotTemplate = {
+  slotIdPrefix: string;
+  count: number;
+  /** Default format used when generating slots (time + initial price). */
+  defaultFormat: 'Online' | 'In-Person';
+  /**
+   * Price by program key and format. Use "default" for single-variant programs;
+   * use "algebra" / "precalculus" for Adv Math. Same shape for every program.
+   */
+  priceByProgramAndFormat: Record<string, PriceByFormat>;
+  time?: string;
+};
+
+type LevelJson = {
+  id: string;
+  name: string;
+  description: string;
+  slots?: Slot[];
+  slotTemplate?: SlotTemplate;
+};
+
+/** Tier structure for Math Olympiad; price comes from level.priceByProgramAndFormat[tierId]. */
+type ProgramTierJson = {
+  id: OlympiadTierId;
+  slotCount: number;
+  weeksPerSlot: number;
+  hoursPerSlot: number;
+};
+
+type ProgramJson = {
+  id: string;
+  title: string;
+  description: string;
+  iconId: string;
+  category: 'Half-Day Camps' | 'Full Day Camps';
+  hoursPerWeek: string;
+  ageGroup: string;
+  startingPrice: number;
+  image: string;
+  details: ProgramDetails;
+  /** Tier definitions for Math Olympiad (tier1, tier2). Pricing in level.priceByProgramAndFormat. */
+  tiers?: ProgramTierJson[];
+  levels: LevelJson[];
+};
+
+export type SummerCampDataJson = {
+  programs: ProgramJson[];
+};
+
+const ICON_BY_ID: Record<string, LucideIcon> = {
+  Calculator,
+  Brain,
+  Gamepad2,
+  Bot,
+  Code2,
+  Lightbulb,
+  PenTool,
+};
+
+const DEFAULT_TIME_BY_FORMAT: Record<'Online' | 'In-Person', string> = {
+  'In-Person': '9:00 AM - 12:00 PM',
+  Online: '1:00 PM - 4:00 PM',
+};
+
+function expandSlotTemplate(template: SlotTemplate): Slot[] {
+  const time = template.time ?? DEFAULT_TIME_BY_FORMAT[template.defaultFormat];
+  const firstProgramPrices = Object.values(template.priceByProgramAndFormat)[0];
+  const price = firstProgramPrices?.[template.defaultFormat] ?? 0;
+  return Array.from({ length: template.count }).map((_, i) => ({
+    id: `${template.slotIdPrefix}-w${i + 1}`,
+    label: `Week ${i + 1}`,
+    time,
+    format: template.defaultFormat,
+    price,
   }));
-};
+}
 
-export const SUMMER_CAMP_PROGRAMS: Program[] = [
-  // Half-Day
-  {
-    id: 'adv-math',
-    title: 'Advanced Math (Alg + Precal)',
-    description: 'Accelerated track covering Algebra and Pre-Calculus fundamentals.',
-    icon: Calculator,
-    category: 'Half-Day Camps',
-    hoursPerWeek: '9 hours a week',
-    ageGroup: 'Grades 7-10',
-    startingPrice: 299,
-    image: '/images/camps/banners/advanced-math-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: '3 hours / day',
-      includes: [
-        'Algebra or Pre-Calculus curriculum (your choice)',
-        'Expert instructor-led sessions',
-        'Daily practice problem sets',
-        'Weekly progress report for parents',
-        'Certificate of completion',
-      ],
-    },
-    levels: [
-      {
-        id: 'math-weekly',
-        name: 'Weekly Intensive',
-        description: 'Master one major topic per week with expert guidance.',
-        slots: generateWeeklySlots('adv-math', 299, 'In-Person', '9 hrs/wk'),
-      },
-    ],
-  },
-  {
-    id: 'math-olympiad',
-    title: 'Math Olympiad (AMC8/MOEMS)',
-    description: 'Competitive math strategies focusing on AMC8 and MOEMS.',
-    icon: Brain,
-    category: 'Half-Day Camps',
-    hoursPerWeek: '15 hours a week',
-    ageGroup: 'Grades 4-8',
-    startingPrice: 449,
-    image: '/images/camps/banners/olympiad-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: 'Tier 1: 3 hrs / day · Tier 2: 6 hrs / day',
-      includes: [
-        'AMC8 & MOEMS-aligned curriculum',
-        'Timed mock competition tests',
-        'Competition strategy & problem-solving techniques',
-        'Detailed score analysis after each test',
-        'Take-home practice workbook',
-      ],
-    },
-    levels: [
-      {
-        id: 'mo-weekly',
-        name: 'Competition Track',
-        description: 'High-intensity problem solving and rally races.',
-        slots: generateWeeklySlots('math-olympiad', 449, 'In-Person', '15 hrs/wk'),
-      },
-    ],
-  },
-  {
-    id: 'ai-entrepreneur',
-    title: 'AI Entrepreneur Studio',
-    description: 'Learn to build businesses leveraging AI automation tools.',
-    icon: Lightbulb,
-    category: 'Half-Day Camps',
-    hoursPerWeek: '30 hours a week',
-    ageGroup: 'Grades 8-12',
-    startingPrice: 349,
-    image: '/images/camps/banners/ai-entrepreneur-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: '6 hours / day',
-      includes: [
-        'Hands-on AI tools: ChatGPT, Midjourney, automation platforms',
-        'Business model canvas & pitch deck creation',
-        'Prompt engineering fundamentals',
-        'Live demo day — present your startup idea',
-        'Mentor feedback sessions',
-      ],
-    },
-    levels: [
-      {
-        id: 'ai-weekly',
-        name: 'Startup Lab',
-        description: 'Prompt engineering meets business development.',
-        slots: generateWeeklySlots('ai-entrepreneur', 349, 'Online', '30 hrs/wk'),
-      },
-    ],
-  },
-  {
-    id: 'scratch-online',
-    title: 'Scratch (Online)',
-    description: 'Introductory visual programming for young creators.',
-    icon: Code2,
-    category: 'Half-Day Camps',
-    hoursPerWeek: '9 hours a week',
-    ageGroup: 'Ages 7-10',
-    startingPrice: 249,
-    image: '/images/camps/banners/scratch-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: '1.5 hours / day',
-      includes: [
-        'Scratch visual programming environment',
-        'Animated story & interactive game projects',
-        'Introduction to loops, conditionals & variables',
-        'Shareable project portfolio at end of week',
-        'Live online sessions with screen-share support',
-      ],
-    },
-    levels: [
-      {
-        id: 'scratch-weekly',
-        name: 'Visual Coding',
-        description: 'Fundamental logic through drag-and-drop games.',
-        slots: generateWeeklySlots('scratch-online', 249, 'Online', '9 hrs/wk'),
-      },
-    ],
-  },
+function hydrateLevel(level: LevelJson): Level {
+  const slots =
+    level.slots ?? (level.slotTemplate ? expandSlotTemplate(level.slotTemplate) : []);
+  const priceByProgramAndFormat = level.slotTemplate?.priceByProgramAndFormat;
+  return {
+    id: level.id,
+    name: level.name,
+    description: level.description,
+    slots,
+    ...(priceByProgramAndFormat && { priceByProgramAndFormat }),
+  };
+}
 
-  // Full Day
-  {
-    id: 'robotics-camp',
-    title: 'Robotics Camp',
-    description: 'Full-day engineering immersive with advanced sensor arrays.',
-    icon: Bot,
-    category: 'Full Day Camps',
-    hoursPerWeek: '30 hours per week',
-    ageGroup: 'Ages 9-14',
-    startingPrice: 539,
-    image: '/images/camps/banners/robotics-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: '6 hours / day',
-      includes: [
-        'Build & program a working robot from scratch',
-        'Sensor arrays: ultrasonic, IR & colour sensors',
-        'Mechanical design + logic programming',
-        'Daily team engineering challenges',
-        'Final robot showcase on Friday',
-      ],
-    },
-    levels: [
-      {
-        id: 'bot-weekly',
-        name: 'Engineering Lab',
-        description: 'Full day on-site mechanical design and logic programming.',
-        slots: Array.from({ length: 8 }).map((_, i) => ({
-          id: `robotics-camp-f-w${i + 1}`,
-          label: `Week ${i + 1} (30 hrs/wk)`,
-          time: '9:00 AM - 4:00 PM',
-          format: 'In-Person' as const,
-          price: 539,
-        })),
-      },
-    ],
-  },
-  {
-    id: 'young-authors',
-    title: 'Young Authors Camp',
-    description: 'Immersive full-day writing studio for aspiring novelists.',
-    icon: PenTool,
-    category: 'Full Day Camps',
-    hoursPerWeek: '30 hours per week',
-    ageGroup: 'Grades 3-7',
-    startingPrice: 499,
-    image: '/images/camps/banners/young-authors-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: '6 hours / day',
-      includes: [
-        'Story structure, plot & character development',
-        'Daily creative writing workshops',
-        'Peer review & revision sessions',
-        'Illustration basics for your story',
-        'Professionally printed copy of your finished book',
-      ],
-    },
-    levels: [
-      {
-        id: 'author-weekly',
-        name: 'Writing Studio',
-        description: 'Comprehensive daily workshop to publish your own story.',
-        slots: Array.from({ length: 8 }).map((_, i) => ({
-          id: `authors-f-w${i + 1}`,
-          label: `Week ${i + 1} (30 hrs/wk)`,
-          time: '9:00 AM - 4:00 PM',
-          format: 'In-Person' as const,
-          price: 499,
-        })),
-      },
-    ],
-  },
-  // Roblox (In-Person) — Half-Day
-  {
-    id: 'roblox-in-person',
-    title: 'Roblox (In-Person)',
-    description: 'Master Lua scripting in a collaborative on-site environment.',
-    icon: Gamepad2,
-    category: 'Half-Day Camps',
-    hoursPerWeek: '15 hours per week',
-    ageGroup: 'Ages 8-12',
-    startingPrice: 399,
-    image: '/images/camps/banners/roblox-banner.webp',
-    details: {
-      schedule: 'Monday – Friday',
-      daysPerWeek: 5,
-      dailyHours: '3 hours / day',
-      includes: [
-        'Lua scripting fundamentals in Roblox Studio',
-        'Game mechanics design & world-building',
-        'Multiplayer scripting & game testing',
-        'Collaborative team game project',
-        'Published game on Roblox platform by end of week',
-      ],
-    },
-    levels: [
-      {
-        id: 'rob-ip-weekly',
-        name: 'Dev Studio',
-        description: 'Deep dive into game mechanics and multiplayer scripting.',
-        slots: Array.from({ length: 8 }).map((_, i) => ({
-          id: `roblox-h-w${i + 1}`,
-          label: `Week ${i + 1} (15 hrs/wk)`,
-          time: '9:00 AM - 12:00 PM',
-          format: 'In-Person' as const,
-          price: 399,
-        })),
-      },
-    ],
-  },
-];
+function hydrateProgram(program: ProgramJson): Program {
+  const icon = ICON_BY_ID[program.iconId];
+  if (!icon) {
+    throw new Error(`Unknown iconId: ${program.iconId}`);
+  }
+  return {
+    id: program.id,
+    title: program.title,
+    description: program.description,
+    icon,
+    category: program.category,
+    hoursPerWeek: program.hoursPerWeek,
+    ageGroup: program.ageGroup,
+    startingPrice: program.startingPrice,
+    image: program.image,
+    details: program.details,
+    levels: program.levels.map(hydrateLevel),
+  };
+}
+
+function buildOlympiadTierConfig(
+  tier: ProgramTierJson,
+  priceByFormat: PriceByFormat
+): OlympiadTierConfig {
+  const slotId =
+    tier.weeksPerSlot === 1
+      ? (i: number) => `math-olympiad-${tier.id}-w${i + 1}`
+      : (i: number) =>
+          `math-olympiad-${tier.id}-w${i * 2 + 1}-${i * 2 + 2}`;
+  return {
+    id: tier.id,
+    slotCount: tier.slotCount,
+    weeksPerSlot: tier.weeksPerSlot,
+    hoursPerSlot: tier.hoursPerSlot,
+    slotId,
+    priceByFormat,
+  };
+}
+
+/** Hydrates raw JSON from public/api/mock/{locale}/summer-camp-programs.json into Program[] and OlympiadTierConfig[]. */
+export function hydrateSummerCampData(raw: SummerCampDataJson): {
+  programs: Program[];
+  olympiadTierConfigs: OlympiadTierConfig[];
+} {
+  const programs = raw.programs.map(hydrateProgram);
+  const mathOlympiad = raw.programs.find((p) => p.id === 'math-olympiad');
+  const level0 = mathOlympiad?.levels[0];
+  const priceByProgramAndFormat = level0?.slotTemplate?.priceByProgramAndFormat;
+  const olympiadTierConfigs: OlympiadTierConfig[] =
+    mathOlympiad?.tiers && priceByProgramAndFormat
+      ? mathOlympiad.tiers.map((tier) =>
+          buildOlympiadTierConfig(
+            tier,
+            priceByProgramAndFormat[tier.id] ?? {
+              'In-Person': 0,
+              Online: 0,
+            }
+          )
+        )
+      : [];
+  return { programs, olympiadTierConfigs };
+}
+
+/** Fetches summer camp data from the mock API (same pattern as FAQ, academic, math, steam). Fallback to en if locale file missing. */
+export async function fetchSummerCampData(locale: string): Promise<{
+  programs: Program[];
+  olympiadTierConfigs: OlympiadTierConfig[];
+}> {
+  const res = await fetch(`/api/mock/${locale}/summer-camp-programs.json`);
+  if (!res.ok && locale !== 'en') {
+    const fallback = await fetch('/api/mock/en/summer-camp-programs.json');
+    if (!fallback.ok) throw new Error('Summer camp programs not found');
+    const data: SummerCampDataJson = await fallback.json();
+    return hydrateSummerCampData(data);
+  }
+  if (!res.ok) throw new Error('Summer camp programs not found');
+  const data: SummerCampDataJson = await res.json();
+  return hydrateSummerCampData(data);
+}
