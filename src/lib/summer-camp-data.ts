@@ -28,6 +28,8 @@ export type ProgramDetails = {
   schedule: string;
   daysPerWeek: number;
   dailyHours: string;
+  /** When set, used as the label instead of "Daily hours" (e.g. "Session hours"). */
+  hoursLabel?: string;
   includes: string[];
 };
 
@@ -39,6 +41,8 @@ export type Program = {
   category: 'Half-Day Camps' | 'Full Day Camps';
   hoursPerWeek: string;
   ageGroup: string;
+  /** When set (e.g. "Grade"), used as the label instead of "Age Group" in the details modal. */
+  ageGroupLabel?: string;
   startingPrice: number;
   image: string;
   levels: Level[];
@@ -129,6 +133,7 @@ type ProgramJson = {
   category: 'Half-Day Camps' | 'Full Day Camps';
   hoursPerWeek: string;
   ageGroup: string;
+  ageGroupLabel?: string;
   startingPrice: number;
   image: string;
   details: ProgramDetails;
@@ -195,6 +200,7 @@ function hydrateProgram(program: ProgramJson): Program {
     category: program.category,
     hoursPerWeek: program.hoursPerWeek,
     ageGroup: program.ageGroup,
+    ...(program.ageGroupLabel && { ageGroupLabel: program.ageGroupLabel }),
     startingPrice: program.startingPrice,
     image: program.image,
     details: program.details,

@@ -7,19 +7,20 @@
       "iconId": "Calculator",
       "category": "Half-Day Camps",
       "hoursPerWeek": "9 hours a week",
-      "ageGroup": "Grades 7-10",
+      "ageGroup": "HighSchool",
       "startingPrice": 259,
       "image": "/images/camps/banners/advanced-math-banner.webp",
       "details": {
-        "schedule": "Monday – Friday",
-        "daysPerWeek": 5,
+        "schedule": "Algebra II (Mon/Wed/Fri)\nPrecal (Tue/Wed/Thu)",
+        "daysPerWeek": 3,
         "dailyHours": "3 hours / day",
+        "hoursLabel": "Session hours",
         "includes": [
-          "Algebra or Pre-Calculus curriculum (your choice)",
-          "Expert instructor-led sessions",
-          "Daily practice problem sets",
-          "Weekly progress report for parents",
-          "Certificate of completion"
+          "Choice of track: Algebra II, Advanced Algebra II, or Precalculus",
+          "Expert-led instruction with concept clarity and step-by-step guidance",
+          "Challenging practice problem sets designed to build depth and confidence",
+          "Pre-assessment on Day 1 to benchmark readiness and personalize instruction",
+          "Post-assessment at course completion to measure growth and mastery"
         ]
       },
       "levels": [
@@ -50,15 +51,18 @@
       "startingPrice": 399,
       "image": "/images/camps/banners/olympiad-banner.webp",
       "details": {
-        "schedule": "Monday – Friday",
+        "schedule": "Tier 1: Weekly, Monday to Friday\nTier 2: 2-week program, Monday to Friday",
         "daysPerWeek": 5,
-        "dailyHours": "Tier 1: 3 hrs / day · Tier 2: 6 hrs / day",
+        "dailyHours": "3 hours daily",
+        "hoursLabel": "Session hours",
         "includes": [
           "AMC8 & MOEMS-aligned curriculum",
           "Timed mock competition tests",
           "Competition strategy & problem-solving techniques",
           "Detailed score analysis after each test",
-          "Take-home practice workbook"
+          "Take-home practice workbook",
+          "Pre-assessment on Day 1 to benchmark readiness and personalize instruction",
+          "Post-assessment at course completion to measure growth and mastery"
         ]
       },
       "tiers": [
@@ -85,7 +89,7 @@
     {
       "id": "ai-entrepreneur",
       "title": "AI Entrepreneur Studio",
-      "description": "Learn to build businesses leveraging AI automation tools.",
+      "description": "Learn to build businesses leveraging AI automation tools, founder-led sessions.",
       "iconId": "Lightbulb",
       "category": "Half-Day Camps",
       "hoursPerWeek": "30 hours a week",
@@ -95,10 +99,11 @@
       "details": {
         "schedule": "Monday – Friday",
         "daysPerWeek": 5,
-        "dailyHours": "6 hours / day",
+        "dailyHours": "3 hours per day",
+        "hoursLabel": "Session hours",
         "includes": [
-          "Hands-on AI tools: ChatGPT, Midjourney, automation platforms",
-          "Business model canvas & pitch deck creation",
+          "Led by instructor",
+          "Hands-on AI tools",
           "Prompt engineering fundamentals",
           "Live demo day — present your startup idea",
           "Mentor feedback sessions"
@@ -127,19 +132,21 @@
       "iconId": "Code2",
       "category": "Half-Day Camps",
       "hoursPerWeek": "9 hours a week",
-      "ageGroup": "Ages 7-10",
+      "ageGroup": "3-6",
+      "ageGroupLabel": "Grade group",
       "startingPrice": 329,
       "image": "/images/camps/banners/scratch-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
         "daysPerWeek": 5,
-        "dailyHours": "1.5 hours / day",
+        "dailyHours": "3 hours per day",
+        "hoursLabel": "Session hours",
         "includes": [
           "Scratch visual programming environment",
           "Animated story & interactive game projects",
           "Introduction to loops, conditionals & variables",
           "Shareable project portfolio at end of week",
-          "Live online sessions with screen-share support"
+          "Live demo sessions"
         ]
       },
       "levels": [
@@ -165,7 +172,8 @@
       "iconId": "Bot",
       "category": "Full Day Camps",
       "hoursPerWeek": "30 hours per week",
-      "ageGroup": "Ages 9-14",
+      "ageGroup": "3-6",
+      "ageGroupLabel": "Grade group",
       "startingPrice": 639,
       "image": "/images/camps/banners/robotics-banner.webp",
       "details": {
@@ -204,8 +212,9 @@
       "iconId": "PenTool",
       "category": "Full Day Camps",
       "hoursPerWeek": "30 hours per week",
-      "ageGroup": "Grades 3-7",
-      "startingPrice": 999,
+      "ageGroup": "3-6",
+      "ageGroupLabel": "Grade group",
+      "startingPrice": 599,
       "image": "/images/camps/banners/young-authors-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
@@ -229,7 +238,7 @@
             "count": 8,
             "defaultFormat": "In-Person",
             "priceByProgramAndFormat": {
-              "default": { "In-Person": 999, "Online": 999 }
+              "default": { "In-Person": 599, "Online": 599 }
             },
             "time": "9:00 AM - 4:00 PM"
           }
@@ -243,13 +252,15 @@
       "iconId": "Gamepad2",
       "category": "Half-Day Camps",
       "hoursPerWeek": "15 hours per week",
-      "ageGroup": "Ages 8-12",
+      "ageGroup": "3-8",
+      "ageGroupLabel": "Grade group",
       "startingPrice": 329,
       "image": "/images/camps/banners/roblox-banner.webp",
       "details": {
         "schedule": "Monday – Friday",
         "daysPerWeek": 5,
-        "dailyHours": "3 hours / day",
+        "dailyHours": "3 hours per day",
+        "hoursLabel": "Session hours",
         "includes": [
           "Lua scripting fundamentals in Roblox Studio",
           "Game mechanics design & world-building",

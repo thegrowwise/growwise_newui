@@ -170,7 +170,7 @@ export default function SummerCampPage() {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
                 </span>
-                <span>15% off for early bird on any course is live now</span>
+                <span>15% off for early bird on any course is live now — Use code: <strong className="font-extrabold">GWSUMMER15</strong></span>
               </div>
             </div>
             <div
@@ -184,7 +184,7 @@ export default function SummerCampPage() {
                 Explore
               </button>
               <a
-                href="/assets/camps/summer-camp-brochure.pdf"
+                href="/assets/camps/final%20brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-10 py-4 rounded-full bg-white/90 backdrop-blur text-[#1F396D] font-extrabold text-base md:text-lg uppercase tracking-wider hover:bg-white transition-all duration-300 border border-white/50 animate-glow-white"

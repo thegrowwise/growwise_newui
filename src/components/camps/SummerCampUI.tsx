@@ -228,14 +228,21 @@ function InfoModal({
                 <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Schedule</p>
-                  <p className="text-xs font-bold text-slate-900">{details.schedule}</p>
+                  <p className="text-xs font-bold text-slate-900">
+                    {details.schedule.split('\n').map((line, i) => (
+                      <span key={i}>
+                        {i > 0 && <br />}
+                        {line}
+                      </span>
+                    ))}
+                  </p>
                 </div>
               </div>
               <div className="w-px h-8 bg-slate-200" aria-hidden="true" />
               <div className="flex items-center gap-2 text-[#1F396D]">
                 <Clock className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Daily hours</p>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{details.hoursLabel ?? 'Daily hours'}</p>
                   <p className="text-xs font-bold text-slate-900">{details.dailyHours}</p>
                 </div>
               </div>
@@ -265,9 +272,9 @@ function InfoModal({
           </div>
         )}
 
-        {/* Age group footer */}
+        {/* Grade group footer */}
         <div className="px-5 py-3 bg-slate-50 border-t border-slate-100">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Age Group: </span>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Grade group: </span>
           <span className="text-[10px] font-black text-slate-900">{program.ageGroup}</span>
         </div>
       </div>
