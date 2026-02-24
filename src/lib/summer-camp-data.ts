@@ -78,7 +78,7 @@ export const LEARNING_MODE_FORMAT: Record<LearningModeKey, Slot['format']> = {
 /** Maps a learning mode key to the default session time string. */
 export const LEARNING_MODE_TIME: Record<LearningModeKey, string> = {
   inPerson: '9:00 AM - 12:00 PM',
-  online: '1:00 PM - 4:00 PM',
+  online: '9:00 AM - 12:00 PM',
 };
 
 export type OlympiadTierConfig = {
@@ -158,7 +158,7 @@ const ICON_BY_ID: Record<string, LucideIcon> = {
 
 const DEFAULT_TIME_BY_FORMAT: Record<'Online' | 'In-Person', string> = {
   'In-Person': '9:00 AM - 12:00 PM',
-  Online: '1:00 PM - 4:00 PM',
+  Online: '9:00 AM - 12:00 PM',
 };
 
 function expandSlotTemplate(template: SlotTemplate): Slot[] {

@@ -468,7 +468,7 @@ export function SlotsPanel({
       id: `${s.id}-${aiEntrepreneurMode}`,
       label: `${s.label} — ${modeLabels[aiEntrepreneurMode]}`,
       format,
-      time: timeMap[aiEntrepreneurMode] ?? '1:00 PM - 4:00 PM',
+      time: timeMap[aiEntrepreneurMode] ?? '9:00 AM - 12:00 PM',
       price,
     }));
   }, [isAiEntrepreneur, program, aiEntrepreneurMode, modeLabels]);
@@ -487,7 +487,7 @@ export function SlotsPanel({
       id: `${s.id}-${scratchMode}`,
       label: `${s.label} — ${modeLabels[scratchMode]}`,
       format,
-      time: timeMap[scratchMode] ?? '1:00 PM - 4:00 PM',
+      time: timeMap[scratchMode] ?? '9:00 AM - 12:00 PM',
       price,
     }));
   }, [isScratch, program, scratchMode, modeLabels]);
