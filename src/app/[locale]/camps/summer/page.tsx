@@ -157,10 +157,25 @@ export default function SummerCampPage() {
             fetchPriority="high"
           />
           <div className="absolute inset-0 bg-black/40" aria-hidden="true" />
-          <div className="absolute inset-0 flex items-end justify-center pb-[12%]">
+          <div className="absolute inset-0 flex flex-col items-center justify-end pb-[12%] gap-8">
+            {/* Early bird notification badge — just above the buttons */}
+            <div
+              className="flex justify-center px-4"
+              role="status"
+              aria-live="polite"
+              style={{ animation: 'fadeInUp 0.6s ease-out 0.1s forwards' }}
+            >
+              <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 backdrop-blur shadow-lg border border-white/80 text-[#1F396D] font-bold text-sm sm:text-base text-center">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span>15% off for early bird on any course is live now</span>
+              </div>
+            </div>
             <div
               className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5"
-              style={{ animation: 'fadeInUp 0.6s ease-out forwards' }}
+              style={{ animation: 'fadeInUp 0.6s ease-out 0.2s forwards' }}
             >
               <button
                 onClick={scrollToSlots}

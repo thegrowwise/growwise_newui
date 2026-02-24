@@ -559,9 +559,6 @@ export function SlotsPanel({
         <p className="text-slate-600 mt-2 text-xs leading-relaxed">
           {program.description}
         </p>
-        <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1F396D]/10 text-[#1F396D] text-[10px] font-bold uppercase tracking-widest">
-          <Clock className="w-3 h-3" aria-hidden="true" /> {program.hoursPerWeek}
-        </div>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
