@@ -7,13 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, CheckCircle, AlertCircle, User, Mail, Phone as PhoneIcon, GraduationCap, MapPin, Target } from 'lucide-react';
+import { Loader2, CheckCircle, AlertCircle, User, Mail, Phone as PhoneIcon, GraduationCap, MapPin, Target, BookOpen, Code } from 'lucide-react';
 import { useFormTracking, usePageTracking } from '@/lib/analytics/hooks';
 import { TrackedForm } from '@/lib/analytics/components';
 
 export default function EnrollPage() {
   const formRef = useRef<HTMLFormElement>(null);
   const [agree, setAgree] = useState(false);
+  const [programType, setProgramType] = useState<'academic' | 'steam' | undefined>(undefined);
   const [bootcamp, setBootcamp] = useState<string | undefined>(undefined);
   const [course, setCourse] = useState<string | undefined>(undefined);
   const [level, setLevel] = useState<string | undefined>(undefined);
@@ -47,8 +48,8 @@ export default function EnrollPage() {
         mobile: formData.get('mobile') as string,
         city: formData.get('city') as string,
         postal: formData.get('postal') as string,
-        bootcamp: bootcamp || 'None',
-        course: course || 'None',
+        bootcamp: programType === 'steam' ? (bootcamp || 'None') : 'None',
+        course: programType === 'academic' ? (course || 'None') : 'None',
         level: level as string,
         agree: agree
       };
@@ -76,6 +77,7 @@ export default function EnrollPage() {
         
         // Reset form by clearing all state and form fields
         setAgree(false);
+        setProgramType(undefined);
         setBootcamp(undefined);
         setCourse(undefined);
         setLevel(undefined);
@@ -177,7 +179,7 @@ export default function EnrollPage() {
             </div>
           </div>
 
-          {/* Section: Preferences */}
+          {/* Section: Program Preferences */}
           <div className="space-y-6 p-8 bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/5 rounded-2xl border-2 border-[#F16112]/10 mb-8">
             <div className="flex items-center gap-3 pb-4 border-b-2 border-[#F16112]/20">
               <div className="p-3 bg-gradient-to-br from-[#F16112] to-[#F1894F] rounded-xl"><GraduationCap className="w-5 h-5 text-white" /></div>
@@ -186,37 +188,85 @@ export default function EnrollPage() {
                 <p className="text-sm text-gray-500">Choose the area and level you are interested in</p>
               </div>
             </div>
+
+            {/* Program type: Academic or STEAM */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2 text-gray-700">Program type <span className="text-red-500">*</span></Label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  type="button"
+                  onClick={() => { setProgramType('academic'); setBootcamp(undefined); }}
+                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
+                    programType === 'academic'
+                      ? 'border-[#1F396D] bg-[#1F396D]/10 ring-2 ring-[#1F396D]/20'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'
+                  }`}
+                >
+                  <div className={`p-2.5 rounded-lg ${programType === 'academic' ? 'bg-[#1F396D] text-white' : 'bg-[#1F396D]/10 text-[#1F396D]'}`}>
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900">Academic</span>
+                    <p className="text-sm text-gray-500">Math, ELA, Writing Lab, SAT/ACT Prep</p>
+                  </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setProgramType('steam'); setCourse(undefined); }}
+                  className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
+                    programType === 'steam'
+                      ? 'border-[#F16112] bg-[#F16112]/10 ring-2 ring-[#F16112]/20'
+                      : 'border-gray-200 hover:border-gray-300 bg-white'
+                  }`}
+                >
+                  <div className={`p-2.5 rounded-lg ${programType === 'steam' ? 'bg-[#F16112] text-white' : 'bg-[#F16112]/10 text-[#F16112]'}`}>
+                    <Code className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <span className="font-semibold text-gray-900">STEAM</span>
+                    <p className="text-sm text-gray-500">Python, ML/AI, Game Development</p>
+                  </div>
+                </button>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="bootcamp" className="flex items-center gap-2"><Target className="w-4 h-4 text-[#F16112]" />Bootcamps</Label>
-                <Select value={bootcamp} onValueChange={setBootcamp}>
-                  <SelectTrigger id="bootcamp">
-                    <SelectValue placeholder="Please Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="python">Python Programming</SelectItem>
-                    <SelectItem value="ml-ai">ML / AI</SelectItem>
-                    <SelectItem value="game-dev">Game Development</SelectItem>
-                  </SelectContent>
-                </Select>
-                <input type="hidden" name="bootcamp" value={bootcamp ?? ''} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="course" className="flex items-center gap-2"><GraduationCap className="w-4 h-4 text-[#1F396D]" />Courses</Label>
-                <Select value={course} onValueChange={setCourse}>
-                  <SelectTrigger id="course">
-                    <SelectValue placeholder="Please Select" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="math">Math Courses</SelectItem>
-                    <SelectItem value="english">ELA / English Courses</SelectItem>
-                    <SelectItem value="writing">Writing Lab</SelectItem>
-                    <SelectItem value="sat-act">SAT / ACT Prep</SelectItem>
-                  </SelectContent>
-                </Select>
-                <input type="hidden" name="course" value={course ?? ''} />
-              </div>
+              {/* Academic: Course dropdown */}
+              {programType === 'academic' && (
+                <div className="space-y-2">
+                  <Label htmlFor="course" className="flex items-center gap-2"><GraduationCap className="w-4 h-4 text-[#1F396D]" />Course <span className="text-red-500">*</span></Label>
+                  <Select value={course} onValueChange={setCourse}>
+                    <SelectTrigger id="course">
+                      <SelectValue placeholder="Please Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="math">Math Courses</SelectItem>
+                      <SelectItem value="english">ELA / English Courses</SelectItem>
+                      <SelectItem value="writing">Writing Lab</SelectItem>
+                      <SelectItem value="sat-act">SAT / ACT Prep</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <input type="hidden" name="course" value={course ?? ''} />
+                </div>
+              )}
+              {/* STEAM: Bootcamp dropdown */}
+              {programType === 'steam' && (
+                <div className="space-y-2">
+                  <Label htmlFor="bootcamp" className="flex items-center gap-2"><Target className="w-4 h-4 text-[#F16112]" />Program <span className="text-red-500">*</span></Label>
+                  <Select value={bootcamp} onValueChange={setBootcamp}>
+                    <SelectTrigger id="bootcamp">
+                      <SelectValue placeholder="Please Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="python">Python Programming</SelectItem>
+                      <SelectItem value="ml-ai">ML / AI</SelectItem>
+                      <SelectItem value="game-dev">Game Development</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <input type="hidden" name="bootcamp" value={bootcamp ?? ''} />
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="level" className="flex items-center gap-2"><GraduationCap className="w-4 h-4 text-[#F16112]" />Level <span className="text-red-500">*</span></Label>
                 <Select value={level} onValueChange={setLevel}>
@@ -261,7 +311,14 @@ export default function EnrollPage() {
           <div className="mt-8 flex justify-center">
             <Button 
               type="submit" 
-              disabled={!agree || isSubmitting} 
+              disabled={
+                !agree ||
+                isSubmitting ||
+                !level ||
+                !programType ||
+                (programType === 'academic' && !course) ||
+                (programType === 'steam' && !bootcamp)
+              } 
               className="w-full md:w-auto bg-gradient-to-r from-[#1F396D] via-[#29335C] to-[#1F396D] text-white rounded-2xl px-8 py-6 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (

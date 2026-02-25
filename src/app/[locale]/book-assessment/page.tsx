@@ -52,6 +52,7 @@ export default function BookAssessmentPage() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
+  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     parentName: '',
     email: '',
@@ -80,9 +81,6 @@ export default function BookAssessmentPage() {
   // Move availableSubjects outside component or use useMemo to prevent recreation
   const availableSubjects = useMemo(() => [
     { value: 'Math', icon: '📐' },
-    { value: 'English', icon: '📚' },
-    { value: 'Reading Comprehension', icon: '📖' },
-    { value: 'Writing', icon: '✍️' },
     { value: 'Science', icon: '🔬' },
     { value: 'SAT/ACT', icon: '🎯' }
   ], []);
@@ -223,11 +221,16 @@ export default function BookAssessmentPage() {
       errors.schedule = 'Please select a preferred schedule';
     }
     
+    // Validate communication consent
+    if (!agreeToCommunications) {
+      errors.agreeToCommunications = 'Please agree to receive communications to continue';
+    }
+    
     setFormErrors(errors);
     setPhoneError(errors.phone || null);
     
     return { isValid: Object.keys(errors).length === 0, errors };
-  }, [formData]);
+  }, [formData, agreeToCommunications]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -253,7 +256,8 @@ export default function BookAssessmentPage() {
             grade: 'grade',
             assessmentType: 'assessmentType',
             mode: 'mode',
-            schedule: 'schedule'
+            schedule: 'schedule',
+            agreeToCommunications: 'agreeToCommunications'
           };
           const inputId = fieldIdMap[firstErrorId] || firstErrorId;
           const errorInput = document.getElementById(inputId);
@@ -288,7 +292,8 @@ export default function BookAssessmentPage() {
         assessmentType: formData.assessmentType,
         mode: formData.mode,
         schedule: formData.schedule,
-        notes: formData.notes
+        notes: formData.notes,
+        agreeToCommunications
       };
 
       const response = await fetch('/api/assessment', {
@@ -325,6 +330,7 @@ export default function BookAssessmentPage() {
             schedule: '',
             notes: ''
           });
+          setAgreeToCommunications(false);
           setIsSubmitted(false);
         }, 5000);
       } else {
@@ -648,6 +654,53 @@ export default function BookAssessmentPage() {
                       </div>
                     </div>
 
+                    {/* Privacy & Data Protection */}
+                    <div className="space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200">
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <div className="p-2.5 sm:p-3 bg-[#1F396D] rounded-xl flex-shrink-0">
+                          <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="text-gray-900 font-semibold text-lg sm:text-xl mb-1">Privacy & Data Protection</h3>
+                          <p className="text-gray-700 text-sm sm:text-base leading-relaxed">We only use your personal information to provide the requested services. From time to time, we may contact you about programs and content that may be of interest.</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Communication Consent */}
+                    <div className="space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200">
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <Checkbox
+                          id="agreeToCommunications"
+                          checked={agreeToCommunications}
+                          onCheckedChange={(checked) => {
+                            setAgreeToCommunications(checked === true);
+                            if (checked === true && formErrors.agreeToCommunications) {
+                              setFormErrors((prev) => {
+                                const next = { ...prev };
+                                delete next.agreeToCommunications;
+                                return next;
+                              });
+                            }
+                          }}
+                          className={cn(
+                            "mt-0.5 border-2 border-gray-400 data-[state=checked]:bg-[#1F396D] data-[state=checked]:border-[#1F396D] w-5 h-5 flex-shrink-0",
+                            formErrors.agreeToCommunications && "border-red-500"
+                          )}
+                          suppressHydrationWarning
+                        />
+                        <Label htmlFor="agreeToCommunications" className="cursor-pointer text-gray-700 text-sm sm:text-base leading-relaxed flex-1">
+                          I agree to receive communications from GrowWise about academic programs, updates, and educational content.
+                        </Label>
+                      </div>
+                      {formErrors.agreeToCommunications && (
+                        <p className="text-sm text-red-600 flex items-center gap-1 pl-8 sm:pl-12">
+                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                          {formErrors.agreeToCommunications}
+                        </p>
+                      )}
+                    </div>
+
                     {/* Form Validation Errors Summary */}
                     {Object.keys(formErrors).length > 0 && (
                       <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl md:rounded-2xl">
@@ -706,6 +759,12 @@ export default function BookAssessmentPage() {
                                   <span><strong>Schedule:</strong> {formErrors.schedule}</span>
                                 </li>
                               )}
+                              {formErrors.agreeToCommunications && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Consent:</strong> {formErrors.agreeToCommunications}</span>
+                                </li>
+                              )}
                             </ul>
                           </div>
                         </div>
@@ -723,7 +782,7 @@ export default function BookAssessmentPage() {
                     )}
 
                     <div className="pt-2 md:pt-4">
-                      <Button type="submit" disabled={isSubmitting || Object.keys(formErrors).length > 0} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
+                      <Button type="submit" disabled={isSubmitting || !agreeToCommunications || Object.keys(formErrors).length > 0} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
