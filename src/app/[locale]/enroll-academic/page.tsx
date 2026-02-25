@@ -141,7 +141,7 @@ export default function EnrollAcademicPage() {
               Join thousands of successful students. Register today for our comprehensive academic programs and unlock your child's full potential.
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto text-center justify-items-center">
             {[
               { number: "5000+", label: "Students Enrolled" },
               { number: "98%", label: "Success Rate" },
