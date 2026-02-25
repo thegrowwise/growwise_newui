@@ -217,8 +217,10 @@ export default function SearchBar() {
         size="sm"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+        aria-label="Search website"
+        aria-expanded={isOpen}
       >
-        <Search className="w-4 h-4" />
+        <Search className="w-4 h-4" aria-hidden />
         <span className="hidden sm:inline">Search</span>
       </Button>
 
@@ -232,7 +234,7 @@ export default function SearchBar() {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 ref={inputRef}
-                type="text"
+                type="search"
                 value={query}
                 onChange={(e) => handleInputChange(e.target.value)}
                 onKeyDown={(e) => {
@@ -243,6 +245,7 @@ export default function SearchBar() {
                 placeholder="Search courses, programs, or anything..."
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
                 autoFocus
+                aria-label="Search courses and programs"
               />
               {isSearching && (
                 <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" />

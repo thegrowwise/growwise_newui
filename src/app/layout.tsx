@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
@@ -31,73 +30,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("GA ID:", process.env.NEXT_PUBLIC_GA_ID);
   return (
     <html suppressHydrationWarning lang="en">
       <head>
-        {/* Favicon - Next.js will automatically use favicon.ico and icon.png from app directory */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
-        {/* Preconnect to external domains for faster loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://api.growwiseschool.org" />
       </head>
       <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
-        <Script
-          id="remove-extension-attributes"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const removeExtensionAttributes = () => {
-                  const extensionAttributes = [
-                    'bis_skin_checked',
-                    'data-new-gr-c-s-check-loaded',
-                    'data-gr-ext-installed',
-                    'cz-shortcut-listen',
-                  ];
-                  
-                  extensionAttributes.forEach(attr => {
-                    const elements = document.querySelectorAll('[' + attr + ']');
-                    elements.forEach(el => {
-                      el.removeAttribute(attr);
-                    });
-                  });
-                };
-                
-                removeExtensionAttributes();
-                
-                if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', () => {
-                    removeExtensionAttributes();
-                  });
-                } else {
-                  removeExtensionAttributes();
-                }
-                
-                const observer = new MutationObserver(() => {
-                  removeExtensionAttributes();
-                });
-                
-                observer.observe(document.documentElement, {
-                  attributes: true,
-                  childList: true,
-                  subtree: true,
-                  attributeFilter: ['bis_skin_checked', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed', 'cz-shortcut-listen'],
-                });
-                
-                setTimeout(() => {
-                  observer.disconnect();
-                }, 10000);
-              })();
-            `,
-          }}
-        />
-        {/* If GTM is configured, load GTM (script + noscript) immediately after opening <body> so the noscript iframe is available for no-JS users. */}
+        <a
+          href="#main-content"
+          className="absolute left-[-9999px] w-px h-px overflow-hidden focus:fixed focus:top-4 focus:left-4 focus:w-auto focus:h-auto focus:px-4 focus:py-2 focus:bg-[#1F396D] focus:text-white focus:rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F16112] focus:z-[100] focus:overflow-visible"
+        >
+          Skip to main content
+        </a>
         {process.env.NEXT_PUBLIC_GTM_ID ? (
           <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         ) : null}

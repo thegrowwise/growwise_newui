@@ -13,7 +13,7 @@ export default function GTM({ gtmId }: GTMProps) {
 
   return (
     <>
-      <Script id="gtm-script" strategy="afterInteractive" dangerouslySetInnerHTML={{ __html: inlineScript }} />
+      <Script id="gtm-script" strategy="lazyOnload" dangerouslySetInnerHTML={{ __html: inlineScript }} />
       {/* noscript fallback - must be placed inside <body> */}
       <noscript dangerouslySetInnerHTML={{ __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}" height="0" width="0" style="display:none;visibility:hidden"></iframe>` }} />
     </>

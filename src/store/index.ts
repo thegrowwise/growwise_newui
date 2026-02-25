@@ -36,9 +36,15 @@ export const store = configureStore({
     }).concat(sagaMiddleware),
 });
 
-// Only run sagas on the client side
+// Defer saga run to avoid blocking initial parse/compile/execution (reduces TBT/JS execution time).
+// Run after first paint via requestIdleCallback so the main thread is free for LCP.
 if (typeof window !== 'undefined') {
-  sagaMiddleware.run(rootSaga);
+  const runSaga = () => sagaMiddleware.run(rootSaga);
+  if (typeof requestIdleCallback !== 'undefined') {
+    requestIdleCallback(runSaga, { timeout: 800 });
+  } else {
+    setTimeout(runSaga, 1);
+  }
 }
 
 export type RootState = ReturnType<typeof store.getState>;
