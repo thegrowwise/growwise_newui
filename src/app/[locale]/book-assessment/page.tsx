@@ -81,7 +81,7 @@ export default function BookAssessmentPage() {
   // Move availableSubjects outside component or use useMemo to prevent recreation
   const availableSubjects = useMemo(() => [
     { value: 'Math', icon: '📐' },
-    { value: 'Science', icon: '🔬' },
+    { value: 'English', icon: '📚' },
     { value: 'SAT/ACT', icon: '🎯' }
   ], []);
 
@@ -90,9 +90,9 @@ export default function BookAssessmentPage() {
   ];
 
   const assessmentTypes = [
-    { value: 'English Reading Assessment', icon: '📚' },
-    { value: 'Math Skills Assessment', icon: '📐' },
-    { value: 'Complete Academic Assessment', icon: '🎓' }
+    { value: 'English Reading Assessment', icon: '📚', label: 'English Reading Assessment' },
+    { value: 'Math Skills Assessment', icon: '📐', label: 'Math Skills Assessment' },
+    { value: 'Complete Academic Assessment', icon: '🎓', label: '(English + Maths) Complete Academic Assessment' }
   ];
 
   // Map dial code to ISO2 country code
@@ -571,7 +571,7 @@ export default function BookAssessmentPage() {
                                 <div className="flex items-center w-full gap-4">
                                   <span className="flex items-center gap-2">
                                     <span>{type.icon}</span>
-                                    {type.value}
+                                    {type.label ?? type.value}
                                   </span>
                                 </div>
                               </SelectItem>
