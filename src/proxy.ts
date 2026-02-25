@@ -3,11 +3,17 @@ import { NextRequest } from 'next/server';
 import { ENABLED_LOCALES, DEFAULT_LOCALE } from './i18n/localeConfig';
 
 const intlMiddleware = createMiddleware({
+  // Use centralized locale configuration
   locales: ENABLED_LOCALES,
+  
+  // Used when no locale matches
   defaultLocale: DEFAULT_LOCALE,
+  
+  // Always show the locale in the URL
   localePrefix: 'always'
 });
 
+// Export as named proxy function for Next.js 16
 export function proxy(request: NextRequest) {
   return intlMiddleware(request);
 }

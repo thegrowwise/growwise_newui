@@ -4,7 +4,7 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin('./src/i18n/config.ts');
 
 const nextConfig: NextConfig = {
-  productionBrowserSourceMaps: false,
+  /* config options here */
   // Ensure these ESM packages are transpiled and bundled by Next.js
   transpilePackages: [
     'next-intl',
@@ -56,17 +56,9 @@ const nextConfig: NextConfig = {
     optimizePackageImports: [
       'lucide-react',
       '@radix-ui/react-accordion',
-      '@radix-ui/react-alert-dialog',
-      '@radix-ui/react-aspect-ratio',
-      '@radix-ui/react-avatar',
-      '@radix-ui/react-checkbox',
-      '@radix-ui/react-collapsible',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-label',
-      '@radix-ui/react-radio-group',
       '@radix-ui/react-select',
-      '@radix-ui/react-slot',
     ],
   },
   

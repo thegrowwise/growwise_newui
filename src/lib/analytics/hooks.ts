@@ -141,9 +141,9 @@ export function useSessionTracking() {
       // If user is still on the page after 10 seconds, they didn't bounce
     }, 10000);
 
-    // Use pagehide (not beforeunload/unload) to preserve bfcache. When persisted is true, page is being cached — skip work.
-    const handlePageHide = (event: PageTransitionEvent) => {
-      if (event.persisted) return;
+    // Track session end using pagehide instead of beforeunload to preserve bfcache
+    // beforeunload breaks browser back/forward cache, so we use pagehide instead
+    const handlePageHide = () => {
       clearTimeout(bounceTimeout);
       const sessionDuration = Date.now() - performance.now();
       if (sessionDuration < 10000) {

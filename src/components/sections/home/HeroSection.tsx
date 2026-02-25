@@ -108,18 +108,18 @@ export function HeroSection({
           </div>
 
           <div className="absolute inset-y-0 left-6 flex items-center">
-            <button type="button" onClick={onPrev} className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30" aria-label="Previous slide">
+            <button onClick={onPrev} className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30">
               <ChevronLeft className="w-6 h-6 text-gray-700" />
             </button>
           </div>
           <div className="absolute inset-y-0 right-6 flex items-center">
-            <button type="button" onClick={onNext} className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30" aria-label="Next slide">
+            <button onClick={onNext} className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30">
               <ChevronRight className="w-6 h-6 text-gray-700" />
             </button>
           </div>
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4">
             {slides.map((_, index) => (
-              <button key={index} type="button" onClick={() => onGoTo(index)} className={`h-3 rounded-full transition-all duration-500 ${index === currentIndex ? 'w-12 bg-white shadow-xl border border-white/30' : 'w-3 bg-white/60 hover:bg-white/80'}`} aria-label={`Go to slide ${index + 1} of ${slides.length}`} />
+              <button key={index} onClick={() => onGoTo(index)} className={`h-3 rounded-full transition-all duration-500 ${index === currentIndex ? 'w-12 bg-white shadow-xl border border-white/30' : 'w-3 bg-white/60 hover:bg-white/80'}`} />
             ))}
           </div>
         </div>

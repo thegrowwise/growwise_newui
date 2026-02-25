@@ -51,10 +51,9 @@ export function OptimizedImage({
     }
   }
 
-  // Use next/image optimization for known remote hosts (configured in next.config images.remotePatterns).
-  // Only skip optimization for unknown external URLs to avoid build errors.
-  const optimizedHosts = ['images.unsplash.com', 'amazonaws.com', 'growwiseschool.org', 'thegrowwise.com'];
-  const isExternal = imgSrc.startsWith('http') && !optimizedHosts.some((h) => imgSrc.includes(h));
+  // If it's an external URL, we need to configure it in next.config.ts
+  // For now, use unoptimized for external images
+  const isExternal = imgSrc.startsWith('http') && !imgSrc.includes('growwiseschool.org')
   
   // If error occurred, use regular img tag
   if (didError) {
