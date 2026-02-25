@@ -145,7 +145,6 @@ export default function EnrollAcademicPage() {
             {[
               { number: "5000+", label: "Students Enrolled" },
               { number: "98%", label: "Success Rate" },
-              { number: "15+", label: "Years Experience" },
               { number: "4.9/5", label: "Average Rating" },
             ].map((s, i) => (
               <Card key={i} className="bg-white/10 backdrop-blur-xl border-2 border-white/20 shadow-2xl">
