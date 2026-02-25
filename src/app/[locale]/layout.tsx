@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import "../globals.css";
-import Header from "@/components/layout/Header/Header";
-import Footer from "@/components/layout/Footer/Footer";
+import LayoutShell from "@/components/layout/LayoutShell";
 import ContentProvider from "@/components/providers/ContentProvider";
 import { CartProvider } from "@/components/gw/CartContext";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
@@ -57,11 +56,11 @@ export default async function LocaleLayout({
         <ChatbotProvider>
           <ContentProvider>
             <PageTrackingWrapper>
-              <Header />
-              <main suppressHydrationWarning>
-                {children}
-              </main>
-              <Footer />
+              <LayoutShell>
+                <main id="main-content" suppressHydrationWarning>
+                  {children}
+                </main>
+              </LayoutShell>
               <LazyChatbot />
             </PageTrackingWrapper>
           </ContentProvider>
