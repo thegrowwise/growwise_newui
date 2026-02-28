@@ -186,6 +186,8 @@
       "subject": "Subject *",
       "message": "Message *",
       "submit": "Send Message",
+      "submitErrorFallback": "Failed to submit form. Please try again or contact us directly.",
+      "submitErrorUnexpected": "An unexpected error occurred. Please try again.",
       "placeholders": {
         "name": "Enter your full name",
         "email": "Enter your email",

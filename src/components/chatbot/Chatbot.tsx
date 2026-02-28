@@ -70,6 +70,7 @@ export default function Chatbot() {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmittingContact, setIsSubmittingContact] = useState(false);
   const [contactError, setContactError] = useState('');
+  const [contactFieldErrors, setContactFieldErrors] = useState<Record<string, string>>({});
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [floatPosition, setFloatPosition] = useState<FloatingPosition | null>(null);
@@ -183,33 +184,37 @@ export default function Chatbot() {
   const handleContactFormSubmit = async (data: ContactFormData) => {
     setIsSubmittingContact(true);
     setContactError('');
+    setContactFieldErrors({});
 
     try {
       const result = await contactService.submitContactForm(data);
-      
+
       if (result.success) {
-        // Add success message
         const successMessage: Message = {
           id: Date.now().toString(),
           text: `Thank you, ${data.name}! We've received your information and will contact you within 24 hours with personalized details about our programs. 📧`,
           sender: 'bot',
           timestamp: new Date()
         };
-        
         setMessages(prev => [...prev, successMessage]);
-        
-        // Remove the contact form from the last message
-        setMessages(prev => prev.map(msg => 
-          msg.id === prev[prev.length - 1].id 
+        setMessages(prev => prev.map(msg =>
+          msg.id === prev[prev.length - 1].id
             ? { ...msg, showContactForm: false }
             : msg
         ));
       } else {
-        setContactError(result.error || 'Failed to submit contact information');
+        setContactError(result.error || result.message || t('contact.form.submitErrorFallback'));
+        if (result.errors?.length) {
+          setContactFieldErrors(
+            result.errors.reduce<Record<string, string>>((acc, { field, message }) => {
+              acc[field] = message;
+              return acc;
+            }, {})
+          );
+        }
       }
-    } catch (error) {
-      console.error('Contact form submission error:', error);
-      setContactError('Failed to submit contact information. Please try again.');
+    } catch {
+      setContactError(t('contact.form.submitErrorUnexpected'));
     } finally {
       setIsSubmittingContact(false);
     }
@@ -223,6 +228,7 @@ export default function Chatbot() {
         : msg
     ));
     setContactError('');
+    setContactFieldErrors({});
   };
 
 
@@ -510,6 +516,7 @@ export default function Chatbot() {
                         onCancel={handleContactFormCancel}
                         isLoading={isSubmittingContact}
                         error={contactError}
+                        fieldErrors={contactFieldErrors}
                       />
                     </div>
                   )}

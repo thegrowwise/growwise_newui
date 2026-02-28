@@ -29,6 +29,7 @@ export function HeroSection({
   onMouseLeave,
   error,
   onRetry,
+  lcpImageInDocument = false,
 }: {
   slides: HeroSlideVM[] | null;
   currentIndex: number;
@@ -39,6 +40,8 @@ export function HeroSection({
   onMouseLeave?: () => void;
   error?: string | null;
   onRetry?: () => void;
+  /** When true, first slide image is already in DOM (server-rendered for LCP); skip duplicate image. */
+  lcpImageInDocument?: boolean;
 }) {
   if (error) return <SectionError title="Hero unavailable" message={error} onRetry={onRetry} />;
   if (!slides || slides.length === 0) return <SectionError title="No hero slides" message="Please check back later." onRetry={onRetry} />;
@@ -64,14 +67,16 @@ export function HeroSection({
                 <div key={slide.id} className={`absolute inset-0 transition-all duration-1000 ${isActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'}`}>
                   <div className="relative h-full flex flex-col lg:flex-row items-center overflow-hidden">
                     <div className="absolute inset-0">
-                      <OptimizedImage 
-                        src={slide.bgImage} 
-                        alt={slide.title} 
-                        fill
-                        className="object-cover"
-                        sizes="100vw"
-                        priority={isActive}
-                      />
+                      {!(lcpImageInDocument && index === 0) && (
+                        <OptimizedImage 
+                          src={slide.bgImage} 
+                          alt={slide.title} 
+                          fill
+                          className="object-cover"
+                          sizes="100vw"
+                          priority={isActive}
+                        />
+                      )}
                       <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
                       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
                       <div className="absolute inset-0 backdrop-blur-[0.5px]"></div>
@@ -108,18 +113,18 @@ export function HeroSection({
           </div>
 
           <div className="absolute inset-y-0 left-6 flex items-center">
-            <button onClick={onPrev} className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30">
-              <ChevronLeft className="w-6 h-6 text-gray-700" />
+            <button type="button" onClick={onPrev} aria-label="Previous slide" className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30">
+              <ChevronLeft className="w-6 h-6 text-gray-900" aria-hidden />
             </button>
           </div>
           <div className="absolute inset-y-0 right-6 flex items-center">
-            <button onClick={onNext} className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30">
-              <ChevronRight className="w-6 h-6 text-gray-700" />
+            <button type="button" onClick={onNext} aria-label="Next slide" className="w-12 h-12 bg-white/40 hover:bg-white/60 rounded-full shadow-[0px_15px_40px_rgba(255,255,255,0.4)] flex items-center justify-center transition-all duration-300 hover:scale-110 backdrop-blur-2xl border-2 border-white/50 ring-1 ring-white/30">
+              <ChevronRight className="w-6 h-6 text-gray-900" aria-hidden />
             </button>
           </div>
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-4">
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
             {slides.map((_, index) => (
-              <button key={index} onClick={() => onGoTo(index)} className={`h-3 rounded-full transition-all duration-500 ${index === currentIndex ? 'w-12 bg-white shadow-xl border border-white/30' : 'w-3 bg-white/60 hover:bg-white/80'}`} />
+              <button key={index} type="button" onClick={() => onGoTo(index)} aria-label={`Go to slide ${index + 1}`} className={`min-w-[24px] min-h-[24px] rounded-full transition-all duration-500 flex items-center justify-center ${index === currentIndex ? 'w-12 bg-white shadow-xl border border-white/30' : 'w-3 bg-white/60 hover:bg-white/80'}`} />
             ))}
           </div>
         </div>

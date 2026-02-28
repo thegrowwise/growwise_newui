@@ -18,6 +18,7 @@ export default function FooterLogo({ logo, description, contact }: FooterLogoPro
             width: `${logo.width}px`,
             height: `${logo.height}px`
           }}
+          role="img"
           aria-label={logo.alt}
         />
       </div>

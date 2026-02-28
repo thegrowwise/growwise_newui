@@ -13,6 +13,8 @@ interface ContactFormProps {
   onCancel: () => void;
   isLoading?: boolean;
   error?: string;
+  /** Field-level validation errors from the API; shown directly under each field */
+  fieldErrors?: Record<string, string>;
   success?: boolean;
 }
 
@@ -30,13 +32,15 @@ export interface ContactFormData {
   source?: string; // Where the form was submitted from
 }
 
-export default function ContactForm({ 
-  onSubmit, 
-  onCancel, 
-  isLoading = false, 
-  error, 
-  success = false 
+export default function ContactForm({
+  onSubmit,
+  onCancel,
+  isLoading = false,
+  error,
+  fieldErrors = {},
+  success = false
 }: ContactFormProps) {
+  const getFieldError = (field: string) => fieldErrors[field] || validationErrors[field];
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -79,15 +83,13 @@ export default function ContactForm({
 
     try {
       await onSubmit(formData);
-    } catch (err) {
-      console.error('Form submission error:', err);
+    } catch {
+      // Error is surfaced via parent (contactError / submitError)
     }
   };
 
   const handleInputChange = (field: keyof ContactFormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    
-    // Clear validation error when user starts typing
     if (validationErrors[field]) {
       setValidationErrors(prev => ({ ...prev, [field]: '' }));
     }
@@ -141,12 +143,12 @@ export default function ContactForm({
               type="text"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              className={`mt-1 ${validationErrors.name ? 'border-red-300 focus:border-red-500' : ''}`}
+              className={`mt-1 ${getFieldError('name') ? 'border-red-300 focus:border-red-500' : ''}`}
               placeholder="John Doe"
               disabled={isLoading}
             />
-            {validationErrors.name && (
-              <p className="text-xs text-red-600 mt-1">{validationErrors.name}</p>
+            {getFieldError('name') && (
+              <p className="text-xs text-red-600 mt-1" role="alert">{getFieldError('name')}</p>
             )}
           </div>
 
@@ -161,13 +163,13 @@ export default function ContactForm({
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`pl-10 ${validationErrors.email ? 'border-red-300 focus:border-red-500' : ''}`}
+                className={`pl-10 ${getFieldError('email') ? 'border-red-300 focus:border-red-500' : ''}`}
                 placeholder="john@example.com"
                 disabled={isLoading}
               />
             </div>
-            {validationErrors.email && (
-              <p className="text-xs text-red-600 mt-1">{validationErrors.email}</p>
+            {getFieldError('email') && (
+              <p className="text-xs text-red-600 mt-1" role="alert">{getFieldError('email')}</p>
             )}
           </div>
 
@@ -182,13 +184,13 @@ export default function ContactForm({
                 type="tel"
                 value={formData.phone}
                 onChange={(e) => handleInputChange('phone', e.target.value)}
-                className={`pl-10 ${validationErrors.phone ? 'border-red-300 focus:border-red-500' : ''}`}
+                className={`pl-10 ${getFieldError('phone') ? 'border-red-300 focus:border-red-500' : ''}`}
                 placeholder={PHONE_PLACEHOLDER}
                 disabled={isLoading}
               />
             </div>
-            {validationErrors.phone && (
-              <p className="text-xs text-red-600 mt-1">{validationErrors.phone}</p>
+            {getFieldError('phone') && (
+              <p className="text-xs text-red-600 mt-1" role="alert">{getFieldError('phone')}</p>
             )}
           </div>
 

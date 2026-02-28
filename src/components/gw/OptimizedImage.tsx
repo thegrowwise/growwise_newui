@@ -75,7 +75,7 @@ export function OptimizedImage({
     )
   }
 
-  // Use next/image for optimized images
+  // Use next/image for optimized images. Explicit fetchPriority for LCP (Lighthouse).
   if (fill) {
     return (
       <Image
@@ -86,6 +86,7 @@ export function OptimizedImage({
         style={style}
         sizes={sizes || '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'}
         priority={priority}
+        fetchPriority={priority ? 'high' : undefined}
         quality={quality}
         onError={handleError}
         unoptimized={isExternal}
@@ -108,6 +109,7 @@ export function OptimizedImage({
       className={className}
       style={style}
       priority={priority}
+      fetchPriority={priority ? 'high' : undefined}
       quality={quality}
       onError={handleError}
       unoptimized={isExternal}

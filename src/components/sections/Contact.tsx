@@ -64,6 +64,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   React.useEffect(() => {
     if (!contact && !contactLoading) dispatch(fetchContactRequested());
@@ -86,15 +87,18 @@ export default function Contact() {
 
   const handleInputChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (fieldErrors[name]) {
+      setFieldErrors(prev => ({ ...prev, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
-    
+    setFieldErrors({});
+
     try {
-      // Validate form data
       const validation = contactService.validateContactData({
         name: `${formData.firstName} ${formData.lastName}`.trim(),
         email: formData.email,
@@ -109,19 +113,28 @@ export default function Contact() {
         return;
       }
 
-      // Submit to backend
       const result = await contactService.submitContactForm({
         ...formData,
         source: 'website'
       });
-      
+
       if (result.success) {
         setIsSubmitted(true);
       } else {
-        setSubmitError(result.message || 'Failed to submit form. Please try again.');
+        if (result.errors?.length) {
+          const byField = result.errors.reduce<Record<string, string>>((acc, { field, message }) => {
+            acc[field] = message;
+            return acc;
+          }, {});
+          setFieldErrors(byField);
+          setSubmitError(null);
+        } else {
+          setSubmitError(result.error || result.message || t('form.submitErrorFallback'));
+          setFieldErrors({});
+        }
       }
-    } catch (error) {
-      setSubmitError('An unexpected error occurred. Please try again.');
+    } catch {
+      setSubmitError(t('form.submitErrorUnexpected'));
     } finally {
       setIsSubmitting(false);
     }
@@ -328,9 +341,12 @@ export default function Contact() {
                           type="email"
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="border-gray-300 focus:border-[#F16112] focus:ring-[#F16112]"
+                          className={`border-gray-300 focus:border-[#F16112] focus:ring-[#F16112] ${fieldErrors.email ? 'border-red-500' : ''}`}
                           required
                         />
+                        {fieldErrors.email && (
+                          <p className="text-sm text-red-600" role="alert">{fieldErrors.email}</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
@@ -339,8 +355,11 @@ export default function Contact() {
                           type="tel"
                           value={formData.phone}
                           onChange={(e) => handleInputChange('phone', e.target.value)}
-                          className="border-gray-300 focus:border-[#F16112] focus:ring-[#F16112]"
+                          className={`border-gray-300 focus:border-[#F16112] focus:ring-[#F16112] ${fieldErrors.phone ? 'border-red-500' : ''}`}
                         />
+                        {fieldErrors.phone && (
+                          <p className="text-sm text-red-600" role="alert">{fieldErrors.phone}</p>
+                        )}
                       </div>
                       </div>
                       
@@ -387,9 +406,12 @@ export default function Contact() {
                         value={formData.subject}
                         onChange={(e) => handleInputChange('subject', e.target.value)}
                         placeholder="e.g., Free Assessment Request, Program Information"
-                        className="border-gray-300 focus:border-[#F16112] focus:ring-[#F16112]"
+                        className={`border-gray-300 focus:border-[#F16112] focus:ring-[#F16112] ${fieldErrors.subject ? 'border-red-500' : ''}`}
                         required
                       />
+                      {fieldErrors.subject && (
+                        <p className="text-sm text-red-600" role="alert">{fieldErrors.subject}</p>
+                      )}
                     </div>
 
                     {/* Message */}
@@ -401,9 +423,12 @@ export default function Contact() {
                         onChange={(e) => handleInputChange('message', e.target.value)}
                         rows={5}
                         placeholder="Tell us about your child's learning goals, current challenges, or any specific questions about our programs..."
-                        className="border-gray-300 focus:border-[#F16112] focus:ring-[#F16112] resize-none"
+                        className={`border-gray-300 focus:border-[#F16112] focus:ring-[#F16112] resize-none ${fieldErrors.message ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : ''}`}
                         required
                       />
+                      {fieldErrors.message && (
+                        <p className="text-sm text-red-600" role="alert">{fieldErrors.message}</p>
+                      )}
                     </div>
 
                     {/* Preferred Contact Method */}
