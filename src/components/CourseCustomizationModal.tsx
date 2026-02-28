@@ -183,18 +183,18 @@ const CourseCustomizationModal: React.FC<CourseCustomizationModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px] bg-white border-0 shadow-2xl rounded-[24px] p-0 overflow-hidden">
         {/* Header */}
+        <DialogHeader className="sr-only">
+          <DialogTitle>{course.name}</DialogTitle>
+          <DialogDescription>Customize your learning experience</DialogDescription>
+        </DialogHeader>
         <div className="bg-gradient-to-r from-[#1F396D] to-[#29335C] p-6 text-white relative">
           <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-white/20 rounded-xl">
               <Calculator className="w-5 h-5" />
             </div>
             <div>
-              <DialogTitle className="text-xl font-bold text-white">
-                {course.name}
-              </DialogTitle>
-              <DialogDescription className="text-white/80 text-sm">
-                Customize your learning experience
-              </DialogDescription>
+              <h2 className="text-xl font-bold text-white">{course.name}</h2>
+              <p className="text-white/80 text-sm">Customize your learning experience</p>
             </div>
           </div>
         </div>
