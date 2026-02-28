@@ -145,6 +145,13 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     keywords: "summer camp 2026, summer coding camp, math olympiad camp, robotics camp, young authors, GrowWise Dublin CA",
     path: '/camps/summer',
   },
+
+  '/workshop-calendar': {
+    title: "Workshop Calendar - Free Saturday Skill Workshops | GrowWise",
+    description: "View and register for free Saturday workshops: Reading, Math Olympiad, Scratch Coding, AI Studio, and parent webinars. GrowWise Dublin, CA.",
+    keywords: "workshop calendar, free workshops, Saturday workshops, reading workshop, math olympiad, scratch coding, AI studio, parent webinar, Dublin CA",
+    path: '/workshop-calendar',
+  },
 }
 
 /**

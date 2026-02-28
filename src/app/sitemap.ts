@@ -14,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/enroll', priority: 0.9, changefreq: 'monthly' as const },
     { path: '/enroll-academic', priority: 0.9, changefreq: 'monthly' as const },
     { path: '/book-assessment', priority: 0.9, changefreq: 'monthly' as const },
+    { path: '/workshop-calendar', priority: 0.8, changefreq: 'weekly' as const },
     { path: '/programs', priority: 0.8, changefreq: 'monthly' as const },
   ]
   
