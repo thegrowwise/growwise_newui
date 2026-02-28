@@ -6,6 +6,15 @@ export interface ContactSubmissionResult {
   message: string;
   emailId?: string;
   error?: string;
+  /** Field-level validation errors from the API; show these directly on the form fields */
+  errors?: { field: string; message: string }[];
+}
+
+/** Backend API error shape for contact submission */
+interface ContactApiErrorResponse {
+  success?: boolean;
+  message?: string;
+  errors?: { field: string; message: string }[];
 }
 
 export class ContactService {
@@ -52,10 +61,33 @@ export class ContactService {
         body: JSON.stringify(backendData),
       });
 
-      const result = await response.json();
+      let result: { message?: string; submissionId?: string } & ContactApiErrorResponse;
+      try {
+        result = await response.json();
+      } catch {
+        return {
+          success: false,
+          error: 'Invalid response from server',
+          message: 'Invalid response from server'
+        };
+      }
 
-      if (!response.ok) {
-        throw new Error(result.message || `HTTP error! status: ${response.status}`);
+      const apiError = result as ContactApiErrorResponse;
+      const hasValidationError =
+        !response.ok ||
+        result.success === false ||
+        (Array.isArray(apiError.errors) && apiError.errors.length > 0);
+      if (hasValidationError) {
+        const displayMessage =
+          apiError.message ||
+          (Array.isArray(apiError.errors) && apiError.errors[0]?.message) ||
+          `Request failed (${response.status})`;
+        return {
+          success: false,
+          error: displayMessage,
+          message: displayMessage,
+          errors: Array.isArray(apiError.errors) ? apiError.errors : undefined
+        };
       }
 
       return {
@@ -63,13 +95,12 @@ export class ContactService {
         message: result.message || 'Contact information submitted successfully',
         emailId: result.submissionId
       };
-
     } catch (error) {
-      console.error('ContactService Error:', error);
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'An unknown error occurred',
-        message: 'Failed to submit contact information. Please try again or contact us directly.'
+        error: errorMessage,
+        message: errorMessage
       };
     }
   }

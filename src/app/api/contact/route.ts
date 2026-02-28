@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     // Validate required fields
     if (!name || !email || !phone) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { success: false, message: 'Missing required fields', errors: [{ field: 'name', message: 'Name, email and phone are required' }] },
         { status: 400 }
       );
     }
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        { success: false, message: 'Invalid email format', errors: [{ field: 'email', message: 'Please enter a valid email address' }] },
         { status: 400 }
       );
     }
@@ -28,7 +28,20 @@ export async function POST(request: Request) {
     const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
     if (!phoneRegex.test(cleanPhone)) {
       return NextResponse.json(
-        { error: 'Invalid phone format' },
+        { success: false, message: 'Invalid phone format', errors: [{ field: 'phone', message: 'Invalid phone format' }] },
+        { status: 400 }
+      );
+    }
+
+    // Validate message length (min 10 characters when provided)
+    const messageVal = typeof message === 'string' ? message.trim() : '';
+    if (messageVal.length > 0 && messageVal.length < 10) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Message must be at least 10 characters long',
+          errors: [{ field: 'message', message: 'Message must be at least 10 characters long' }]
+        },
         { status: 400 }
       );
     }
@@ -71,12 +84,12 @@ export async function POST(request: Request) {
     }
 
   } catch (error) {
-    console.error('Contact API Error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'An unknown error occurred',
-        message: 'Failed to process your request. Please try again or contact us directly.'
+        message: errorMessage,
+        errors: [{ field: 'form', message: errorMessage }]
       },
       { status: 500 }
     );

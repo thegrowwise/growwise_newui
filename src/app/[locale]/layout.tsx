@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import "../globals.css";
 import Header from "@/components/layout/Header/Header";
 import Footer from "@/components/layout/Footer/Footer";
 import ContentProvider from "@/components/providers/ContentProvider";
@@ -58,7 +57,7 @@ export default async function LocaleLayout({
           <ContentProvider>
             <PageTrackingWrapper>
               <Header />
-              <main suppressHydrationWarning>
+              <main id="main-content" suppressHydrationWarning>
                 {children}
               </main>
               <Footer />

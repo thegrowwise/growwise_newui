@@ -10,7 +10,7 @@
       "icon": "BookOpen",
       "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#2a4a7c]",
       "iconColor": "text-white",
-      "ctaColor": "bg-[#F1894F] hover:bg-[#F16112] text-white",
+      "ctaColor": "bg-[#E85A1C] hover:bg-[#d54f0a] text-white",
       "bgImage": "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1200&h=800&fit=crop"
     },
     {

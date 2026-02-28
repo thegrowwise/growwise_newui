@@ -254,14 +254,15 @@ export function TestimonialsSection({ testimonials, error, onRetry }: { testimon
 
           {/* Carousel Indicators */}
           {totalSets > 1 && (
-            <div className="flex justify-center mt-12 space-x-2">
+            <div className="flex justify-center mt-12 gap-2">
               {Array.from({ length: totalSets }, (_, index) => (
                 <button
                   key={index}
+                  type="button"
                   onClick={() => goToSet(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                    index === currentSet 
-                      ? 'bg-[#F16112] scale-125' 
+                  className={`min-w-[24px] min-h-[24px] rounded-full transition-all duration-200 flex items-center justify-center ${
+                    index === currentSet
+                      ? 'bg-[#F16112] scale-125'
                       : 'bg-gray-300 hover:bg-gray-400'
                   }`}
                   aria-label={`Go to testimonial set ${index + 1}`}
