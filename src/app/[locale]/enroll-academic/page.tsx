@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { GraduationCap, Users, Shield, Star, Send, Target, Clock, Award } from "lucide-react";
+import { GraduationCap, Users, Star, Send, Target, Clock, Award, Shield } from "lucide-react";
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface EnrollFormData {
   parentName: string;
@@ -293,32 +294,13 @@ export default function EnrollAcademicPage() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl p-6 border-2 border-gray-100 bg-gray-50">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-blue-500 rounded-xl text-white">
-                        <Shield className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900 mb-2">Privacy & Data Protection</h4>
-                        <p className="text-sm text-gray-700 leading-relaxed">
-                          We only use your personal information to provide the requested services. From time to time, we may contact you about programs and content that may be of interest.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start space-x-4 p-6 bg-white rounded-2xl border-2 border-gray-200">
-                    <Checkbox
-                      id="agreeToContact"
-                      checked={formData.agreeToContact}
-                      onCheckedChange={(checked) => handleInputChange("agreeToContact", checked as boolean)}
-                      className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5 mt-0.5"
-                      required
-                    />
-                    <Label htmlFor="agreeToContact" className="cursor-pointer text-gray-700 leading-relaxed flex-1">
-                      I agree to receive communications from GrowWise about academic programs, updates, and educational content.
-                    </Label>
-                  </div>
+                  <FormPrivacyConsent
+                    checkboxId="agreeToContact"
+                    checked={formData.agreeToContact}
+                    onCheckedChange={(checked) => handleInputChange('agreeToContact', checked)}
+                    required
+                    showSubmitDisclaimer
+                  />
 
                   <div className="pt-2">
                     <Button type="submit" disabled={isSubmitting} className="w-full bg-gradient-to-r from-[#1F396D] via-[#29335C] to-[#1F396D] text-white h-14 rounded-2xl">
@@ -330,10 +312,6 @@ export default function EnrollAcademicPage() {
                         </div>
                       )}
                     </Button>
-                    <p className="text-center text-gray-500 mt-3 text-sm flex items-center justify-center gap-2">
-                      <Shield className="w-4 h-4 text-green-600" />
-                      Your information is secure and will never be shared
-                    </p>
                   </div>
                 </form>
               ) : (

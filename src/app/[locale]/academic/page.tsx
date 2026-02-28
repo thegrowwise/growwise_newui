@@ -79,7 +79,7 @@ const AcademicPage: React.FC = () => {
         'One-on-One & Small Group Options'
       ],
       ctaText: 'Start Learning',
-      ctaUrl: '/enroll'
+      ctaUrl: '/courses/math'
     },
     {
       id: 2,
@@ -97,7 +97,7 @@ const AcademicPage: React.FC = () => {
         'California Common Core Aligned'
       ],
       ctaText: 'Start Learning',
-      ctaUrl: '/enroll'
+      ctaUrl: '/courses/english'
     }
   ];
 

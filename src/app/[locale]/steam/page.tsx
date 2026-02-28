@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import STEAMTrialModal from '@/components/ui/STEAMTrialModal';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -71,7 +72,8 @@ export default function SteamPage() {
   const locale = useLocale();
   const [hoveredProgram, setHoveredProgram] = useState<string | null>(null);
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
-  
+  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
+
   const createLocaleUrl = (path: string) => `/${locale}${path}`;
 
   // STEAM Programs Overview Data
@@ -390,7 +392,7 @@ export default function SteamPage() {
                       Explore Programs
                       <ChevronRight className="ml-2 w-5 h-5" />
                     </Button>
-                    <Button className="bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-4 rounded-full transition-all duration-300">
+                    <Button onClick={() => setIsTrialModalOpen(true)} className="bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-4 rounded-full transition-all duration-300">
                       Book Free Trial
                     </Button>
                   </div>
@@ -810,7 +812,7 @@ export default function SteamPage() {
               Start Your Journey
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105">
+            <Button onClick={() => setIsTrialModalOpen(true)} className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105">
               Book Free Trial
             </Button>
           </div>
@@ -973,6 +975,8 @@ export default function SteamPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <STEAMTrialModal isOpen={isTrialModalOpen} onClose={() => setIsTrialModalOpen(false)} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { X, CheckCircle, User, GraduationCap, BookOpen, Users, MessageSquare, Mail, Smartphone } from 'lucide-react';
 import { Button } from "./button";
@@ -13,6 +14,7 @@ import { Checkbox } from "./checkbox";
 import { Card, CardContent } from "./card";
 import CountryCodeSelector from "../CountryCodeSelector";
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface STEAMTrialModalProps {
   isOpen: boolean;
@@ -51,6 +53,7 @@ const STEAMTrialModal: React.FC<STEAMTrialModalProps> = ({ isOpen, onClose }) =>
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
 
   // A. Remove Kindergarten from Grades
   const grades = [
@@ -108,24 +111,26 @@ const STEAMTrialModal: React.FC<STEAMTrialModalProps> = ({ isOpen, onClose }) =>
     });
     setIsSubmitted(false);
     setIsSubmitting(false);
+    setAgreeToCommunications(false);
     onClose();
   };
 
   if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="relative w-full max-w-2xl max-h-[90vh] overflow-hidden">
-        <Card className="bg-white/95 backdrop-blur-3xl rounded-[32px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.3)] border-2 border-white/60 ring-1 ring-white/30 h-full">
-          <button
-            onClick={resetAndClose}
-            className="absolute top-6 right-6 w-10 h-10 bg-white/50 hover:bg-white/70 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-xl border border-white/50 z-10"
-          >
-            <X className="w-5 h-5 text-gray-600" />
-          </button>
+  const modalContent = (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-[100]" aria-modal="true" role="dialog">
+      <div className="relative w-full max-w-2xl h-[90vh] max-h-[90vh] flex flex-col overflow-hidden">
+        <Card className="bg-white/95 backdrop-blur-3xl rounded-[32px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.3)] border-2 border-white/60 ring-1 ring-white/30 flex flex-col min-h-0 flex-1">
+          <div className="flex flex-col min-h-0 flex-1 overflow-hidden relative">
+            <button
+              onClick={resetAndClose}
+              className="absolute top-6 right-6 w-10 h-10 bg-white/50 hover:bg-white/70 rounded-full flex items-center justify-center transition-all duration-300 backdrop-blur-xl border border-white/50 z-10"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
 
-          <div className="overflow-y-auto max-h-[85vh] custom-scrollbar">
-            <CardContent className="p-8 lg:p-12">
+            <div className="overflow-y-auto max-h-[78vh] min-h-0 custom-scrollbar">
+              <CardContent className="p-8 lg:p-12">
               {!isSubmitted ? (
                 <>
                   <div className="text-center mb-8">
@@ -350,10 +355,19 @@ const STEAMTrialModal: React.FC<STEAMTrialModalProps> = ({ isOpen, onClose }) =>
                       </div>
                     </div>
 
+                    <FormPrivacyConsent
+                      checkboxId="steam-trial-agree"
+                      checked={agreeToCommunications}
+                      onCheckedChange={setAgreeToCommunications}
+                      required
+                      showSubmitDisclaimer
+                      variant="compact"
+                    />
+
                     <div className="pt-6">
                       <Button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || !agreeToCommunications}
                         className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-4 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] text-lg"
                       >
                         {isSubmitting ? (
@@ -368,10 +382,6 @@ const STEAMTrialModal: React.FC<STEAMTrialModalProps> = ({ isOpen, onClose }) =>
                           </>
                         )}
                       </Button>
-
-                      <p className="text-sm text-gray-500 text-center mt-4 leading-relaxed">
-                        We respect your privacy. Your details will only be used for scheduling your trial class.
-                      </p>
                     </div>
                   </form>
                 </>
@@ -408,12 +418,15 @@ const STEAMTrialModal: React.FC<STEAMTrialModalProps> = ({ isOpen, onClose }) =>
                   </div>
                 </div>
               )}
-            </CardContent>
+              </CardContent>
+            </div>
           </div>
         </Card>
       </div>
     </div>
   );
+
+  return typeof document !== 'undefined' ? createPortal(modalContent, document.body) : null;
 };
 
 export default STEAMTrialModal;

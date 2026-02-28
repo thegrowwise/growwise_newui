@@ -31,6 +31,7 @@ import {
   type ProgramType
 } from './workshopEvents';
 import { buildGoogleCalendarUrl, buildIcsContent } from '@/lib/programs';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface CalendarDay {
   dayNum: number;
@@ -84,6 +85,7 @@ export default function WorkshopCalendar(): React.ReactElement {
     howDidYouHear: ''
   });
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
 
   const changeMonth = useCallback((delta: number) => {
     setCurrentMonth((m) => {
@@ -487,13 +489,20 @@ export default function WorkshopCalendar(): React.ReactElement {
                           <p id="err-howDidYouHear" className="text-sm text-red-600 mt-1" role="alert">{formErrors.howDidYouHear}</p>
                         )}
                       </div>
+                      <FormPrivacyConsent
+                        checkboxId="workshop-register-agree"
+                        checked={agreeToCommunications}
+                        onCheckedChange={setAgreeToCommunications}
+                        required
+                        showSubmitDisclaimer
+                        variant="compact"
+                      />
                       {submitError && (
                         <p className="text-sm text-red-600" role="alert">{submitError}</p>
                       )}
-                      <Button type="submit" className="w-full" disabled={isSubmitting}>
+                      <Button type="submit" className="w-full" disabled={isSubmitting || !agreeToCommunications}>
                         {isSubmitting ? 'Submitting…' : 'Register — It\'s Free!'}
                       </Button>
-                      <p className="text-center text-sm text-gray-600">Your information is safe with us. No spam.</p>
                     </form>
                   </>
                 ) : (
