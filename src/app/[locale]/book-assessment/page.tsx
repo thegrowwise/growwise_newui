@@ -19,8 +19,9 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
-import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, BarChart3, Globe, Video, CheckSquare, Heart, Calculator, X, AlertCircle } from 'lucide-react';
+import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, Globe, Video, CheckSquare, Calculator, X, AlertCircle } from 'lucide-react';
 import CountryCodeSelector from '@/components/CountryCodeSelector';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
@@ -223,7 +224,7 @@ export default function BookAssessmentPage() {
     
     // Validate communication consent
     if (!agreeToCommunications) {
-      errors.agreeToCommunications = 'Please agree to receive communications to continue';
+      errors.agreeToCommunications = t('commonForm.privacy.agreeError');
     }
     
     setFormErrors(errors);
@@ -362,13 +363,6 @@ export default function BookAssessmentPage() {
     { name: 'Sarah Johnson', role: 'Parent of 5th Grader', content: 'The assessment was incredibly thorough and helped us identify exactly where our daughter needed support. Highly recommend!', rating: 5 },
     { name: 'Michael Chen', role: 'Parent of 8th Grader', content: "Outstanding service! The detailed report gave us a clear roadmap for our son's academic improvement.", rating: 5 },
     { name: 'Emily Rodriguez', role: 'Parent of 3rd Grader', content: 'The evaluators were professional and made my child feel comfortable. The insights were invaluable.', rating: 5 }
-  ];
-
-  const stats = [
-    { number: '500+', label: 'Assessments Completed', icon: BarChart3 },
-    { number: '98%', label: 'Parent Satisfaction', icon: Heart },
-    { number: '48hr', label: 'Report Delivery', icon: Clock },
-    { number: '15+', label: 'Years Experience', icon: Award }
   ];
 
   // const benefits = [
@@ -654,52 +648,23 @@ export default function BookAssessmentPage() {
                       </div>
                     </div>
 
-                    {/* Privacy & Data Protection */}
-                    <div className="space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200">
-                      <div className="flex items-start gap-3 sm:gap-4">
-                        <div className="p-2.5 sm:p-3 bg-[#1F396D] rounded-xl flex-shrink-0">
-                          <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-gray-900 font-semibold text-lg sm:text-xl mb-1">Privacy & Data Protection</h3>
-                          <p className="text-gray-700 text-sm sm:text-base leading-relaxed">We only use your personal information to provide the requested services. From time to time, we may contact you about programs and content that may be of interest.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Communication Consent */}
-                    <div className="space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200">
-                      <div className="flex items-start gap-3 sm:gap-4">
-                        <Checkbox
-                          id="agreeToCommunications"
-                          checked={agreeToCommunications}
-                          onCheckedChange={(checked) => {
-                            setAgreeToCommunications(checked === true);
-                            if (checked === true && formErrors.agreeToCommunications) {
-                              setFormErrors((prev) => {
-                                const next = { ...prev };
-                                delete next.agreeToCommunications;
-                                return next;
-                              });
-                            }
-                          }}
-                          className={cn(
-                            "mt-0.5 border-2 border-gray-400 data-[state=checked]:bg-[#1F396D] data-[state=checked]:border-[#1F396D] w-5 h-5 flex-shrink-0",
-                            formErrors.agreeToCommunications && "border-red-500"
-                          )}
-                          suppressHydrationWarning
-                        />
-                        <Label htmlFor="agreeToCommunications" className="cursor-pointer text-gray-700 text-sm sm:text-base leading-relaxed flex-1">
-                          I agree to receive communications from GrowWise about academic programs, updates, and educational content.
-                        </Label>
-                      </div>
-                      {formErrors.agreeToCommunications && (
-                        <p className="text-sm text-red-600 flex items-center gap-1 pl-8 sm:pl-12">
-                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                          {formErrors.agreeToCommunications}
-                        </p>
-                      )}
-                    </div>
+                    <FormPrivacyConsent
+                      checkboxId="agreeToCommunications"
+                      checked={agreeToCommunications}
+                      onCheckedChange={(checked) => {
+                        setAgreeToCommunications(checked);
+                        if (checked && formErrors.agreeToCommunications) {
+                          setFormErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.agreeToCommunications;
+                            return next;
+                          });
+                        }
+                      }}
+                      error={formErrors.agreeToCommunications}
+                      required
+                      showSubmitDisclaimer
+                    />
 
                     {/* Form Validation Errors Summary */}
                     {Object.keys(formErrors).length > 0 && (
@@ -805,7 +770,6 @@ export default function BookAssessmentPage() {
                           </p>
                         </div>
                       )}
-                      <p className="text-center text-gray-500 mt-6 flex items-center justify-center gap-2"><Shield className="w-4 h-4 text-green-600" />By submitting, you agree to be contacted by GrowWise School</p>
                     </div>
                   </form>
                 ) : (
@@ -857,64 +821,6 @@ export default function BookAssessmentPage() {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-[700px] h-[700px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <div>
-              <Badge className="mb-8 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-8 py-3 shadow-2xl">
-                <Sparkles className="w-5 h-5 mr-2" />
-                Professional Assessment Services
-              </Badge>
-            </div>
-            <h1 className="text-white mb-8 text-5xl lg:text-6xl">
-              Discover Your Child's <br />
-              <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Potential</span>
-            </h1>
-            <p className="text-white/90 max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
-              Get a comprehensive evaluation from certified educators. Understand strengths, identify growth areas, and receive a personalized learning roadmap for your child's success.
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-12">
-              <Button onClick={scrollToForm} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 sm:px-10 py-6 sm:py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 group text-base sm:text-lg w-full sm:w-auto">
-                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 group-hover:rotate-12 transition-transform" />
-                Book Free Assessment
-                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button onClick={() => setIsExploreCoursesModalOpen(true)} variant="outline" className="border-2 border-white bg-white/20 text-white hover:bg-white hover:text-[#1F396D] px-8 sm:px-10 py-6 sm:py-7 rounded-2xl transition-all duration-300 hover:scale-105 backdrop-blur-xl text-base sm:text-lg w-full sm:w-auto">
-                <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-                Explore Courses
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              {stats.map((stat, index) => {
-                const IconComponent = stat.icon as any;
-                return (
-                  <div key={index}>
-                    <Card className="bg-white/10 backdrop-blur-xl border-2 border-white/20 shadow-2xl hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-6 text-center">
-                        <div className="inline-flex p-3 bg-white/20 rounded-2xl mb-3">
-                          <IconComponent className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="text-4xl font-bold text-white mb-1">{stat.number}</div>
-                        <div className="text-sm text-white/80">{stat.label}</div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" className="w-full h-auto"><path fill="#F9FAFB" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>
         </div>
       </section>
 

@@ -18,6 +18,15 @@
     "freeAssessment": "Free Assessment",
     "trialClass": "Trial Class"
   },
+  "commonForm": {
+    "privacy": {
+      "title": "Privacy & Data Protection",
+      "description": "We only use your personal information to provide the requested services. From time to time, we may contact you about programs and content that may be of interest.",
+      "agreeLabel": "I agree to receive communications from GrowWise about academic programs, updates, and educational content.",
+      "agreeError": "Please agree to receive communications to continue",
+      "submitDisclaimer": "By submitting, you agree to be contacted by GrowWise School"
+    }
+  },
   "navigation": {
     "home": "Home",
     "about": "About",

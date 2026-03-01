@@ -9,6 +9,7 @@ import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
+import STEAMTrialModal from '@/components/ui/STEAMTrialModal';
 import { useSearchParams } from 'next/navigation';
 
 // Game Development Course Data
@@ -186,6 +187,7 @@ const GameDevelopmentPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
 
   // Handlers for search params
   const handleLevelFound = useCallback((level: string) => {
@@ -438,7 +440,7 @@ const GameDevelopmentPage: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+              <Button onClick={() => setIsTrialModalOpen(true)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <Zap className="w-5 h-5 mr-2" />
                 Start Free Trial
               </Button>
@@ -922,6 +924,8 @@ const GameDevelopmentPage: React.FC = () => {
           onAddToCart={addItem}
         />
       )}
+
+      <STEAMTrialModal isOpen={isTrialModalOpen} onClose={() => setIsTrialModalOpen(false)} />
     </div>
   );
 };
