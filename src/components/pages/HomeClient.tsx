@@ -4,8 +4,6 @@ import React, { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations } from 'next-intl';
-import FreeAssessmentModal from '../FreeAssessmentModal';
-import STEAMTrialModal from '../ui/STEAMTrialModal';
 import { RootState } from '@/store';
 import { fetchHomeStart, fetchHomeSuccess } from '@/store/slices/homeSlice';
 import { getIconComponent } from '@/lib/iconMap';
@@ -26,27 +24,37 @@ import type { HomeContentData } from '@/store/slices/homeSlice';
 
 const StatisticsSection = dynamic(
   () => import('../sections/home/StatisticsSection').then((m) => ({ default: m.StatisticsSection })),
-  { ssr: true, loading: () => <StatisticsSkeleton /> }
+  { ssr: false, loading: () => <StatisticsSkeleton /> }
 );
 
 const ProgramsSection = dynamic(
   () => import('../sections/home/ProgramsSection').then((m) => ({ default: m.ProgramsSection })),
-  { ssr: true, loading: () => <ProgramsSkeleton /> }
+  { ssr: false, loading: () => <ProgramsSkeleton /> }
 );
 
 const WhyChooseSection = dynamic(
   () => import('../sections/home/WhyChooseSection').then((m) => ({ default: m.WhyChooseSection })),
-  { ssr: true, loading: () => <WhyChooseSkeleton /> }
+  { ssr: false, loading: () => <WhyChooseSkeleton /> }
 );
 
 const TestimonialsSection = dynamic(
   () => import('../sections/home/TestimonialsSection').then((m) => ({ default: m.TestimonialsSection })),
-  { ssr: true, loading: () => <TestimonialsSkeleton /> }
+  { ssr: false, loading: () => <TestimonialsSkeleton /> }
 );
 
 const CtaSection = dynamic(
   () => import('../sections/home/CtaSection').then((m) => ({ default: m.CtaSection })),
-  { ssr: true }
+  { ssr: false }
+);
+
+const FreeAssessmentModal = dynamic(
+  () => import('../FreeAssessmentModal'),
+  { ssr: false }
+);
+
+const STEAMTrialModal = dynamic(
+  () => import('../ui/STEAMTrialModal'),
+  { ssr: false }
 );
 
 interface HomeClientProps {

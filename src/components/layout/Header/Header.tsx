@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
@@ -126,12 +127,13 @@ export default function Header() {
           {/* Logo — flex-shrink-0 keeps the logo visible when nav is long */}
           <div className="flex items-center flex-shrink-0">
             <Link href={createLocaleUrlHelper('/')} className="cursor-pointer" aria-label="GrowWise home">
-              <img
+              <Image
                 src="/assets/growwise-logo.png"
                 alt="GrowWise"
                 className="header-logo transition-all duration-300 ease-out"
                 width={280}
                 height={110}
+                priority
                 style={{
                   height: isScrolled ? '60px' : '90px',
                   width: isScrolled ? '160px' : '230px',
