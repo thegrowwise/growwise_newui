@@ -635,5 +635,10 @@
     "infoModal": {
       "detailsUnavailable": "此课程暂无详细信息。"
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you are looking for doesn’t exist or may have been moved.",
+    "backToHome": "Back to home"
   }
 }

@@ -32,6 +32,7 @@ import {
 } from './workshopEvents';
 import { buildGoogleCalendarUrl, buildIcsContent } from '@/lib/programs';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
+import { BACKEND_URL } from '@/lib/config';
 
 interface CalendarDay {
   dayNum: number;
@@ -200,7 +201,7 @@ export default function WorkshopCalendar(): React.ReactElement {
       if (!validateForm() || !selectedEvent) return;
       setIsSubmitting(true);
       try {
-        const res = await fetch('/api/webinar-workshop', {
+        const res = await fetch(`${BACKEND_URL}/api/workshop-registration`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -244,7 +245,7 @@ export default function WorkshopCalendar(): React.ReactElement {
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 py-6 text-center">
-        <h1 className="text-3xl font-bold text-[#F16112]" style={{ fontFamily: 'Georgia, serif' }}>
+        <h1 className="text-3xl font-bold text-[#F16112]">
           Workshop Calendar
         </h1>
         <p className="text-gray-600 mt-1">Free Saturday Skill Workshops for Kids · GrowWise</p>
@@ -261,7 +262,7 @@ export default function WorkshopCalendar(): React.ReactElement {
             <polyline points="15 18 9 12 15 6" />
           </svg>
         </button>
-        <h2 className="text-2xl font-bold text-gray-800 min-w-[200px] text-center" style={{ fontFamily: 'Georgia, serif' }}>
+        <h2 className="text-2xl font-bold text-gray-800 min-w-[200px] text-center">
           {WORKSHOP_MONTHS[currentMonth]} {currentYear}
         </h2>
         <button
@@ -512,7 +513,7 @@ export default function WorkshopCalendar(): React.ReactElement {
                         <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Georgia, serif' }}>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
                       You&apos;re Registered
                     </h3>
                     <p className="text-gray-600 mb-5">We&apos;ve saved a spot. Check your email for confirmation.</p>
