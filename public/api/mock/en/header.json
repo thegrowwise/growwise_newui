@@ -232,7 +232,7 @@
         "title": "Courses",
         "description": "Browse our academic courses",
         "icon": "BookOpen",
-        "href": "/courses",
+        "href": "/academic",
         "gradient": "from-[#1F396D] to-[#F16112]"
       },
       {
