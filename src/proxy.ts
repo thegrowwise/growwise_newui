@@ -1,6 +1,6 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest } from 'next/server';
-import { ENABLED_LOCALES, DEFAULT_LOCALE } from './i18n/localeConfig';
+import { NextRequest, NextResponse } from 'next/server';
+import { AVAILABLE_LOCALES, ENABLED_LOCALES, DEFAULT_LOCALE } from './i18n/localeConfig';
 
 const intlMiddleware = createMiddleware({
   // Use centralized locale configuration
@@ -13,8 +13,25 @@ const intlMiddleware = createMiddleware({
   localePrefix: 'always'
 });
 
+const DISABLED_LOCALES = AVAILABLE_LOCALES.filter(
+  locale => !ENABLED_LOCALES.includes(locale)
+);
+
 // Export as named proxy function for Next.js 16
 export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  const localeMatch = pathname.match(/^\/([a-z]{2})(\/.*)?$/);
+  if (localeMatch) {
+    const [, locale, rest = ''] = localeMatch;
+
+    if (DISABLED_LOCALES.includes(locale as (typeof DISABLED_LOCALES)[number])) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/${DEFAULT_LOCALE}${rest}`;
+      return NextResponse.redirect(url, 308);
+    }
+  }
+
   return intlMiddleware(request);
 }
 

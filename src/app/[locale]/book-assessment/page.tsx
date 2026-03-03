@@ -54,6 +54,7 @@ export default function BookAssessmentPage() {
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
   const [agreeToCommunications, setAgreeToCommunications] = useState(false);
+  const agreeToCommunicationsRef = useRef(false);
   const [formData, setFormData] = useState<FormData>({
     parentName: '',
     email: '',
@@ -222,8 +223,8 @@ export default function BookAssessmentPage() {
       errors.schedule = 'Please select a preferred schedule';
     }
     
-    // Validate communication consent
-    if (!agreeToCommunications) {
+    // Validate communication consent (use ref so we see latest value even before state has re-rendered)
+    if (!agreeToCommunicationsRef.current) {
       errors.agreeToCommunications = t('commonForm.privacy.agreeError');
     }
     
@@ -231,7 +232,7 @@ export default function BookAssessmentPage() {
     setPhoneError(errors.phone || null);
     
     return { isValid: Object.keys(errors).length === 0, errors };
-  }, [formData, agreeToCommunications]);
+  }, [formData, t]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -332,6 +333,7 @@ export default function BookAssessmentPage() {
             notes: ''
           });
           setAgreeToCommunications(false);
+          agreeToCommunicationsRef.current = false;
           setIsSubmitted(false);
         }, 5000);
       } else {
@@ -343,7 +345,7 @@ export default function BookAssessmentPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData]);
+  }, [formData, validateForm]);
 
   const assessmentFeatures = [
     { icon: FileText, title: 'Detailed Report', description: 'Comprehensive analysis of strengths and growth areas', color: 'from-blue-500 to-blue-600', stats: '15+ Pages' },
@@ -652,6 +654,7 @@ export default function BookAssessmentPage() {
                       checkboxId="agreeToCommunications"
                       checked={agreeToCommunications}
                       onCheckedChange={(checked) => {
+                        agreeToCommunicationsRef.current = checked;
                         setAgreeToCommunications(checked);
                         if (checked && formErrors.agreeToCommunications) {
                           setFormErrors((prev) => {
