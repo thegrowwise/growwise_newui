@@ -5,6 +5,7 @@
 
 import { Metadata } from 'next'
 import { CONTACT_INFO } from '@/lib/constants'
+import { ENABLED_LOCALES } from '@/i18n/localeConfig'
 import { getMetadataConfig, PageMetadataConfig } from './metadataConfig'
 
 interface PageMetadataOptions {
@@ -62,6 +63,13 @@ export function generatePageMetadata({
 }: PageMetadataOptions): Metadata {
   const baseUrl = 'https://growwiseschool.org'
   const url = `${baseUrl}/${locale}${path}`
+
+  const languagesAlternates = Object.fromEntries(
+    ENABLED_LOCALES.map(enabledLocale => [
+      enabledLocale,
+      `${baseUrl}/${enabledLocale}${path}`,
+    ])
+  )
   
   // Default keywords if not provided
   const defaultKeywords = [
@@ -107,12 +115,7 @@ export function generatePageMetadata({
     },
     alternates: {
       canonical: url,
-      languages: {
-        'en': `${baseUrl}/en${path}`,
-        'es': `${baseUrl}/es${path}`,
-        'hi': `${baseUrl}/hi${path}`,
-        'zh': `${baseUrl}/zh${path}`,
-      },
+      languages: languagesAlternates,
     },
     robots: {
       index: true,
