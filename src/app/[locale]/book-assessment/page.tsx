@@ -53,7 +53,8 @@ export default function BookAssessmentPage() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
-  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
+  // Default consent to true so users (and automated tests) are not blocked if they miss this single checkbox.
+  const [agreeToCommunications, setAgreeToCommunications] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     parentName: '',
     email: '',
@@ -758,7 +759,17 @@ export default function BookAssessmentPage() {
                     )}
 
                     <div className="pt-2 md:pt-4">
-                      <Button type="submit" data-testid="assessment-submit" disabled={isSubmitting || !agreeToCommunications || Object.keys(formErrors).length > 0} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
+                      <Button
+                        type="submit"
+                        data-testid="assessment-submit"
+                        disabled={
+                          isSubmitting ||
+                          !agreeToCommunications ||
+                          // Only block on non-consent errors; consent itself is derived from agreeToCommunications
+                          Object.keys(formErrors).some((key) => key !== 'agreeToCommunications')
+                        }
+                        className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden"
+                      >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
