@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -77,9 +77,7 @@ export default function Header() {
 
       {/* Main Navigation */}
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
-        <div 
-          className="header-mainrow flex-wrap lg:flex-nowrap" 
-        >
+        <div className="header-mainrow flex-wrap lg:flex-nowrap">
           {/* Logo — flex-shrink-0 keeps the logo visible when nav is long */}
           <div className="flex items-center flex-shrink-0">
             <Link href={createLocaleUrlHelper('/')} className="cursor-pointer" aria-label="GrowWise home">

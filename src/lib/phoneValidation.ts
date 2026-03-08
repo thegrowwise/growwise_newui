@@ -354,6 +354,62 @@ export function validatePhone(
 }
 
 /**
+ * Simple phone validation for forms without a country-code selector.
+ * Accepts national or international formats: 7-16 digits, optionally prefixed with "+".
+ */
+export function validatePhoneSimple(rawInput: string): { isValid: boolean; errorMessage: string | null } {
+  const trimmed = rawInput.trim();
+  if (!trimmed) {
+    return { isValid: false, errorMessage: 'Phone number is required' };
+  }
+
+  const cleaned = trimmed.replace(/[\s\-\(\)\.]/g, '');
+  if (!/^[\+]?[1-9][\d]{0,15}$/.test(cleaned)) {
+    return { isValid: false, errorMessage: 'Please enter a valid phone number' };
+  }
+
+  const digitsOnly = cleaned.replace(/\D/g, '');
+  if (digitsOnly.length < 7) {
+    return { isValid: false, errorMessage: 'Phone number is too short' };
+  }
+
+  return { isValid: true, errorMessage: null };
+}
+
+/**
+ * Validate phone number using country-specific rules if a country code is provided,
+ * otherwise fall back to simple validation.
+ */
+export function validatePhoneWithCountryCode(
+  dialCode: string,
+  rawNationalInput: string
+): ValidationResult {
+  const iso2 = DIAL_CODE_TO_ISO2[dialCode];
+  if (iso2) {
+    return validatePhone(iso2, rawNationalInput);
+  }
+  const simple = validatePhoneSimple(rawNationalInput);
+  return {
+    isValid: simple.isValid,
+    e164: simple.isValid ? `${dialCode}${rawNationalInput.replace(/\D/g, '')}` : null,
+    nationalNumber: rawNationalInput.replace(/\D/g, '') || null,
+    callingCode: dialCode,
+    errorMessage: simple.errorMessage,
+  };
+}
+
+export const DIAL_CODE_TO_ISO2: Record<string, string> = {
+  '+1': 'US',
+  '+91': 'IN',
+  '+44': 'GB',
+  '+971': 'AE',
+  '+65': 'SG',
+  '+61': 'AU',
+  '+49': 'DE',
+  '+33': 'FR',
+};
+
+/**
  * Get example placeholder for a country (national number only)
  */
 export function getPhonePlaceholder(countryIso2: string | null | undefined): string {

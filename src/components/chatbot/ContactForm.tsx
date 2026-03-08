@@ -8,6 +8,7 @@ import { Label } from '../ui/label';
 import { Card, CardContent } from '../ui/card';
 import { Mail, Phone, User, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { validatePhoneSimple } from '@/lib/phoneValidation';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface ContactFormProps {
@@ -69,10 +70,9 @@ export default function ContactForm({
       errors.email = 'Please enter a valid email address';
     }
 
-    if (!formData?.phone?.trim()) {
-      errors.phone = 'Phone number is required';
-    } else if (!/^[\+]?[1-9][\d]{0,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) {
-      errors.phone = 'Please enter a valid phone number';
+    const phoneResult = validatePhoneSimple(formData?.phone || '');
+    if (!phoneResult.isValid) {
+      errors.phone = phoneResult.errorMessage || 'Please enter a valid phone number';
     }
 
     if (!agreeToCommunications) {

@@ -140,7 +140,7 @@ export function HeroSection({
           {/* soft inner shine */}
           <span className="pointer-events-none absolute inset-[1px] rounded-full bg-gradient-to-b from-white/80 via-white/10 to-transparent opacity-90"></span>
           <CalendarCheck className="w-5 h-5 text-[#1F396D] group-hover:animate-bounce" />
-          <span className="font-semibold text-base md:text-lg whitespace-nowrap tracking-wide text-[#111827]">
+          <span className="font-semibold text-sm whitespace-nowrap tracking-wide text-[#111827]">
             Book Workshop/Webinar
           </span>
         </Link>

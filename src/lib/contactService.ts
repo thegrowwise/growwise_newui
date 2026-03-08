@@ -1,5 +1,6 @@
 import { ContactFormData } from '@/components/chatbot/ContactForm';
 import { BACKEND_URL } from './config';
+import { validatePhoneSimple } from './phoneValidation';
 
 export interface ContactSubmissionResult {
   success: boolean;
@@ -121,10 +122,9 @@ export class ContactService {
       errors.email = 'Please enter a valid email address';
     }
 
-    if (!data.phone?.trim()) {
-      errors.phone = 'Phone number is required';
-    } else if (!/^[\+]?[1-9][\d]{0,15}$/.test(data.phone.replace(/[\s\-\(\)]/g, ''))) {
-      errors.phone = 'Please enter a valid phone number';
+    const phoneResult = validatePhoneSimple(data.phone || '');
+    if (!phoneResult.isValid) {
+      errors.phone = phoneResult.errorMessage || 'Please enter a valid phone number';
     }
 
     return {
