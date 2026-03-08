@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { validatePhoneSimple } from '@/lib/phoneValidation';
 
 interface AssessmentFormData {
   parentName: string;
@@ -54,14 +55,12 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate phone format (basic validation - can be enhanced with phone validation utility)
-    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
-    if (!phoneRegex.test(cleanPhone)) {
+    const phoneResult = validatePhoneSimple(phone);
+    if (!phoneResult.isValid) {
       return NextResponse.json(
         { 
           success: false,
-          error: 'Invalid phone format' 
+          error: phoneResult.errorMessage 
         },
         { status: 400 }
       );

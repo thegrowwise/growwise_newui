@@ -14,6 +14,7 @@ import { Checkbox } from './checkbox';
 import { Card, CardContent } from './card';
 import CountryCodeSelector from '../CountryCodeSelector';
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { validatePhoneWithCountryCode } from '@/lib/phoneValidation';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface BookTrialModalProps {
@@ -54,6 +55,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [agreeToCommunications, setAgreeToCommunications] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   // A. Remove Kindergarten from Grades
   const grades = [
@@ -73,6 +75,24 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (field === 'phone') setPhoneError(null);
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.phone.trim()) {
+      const result = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
+      setPhoneError(result.errorMessage);
+    } else {
+      setPhoneError(null);
+    }
+  };
+
+  const handleCountryCodeChange = (dialCode: string) => {
+    handleInputChange('countryCode', dialCode);
+    if (formData.phone.trim()) {
+      const result = validatePhoneWithCountryCode(dialCode, formData.phone);
+      setPhoneError(result.errorMessage);
+    }
   };
 
   const handleSubjectChange = (subject: string, checked: boolean) => {
@@ -86,6 +106,13 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const phoneResult = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
+    if (!phoneResult.isValid) {
+      setPhoneError(phoneResult.errorMessage);
+      return;
+    }
+
     setIsSubmitting(true);
 
     // Simulate API call
@@ -112,6 +139,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
     setIsSubmitted(false);
     setIsSubmitting(false);
     setAgreeToCommunications(false);
+    setPhoneError(null);
     onClose();
   };
 
@@ -183,7 +211,7 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                         <div className="flex items-stretch relative">
                           <CountryCodeSelector
                             value={formData.countryCode}
-                            onChange={(countryCode) => handleInputChange('countryCode', countryCode)}
+                            onChange={handleCountryCodeChange}
                             className="flex-shrink-0"
                           />
                           <div className="w-px h-10 bg-gray-300 flex-shrink-0"></div>
@@ -192,11 +220,15 @@ const BookTrialModal: React.FC<BookTrialModalProps> = ({ isOpen, onClose }) => {
                             type="tel"
                             value={formData.phone}
                             onChange={(e) => handleInputChange('phone', e.target.value)}
-                            className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-r-xl rounded-l-none focus:border-[#F16112] transition-colors flex-1 border-l-0 h-10"
+                            onBlur={handlePhoneBlur}
+                            className={`bg-white/80 backdrop-blur-xl border-2 rounded-r-xl rounded-l-none focus:border-[#F16112] transition-colors flex-1 border-l-0 h-10 ${phoneError ? 'border-red-500' : 'border-gray-200'}`}
                             placeholder={PHONE_PLACEHOLDER}
                             required
                           />
                         </div>
+                        {phoneError && (
+                          <p className="text-sm text-red-600" role="alert">{phoneError}</p>
+                        )}
                       </div>
                     </div>
 

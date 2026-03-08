@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { GraduationCap, Users, Star, Send, Target, Clock, Award, Shield } from "lucide-react";
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { validatePhoneSimple } from '@/lib/phoneValidation';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface EnrollFormData {
@@ -28,6 +29,7 @@ interface EnrollFormData {
 export default function EnrollAcademicPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
   const [formData, setFormData] = useState<EnrollFormData>({
     parentName: "",
     studentName: "",
@@ -65,10 +67,27 @@ export default function EnrollAcademicPage() {
 
   const handleInputChange = (field: keyof EnrollFormData, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    if (field === 'mobilePhone') setPhoneError(null);
+  };
+
+  const handlePhoneBlur = () => {
+    if (formData.mobilePhone.trim()) {
+      const result = validatePhoneSimple(formData.mobilePhone);
+      setPhoneError(result.errorMessage);
+    } else {
+      setPhoneError(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const phoneResult = validatePhoneSimple(formData.mobilePhone);
+    if (!phoneResult.isValid) {
+      setPhoneError(phoneResult.errorMessage);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -274,7 +293,19 @@ export default function EnrollAcademicPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="mobilePhone">Mobile Phone Number <span className="text-red-500">*</span></Label>
-                        <Input id="mobilePhone" type="tel" value={formData.mobilePhone} onChange={(e) => handleInputChange("mobilePhone", e.target.value)} placeholder={PHONE_PLACEHOLDER} required />
+                        <Input
+                          id="mobilePhone"
+                          type="tel"
+                          value={formData.mobilePhone}
+                          onChange={(e) => handleInputChange("mobilePhone", e.target.value)}
+                          onBlur={handlePhoneBlur}
+                          className={phoneError ? 'border-red-500' : ''}
+                          placeholder={PHONE_PLACEHOLDER}
+                          required
+                        />
+                        {phoneError && (
+                          <p className="text-sm text-red-600" role="alert">{phoneError}</p>
+                        )}
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>

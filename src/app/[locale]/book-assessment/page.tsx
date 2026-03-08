@@ -25,7 +25,7 @@ import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { validatePhone, getPhonePlaceholder, getCallingCode } from '@/lib/phoneValidation';
+import { validatePhoneWithCountryCode, getPhonePlaceholder, getCallingCode, DIAL_CODE_TO_ISO2 } from '@/lib/phoneValidation';
 
 interface FormData {
   parentName: string;
@@ -96,26 +96,9 @@ export default function BookAssessmentPage() {
     { value: 'Complete Academic Assessment', icon: '🎓', label: '(English + Maths) Complete Academic Assessment' }
   ];
 
-  // Map dial code to ISO2 country code
-  const dialCodeToIso2: Record<string, string> = {
-    '+1': 'US', // Default to US for +1 (could be CA too)
-    '+91': 'IN',
-    '+44': 'GB',
-    '+971': 'AE',
-    '+65': 'SG',
-    '+61': 'AU',
-    '+49': 'DE',
-    '+33': 'FR'
-  };
-
-  const getCountryIso2 = (dialCode: string): string => {
-    return dialCodeToIso2[dialCode] || 'US';
-  };
-
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
-    // Clear errors when user starts typing
     if (formErrors[field]) {
       setFormErrors(prev => {
         const newErrors = { ...prev };
@@ -124,7 +107,6 @@ export default function BookAssessmentPage() {
       });
     }
     
-    // Clear phone error when user starts typing
     if (field === 'phone' && phoneError) {
       setPhoneError(null);
     }
@@ -132,8 +114,7 @@ export default function BookAssessmentPage() {
 
   const handlePhoneBlur = () => {
     if (formData.phone.trim()) {
-      const countryIso2 = getCountryIso2(formData.countryCode);
-      const result = validatePhone(countryIso2, formData.phone);
+      const result = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
       setPhoneError(result.errorMessage);
     } else {
       setPhoneError(null);
@@ -142,10 +123,8 @@ export default function BookAssessmentPage() {
 
   const handleCountryCodeChange = (dialCode: string) => {
     handleInputChange('countryCode', dialCode);
-    // Re-validate phone when country changes
     if (formData.phone.trim()) {
-      const countryIso2 = getCountryIso2(dialCode);
-      const result = validatePhone(countryIso2, formData.phone);
+      const result = validatePhoneWithCountryCode(dialCode, formData.phone);
       setPhoneError(result.errorMessage);
     }
   };
@@ -190,9 +169,7 @@ export default function BookAssessmentPage() {
       }
     }
     
-    // Validate phone
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
     if (!phoneValidation.isValid) {
       errors.phone = phoneValidation.errorMessage || 'Phone number is invalid';
     }
@@ -275,9 +252,7 @@ export default function BookAssessmentPage() {
     setFormErrors({});
     setPhoneError(null);
     
-    // Validate phone and get E.164 format
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
     
     setIsSubmitting(true);
 
@@ -510,7 +485,7 @@ export default function BookAssessmentPage() {
                               "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
                               phoneError && "text-red-600"
                             ).trim()} 
-                            placeholder={getPhonePlaceholder(getCountryIso2(formData.countryCode))} 
+                            placeholder={getPhonePlaceholder(DIAL_CODE_TO_ISO2[formData.countryCode])} 
                             required
                             suppressHydrationWarning
                           />
