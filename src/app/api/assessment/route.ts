@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
 
-
 interface AssessmentFormData {
   parentName: string;
   email: string;
