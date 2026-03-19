@@ -13,6 +13,7 @@ import { GraduationCap, Users, Star, Send, Target, Clock, Award, Shield } from "
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
+import { getRecaptchaToken } from '@/lib/recaptcha';
 
 interface EnrollFormData {
   parentName: string;
@@ -91,6 +92,8 @@ export default function EnrollAcademicPage() {
     setIsSubmitting(true);
 
     try {
+      const recaptchaToken = await getRecaptchaToken('enroll_academic_submit');
+
       // Map form data to backend API format
       const enrollmentData = {
         fullName: formData.studentName || formData.parentName, // Use student name, fallback to parent name
@@ -101,7 +104,8 @@ export default function EnrollAcademicPage() {
         bootcamp: 'None', // Not used in academic enrollment
         course: formData.subject || 'None', // Map subject to course
         level: formData.grade || 'Not specified', // Map grade to level
-        agree: formData.agreeToContact
+        agree: formData.agreeToContact,
+        recaptchaToken: recaptchaToken || undefined,
       };
 
       // Validate required fields
