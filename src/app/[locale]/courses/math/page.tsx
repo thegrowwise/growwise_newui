@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,24 +9,62 @@ import { Calculator, Clock, Users, Star, Filter, ShoppingCart, CheckCircle, Awar
 import { mathCourses } from '@/data/mathCourses';
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
-import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
-import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
-import ClientOnly from '@/components/providers/ClientOnly';
 import HydrationBoundary from '@/components/HydrationBoundary';
-import DynamicWrapper from '@/components/DynamicWrapper';
-import MathSymbolsBackground from '@/components/MathSymbolsBackground';
 import CourseCard from '@/components/CourseCard';
-import { useTouchDetection } from '@/hooks/useHydration';
 import { useTranslations, useLocale } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
-import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
-import { RelatedContent } from '@/components/seo/RelatedContent';
-import { CourseFAQ } from '@/components/seo/CourseFAQ';
+import type { MathCourse } from '@/data/mathCourses';
+
+// Dynamically load heavier, below-the-fold components to reduce initial JS and improve LCP
+const DynamicWrapper = dynamic(() => import('@/components/DynamicWrapper'), {
+  ssr: false,
+  loading: () => null,
+});
+
+const MathSymbolsBackground = dynamic(
+  () => import('@/components/MathSymbolsBackground'),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+const CourseCustomizationModal = dynamic(
+  () => import('@/components/gw/CourseCustomizationModal'),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+const FreeAssessmentModal = dynamic(
+  () => import('@/components/FreeAssessmentModal'),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+const RelatedContent = dynamic(
+  () => import('@/components/seo/RelatedContent').then((m) => m.RelatedContent),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
+
+const CourseFAQ = dynamic(
+  () => import('@/components/seo/CourseFAQ').then((m) => m.CourseFAQ),
+  {
+    ssr: false,
+    loading: () => null,
+  }
+);
 
 // Component that handles search params - wrapped separately for Suspense
 function SearchParamsHandler({ 
@@ -74,7 +113,7 @@ const MathCoursesPage: React.FC = () => {
   // hoveredCourse state moved to CourseCard component
   const [scrollY, setScrollY] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [selectedCourse, setSelectedCourse] = useState<MathCourse | null>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
 

@@ -804,60 +804,6 @@ function EnglishCoursesContent() {
         </div>
       </section>
 
-      {/* Success Stories Section */}
-      <section className="py-16 px-4 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Student <span className="text-orange-600">Success Stories</span>
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Real results from our English programs - see how students have transformed their skills
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {englishCoursesLoading ? (
-              <div className="col-span-full text-center py-8">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#F16112]"></div>
-                <p className="mt-2 text-gray-600">Loading success stories...</p>
-              </div>
-            ) : (englishCoursesData?.successStories ?? []).length > 0 ? (englishCoursesData?.successStories?.map((story, index) => (
-              <Card key={index} className="bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-100 hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-4">
-                    <img
-                      src={story.image}
-                      alt={story.name}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-lg"
-                    />
-                    <div>
-                      <h3 className="font-bold text-gray-900">{story.name}</h3>
-                      <p className="text-sm text-gray-600">{story.grade}</p>
-                      <p className="text-xs text-orange-600 font-semibold">{story.course}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-semibold mb-3">
-                      <CheckCircle className="w-4 h-4" />
-                      {story.improvement}
-                    </div>
-                  </div>
-                  
-                  <blockquote className="text-gray-700 italic leading-relaxed">
-                    "{story.quote}"
-                  </blockquote>
-                </CardContent>
-              </Card>
-            ))) : (
-              <div className="col-span-full text-center py-8">
-                <p className="text-gray-600">No success stories available at the moment.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
       {/* Program Highlights Section */}
       <section className="py-16 px-4 lg:px-8 bg-gray-50">

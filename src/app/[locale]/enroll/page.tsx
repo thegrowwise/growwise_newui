@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, CheckCircle, AlertCircle, User, Mail, Phone as PhoneIcon, GraduationCap, MapPin, Target, BookOpen, Code } from 'lucide-react';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useFormTracking, usePageTracking } from '@/lib/analytics/hooks';
 import { TrackedForm } from '@/lib/analytics/components';
 
@@ -289,24 +290,14 @@ export default function EnrollPage() {
             </div>
           </div>
 
-          <div className="mt-6">
-            <p className="text-xs text-gray-500">
-              GrowWise is committed to protecting and respecting your privacy, and we'll only use your personal
-              information to provide the products and services you requested from us. From time to time, we would
-              like to contact you about our products and services, as well as other content that may be of interest to you.
-            </p>
-          </div>
-
-          <div className="mt-4 flex items-start gap-2">
-            <Checkbox id="agree" checked={agree} onCheckedChange={handleAgreeChange} />
-            <Label htmlFor="agree" className="text-sm text-gray-700">I agree to receive communications from GrowWise.</Label>
-          </div>
-
-          <div className="mt-2">
-            <p className="text-xs text-gray-500">
-              By clicking submit below, you consent to allow GrowWise to store and process the personal information submitted above to provide you the content requested.
-            </p>
-          </div>
+          <FormPrivacyConsent
+            checkboxId="enroll-agree"
+            checked={agree}
+            onCheckedChange={handleAgreeChange}
+            required
+            showSubmitDisclaimer
+            className="mt-6"
+          />
 
           <div className="mt-8 flex justify-center">
             <Button 

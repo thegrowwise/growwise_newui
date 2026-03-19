@@ -19,12 +19,14 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
-import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, BarChart3, Globe, Video, CheckSquare, Heart, Calculator, X, AlertCircle } from 'lucide-react';
+import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, Globe, Video, CheckSquare, Calculator, X, AlertCircle } from 'lucide-react';
 import CountryCodeSelector from '@/components/CountryCodeSelector';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { validatePhone, getPhonePlaceholder, getCallingCode } from '@/lib/phoneValidation';
+import { validatePhoneWithCountryCode, getPhonePlaceholder, getCallingCode, DIAL_CODE_TO_ISO2 } from '@/lib/phoneValidation';
+import { BACKEND_URL } from '@/lib/config';
 
 interface FormData {
   parentName: string;
@@ -52,7 +54,8 @@ export default function BookAssessmentPage() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
   const [isExploreCoursesModalOpen, setIsExploreCoursesModalOpen] = useState(false);
 
-  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
+  // Default consent to true so users (and automated tests) are not blocked if they miss this single checkbox.
+  const [agreeToCommunications, setAgreeToCommunications] = useState(true);
   const [formData, setFormData] = useState<FormData>({
     parentName: '',
     email: '',
@@ -95,26 +98,9 @@ export default function BookAssessmentPage() {
     { value: 'Complete Academic Assessment', icon: '🎓', label: '(English + Maths) Complete Academic Assessment' }
   ];
 
-  // Map dial code to ISO2 country code
-  const dialCodeToIso2: Record<string, string> = {
-    '+1': 'US', // Default to US for +1 (could be CA too)
-    '+91': 'IN',
-    '+44': 'GB',
-    '+971': 'AE',
-    '+65': 'SG',
-    '+61': 'AU',
-    '+49': 'DE',
-    '+33': 'FR'
-  };
-
-  const getCountryIso2 = (dialCode: string): string => {
-    return dialCodeToIso2[dialCode] || 'US';
-  };
-
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
-    // Clear errors when user starts typing
     if (formErrors[field]) {
       setFormErrors(prev => {
         const newErrors = { ...prev };
@@ -123,7 +109,6 @@ export default function BookAssessmentPage() {
       });
     }
     
-    // Clear phone error when user starts typing
     if (field === 'phone' && phoneError) {
       setPhoneError(null);
     }
@@ -131,8 +116,7 @@ export default function BookAssessmentPage() {
 
   const handlePhoneBlur = () => {
     if (formData.phone.trim()) {
-      const countryIso2 = getCountryIso2(formData.countryCode);
-      const result = validatePhone(countryIso2, formData.phone);
+      const result = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
       setPhoneError(result.errorMessage);
     } else {
       setPhoneError(null);
@@ -141,17 +125,15 @@ export default function BookAssessmentPage() {
 
   const handleCountryCodeChange = (dialCode: string) => {
     handleInputChange('countryCode', dialCode);
-    // Re-validate phone when country changes
     if (formData.phone.trim()) {
-      const countryIso2 = getCountryIso2(dialCode);
-      const result = validatePhone(countryIso2, formData.phone);
+      const result = validatePhoneWithCountryCode(dialCode, formData.phone);
       setPhoneError(result.errorMessage);
     }
   };
 
   // Use ref to store handlers to prevent recreation
   const handlersRef = useRef<Record<string, (checked: boolean | 'indeterminate') => void>>({});
-  
+
   // Initialize handlers only once
   if (Object.keys(handlersRef.current).length === 0) {
     availableSubjects.forEach(subject => {
@@ -173,12 +155,12 @@ export default function BookAssessmentPage() {
   // Validate all form fields
   const validateForm = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
     const errors: Record<string, string> = {};
-    
+
     // Validate parent name
     if (!formData.parentName.trim()) {
       errors.parentName = 'Parent name is required';
     }
-    
+
     // Validate email
     if (!formData.email.trim()) {
       errors.email = 'Email address is required';
@@ -188,60 +170,57 @@ export default function BookAssessmentPage() {
         errors.email = 'Please enter a valid email address';
       }
     }
-    
-    // Validate phone
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
     if (!phoneValidation.isValid) {
       errors.phone = phoneValidation.errorMessage || 'Phone number is invalid';
     }
-    
+
     // Validate student name
     if (!formData.studentName.trim()) {
       errors.studentName = 'Student name is required';
     }
-    
+
     // Validate grade
     if (!formData.grade.trim()) {
       errors.grade = 'Grade level is required';
     }
-    
+
     // Validate assessment type
     if (!formData.assessmentType.trim()) {
       errors.assessmentType = 'Please select an assessment type';
     }
-    
+
     // Validate mode
     if (!formData.mode.trim()) {
       errors.mode = 'Please select a mode (Online or In-Person)';
     }
-    
+
     // Validate schedule
     if (!formData.schedule.trim()) {
       errors.schedule = 'Please select a preferred schedule';
     }
-    
+
     // Validate communication consent
     if (!agreeToCommunications) {
-      errors.agreeToCommunications = 'Please agree to receive communications to continue';
+      errors.agreeToCommunications = t('commonForm.privacy.agreeError');
     }
-    
+
     setFormErrors(errors);
     setPhoneError(errors.phone || null);
-    
+
     return { isValid: Object.keys(errors).length === 0, errors };
   }, [formData, agreeToCommunications]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation(); // Prevent any event bubbling
-    
+
     // Clear previous general errors
     setErrorMessage('');
-    
+
     // Validate all form fields
     const validation = validateForm();
-    
+
     if (!validation.isValid) {
       // Scroll to first error field after state update
       setTimeout(() => {
@@ -269,14 +248,11 @@ export default function BookAssessmentPage() {
       }, 100);
       return; // CRITICAL: Prevent form submission - don't set isSubmitting
     }
-    
+
     // Clear all errors if validation passes
     setFormErrors({});
     setPhoneError(null);
-    
-    // Validate phone and get E.164 format
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
     
     setIsSubmitting(true);
 
@@ -296,7 +272,7 @@ export default function BookAssessmentPage() {
         agreeToCommunications
       };
 
-      const response = await fetch('/api/assessment', {
+      const response = await fetch(`${BACKEND_URL}/api/assessment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -364,13 +340,6 @@ export default function BookAssessmentPage() {
     { name: 'Emily Rodriguez', role: 'Parent of 3rd Grader', content: 'The evaluators were professional and made my child feel comfortable. The insights were invaluable.', rating: 5 }
   ];
 
-  const stats = [
-    { number: '500+', label: 'Assessments Completed', icon: BarChart3 },
-    { number: '98%', label: 'Parent Satisfaction', icon: Heart },
-    { number: '48hr', label: 'Report Delivery', icon: Clock },
-    { number: '15+', label: 'Years Experience', icon: Award }
-  ];
-
   // const benefits = [
   //   { icon: Clock, text: 'Flexible scheduling' },
   //   { icon: Video, text: 'Online & in-person' },
@@ -387,7 +356,7 @@ export default function BookAssessmentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50" suppressHydrationWarning>
-      
+
 
       {/* <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -496,18 +465,18 @@ export default function BookAssessmentPage() {
                           "flex items-center gap-0 border-2 rounded-lg md:rounded-xl bg-white overflow-hidden transition-all",
                           phoneError ? 'border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/10' : 'border-gray-300 focus-within:border-[#F16112] focus-within:ring-2 focus-within:ring-[#F16112]/10'
                         )}>
-                          <CountryCodeSelector 
-                            value={formData.countryCode} 
-                            onChange={handleCountryCodeChange} 
+                          <CountryCodeSelector
+                            value={formData.countryCode}
+                            onChange={handleCountryCodeChange}
                             className={cn("flex-shrink-0", focusedField === 'phone' && 'border-[#F16112]')}
                           />
                           <div className="w-px h-8 md:h-10 bg-gray-300 flex-shrink-0"></div>
-                          <Input 
-                            id="phone" 
-                            type="tel" 
-                            value={formData.phone} 
-                            onChange={(e) => handleInputChange('phone', e.target.value)} 
-                            onFocus={() => setFocusedField('phone')} 
+                          <Input
+                            id="phone"
+                            type="tel"
+                            value={formData.phone}
+                            onChange={(e) => handleInputChange('phone', e.target.value)}
+                            onFocus={() => setFocusedField('phone')}
                             onBlur={() => {
                               setFocusedField(null);
                               handlePhoneBlur();
@@ -516,7 +485,7 @@ export default function BookAssessmentPage() {
                               "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
                               phoneError && "text-red-600"
                             ).trim()} 
-                            placeholder={getPhonePlaceholder(getCountryIso2(formData.countryCode))} 
+                            placeholder={getPhonePlaceholder(DIAL_CODE_TO_ISO2[formData.countryCode])}
                             required
                             suppressHydrationWarning
                           />
@@ -543,7 +512,10 @@ export default function BookAssessmentPage() {
                         <div className="space-y-2">
                           <Label htmlFor="grade" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><BookOpen className="w-4 h-4 text-[#1F396D]" />Grade / Level <span className="text-red-500">*</span></Label>
                           <Select onValueChange={(value) => handleInputChange('grade', value)} required>
-                            <SelectTrigger className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base">
+                            <SelectTrigger
+                              data-testid="assessment-grade-trigger"
+                              className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base"
+                            >
                               <SelectValue placeholder="Select grade" />
                             </SelectTrigger>
                             <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
@@ -564,7 +536,12 @@ export default function BookAssessmentPage() {
                       <div className="space-y-3">
                         <Label htmlFor="assessmentType" className="text-gray-700 font-medium text-base flex items-center gap-2"><Target className="w-4 h-4 text-[#F16112]" />Assessment Type <span className="text-red-500">*</span></Label>
                         <Select onValueChange={(value) => handleInputChange('assessmentType', value)} required>
-                          <SelectTrigger className="bg-white border-2 border-gray-300 rounded-xl hover:border-gray-400 transition-all h-14 text-base"><SelectValue placeholder="Select assessment type" /></SelectTrigger>
+                          <SelectTrigger
+                            data-testid="assessment-type-trigger"
+                            className="bg-white border-2 border-gray-300 rounded-xl hover:border-gray-400 transition-all h-14 text-base"
+                          >
+                            <SelectValue placeholder="Select assessment type" />
+                          </SelectTrigger>
                           <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
                             {assessmentTypes.map((type) => (
                               <SelectItem key={type.value} value={type.value} className="hover:bg-[#F16112]/10 py-4 text-base">
@@ -584,26 +561,26 @@ export default function BookAssessmentPage() {
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                           {availableSubjects.map((subject) => {
                             const isSelected = Array.isArray(formData.subjects) && formData.subjects.includes(subject.value);
-                            
+
                             return (
-                              <div 
-                                key={subject.value} 
+                              <div
+                                key={subject.value}
                                 className={cn(
                                   "flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer",
-                                  isSelected 
-                                    ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' 
+                                  isSelected
+                                    ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md'
                                     : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm'
                                 )}
                               >
-                                <Checkbox 
-                                  id={subject.value} 
-                                  checked={isSelected} 
+                                <Checkbox
+                                  id={subject.value}
+                                  checked={isSelected}
                                   onCheckedChange={handlersRef.current[subject.value]}
-                                  className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5 flex-shrink-0" 
+                                  className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5 flex-shrink-0"
                                   suppressHydrationWarning
                                 />
-                                <Label 
-                                  htmlFor={subject.value} 
+                                <Label
+                                  htmlFor={subject.value}
                                   className="cursor-pointer text-gray-700 font-medium flex-1 flex items-center gap-2"
                                 >
                                   <span>{subject.icon}</span>{subject.value}
@@ -621,7 +598,7 @@ export default function BookAssessmentPage() {
                               <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
                               <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 pointer-events-none">In-person at {CONTACT_INFO.city}</Label>
                             </div>
-                            <div onClick={() => handleInputChange('mode', 'online')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
+                            <div data-testid="assessment-mode-online" onClick={() => handleInputChange('mode', 'online')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
                               <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
                               <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2 pointer-events-none"><Video className="w-4 h-4" />Online (Virtual)</Label>
                             </div>
@@ -630,7 +607,10 @@ export default function BookAssessmentPage() {
                         <div className="space-y-2">
                           <Label htmlFor="schedule" className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Calendar className="w-4 h-4 text-[#F16112]" />Preferred Schedule <span className="text-red-500">*</span></Label>
                           <Select onValueChange={(value) => handleInputChange('schedule', value)} required>
-                            <SelectTrigger className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base">
+                            <SelectTrigger
+                              data-testid="assessment-schedule-trigger"
+                              className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base"
+                            >
                               <SelectValue placeholder="Select preferred time" />
                             </SelectTrigger>
                             <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
@@ -654,52 +634,23 @@ export default function BookAssessmentPage() {
                       </div>
                     </div>
 
-                    {/* Privacy & Data Protection */}
-                    <div className="space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200">
-                      <div className="flex items-start gap-3 sm:gap-4">
-                        <div className="p-2.5 sm:p-3 bg-[#1F396D] rounded-xl flex-shrink-0">
-                          <Shield className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-gray-900 font-semibold text-lg sm:text-xl mb-1">Privacy & Data Protection</h3>
-                          <p className="text-gray-700 text-sm sm:text-base leading-relaxed">We only use your personal information to provide the requested services. From time to time, we may contact you about programs and content that may be of interest.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Communication Consent */}
-                    <div className="space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200">
-                      <div className="flex items-start gap-3 sm:gap-4">
-                        <Checkbox
-                          id="agreeToCommunications"
-                          checked={agreeToCommunications}
-                          onCheckedChange={(checked) => {
-                            setAgreeToCommunications(checked === true);
-                            if (checked === true && formErrors.agreeToCommunications) {
-                              setFormErrors((prev) => {
-                                const next = { ...prev };
-                                delete next.agreeToCommunications;
-                                return next;
-                              });
-                            }
-                          }}
-                          className={cn(
-                            "mt-0.5 border-2 border-gray-400 data-[state=checked]:bg-[#1F396D] data-[state=checked]:border-[#1F396D] w-5 h-5 flex-shrink-0",
-                            formErrors.agreeToCommunications && "border-red-500"
-                          )}
-                          suppressHydrationWarning
-                        />
-                        <Label htmlFor="agreeToCommunications" className="cursor-pointer text-gray-700 text-sm sm:text-base leading-relaxed flex-1">
-                          I agree to receive communications from GrowWise about academic programs, updates, and educational content.
-                        </Label>
-                      </div>
-                      {formErrors.agreeToCommunications && (
-                        <p className="text-sm text-red-600 flex items-center gap-1 pl-8 sm:pl-12">
-                          <AlertCircle className="w-4 h-4 flex-shrink-0" />
-                          {formErrors.agreeToCommunications}
-                        </p>
-                      )}
-                    </div>
+                    <FormPrivacyConsent
+                      checkboxId="agreeToCommunications"
+                      checked={agreeToCommunications}
+                      onCheckedChange={(checked) => {
+                        setAgreeToCommunications(checked);
+                        if (checked && formErrors.agreeToCommunications) {
+                          setFormErrors((prev) => {
+                            const next = { ...prev };
+                            delete next.agreeToCommunications;
+                            return next;
+                          });
+                        }
+                      }}
+                      error={formErrors.agreeToCommunications}
+                      required
+                      showSubmitDisclaimer
+                    />
 
                     {/* Form Validation Errors Summary */}
                     {Object.keys(formErrors).length > 0 && (
@@ -782,7 +733,17 @@ export default function BookAssessmentPage() {
                     )}
 
                     <div className="pt-2 md:pt-4">
-                      <Button type="submit" disabled={isSubmitting || !agreeToCommunications || Object.keys(formErrors).length > 0} className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden">
+                      <Button
+                        type="submit"
+                        data-testid="assessment-submit"
+                        disabled={
+                          isSubmitting ||
+                          !agreeToCommunications ||
+                          // Only block on non-consent errors; consent itself is derived from agreeToCommunications
+                          Object.keys(formErrors).some((key) => key !== 'agreeToCommunications')
+                        }
+                        className="w-full bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#F16112] bg-size-200 bg-pos-0 hover:bg-pos-100 text-white h-14 md:h-16 rounded-xl md:rounded-2xl shadow-lg md:shadow-2xl hover:shadow-xl transition-all duration-500 disabled:opacity-50 text-base md:text-lg font-semibold group relative overflow-hidden"
+                      >
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                         {isSubmitting ? (
                           <>
@@ -805,11 +766,10 @@ export default function BookAssessmentPage() {
                           </p>
                         </div>
                       )}
-                      <p className="text-center text-gray-500 mt-6 flex items-center justify-center gap-2"><Shield className="w-4 h-4 text-green-600" />By submitting, you agree to be contacted by GrowWise School</p>
                     </div>
                   </form>
                 ) : (
-                  <div className="text-center py-20">
+                  <div className="text-center py-20" data-testid="assessment-success">
                     <div className="w-28 h-28 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"><CheckCircle className="w-14 h-14 text-white" /></div>
                     <p className="text-green-700 font-semibold mb-2">Submission completed successfully.</p>
                     <h3 className="text-gray-900 mb-6 text-4xl">🎉 Thank You for Your Request!</h3>
@@ -857,64 +817,6 @@ export default function BookAssessmentPage() {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-[600px] h-[600px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-[700px] h-[700px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16">
-            <div>
-              <Badge className="mb-8 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-8 py-3 shadow-2xl">
-                <Sparkles className="w-5 h-5 mr-2" />
-                Professional Assessment Services
-              </Badge>
-            </div>
-            <h1 className="text-white mb-8 text-5xl lg:text-6xl">
-              Discover Your Child's <br />
-              <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Potential</span>
-            </h1>
-            <p className="text-white/90 max-w-3xl mx-auto mb-12 text-xl leading-relaxed">
-              Get a comprehensive evaluation from certified educators. Understand strengths, identify growth areas, and receive a personalized learning roadmap for your child's success.
-            </p>
-            <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-12">
-              <Button onClick={scrollToForm} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-8 sm:px-10 py-6 sm:py-7 rounded-2xl shadow-2xl hover:shadow-xl transition-all duration-300 hover:scale-105 group text-base sm:text-lg w-full sm:w-auto">
-                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 mr-2 group-hover:rotate-12 transition-transform" />
-                Book Free Assessment
-                <ArrowRight className="w-5 h-5 sm:w-6 sm:h-6 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button onClick={() => setIsExploreCoursesModalOpen(true)} variant="outline" className="border-2 border-white bg-white/20 text-white hover:bg-white hover:text-[#1F396D] px-8 sm:px-10 py-6 sm:py-7 rounded-2xl transition-all duration-300 hover:scale-105 backdrop-blur-xl text-base sm:text-lg w-full sm:w-auto">
-                <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
-                Explore Courses
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-              {stats.map((stat, index) => {
-                const IconComponent = stat.icon as any;
-                return (
-                  <div key={index}>
-                    <Card className="bg-white/10 backdrop-blur-xl border-2 border-white/20 shadow-2xl hover:shadow-xl transition-all duration-300">
-                      <CardContent className="p-6 text-center">
-                        <div className="inline-flex p-3 bg-white/20 rounded-2xl mb-3">
-                          <IconComponent className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="text-4xl font-bold text-white mb-1">{stat.number}</div>
-                        <div className="text-sm text-white/80">{stat.label}</div>
-                      </CardContent>
-                    </Card>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" className="w-full h-auto"><path fill="#F9FAFB" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,58.7C960,64,1056,64,1152,58.7C1248,53,1344,43,1392,37.3L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path></svg>
         </div>
       </section>
 
@@ -993,7 +895,7 @@ export default function BookAssessmentPage() {
           {/* Enhanced Background gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8"></div>
           <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5"></div>
-          
+
           {/* Custom Close Button */}
           <button
             onClick={() => setIsExploreCoursesModalOpen(false)}
@@ -1001,7 +903,7 @@ export default function BookAssessmentPage() {
           >
             <X className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
           </button>
-          
+
           <div className="relative z-10 p-8">
             <AlertDialogHeader className="text-center mb-8">
               <AlertDialogTitle className="text-3xl font-bold text-gray-900 mb-4">

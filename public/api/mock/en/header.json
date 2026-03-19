@@ -149,6 +149,14 @@
             "icon": "Calendar",
             "href": "/camps/summer",
             "gradient": "from-[#F16112] to-[#F1894F]"
+          },
+          {
+            "key": "workshopCalendar",
+            "title": "Book Workshop/Webinar",
+            "description": "Browse and book upcoming workshops and webinars",
+            "icon": "BookMarked",
+            "href": "/workshop-calendar",
+            "gradient": "from-[#1F396D] to-[#29335C]"
           }
         ]
       }
@@ -232,7 +240,7 @@
         "title": "Courses",
         "description": "Browse our academic courses",
         "icon": "BookOpen",
-        "href": "/courses",
+        "href": "/academic",
         "gradient": "from-[#1F396D] to-[#F16112]"
       },
       {

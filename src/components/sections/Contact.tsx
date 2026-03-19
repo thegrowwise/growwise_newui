@@ -41,6 +41,7 @@ import { fetchContactRequested } from '@/store/slices/contactSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { contactService } from '@/lib/contactService';
 import { CONTACT_INFO } from '@/lib/constants';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 export default function Contact() {
   const { openChatbot } = useChatbot();
@@ -65,6 +66,7 @@ export default function Contact() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
 
   React.useEffect(() => {
     if (!contact && !contactLoading) dispatch(fetchContactRequested());
@@ -460,6 +462,15 @@ export default function Contact() {
                       </div>
                     </div>
 
+                    <FormPrivacyConsent
+                      checkboxId="contact-agree"
+                      checked={agreeToCommunications}
+                      onCheckedChange={setAgreeToCommunications}
+                      required
+                      showSubmitDisclaimer
+                      variant="compact"
+                    />
+
                     {/* Error Message */}
                     {submitError && (
                       <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -470,7 +481,7 @@ export default function Contact() {
                     {/* Submit Button */}
                     <Button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !agreeToCommunications}
                       className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
                     >
                       {isSubmitting ? (
@@ -485,11 +496,6 @@ export default function Contact() {
                         </>
                       )}
                     </Button>
-
-                    <p className="text-xs text-gray-500 text-center">
-                      By submitting this form, you agree to receive communications from GrowWise School. 
-                      We respect your privacy and will never share your information.
-                    </p>
                   </form>
                 </CardContent>
               </Card>

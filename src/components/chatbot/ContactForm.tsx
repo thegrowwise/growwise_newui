@@ -1,12 +1,15 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Card, CardContent } from '../ui/card';
 import { Mail, Phone, User, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { validatePhoneSimple } from '@/lib/phoneValidation';
+import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 interface ContactFormProps {
   onSubmit: (data: ContactFormData) => Promise<void>;
@@ -40,7 +43,7 @@ export default function ContactForm({
   fieldErrors = {},
   success = false
 }: ContactFormProps) {
-  const getFieldError = (field: string) => fieldErrors[field] || validationErrors[field];
+  const t = useTranslations('commonForm.privacy');
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -49,7 +52,10 @@ export default function ContactForm({
     source: 'chatbot'
   });
 
+  const [agreeToCommunications, setAgreeToCommunications] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+
+  const getFieldError = (field: string) => fieldErrors[field] || validationErrors[field];
 
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
@@ -64,10 +70,13 @@ export default function ContactForm({
       errors.email = 'Please enter a valid email address';
     }
 
-    if (!formData?.phone?.trim()) {
-      errors.phone = 'Phone number is required';
-    } else if (!/^[\+]?[1-9][\d]{0,15}$/.test(formData.phone.replace(/[\s\-\(\)]/g, ''))) {
-      errors.phone = 'Please enter a valid phone number';
+    const phoneResult = validatePhoneSimple(formData?.phone || '');
+    if (!phoneResult.isValid) {
+      errors.phone = phoneResult.errorMessage || 'Please enter a valid phone number';
+    }
+
+    if (!agreeToCommunications) {
+      errors.agreeToCommunications = t('agreeError');
     }
 
     setValidationErrors(errors);
@@ -194,11 +203,20 @@ export default function ContactForm({
             )}
           </div>
 
+          <FormPrivacyConsent
+            checkboxId="chatbot-contact-agree"
+            checked={agreeToCommunications}
+            onCheckedChange={setAgreeToCommunications}
+            error={validationErrors.agreeToCommunications}
+            required
+            showSubmitDisclaimer={false}
+            variant="compact"
+          />
 
           <div className="flex gap-2 pt-3">
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isLoading || !agreeToCommunications}
               className="flex-1 bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white"
             >
               {isLoading ? (

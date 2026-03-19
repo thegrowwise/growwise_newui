@@ -1,8 +1,9 @@
 "use client";
 import React from 'react';
+import Link from 'next/link';
 import { Button } from '../../ui/button';
 import { SectionError } from '../../ui/SectionError';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CalendarCheck } from 'lucide-react';
 import { OptimizedImage } from '../../gw/OptimizedImage';
 
 export interface HeroSlideVM {
@@ -128,6 +129,21 @@ export function HeroSection({
             ))}
           </div>
         </div>
+
+        {/* Floating Book Workshop/Webinar pill, centered and overlapping the top of the hero card on desktop */}
+        <Link
+          href="/workshop-calendar"
+          className="hidden md:flex items-center gap-3 absolute -top-11 left-1/2 -translate-x-1/2 z-20 bg-gradient-to-r from-[#F5FAFF] via-[#DCE9FF] to-[#BBD3FF] text-[#111827] px-9 py-3.5 rounded-full border border-[#7CA5FF] shadow-[0_12px_36px_rgba(15,23,42,0.22)] hover:shadow-[0_16px_46px_rgba(15,23,42,0.32)] hover:-translate-y-1 hover:scale-105 transition-transform duration-300 ease-out group"
+        >
+          {/* subtle outer glow */}
+          <span className="absolute inset-0 rounded-full bg-[#BBD3FF] opacity-30 blur-xl -z-10"></span>
+          {/* soft inner shine */}
+          <span className="pointer-events-none absolute inset-[1px] rounded-full bg-gradient-to-b from-white/80 via-white/10 to-transparent opacity-90"></span>
+          <CalendarCheck className="w-5 h-5 text-[#1F396D] group-hover:animate-bounce" />
+          <span className="font-semibold text-sm whitespace-nowrap tracking-wide text-[#111827]">
+            Book Workshop/Webinar
+          </span>
+        </Link>
       </div>
     </section>
   );
