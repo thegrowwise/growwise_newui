@@ -1,6 +1,7 @@
 import { ContactFormData } from '@/components/chatbot/ContactForm';
 import { BACKEND_URL } from './config';
 import { validatePhoneSimple } from './phoneValidation';
+import { getRecaptchaToken } from './recaptcha';
 
 export interface ContactSubmissionResult {
   success: boolean;
@@ -42,6 +43,8 @@ export class ContactService {
       // Use name field directly, or construct from firstName/lastName if name is not provided
       const name = data.name?.trim() || `${data.firstName || ''} ${data.lastName || ''}`.trim();
       
+      const recaptchaToken = await getRecaptchaToken('contact_submit');
+
       const backendData = {
         name: name,
         email: data.email?.trim() || '',
@@ -51,7 +54,8 @@ export class ContactService {
         // Additional metadata
         program: data.program || '',
         gradeLevel: data.gradeLevel || '',
-        preferredContact: data.preferredContact || 'email'
+        preferredContact: data.preferredContact || 'email',
+        recaptchaToken: recaptchaToken || undefined,
       };
 
       const response = await fetch(`${this.baseUrl}/api/contact`, {

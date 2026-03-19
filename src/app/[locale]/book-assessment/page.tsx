@@ -27,6 +27,7 @@ import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { validatePhoneWithCountryCode, getPhonePlaceholder, getCallingCode, DIAL_CODE_TO_ISO2 } from '@/lib/phoneValidation';
 import { BACKEND_URL } from '@/lib/config';
+import { getRecaptchaToken } from '@/lib/recaptcha';
 
 interface FormData {
   parentName: string;
@@ -253,10 +254,12 @@ export default function BookAssessmentPage() {
     setFormErrors({});
     setPhoneError(null);
     const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
-    
+
     setIsSubmitting(true);
 
     try {
+      const recaptchaToken = await getRecaptchaToken('assessment_submit');
+
       const assessmentData = {
         parentName: formData.parentName,
         email: formData.email,
@@ -269,7 +272,8 @@ export default function BookAssessmentPage() {
         mode: formData.mode,
         schedule: formData.schedule,
         notes: formData.notes,
-        agreeToCommunications
+        agreeToCommunications,
+        recaptchaToken: recaptchaToken || undefined,
       };
 
       const response = await fetch(`${BACKEND_URL}/api/assessment`, {
@@ -594,13 +598,13 @@ export default function BookAssessmentPage() {
                         <div className="space-y-3 md:space-y-4">
                           <Label className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Globe className="w-4 h-4 text-[#1F396D]" />Preferred Mode <span className="text-red-500">*</span></Label>
                           <RadioGroup value={formData.mode} onValueChange={(value) => handleInputChange('mode', value)} className="flex flex-col gap-3 md:gap-4">
-                            <div onClick={() => handleInputChange('mode', 'in-person')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
-                              <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 pointer-events-none">In-person at {CONTACT_INFO.city}</Label>
+                            <div data-testid="assessment-mode-in-person" onClick={() => handleInputChange('mode', 'in-person')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
+                              <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5" />
+                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1">In-person at {CONTACT_INFO.city}</Label>
                             </div>
                             <div data-testid="assessment-mode-online" onClick={() => handleInputChange('mode', 'online')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
-                              <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2 pointer-events-none"><Video className="w-4 h-4" />Online (Virtual)</Label>
+                              <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5" />
+                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2"><Video className="w-4 h-4" />Online (Virtual)</Label>
                             </div>
                           </RadioGroup>
                         </div>
