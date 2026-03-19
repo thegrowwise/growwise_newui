@@ -636,6 +636,10 @@
       "detailsUnavailable": "此课程暂无详细信息。"
     }
   },
+  "enroll": {
+    "h1": "立即开始报名",
+    "metaDescription": "让孩子加入 GrowWise 的 K-12 辅导与 STEAM 项目。选择学术与 STEM 方向，填写表单，我们将在 24 小时内为您提供指导。"
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",
