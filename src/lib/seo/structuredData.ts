@@ -212,6 +212,7 @@ export function generateCourseSchema({
     priceCurrency?: string
     availability?: string
     url?: string
+    validFrom?: string
   }
 }) {
   return {
@@ -249,6 +250,7 @@ export function generateCourseSchema({
         ...(offers.priceCurrency && { "priceCurrency": offers.priceCurrency || "USD" }),
         ...(offers.availability && { "availability": offers.availability || "https://schema.org/InStock" }),
         ...(offers.url && { "url": offers.url }),
+        ...(offers.validFrom && { "validFrom": offers.validFrom }),
       }
     }),
   }
@@ -268,6 +270,7 @@ export function generateEventSchema({
   offers,
   eventStatus,
   eventAttendanceMode,
+  performer,
 }: {
   name: string
   description: string
@@ -293,9 +296,14 @@ export function generateEventSchema({
     priceCurrency?: string
     availability?: string
     url?: string
+    validFrom?: string
   }
   eventStatus?: string
   eventAttendanceMode?: string
+  performer?: {
+    name: string
+    type?: string
+  }
 }) {
   return {
     "@context": "https://schema.org",
@@ -329,10 +337,17 @@ export function generateEventSchema({
         ...(offers.priceCurrency && { "priceCurrency": offers.priceCurrency || "USD" }),
         ...(offers.availability && { "availability": offers.availability || "https://schema.org/InStock" }),
         ...(offers.url && { "url": offers.url }),
+        ...(offers.validFrom && { "validFrom": offers.validFrom }),
       }
     }),
     ...(eventStatus && { "eventStatus": eventStatus || "https://schema.org/EventScheduled" }),
     ...(eventAttendanceMode && { "eventAttendanceMode": eventAttendanceMode || "https://schema.org/OfflineEventAttendanceMode" }),
+    ...(performer && {
+      "performer": {
+        "@type": performer.type || "Person",
+        "name": performer.name,
+      }
+    }),
   }
 }
 

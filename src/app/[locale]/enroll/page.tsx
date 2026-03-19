@@ -11,6 +11,7 @@ import { Loader2, CheckCircle, AlertCircle, User, Mail, Phone as PhoneIcon, Grad
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useFormTracking, usePageTracking } from '@/lib/analytics/hooks';
 import { TrackedForm } from '@/lib/analytics/components';
+import { getRecaptchaToken } from '@/lib/recaptcha';
 
 export default function EnrollPage() {
   const formRef = useRef<HTMLFormElement>(null);
@@ -52,7 +53,13 @@ export default function EnrollPage() {
         bootcamp: programType === 'steam' ? (bootcamp || 'None') : 'None',
         course: programType === 'academic' ? (course || 'None') : 'None',
         level: level as string,
-        agree: agree
+        agree: agree,
+      };
+
+      const recaptchaToken = await getRecaptchaToken('enroll_submit');
+      const payload = {
+        ...enrollmentData,
+        recaptchaToken: recaptchaToken || undefined,
       };
 
       const response = await fetch(`${BACKEND_URL}/api/enrollment`, {
@@ -60,7 +67,7 @@ export default function EnrollPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(enrollmentData),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
