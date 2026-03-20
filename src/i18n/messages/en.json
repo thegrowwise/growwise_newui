@@ -691,10 +691,68 @@
     "infoModal": {
       "detailsUnavailable": "Details are not available for this program."
     },
+    "filter": {
+      "allCamps": "All Camps",
+      "ariaLabel": "Filter camps by type"
+    },
+    "mobile": {
+      "viewAllCamps": "View all camps ↑",
+      "earlyBirdBar": "Early bird ends May 15",
+      "winFreeSpot": "Win free spot",
+      "lotteryLink": "Enter free lottery instead",
+      "enrollNow": "Enroll Now",
+      "earlyBirdBadge": "Early bird — GWSUMMER15"
+    },
+    "lottery": {
+      "title": "Win a free Summer Camp spot",
+      "subtitle": "Quick entry — email, camp interest, and grade. We’ll email you if you win.",
+      "formAriaLabel": "Free camp spot lottery entry",
+      "childGradeLabel": "Child’s grade (2025–26)",
+      "gradePlaceholder": "Select grade",
+      "campInterestLabel": "Camp interest",
+      "interestPlaceholder": "Select interest",
+      "grades": {
+        "prek": "Pre-K",
+        "k": "Kindergarten",
+        "1": "1st grade",
+        "2": "2nd grade",
+        "3": "3rd grade",
+        "4": "4th grade",
+        "5": "5th grade",
+        "6": "6th grade",
+        "7": "7th grade",
+        "8": "8th grade",
+        "9": "9th grade",
+        "10": "10th grade",
+        "11": "11th grade",
+        "12": "12th grade",
+        "other": "Other"
+      },
+      "interests": {
+        "academic": "Academic",
+        "game_development": "Game development",
+        "coding": "Coding"
+      },
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Enter lottery",
+      "submitting": "Submitting…",
+      "successTitle": "You’re entered!",
+      "successBody": "Winner announced May 20th. Only 10 spots — results emailed directly.",
+      "successRecorded": "We recorded: {interest} · {grade}",
+      "successEmailNote": "Check your inbox for the same confirmation.",
+      "errorInvalidEmail": "Please enter a valid email address.",
+      "errorInvalidForm": "Please add your email, choose camp interest, and select a grade.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Common questions about Summer Camps, programs, and enrollment."
     }
+  },
+  "enroll": {
+    "h1": "Start Your Enrollment Today",
+    "metaDescription": "Enroll your child in GrowWise K-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and our team will contact you within 24 hours."
   },
   "notFound": {
     "title": "Page not found",

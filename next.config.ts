@@ -3,8 +3,15 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/config.ts');
 
+const isProd = process.env.NODE_ENV === 'production';
+
 const nextConfig: NextConfig = {
   /* config options here */
+  compiler: {
+    // Smaller bundles + less parse time in prod (Lighthouse "Minify JS" is largely third-party;
+    // this trims our code and drops noisy logs.)
+    removeConsole: isProd ? { exclude: ['error', 'warn'] } : false,
+  },
   // Ensure these ESM packages are transpiled and bundled by Next.js
   transpilePackages: [
     'next-intl',
@@ -53,18 +60,44 @@ const nextConfig: NextConfig = {
   
   // Experimental features for better performance
   experimental: {
+    // Smaller dev graphs for Webpack + Turbopack (tree-shake barrel imports)
     optimizePackageImports: [
       'lucide-react',
+      'next-intl',
+      'recharts',
       '@radix-ui/react-accordion',
+      '@radix-ui/react-alert-dialog',
+      '@radix-ui/react-aspect-ratio',
+      '@radix-ui/react-avatar',
+      '@radix-ui/react-checkbox',
+      '@radix-ui/react-collapsible',
+      '@radix-ui/react-context-menu',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-hover-card',
+      '@radix-ui/react-label',
+      '@radix-ui/react-menubar',
+      '@radix-ui/react-navigation-menu',
+      '@radix-ui/react-popover',
+      '@radix-ui/react-progress',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-scroll-area',
       '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slider',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-switch',
+      '@radix-ui/react-tabs',
+      '@radix-ui/react-toggle',
+      '@radix-ui/react-toggle-group',
+      '@radix-ui/react-tooltip',
+      '@radix-ui/react-visually-hidden',
     ],
   },
   
   // Headers for caching and security
   async headers() {
-    return [
+    const security = [
       {
         source: '/:path*',
         headers: [
@@ -86,8 +119,26 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+    ];
+
+    // Long immutable cache breaks Next dev HMR for /_next/static; apply only in production.
+    if (!isProd) {
+      return security;
+    }
+
+    return [
+      ...security,
       {
         source: '/images/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/assets/:path*',
         headers: [
           {
             key: 'Cache-Control',

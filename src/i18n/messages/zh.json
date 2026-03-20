@@ -634,6 +634,60 @@
     },
     "infoModal": {
       "detailsUnavailable": "此课程暂无详细信息。"
+    },
+    "filter": {
+      "allCamps": "All Camps",
+      "ariaLabel": "Filter camps by type"
+    },
+    "mobile": {
+      "viewAllCamps": "View all camps ↑",
+      "earlyBirdBar": "Early bird ends May 15",
+      "winFreeSpot": "Win free spot",
+      "lotteryLink": "Enter free lottery instead",
+      "enrollNow": "Enroll Now",
+      "earlyBirdBadge": "Early bird — GWSUMMER15"
+    },
+    "lottery": {
+      "title": "赢取免费夏令营名额",
+      "subtitle": "快速填写：邮箱、营地意向与年级。中奖后我们将邮件通知您。",
+      "formAriaLabel": "免费夏令营名额抽奖报名表",
+      "childGradeLabel": "孩子年级（2025–26）",
+      "gradePlaceholder": "请选择年级",
+      "campInterestLabel": "营地意向",
+      "interestPlaceholder": "请选择",
+      "grades": {
+        "prek": "学前班",
+        "k": "幼儿园",
+        "1": "一年级",
+        "2": "二年级",
+        "3": "三年级",
+        "4": "四年级",
+        "5": "五年级",
+        "6": "六年级",
+        "7": "七年级",
+        "8": "八年级",
+        "9": "九年级",
+        "10": "十年级",
+        "11": "十一年级",
+        "12": "十二年级",
+        "other": "其他"
+      },
+      "interests": {
+        "academic": "学术",
+        "game_development": "游戏开发",
+        "coding": "编程"
+      },
+      "emailLabel": "电子邮箱",
+      "emailPlaceholder": "you@example.com",
+      "submit": "参与抽奖",
+      "submitting": "提交中…",
+      "successTitle": "您已成功报名！",
+      "successBody": "5月20日公布获奖者。仅10个名额——结果将直接发送至您的邮箱。",
+      "successRecorded": "已记录：{interest} · {grade}",
+      "successEmailNote": "请查收邮箱中的相同确认邮件。",
+      "errorInvalidEmail": "请输入有效的电子邮箱。",
+      "errorInvalidForm": "请填写邮箱、选择营地意向并选择年级。",
+      "errorGeneric": "出错了，请重试。"
     }
   },
   "notFound": {

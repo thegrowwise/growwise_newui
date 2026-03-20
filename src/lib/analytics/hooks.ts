@@ -129,34 +129,15 @@ export function useSearchTracking() {
 }
 
 /**
- * Hook to track session lifecycle
+ * Hook to track session lifecycle.
+ *
+ * Avoids `pagehide` / `unload` / `beforeunload` — those listeners (and sync work inside them)
+ * disqualify the page from the back/forward cache in Chromium. Session end / bounce are better
+ * inferred from GA4 engagement time or a future `visibilitychange` + `document.visibilityState`
+ * handler that does not block bfcache.
  */
 export function useSessionTracking() {
   useEffect(() => {
-    // Track session start
     analyticsTracker.trackSessionStart();
-
-    // Track bounce if user leaves quickly (less than 10 seconds)
-    const bounceTimeout = setTimeout(() => {
-      // If user is still on the page after 10 seconds, they didn't bounce
-    }, 10000);
-
-    // Track session end using pagehide instead of beforeunload to preserve bfcache
-    // beforeunload breaks browser back/forward cache, so we use pagehide instead
-    const handlePageHide = () => {
-      clearTimeout(bounceTimeout);
-      const sessionDuration = Date.now() - performance.now();
-      if (sessionDuration < 10000) {
-        analyticsTracker.trackBounce();
-      }
-      analyticsTracker.trackSessionEnd();
-    };
-
-    window.addEventListener('pagehide', handlePageHide);
-
-    return () => {
-      clearTimeout(bounceTimeout);
-      window.removeEventListener('pagehide', handlePageHide);
-    };
   }, []);
 }
