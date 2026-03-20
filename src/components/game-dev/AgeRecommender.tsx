@@ -7,40 +7,28 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/components/ui/utils';
+import { usePricingConfig } from '@/hooks/usePricingConfig';
 
 type GameDevProgramId = 'scratch' | 'roblox' | 'minecraft' | 'robotics';
-
-interface Recommendation {
-  programId: GameDevProgramId;
-  reasonKey: string;
-}
 
 interface AgeRecommenderProps {
   onRecommend: (programId: string) => void;
   className?: string;
 }
 
-function recommendForAge(age: number): Recommendation[] {
-  const recs: Recommendation[] = [];
-
-  // Specific suggestions
-  if (age >= 6 && age <= 8) recs.push({ programId: 'scratch', reasonKey: 'scratch' });
-  if (age >= 8 && age <= 11) recs.push({ programId: 'roblox', reasonKey: 'roblox' });
-  if (age >= 10 && age <= 14) recs.push({ programId: 'minecraft', reasonKey: 'minecraft' });
-  // Robotics overlaps
-  if (age >= 8 && age <= 16) recs.push({ programId: 'robotics', reasonKey: 'robotics' });
-
-  return recs;
-}
-
 export function AgeRecommender({ onRecommend, className }: AgeRecommenderProps) {
   const t = useTranslations();
+  const { data } = usePricingConfig();
   const [age, setAge] = useState<number | ''>('');
 
   const recs = useMemo(() => {
     if (age === '' || Number.isNaN(Number(age))) return [];
-    return recommendForAge(Number(age));
-  }, [age]);
+    if (!data?.age_recommender?.game_dev) return [];
+    const numericAge = Number(age);
+    return data.age_recommender.game_dev.filter(
+      (rule) => numericAge >= rule.min && numericAge <= rule.max,
+    );
+  }, [age, data]);
 
   return (
     <div className={cn('space-y-4', className)}>
@@ -69,15 +57,15 @@ export function AgeRecommender({ onRecommend, className }: AgeRecommenderProps) 
             <div className="flex flex-wrap gap-2">
               {recs.map((rec) => (
                 <Button
-                  key={rec.programId}
+                  key={rec.program_id}
                   type="button"
                   variant="outline"
                   className="border-emerald-300 bg-white/60 text-emerald-900 hover:bg-white"
-                  onClick={() => onRecommend(rec.programId)}
+                  onClick={() => onRecommend(rec.program_id)}
                 >
-                  <span className="mr-2 font-semibold">{rec.programId}</span>
+                  <span className="mr-2 font-semibold">{rec.program_id}</span>
                   <span className="text-xs text-emerald-700">
-                    {t(`gameDevPage.ageRecommender.reasons.${rec.reasonKey}`)}
+                    {t(`gameDevPage.ageRecommender.reasons.${rec.reason_key}`)}
                   </span>
                 </Button>
               ))}

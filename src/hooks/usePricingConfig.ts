@@ -59,9 +59,19 @@ export interface Program {
   program_addons: ProgramAddon[];
 }
 
+export interface AgeRecommenderRule {
+  min: number;
+  max: number;
+  program_id: string;
+  reason_key: string;
+}
+
 export interface PricingConfig {
   programs: Program[];
   last_updated: string;
+  age_recommender?: {
+    game_dev?: AgeRecommenderRule[];
+  };
 }
 
 let globalCache: PricingConfig | null = null;

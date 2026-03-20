@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { BACKEND_URL } from '@/lib/config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +16,7 @@ import { getRecaptchaToken } from '@/lib/recaptcha';
 
 export default function EnrollPage() {
   const formRef = useRef<HTMLFormElement>(null);
+  const t = useTranslations('enroll');
   const [agree, setAgree] = useState(false);
   const [programType, setProgramType] = useState<'academic' | 'steam' | undefined>(undefined);
   const [bootcamp, setBootcamp] = useState<string | undefined>(undefined);
@@ -122,8 +124,8 @@ export default function EnrollPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="text-center">
-            <h1 className="text-white text-4xl md:text-5xl font-bold mb-3">Register for Assessment</h1>
-            <p className="text-white/90 max-w-2xl mx-auto">Please fill out the form below and our advisors will contact you within 24 hours.</p>
+            <h1 className="text-white text-4xl md:text-5xl font-bold mb-3">{t('h1')}</h1>
+            <p className="text-white/90 max-w-2xl mx-auto">Choose from academic and STEM programs. Fill out the form and our advisors will guide you within 24 hours.</p>
           </div>
         </div>
       </section>

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-import React from 'react';
+import { redirect } from 'next/navigation';
 
-import { EnrollProvider } from '@/contexts/EnrollContext';
-import { CodingHero } from '@/components/coding/CodingHero';
-import { CodingPrograms } from '@/components/coding/CodingPrograms';
+import { DEFAULT_LOCALE } from '@/i18n/localeConfig';
 
 export const metadata: Metadata = {
   title: 'Coding Programs for Kids | GrowWise School',
@@ -11,13 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function CodingPage() {
-  return (
-    <EnrollProvider>
-      <main className="min-h-screen bg-white">
-        <CodingHero />
-        <CodingPrograms />
-      </main>
-    </EnrollProvider>
-  );
+  redirect(`/${DEFAULT_LOCALE}/coding`);
 }
 

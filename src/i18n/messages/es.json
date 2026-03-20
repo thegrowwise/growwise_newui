@@ -692,6 +692,10 @@
       "inPersonBadge": "Presencial"
     }
   },
+  "enroll": {
+    "h1": "Empieza tu inscripción hoy",
+    "metaDescription": "Inscribe a tu hijo en la tutoría K-12 y programas STEAM de GrowWise. Elige opciones académicas y STEM. Completa el formulario y te guiaremos en 24 horas."
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
-import React from 'react';
+import { redirect } from 'next/navigation';
 
-import { EnrollProvider } from '@/contexts/EnrollContext';
-import { GameDevHero } from '@/components/game-dev/GameDevHero';
-import { GameDevPrograms } from '@/components/game-dev/GameDevPrograms';
+import { DEFAULT_LOCALE } from '@/i18n/localeConfig';
 
 export const metadata: Metadata = {
   title: 'Game Development for Kids | GrowWise School',
@@ -11,13 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function GameDevPage() {
-  return (
-    <EnrollProvider>
-      <main className="min-h-screen bg-white">
-        <GameDevHero />
-        <GameDevPrograms />
-      </main>
-    </EnrollProvider>
-  );
+  redirect(`/${DEFAULT_LOCALE}/game-dev`);
 }
 

@@ -582,6 +582,14 @@
       "program_addons": []
     }
   ],
-  "last_updated": "2026-03-18T00:00:00Z"
+  "last_updated": "2026-03-18T00:00:00Z",
+  "age_recommender": {
+    "game_dev": [
+      { "min": 6, "max": 8, "program_id": "scratch", "reason_key": "scratch" },
+      { "min": 8, "max": 11, "program_id": "roblox", "reason_key": "roblox" },
+      { "min": 10, "max": 14, "program_id": "minecraft", "reason_key": "minecraft" },
+      { "min": 8, "max": 16, "program_id": "robotics", "reason_key": "robotics" }
+    ]
+  }
 }
 

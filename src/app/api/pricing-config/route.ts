@@ -1,24 +1,18 @@
 import { NextResponse } from 'next/server';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { BACKEND_URL } from '@/lib/config';
 
 export async function GET() {
   try {
-    const filePath = join(
-      process.cwd(),
-      'public',
-      'api',
-      'mock',
-      'en',
-      'pricing-config.json',
-    );
-    const data = await readFile(filePath, 'utf8');
-    const jsonData = JSON.parse(data);
+    const base = BACKEND_URL.replace(/\/$/, '');
+    const res = await fetch(`${base}/api/pricing-config`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Backend responded with HTTP ${res.status}`);
 
-    return NextResponse.json({ success: true, data: jsonData });
-  } catch {
+    const data = (await res.json()) as unknown;
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to load pricing config';
     return NextResponse.json(
-      { success: false, error: 'Failed to load pricing config' },
+      { success: false, error: message },
       { status: 500 },
     );
   }

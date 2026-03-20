@@ -752,6 +752,10 @@
       "inPersonBadge": "In-person"
     }
   },
+  "enroll": {
+    "h1": "Start Your Enrollment Today",
+    "metaDescription": "Enroll your child in GrowWise K-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and we’ll guide you within 24 hours."
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",
