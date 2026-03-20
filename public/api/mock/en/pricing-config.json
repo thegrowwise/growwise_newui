@@ -1,0 +1,257 @@
+{
+  "programs": [
+    {
+      "id": "python",
+      "track": "coding",
+      "name": "Python",
+      "tagline": "Learn Python programming",
+      "age_min": 10,
+      "age_max": 18,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 0,
+      "journey_levels": [
+        {
+          "id": "python-l1",
+          "program_id": "python",
+          "level_num": 1,
+          "name": "Foundations",
+          "milestones": "Variables, loops, functions",
+          "price_live": 199,
+          "price_studio": 149
+        }
+      ],
+      "tiers": [
+        {
+          "id": "python-core",
+          "program_id": "python",
+          "name": "core",
+          "price_live": 199,
+          "price_studio": 149,
+          "is_featured": false,
+          "includes": ["8 sessions"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    },
+    {
+      "id": "ml-ai",
+      "track": "coding",
+      "name": "ML/AI",
+      "tagline": "Machine Learning and AI",
+      "age_min": 10,
+      "age_max": 18,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 1,
+      "journey_levels": [
+        {
+          "id": "ml-l1",
+          "program_id": "ml-ai",
+          "level_num": 1,
+          "name": "Intro to ML",
+          "milestones": "Basics of ML",
+          "price_live": 249,
+          "price_studio": 199
+        }
+      ],
+      "tiers": [
+        {
+          "id": "ml-core",
+          "program_id": "ml-ai",
+          "name": "core",
+          "price_live": 249,
+          "price_studio": 199,
+          "is_featured": true,
+          "includes": ["10 sessions"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    },
+    {
+      "id": "app-dev",
+      "track": "coding",
+      "name": "App Development",
+      "tagline": "Build mobile and web apps",
+      "age_min": 10,
+      "age_max": 18,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 2,
+      "journey_levels": [
+        {
+          "id": "app-l1",
+          "program_id": "app-dev",
+          "level_num": 1,
+          "name": "App Basics",
+          "milestones": "UI, logic, deployment",
+          "price_live": 229,
+          "price_studio": 179
+        }
+      ],
+      "tiers": [
+        {
+          "id": "app-core",
+          "program_id": "app-dev",
+          "name": "core",
+          "price_live": 229,
+          "price_studio": 179,
+          "is_featured": false,
+          "includes": ["8 sessions"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    },
+    {
+      "id": "scratch",
+      "track": "game-dev",
+      "name": "Scratch",
+      "tagline": "Visual programming for beginners",
+      "age_min": 6,
+      "age_max": 16,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 0,
+      "journey_levels": [
+        {
+          "id": "scratch-l1",
+          "program_id": "scratch",
+          "level_num": 1,
+          "name": "Block Coding",
+          "milestones": "Sprites, events, loops",
+          "price_live": 149,
+          "price_studio": 99
+        }
+      ],
+      "tiers": [
+        {
+          "id": "scratch-core",
+          "program_id": "scratch",
+          "name": "core",
+          "price_live": 149,
+          "price_studio": 99,
+          "is_featured": false,
+          "includes": ["6 sessions"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    },
+    {
+      "id": "roblox",
+      "track": "game-dev",
+      "name": "Roblox",
+      "tagline": "Create games with Roblox Studio",
+      "age_min": 6,
+      "age_max": 16,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 1,
+      "journey_levels": [
+        {
+          "id": "roblox-l1",
+          "program_id": "roblox",
+          "level_num": 1,
+          "name": "Roblox Studio",
+          "milestones": "Lua, 3D world building",
+          "price_live": 179,
+          "price_studio": 129
+        }
+      ],
+      "tiers": [
+        {
+          "id": "roblox-core",
+          "program_id": "roblox",
+          "name": "core",
+          "price_live": 179,
+          "price_studio": 129,
+          "is_featured": false,
+          "includes": ["8 sessions"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    },
+    {
+      "id": "minecraft",
+      "track": "game-dev",
+      "name": "Minecraft",
+      "tagline": "Modding and redstone engineering",
+      "age_min": 6,
+      "age_max": 16,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 2,
+      "journey_levels": [
+        {
+          "id": "minecraft-l1",
+          "program_id": "minecraft",
+          "level_num": 1,
+          "name": "Modding Basics",
+          "milestones": "Mods, commands, redstone",
+          "price_live": 169,
+          "price_studio": 119
+        }
+      ],
+      "tiers": [
+        {
+          "id": "minecraft-core",
+          "program_id": "minecraft",
+          "name": "core",
+          "price_live": 169,
+          "price_studio": 119,
+          "is_featured": false,
+          "includes": ["8 sessions"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    },
+    {
+      "id": "robotics",
+      "track": "game-dev",
+      "name": "Robotics",
+      "tagline": "Build and program robots",
+      "age_min": 6,
+      "age_max": 16,
+      "studio_only": true,
+      "active": true,
+      "sort_order": 3,
+      "journey_levels": [
+        {
+          "id": "robotics-l1",
+          "program_id": "robotics",
+          "level_num": 1,
+          "name": "Robotics Intro",
+          "milestones": "Hardware, sensors, coding",
+          "price_live": null,
+          "price_studio": 249
+        }
+      ],
+      "tiers": [
+        {
+          "id": "robotics-core",
+          "program_id": "robotics",
+          "name": "core",
+          "price_live": null,
+          "price_studio": 249,
+          "is_featured": false,
+          "includes": ["10 sessions", "Kit included"],
+          "sort_order": 0
+        }
+      ],
+      "program_fees": [],
+      "program_addons": []
+    }
+  ],
+  "last_updated": "2025-03-01T00:00:00Z"
+}
