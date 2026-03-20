@@ -696,6 +696,62 @@
       "subtitle": "Common questions about Summer Camps, programs, and enrollment."
     }
   },
+  "pricingUi": {
+    "deliveryMode": {
+      "live": "Live",
+      "studio": "Studio",
+      "studioOnlyBadge": "In-person only"
+    },
+    "tier": {
+      "mostChosen": "Most chosen"
+    },
+    "enroll": {
+      "cta": "Enroll",
+      "oneTime": "one-time",
+      "ages": "Ages {min}–{max}"
+    }
+  },
+  "codingPage": {
+    "hero": {
+      "badge": "Coding programs · Ages 10–18",
+      "headline": "Real skills. Real projects. A journey that lasts years.",
+      "subtext": "Structured coding journeys for parents who want serious skills for their 10–18 year olds—from first Python scripts to building ML/AI and full applications.",
+      "ctaPrograms": "See coding programs",
+      "ctaAlt": "Looking for game dev?"
+    },
+    "programs": {
+      "title": "Coding learning journeys",
+      "subtitle": "Choose a track to see the full journey, tiers, and optional add-ons."
+    }
+  },
+  "gameDevPage": {
+    "hero": {
+      "badge": "Game development · Ages 6–16",
+      "headline": "Your child already loves games. Now they'll build them.",
+      "subtext": "A playful, structured journey for 6–16 year olds—turning curiosity into real game-building skills across Scratch, Roblox, Minecraft, and Robotics.",
+      "ctaPrograms": "See game dev programs",
+      "ctaAlt": "Looking for coding?"
+    },
+    "ageRecommender": {
+      "label": "Child's age",
+      "placeholder": "Enter age",
+      "title": "Recommended program",
+      "cta": "Show program",
+      "reasons": {
+        "scratch": "Best for early creators learning core game logic.",
+        "roblox": "Great next step for building 3D worlds and systems.",
+        "minecraft": "Perfect for builders who want deeper modding skills.",
+        "robotics": "Hands-on building for kids who love engineering."
+      }
+    },
+    "scratchBridge": {
+      "title": "Scratch Level 4 unlocks the next journey",
+      "body": "Scratch graduates can continue into Roblox or Python to keep building."
+    },
+    "tabs": {
+      "inPersonBadge": "In-person"
+    }
+  },
   "enroll": {
     "h1": "Start Your Enrollment Today",
     "metaDescription": "Enroll your child in GrowWise K-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and we’ll guide you within 24 hours."

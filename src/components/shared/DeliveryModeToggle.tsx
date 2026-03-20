@@ -4,15 +4,13 @@ import { DeliveryMode } from '@/hooks/usePricingConfig';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/components/ui/utils';
+import { useTranslations } from 'next-intl';
 
 interface DeliveryModeToggleProps {
   value: DeliveryMode;
   onChange: (mode: DeliveryMode) => void;
   studioOnly?: boolean;
   className?: string;
-  liveLabel?: string;
-  studioLabel?: string;
-  studioOnlyLabel?: string;
 }
 
 export function DeliveryModeToggle({
@@ -20,10 +18,12 @@ export function DeliveryModeToggle({
   onChange,
   studioOnly,
   className,
-  liveLabel = 'Live',
-  studioLabel = 'Studio',
-  studioOnlyLabel = 'In-person only',
 }: DeliveryModeToggleProps) {
+  const t = useTranslations();
+  const liveLabel = t('pricingUi.deliveryMode.live');
+  const studioLabel = t('pricingUi.deliveryMode.studio');
+  const studioOnlyLabel = t('pricingUi.deliveryMode.studioOnlyBadge');
+
   if (studioOnly) {
     return (
       <div className={cn('inline-flex items-center gap-2', className)}>
