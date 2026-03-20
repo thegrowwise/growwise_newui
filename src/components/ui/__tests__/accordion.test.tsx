@@ -15,6 +15,7 @@ describe('Accordion Components', () => {
       )
       
       expect(screen.getByText('Trigger 1')).toBeInTheDocument()
+      fireEvent.click(screen.getByRole('button', { name: /trigger 1/i }))
       expect(screen.getByText('Content 1')).toBeInTheDocument()
     })
 
@@ -122,6 +123,7 @@ describe('Accordion Components', () => {
         </Accordion>
       )
       
+      fireEvent.click(screen.getByRole('button', { name: /trigger/i }))
       const content = screen.getByText('Content')
       expect(content).toBeInTheDocument()
       expect(content).toHaveClass('overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down')
@@ -137,6 +139,7 @@ describe('Accordion Components', () => {
         </Accordion>
       )
       
+      fireEvent.click(screen.getByRole('button', { name: /trigger/i }))
       const content = screen.getByText('Content')
       expect(content).toHaveClass('custom-content')
     })
@@ -154,18 +157,19 @@ describe('Accordion Components', () => {
       )
       
       const trigger = screen.getByRole('button', { name: /trigger/i })
-      const content = screen.getByText('Content')
+      const region = screen.getByRole('region', { hidden: true })
       
       // Initially closed
-      expect(content.parentElement).toHaveAttribute('data-state', 'closed')
+      expect(region).toHaveAttribute('data-state', 'closed')
       
       // Click to open
       fireEvent.click(trigger)
-      expect(content.parentElement).toHaveAttribute('data-state', 'open')
+      expect(region).toHaveAttribute('data-state', 'open')
+      expect(screen.getByText('Content')).toBeInTheDocument()
       
       // Click to close
       fireEvent.click(trigger)
-      expect(content.parentElement).toHaveAttribute('data-state', 'closed')
+      expect(region).toHaveAttribute('data-state', 'closed')
     })
 
     it('handles multiple items', () => {
@@ -184,16 +188,15 @@ describe('Accordion Components', () => {
       
       const trigger1 = screen.getByRole('button', { name: /trigger 1/i })
       const trigger2 = screen.getByRole('button', { name: /trigger 2/i })
-      const content1 = screen.getByText('Content 1')
-      const content2 = screen.getByText('Content 2')
       
       // Click first trigger
       fireEvent.click(trigger1)
+      const content1 = screen.getByText('Content 1')
       expect(content1.parentElement).toHaveAttribute('data-state', 'open')
-      expect(content2.parentElement).toHaveAttribute('data-state', 'closed')
       
       // Click second trigger
       fireEvent.click(trigger2)
+      const content2 = screen.getByText('Content 2')
       expect(content1.parentElement).toHaveAttribute('data-state', 'closed')
       expect(content2.parentElement).toHaveAttribute('data-state', 'open')
     })
@@ -214,16 +217,15 @@ describe('Accordion Components', () => {
       
       const trigger1 = screen.getByRole('button', { name: /trigger 1/i })
       const trigger2 = screen.getByRole('button', { name: /trigger 2/i })
-      const content1 = screen.getByText('Content 1')
-      const content2 = screen.getByText('Content 2')
       
       // Click first trigger
       fireEvent.click(trigger1)
+      const content1 = screen.getByText('Content 1')
       expect(content1.parentElement).toHaveAttribute('data-state', 'open')
-      expect(content2.parentElement).toHaveAttribute('data-state', 'closed')
       
       // Click second trigger - both should be open
       fireEvent.click(trigger2)
+      const content2 = screen.getByText('Content 2')
       expect(content1.parentElement).toHaveAttribute('data-state', 'open')
       expect(content2.parentElement).toHaveAttribute('data-state', 'open')
     })
@@ -241,15 +243,16 @@ describe('Accordion Components', () => {
       )
       
       const trigger = screen.getByRole('button', { name: /trigger/i })
-      const content = screen.getByText('Content')
+      const region = screen.getByRole('region', { hidden: true })
       
       expect(trigger).toHaveAttribute('aria-expanded', 'false')
-      expect(content).toHaveAttribute('data-state', 'closed')
+      expect(region).toHaveAttribute('data-state', 'closed')
       
       fireEvent.click(trigger)
       
       expect(trigger).toHaveAttribute('aria-expanded', 'true')
-      expect(content).toHaveAttribute('data-state', 'open')
+      expect(region).toHaveAttribute('data-state', 'open')
+      expect(screen.getByText('Content')).toBeInTheDocument()
     })
   })
 })

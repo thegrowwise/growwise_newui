@@ -25,7 +25,9 @@ import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { validatePhone, getPhonePlaceholder, getCallingCode } from '@/lib/phoneValidation';
+import { validatePhoneWithCountryCode, getPhonePlaceholder, getCallingCode, DIAL_CODE_TO_ISO2 } from '@/lib/phoneValidation';
+import { BACKEND_URL } from '@/lib/config';
+import { getRecaptchaToken } from '@/lib/recaptcha';
 
 interface FormData {
   parentName: string;
@@ -97,26 +99,9 @@ export default function BookAssessmentPage() {
     { value: 'Complete Academic Assessment', icon: '🎓', label: '(English + Maths) Complete Academic Assessment' }
   ];
 
-  // Map dial code to ISO2 country code
-  const dialCodeToIso2: Record<string, string> = {
-    '+1': 'US', // Default to US for +1 (could be CA too)
-    '+91': 'IN',
-    '+44': 'GB',
-    '+971': 'AE',
-    '+65': 'SG',
-    '+61': 'AU',
-    '+49': 'DE',
-    '+33': 'FR'
-  };
-
-  const getCountryIso2 = (dialCode: string): string => {
-    return dialCodeToIso2[dialCode] || 'US';
-  };
-
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-
-    // Clear errors when user starts typing
+    
     if (formErrors[field]) {
       setFormErrors(prev => {
         const newErrors = { ...prev };
@@ -124,8 +109,7 @@ export default function BookAssessmentPage() {
         return newErrors;
       });
     }
-
-    // Clear phone error when user starts typing
+    
     if (field === 'phone' && phoneError) {
       setPhoneError(null);
     }
@@ -133,8 +117,7 @@ export default function BookAssessmentPage() {
 
   const handlePhoneBlur = () => {
     if (formData.phone.trim()) {
-      const countryIso2 = getCountryIso2(formData.countryCode);
-      const result = validatePhone(countryIso2, formData.phone);
+      const result = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
       setPhoneError(result.errorMessage);
     } else {
       setPhoneError(null);
@@ -143,10 +126,8 @@ export default function BookAssessmentPage() {
 
   const handleCountryCodeChange = (dialCode: string) => {
     handleInputChange('countryCode', dialCode);
-    // Re-validate phone when country changes
     if (formData.phone.trim()) {
-      const countryIso2 = getCountryIso2(dialCode);
-      const result = validatePhone(countryIso2, formData.phone);
+      const result = validatePhoneWithCountryCode(dialCode, formData.phone);
       setPhoneError(result.errorMessage);
     }
   };
@@ -190,10 +171,7 @@ export default function BookAssessmentPage() {
         errors.email = 'Please enter a valid email address';
       }
     }
-
-    // Validate phone
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
     if (!phoneValidation.isValid) {
       errors.phone = phoneValidation.errorMessage || 'Phone number is invalid';
     }
@@ -275,14 +253,13 @@ export default function BookAssessmentPage() {
     // Clear all errors if validation passes
     setFormErrors({});
     setPhoneError(null);
-
-    // Validate phone and get E.164 format
-    const countryIso2 = getCountryIso2(formData.countryCode);
-    const phoneValidation = validatePhone(countryIso2, formData.phone);
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
 
     setIsSubmitting(true);
 
     try {
+      const recaptchaToken = await getRecaptchaToken('assessment_submit');
+
       const assessmentData = {
         parentName: formData.parentName,
         email: formData.email,
@@ -295,10 +272,11 @@ export default function BookAssessmentPage() {
         mode: formData.mode,
         schedule: formData.schedule,
         notes: formData.notes,
-        agreeToCommunications
+        agreeToCommunications,
+        recaptchaToken: recaptchaToken || undefined,
       };
 
-      const response = await fetch('/api/assessment', {
+      const response = await fetch(`${BACKEND_URL}/api/assessment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -510,8 +488,8 @@ export default function BookAssessmentPage() {
                             className={cn(
                               "bg-transparent border-0 rounded-none transition-all flex-1 h-12 md:h-14 text-sm sm:text-base text-gray-900 focus-visible:ring-0 focus-visible:ring-offset-0",
                               phoneError && "text-red-600"
-                            ).trim()}
-                            placeholder={getPhonePlaceholder(getCountryIso2(formData.countryCode))}
+                            ).trim()} 
+                            placeholder={getPhonePlaceholder(DIAL_CODE_TO_ISO2[formData.countryCode])}
                             required
                             suppressHydrationWarning
                           />
@@ -620,13 +598,13 @@ export default function BookAssessmentPage() {
                         <div className="space-y-3 md:space-y-4">
                           <Label className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Globe className="w-4 h-4 text-[#1F396D]" />Preferred Mode <span className="text-red-500">*</span></Label>
                           <RadioGroup value={formData.mode} onValueChange={(value) => handleInputChange('mode', value)} className="flex flex-col gap-3 md:gap-4">
-                            <div onClick={() => handleInputChange('mode', 'in-person')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
-                              <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 pointer-events-none">In-person at {CONTACT_INFO.city}</Label>
+                            <div data-testid="assessment-mode-in-person" onClick={() => handleInputChange('mode', 'in-person')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
+                              <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5" />
+                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1">In-person at {CONTACT_INFO.city}</Label>
                             </div>
                             <div data-testid="assessment-mode-online" onClick={() => handleInputChange('mode', 'online')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
-                              <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5 pointer-events-none" />
-                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2 pointer-events-none"><Video className="w-4 h-4" />Online (Virtual)</Label>
+                              <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5" />
+                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2"><Video className="w-4 h-4" />Online (Virtual)</Label>
                             </div>
                           </RadioGroup>
                         </div>
