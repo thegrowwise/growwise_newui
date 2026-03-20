@@ -696,6 +696,14 @@
       "subtitle": "Common questions about Summer Camps, programs, and enrollment."
     }
   },
+  "enroll": {
+    "stepper": {
+      "review": "Review",
+      "details": "Your details",
+      "payment": "Payment",
+      "back": "Back"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",

@@ -636,6 +636,14 @@
       "detailsUnavailable": "此课程暂无详细信息。"
     }
   },
+  "enroll": {
+    "stepper": {
+      "review": "Review",
+      "details": "Your details",
+      "payment": "Payment",
+      "back": "Back"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",

@@ -636,6 +636,14 @@
       "detailsUnavailable": "इस प्रोग्राम के लिए विवरण उपलब्ध नहीं हैं।"
     }
   },
+  "enroll": {
+    "stepper": {
+      "review": "Review",
+      "details": "Your details",
+      "payment": "Payment",
+      "back": "Back"
+    }
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",

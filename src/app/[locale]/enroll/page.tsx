@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { Suspense, useState, useRef, useCallback } from 'react';
 import { BACKEND_URL } from '@/lib/config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,8 +11,10 @@ import { Loader2, CheckCircle, AlertCircle, User, Mail, Phone as PhoneIcon, Grad
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useFormTracking, usePageTracking } from '@/lib/analytics/hooks';
 import { TrackedForm } from '@/lib/analytics/components';
+import Phase3EnrollPage from '@/app/enroll/page';
+import { useSearchParams } from 'next/navigation';
 
-export default function EnrollPage() {
+function EnrollPageInner() {
   const formRef = useRef<HTMLFormElement>(null);
   const [agree, setAgree] = useState(false);
   const [programType, setProgramType] = useState<'academic' | 'steam' | undefined>(undefined);
@@ -22,6 +24,9 @@ export default function EnrollPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const searchParams = useSearchParams();
+  const shouldUsePhase3 = searchParams.get('program') !== null;
 
   // Analytics hooks
   usePageTracking('Enrollment Page');
@@ -108,6 +113,10 @@ export default function EnrollPage() {
       setIsSubmitting(false);
     }
   };
+
+  if (shouldUsePhase3) {
+    return <Phase3EnrollPage />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
@@ -333,6 +342,14 @@ export default function EnrollPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EnrollPage() {
+  return (
+    <Suspense fallback={null}>
+      <EnrollPageInner />
+    </Suspense>
   );
 }
 
