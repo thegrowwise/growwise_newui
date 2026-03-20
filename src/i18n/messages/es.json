@@ -636,6 +636,62 @@
       "detailsUnavailable": "Los detalles no están disponibles para este programa."
     }
   },
+  "pricingUi": {
+    "deliveryMode": {
+      "live": "Live",
+      "studio": "Studio",
+      "studioOnlyBadge": "Solo presencial"
+    },
+    "tier": {
+      "mostChosen": "Más elegido"
+    },
+    "enroll": {
+      "cta": "Inscribirse",
+      "oneTime": "pago único",
+      "ages": "Edades {min}–{max}"
+    }
+  },
+  "codingPage": {
+    "hero": {
+      "badge": "Programas de coding · Edades 10–18",
+      "headline": "Habilidades reales. Proyectos reales. Un camino que dura años.",
+      "subtext": "Trayectorias estructuradas de programación para familias con niños de 10–18 años—desde Python hasta ML/AI y desarrollo de apps.",
+      "ctaPrograms": "Ver programas de coding",
+      "ctaAlt": "¿Buscas game dev?"
+    },
+    "programs": {
+      "title": "Trayectorias de aprendizaje en coding",
+      "subtitle": "Elige una ruta para ver el recorrido completo, niveles y complementos."
+    }
+  },
+  "gameDevPage": {
+    "hero": {
+      "badge": "Game development · Edades 6–16",
+      "headline": "A tu hijo ya le encantan los juegos. Ahora los va a construir.",
+      "subtext": "Un camino divertido y estructurado para niños de 6–16 años—de Scratch a Roblox, Minecraft y Robótica.",
+      "ctaPrograms": "Ver programas de game dev",
+      "ctaAlt": "¿Buscas coding?"
+    },
+    "ageRecommender": {
+      "label": "Edad del niño",
+      "placeholder": "Ingresa la edad",
+      "title": "Programa recomendado",
+      "cta": "Ver programa",
+      "reasons": {
+        "scratch": "Ideal para empezar creando y aprendiendo la lógica del juego.",
+        "roblox": "Excelente paso para construir mundos y sistemas 3D.",
+        "minecraft": "Perfecto para aprender modding con más profundidad.",
+        "robotics": "Construcción práctica para niños que aman la ingeniería."
+      }
+    },
+    "scratchBridge": {
+      "title": "Scratch Nivel 4 desbloquea el siguiente camino",
+      "body": "Después de Scratch, pueden continuar con Roblox o Python para seguir construyendo."
+    },
+    "tabs": {
+      "inPersonBadge": "Presencial"
+    }
+  },
   "enroll": {
     "h1": "Empieza tu inscripción hoy",
     "metaDescription": "Inscribe a tu hijo en la tutoría K-12 y programas STEAM de GrowWise. Elige opciones académicas y STEM. Completa el formulario y te guiaremos en 24 horas."
