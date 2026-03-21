@@ -16,7 +16,7 @@ import { getRecaptchaToken } from '@/lib/recaptcha';
 
 export default function EnrollPage() {
   const formRef = useRef<HTMLFormElement>(null);
-  const t = useTranslations('enroll');
+  const t = useTranslations('enrollnow');
   const [agree, setAgree] = useState(false);
   const [programType, setProgramType] = useState<'academic' | 'steam' | undefined>(undefined);
   const [bootcamp, setBootcamp] = useState<string | undefined>(undefined);

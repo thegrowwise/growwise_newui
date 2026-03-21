@@ -141,9 +141,12 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
 
   '/camps/summer': {
     title: "Summer Camp 2026 - Math, Coding & Robotics | GrowWise",
-    description: "Enrollment open for Summer 2026! Accredited courses in Math, Coding, and Robotics. Half-day and full-day camps. Small cohorts. Dublin, CA.",
-    keywords: "summer camp 2026, summer coding camp, math olympiad camp, robotics camp, young authors, GrowWise Dublin CA",
+    description:
+      "Enroll in GrowWise Summer Camp 2026 in Dublin, CA. Half-day and full-day programs: Math Olympiad prep, coding, robotics, AI, Young Authors, and more. Small cohorts, in-person and online options. Early bird savings available.",
+    keywords:
+      "summer camp 2026 Dublin CA, summer coding camp, math olympiad summer camp, robotics camp kids, AI camp teens, GrowWise summer enrollment, half-day summer camp, full-day summer camp, Dublin California STEM camp",
     path: '/camps/summer',
+    image: 'https://growwiseschool.org/assets/camps/summer-camp-banner.png',
   },
 
   '/workshop-calendar': {

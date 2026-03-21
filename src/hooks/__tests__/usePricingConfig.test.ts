@@ -60,22 +60,22 @@ describe('usePricingConfig data and helpers', () => {
   it('getProgramsByTrack("coding") returns 3 programs', () => {
     const programs = getProgramsByTrack(config, 'coding');
     expect(programs).toHaveLength(3);
-    expect(programs.map((p) => p.name)).toContain('Python');
-    expect(programs.map((p) => p.name)).toContain('ML/AI');
-    expect(programs.map((p) => p.name)).toContain('App Development');
+    expect(programs.map((p) => p.name)).toContain('Python Programming');
+    expect(programs.map((p) => p.name)).toContain('Machine Learning and Generative AI');
+    expect(programs.map((p) => p.name)).toContain('AppSpark - App Development');
   });
 
   it('getProgramsByTrack("game-dev") returns 4 programs', () => {
     const programs = getProgramsByTrack(config, 'game-dev');
     expect(programs).toHaveLength(4);
-    expect(programs.map((p) => p.name)).toContain('Scratch');
-    expect(programs.map((p) => p.name)).toContain('Roblox');
-    expect(programs.map((p) => p.name)).toContain('Minecraft');
-    expect(programs.map((p) => p.name)).toContain('Robotics');
+    expect(programs.map((p) => p.name)).toContain('Scratch Game Development');
+    expect(programs.map((p) => p.name)).toContain('Roblox Game Development');
+    expect(programs.map((p) => p.name)).toContain('Minecraft Game Development');
+    expect(programs.map((p) => p.name)).toContain('Robotics Fundamentals');
   });
 
   it('robotics program has studio_only: true', () => {
-    const robotics = config.programs.find((p) => p.name === 'Robotics');
+    const robotics = config.programs.find((p) => p.id === 'robotics');
     expect(robotics).toBeDefined();
     expect(robotics!.studio_only).toBe(true);
   });
@@ -96,7 +96,7 @@ describe('usePricingConfig data and helpers', () => {
   });
 
   it('getLevelPrice returns studio price for robotics (live null)', () => {
-    const robotics = config.programs.find((p) => p.name === 'Robotics');
+    const robotics = config.programs.find((p) => p.id === 'robotics');
     expect(robotics).toBeDefined();
     const level = robotics!.journey_levels[0];
     expect(level.price_live).toBeNull();
