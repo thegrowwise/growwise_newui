@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import type { Program } from '@/lib/summer-camp-data';
+import { trackCampView } from '@/lib/meta-pixel';
 
 const DESKTOP_CATEGORY_ORDER: Program['category'][] = ['Half-Day Camps', 'Full Day Camps'];
 
@@ -29,6 +30,7 @@ const SummerCampProgramPickCard = memo(function SummerCampProgramPickCard({
 }) {
   const t = useTranslations('summerCamp');
   const handleClick = useCallback(() => {
+    trackCampView(program.title, program.category);
     onSelect(program);
   }, [onSelect, program]);
 

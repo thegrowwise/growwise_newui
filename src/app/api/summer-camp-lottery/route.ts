@@ -6,35 +6,15 @@ import {
   sendBrevoTransactionalEmail,
 } from '@/lib/brevo';
 import { sendEmail, type SendEmailResult } from '@/lib/email';
+import { LOTTERY_GRADES, type LotteryGrade } from '@/lib/summer-lottery-keys';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const GRADE_KEYS = [
-  'prek',
-  'k',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-  'other',
-] as const;
-
 const INTEREST_KEYS = ['academic', 'game_development', 'coding'] as const;
 
-type GradeKey = (typeof GRADE_KEYS)[number];
 type InterestKey = (typeof INTEREST_KEYS)[number];
 
-const GRADE_LABELS: Record<GradeKey, string> = {
-  prek: 'Pre-K',
-  k: 'Kindergarten',
+const GRADE_LABELS: Record<LotteryGrade, string> = {
   '1': '1st grade',
   '2': '2nd grade',
   '3': '3rd grade',
@@ -64,15 +44,27 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;');
 }
 
+/** Vercel / long-running sends: allow enough time for Brevo + SMTP. */
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
+  let body: Record<string, unknown>;
   try {
-    const body = await request.json();
+    body = (await request.json()) as Record<string, unknown>;
+  } catch {
+    return NextResponse.json(
+      { success: false, error: 'Invalid or malformed JSON' },
+      { status: 400 }
+    );
+  }
+
+  try {
     const emailRaw = typeof body.email === 'string' ? body.email.trim() : '';
     const childGrade = typeof body.childGrade === 'string' ? body.childGrade.trim() : '';
     const campInterest = typeof body.campInterest === 'string' ? body.campInterest.trim() : '';
     const locale = typeof body.locale === 'string' ? body.locale.trim().slice(0, 10) : '';
 
-    const gradeOk = GRADE_KEYS.includes(childGrade as GradeKey);
+    const gradeOk = (LOTTERY_GRADES as readonly string[]).includes(childGrade);
     const interestOk = INTEREST_KEYS.includes(campInterest as InterestKey);
 
     if (!gradeOk || !interestOk || !emailRaw || !EMAIL_REGEX.test(emailRaw)) {
@@ -83,7 +75,7 @@ export async function POST(request: Request) {
     }
 
     const email = emailRaw.toLowerCase();
-    const gradeLabel = GRADE_LABELS[childGrade as GradeKey];
+    const gradeLabel = GRADE_LABELS[childGrade as LotteryGrade];
     const interestLabel = INTEREST_LABELS[campInterest as InterestKey];
     const timestamp = new Date().toISOString();
     const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? undefined;
@@ -221,7 +213,8 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(payload);
-  } catch {
+  } catch (err) {
+    console.error('[summer-camp-lottery] Unhandled error:', err);
     return NextResponse.json(
       { success: false, error: 'An error occurred. Please try again.' },
       { status: 500 }

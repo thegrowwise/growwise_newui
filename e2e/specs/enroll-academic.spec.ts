@@ -4,7 +4,7 @@ const LOCALE = process.env.E2E_LOCALE || 'en';
 
 test.describe('Academic enrollment form', () => {
   test('submits academic enrollment successfully with mocked backend', async ({ page }) => {
-    await page.route('**/api/enrollment', async (route) => {
+    await page.route('**/api/enroll', async (route) => {
       const body = await route.request().postDataJSON();
       expect(body.fullName).toContain('Student');
       await route.fulfill({
