@@ -656,6 +656,8 @@
       "campInterestLabel": "Interés en el campamento",
       "interestPlaceholder": "Selecciona una opción",
       "grades": {
+        "prek": "Pre-K",
+        "k": "Kínder",
         "1": "1.º grado",
         "2": "2.º grado",
         "3": "3.º grado",

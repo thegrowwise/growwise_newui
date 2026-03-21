@@ -10,6 +10,8 @@ import { sendEmail, type SendEmailResult } from '@/lib/email';
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const GRADE_KEYS = [
+  'prek',
+  'k',
   '1',
   '2',
   '3',
@@ -31,6 +33,8 @@ type GradeKey = (typeof GRADE_KEYS)[number];
 type InterestKey = (typeof INTEREST_KEYS)[number];
 
 const GRADE_LABELS: Record<GradeKey, string> = {
+  prek: 'Pre-K',
+  k: 'Kindergarten',
   '1': '1st grade',
   '2': '2nd grade',
   '3': '3rd grade',

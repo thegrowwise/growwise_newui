@@ -656,6 +656,8 @@
       "campInterestLabel": "营地意向",
       "interestPlaceholder": "请选择",
       "grades": {
+        "prek": "学前班",
+        "k": "幼儿园",
         "1": "一年级",
         "2": "二年级",
         "3": "三年级",

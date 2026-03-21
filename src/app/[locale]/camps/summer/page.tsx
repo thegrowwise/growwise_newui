@@ -55,6 +55,8 @@ export interface SummerCampFaqData {
 type CampTypeFilter = 'all' | Program['category'];
 
 const LOTTERY_GRADES = [
+  'prek',
+  'k',
   '1',
   '2',
   '3',
