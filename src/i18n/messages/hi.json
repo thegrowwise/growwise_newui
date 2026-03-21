@@ -690,6 +690,10 @@
       "errorGeneric": "कुछ गलत हुआ। पुनः प्रयास करें।"
     }
   },
+  "enrollnow": {
+    "h1": "आज ही अपना नामांकन शुरू करें",
+    "metaDescription": "अपने बच्चे का GrowWise की K-12 ट्यूशन और STEAM प्रोग्राम में नामांकन करें। शैक्षणिक और STEM विकल्प चुनें। फॉर्म भरें और हम 24 घंटों के भीतर मार्गदर्शन करेंगे।"
+  },
   "notFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn’t exist or may have been moved.",

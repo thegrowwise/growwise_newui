@@ -33,6 +33,7 @@ import {
 import { buildGoogleCalendarUrl, buildIcsContent } from '@/lib/programs';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { BACKEND_URL } from '@/lib/config';
+import { getRecaptchaToken } from '@/lib/recaptcha';
 
 interface CalendarDay {
   dayNum: number;
@@ -201,6 +202,8 @@ export default function WorkshopCalendar(): React.ReactElement {
       if (!validateForm() || !selectedEvent) return;
       setIsSubmitting(true);
       try {
+        const recaptchaToken = await getRecaptchaToken('workshop_register_submit');
+
         const res = await fetch(`${BACKEND_URL}/api/workshop-registration`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -215,7 +218,8 @@ export default function WorkshopCalendar(): React.ReactElement {
             eventTitle: selectedEvent.name,
             eventDate: selectedDate,
             eventTime: formatProgramTime(selectedEvent.time),
-            eventGrades: selectedEvent.grades ?? ''
+            eventGrades: selectedEvent.grades ?? '',
+            recaptchaToken: recaptchaToken || undefined,
           })
         });
         const data = await res.json();

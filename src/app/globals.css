@@ -248,7 +248,10 @@ html {
     }
   }
   .header-desktop-nav { @apply hidden lg:flex items-center space-x-0; }
-  .header-navlink { @apply px-3 py-2 rounded-full text-sm font-medium transition-all duration-300 flex items-center gap-1 relative; }
+  /* !text-sm avoids hydration/CSS drift vs base layer (e.g. button text-base) on nav triggers */
+  .header-navlink { @apply px-3 py-2 rounded-full !text-sm font-medium transition-all duration-300 flex items-center gap-1 relative; }
+  /* Desktop dropdown triggers (wider padding than simple nav links); same explicit text size as .header-navlink */
+  .header-dropdown-nav-trigger { @apply px-4 py-2 rounded-full !text-sm font-medium transition-all duration-300 flex items-center gap-1 relative whitespace-nowrap; }
   .header-nav-neutral { @apply text-gray-700 hover:bg-gray-100; }
   .header-indicator-base { @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 rounded-full transition-all duration-300; }
   .header-dropdown-panel { @apply absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl overflow-hidden transition-all duration-300 z-50 ring-1 ring-gray-200; }
