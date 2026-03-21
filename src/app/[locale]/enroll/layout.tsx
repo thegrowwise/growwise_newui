@@ -12,15 +12,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   }
 
   const messages = await getMessages({ locale })
-  const rawEnroll = (messages as { enroll?: unknown }).enroll
-  const enrollMessages =
-    rawEnroll && typeof rawEnroll === 'object'
-      ? (rawEnroll as { metaDescription?: unknown })
+  const rawEnrollNow = (messages as { enrollnow?: unknown }).enrollnow
+  const enrollNowMessages =
+    rawEnrollNow && typeof rawEnrollNow === 'object'
+      ? (rawEnrollNow as { metaDescription?: unknown })
       : undefined
 
   const metaDescription =
-    typeof enrollMessages?.metaDescription === 'string' && enrollMessages.metaDescription.trim().length > 0
-      ? enrollMessages.metaDescription
+    typeof enrollNowMessages?.metaDescription === 'string' && enrollNowMessages.metaDescription.trim().length > 0
+      ? enrollNowMessages.metaDescription
       : config.description
 
   return generatePageMetadata({

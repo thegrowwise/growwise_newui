@@ -49,7 +49,7 @@ export default function RootLayout({
         </a>
         <Script
           id="remove-extension-attributes"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {

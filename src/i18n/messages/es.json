@@ -634,6 +634,60 @@
     },
     "infoModal": {
       "detailsUnavailable": "Los detalles no están disponibles para este programa."
+    },
+    "filter": {
+      "allCamps": "All Camps",
+      "ariaLabel": "Filter camps by type"
+    },
+    "mobile": {
+      "viewAllCamps": "View all camps ↑",
+      "earlyBirdBar": "Early bird ends May 15",
+      "winFreeSpot": "Win free spot",
+      "lotteryLink": "Enter free lottery instead",
+      "enrollNow": "Enroll Now",
+      "earlyBirdBadge": "Early bird — GWSUMMER15"
+    },
+    "lottery": {
+      "title": "Gana un lugar gratis en Summer Camp",
+      "subtitle": "Entrada rápida: correo, interés en el campamento y grado. Te avisaremos si ganas.",
+      "formAriaLabel": "Formulario del sorteo de plaza gratis",
+      "childGradeLabel": "Grado del niño (2025–26)",
+      "gradePlaceholder": "Selecciona el grado",
+      "campInterestLabel": "Interés en el campamento",
+      "interestPlaceholder": "Selecciona una opción",
+      "grades": {
+        "prek": "Pre-K",
+        "k": "Kínder",
+        "1": "1.º grado",
+        "2": "2.º grado",
+        "3": "3.º grado",
+        "4": "4.º grado",
+        "5": "5.º grado",
+        "6": "6.º grado",
+        "7": "7.º grado",
+        "8": "8.º grado",
+        "9": "9.º grado",
+        "10": "10.º grado",
+        "11": "11.º grado",
+        "12": "12.º grado",
+        "other": "Otro"
+      },
+      "interests": {
+        "academic": "Académico",
+        "game_development": "Desarrollo de videojuegos",
+        "coding": "Programación"
+      },
+      "emailLabel": "Correo electrónico",
+      "emailPlaceholder": "tu@ejemplo.com",
+      "submit": "Participar en el sorteo",
+      "submitting": "Enviando…",
+      "successTitle": "¡Ya estás participando!",
+      "successBody": "Ganador anunciado el 20 de mayo. Solo 10 lugares — los resultados se enviarán por correo.",
+      "successRecorded": "Registrado: {interest} · {grade}",
+      "successEmailNote": "Revisa tu correo para la misma confirmación.",
+      "errorInvalidEmail": "Introduce un correo electrónico válido.",
+      "errorInvalidForm": "Indica tu correo, el interés en el campamento y el grado.",
+      "errorGeneric": "Algo salió mal. Inténtalo de nuevo."
     }
   },
   "pricingUi": {
@@ -692,7 +746,7 @@
       "inPersonBadge": "Presencial"
     }
   },
-  "enroll": {
+  "enrollnow": {
     "h1": "Empieza tu inscripción hoy",
     "metaDescription": "Inscribe a tu hijo en la tutoría K-12 y programas STEAM de GrowWise. Elige opciones académicas y STEM. Completa el formulario y te guiaremos en 24 horas."
   },

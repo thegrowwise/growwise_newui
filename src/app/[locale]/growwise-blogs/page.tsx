@@ -150,7 +150,15 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.',
     href: '/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills',
     readMore: 'Read More »'
-  }
+  },
+  {
+    id: '17',
+    category: 'academic',
+    title: 'Thinking Gap: Your Kids Aren’t Distracted',
+    excerpt: 'Many children are not truly distracted—they are experiencing a thinking gap. Learn how to identify the signs early and use practical strategies to improve focus, confidence, and independent learning.',
+    href: '/growwise-blogs/thinking-gap-your-kids-arent-distracted',
+    readMore: 'Read More »'
+  },
 ];
 
 interface PageProps {
