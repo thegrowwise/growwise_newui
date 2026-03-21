@@ -64,7 +64,8 @@ export default function EnrollPage() {
         recaptchaToken: recaptchaToken || undefined,
       };
 
-      const response = await fetch(`${BACKEND_URL}/api/enrollment`, {
+      // This app exposes POST at /api/enroll (not /api/enrollment). Wrong path returns HTML 404 → JSON parse error.
+      const response = await fetch(`${BACKEND_URL.replace(/\/$/, '')}/api/enroll`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +73,22 @@ export default function EnrollPage() {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+      const raw = await response.text();
+      let result: { success?: boolean; error?: string; message?: string } = {};
+      if (raw.trim()) {
+        try {
+          result = JSON.parse(raw) as typeof result;
+        } catch {
+          setSubmitStatus('error');
+          setErrorMessage(
+            response.ok
+              ? 'Invalid response from server. Please try again.'
+              : `Server error (${response.status}). Please try again.`
+          );
+          trackFormSubmit('enrollment_form', false, 'Non-JSON response');
+          return;
+        }
+      }
 
       if (!response.ok) {
         setSubmitStatus('error');

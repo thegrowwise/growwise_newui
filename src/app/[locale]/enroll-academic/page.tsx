@@ -116,7 +116,7 @@ export default function EnrollAcademicPage() {
         return;
       }
 
-      const response = await fetch(`${BACKEND_URL}/api/enrollment`, {
+      const response = await fetch(`${BACKEND_URL.replace(/\/$/, '')}/api/enroll`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -124,7 +124,19 @@ export default function EnrollAcademicPage() {
         body: JSON.stringify(enrollmentData),
       });
 
-      const result = await response.json();
+      const raw = await response.text();
+      let result: { success?: boolean; error?: string; message?: string } = {};
+      if (raw.trim()) {
+        try {
+          result = JSON.parse(raw) as typeof result;
+        } catch {
+          throw new Error(
+            response.ok
+              ? 'Invalid response from server. Please try again.'
+              : `Server error (${response.status}). Please try again.`
+          );
+        }
+      }
 
       if (!response.ok) {
         throw new Error(result.error || result.message || `Server error (${response.status})`);

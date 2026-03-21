@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
+import { useRouter } from 'next/navigation';
 import type { SummerCampFaqItem } from './SummerCampPageFaq';
 import { fetchSummerCampData, type Program, type OlympiadTierConfig } from '@/lib/summer-camp-data';
 import { createLocaleUrl } from '@/components/layout/Header/utils';
@@ -12,6 +13,13 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { trackLotteryEntry, trackBrochureDownload, trackEarlyBirdReveal } from '@/lib/meta-pixel';
+import {
+  LOTTERY_GRADES,
+  LOTTERY_INTERESTS,
+  type LotteryGrade,
+  type LotteryInterest,
+} from '@/lib/summer-lottery-keys';
 
 const ProgramList = dynamic(
   () => import('@/components/camps/SummerCampProgramList').then((m) => ({ default: m.ProgramList })),
@@ -54,29 +62,6 @@ export interface SummerCampFaqData {
 
 type CampTypeFilter = 'all' | Program['category'];
 
-const LOTTERY_GRADES = [
-  'prek',
-  'k',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12',
-  'other',
-] as const;
-
-const LOTTERY_INTERESTS = ['academic', 'game_development', 'coding'] as const;
-
-type LotteryGrade = (typeof LOTTERY_GRADES)[number];
-type LotteryInterest = (typeof LOTTERY_INTERESTS)[number];
-
 const lotterySelectClass = cn(
   'flex h-11 w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm md:text-base',
   'text-foreground outline-none transition-[color,box-shadow]',
@@ -104,6 +89,7 @@ function scheduleIdleTask(cb: () => void, timeoutMs = 2200): () => void {
 export default function SummerCampPage() {
   const t = useTranslations('summerCamp');
   const locale = useLocale();
+  const router = useRouter();
   const [programs, setPrograms] = useState<Program[]>([]);
   const [olympiadTierConfigs, setOlympiadTierConfigs] = useState<OlympiadTierConfig[]>([]);
   const [programsLoading, setProgramsLoading] = useState(true);
@@ -114,22 +100,12 @@ export default function SummerCampPage() {
   const [lotteryEmail, setLotteryEmail] = useState('');
   const [lotteryCampInterest, setLotteryCampInterest] = useState<LotteryInterest | ''>('');
   const [lotteryChildGrade, setLotteryChildGrade] = useState<LotteryGrade | ''>('');
-  const [lotteryStatus, setLotteryStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [lotteryStatus, setLotteryStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [lotteryErrorKind, setLotteryErrorKind] = useState<
     'invalid_form' | 'invalid_email' | 'server' | null
   >(null);
-  /** Shown on success so users see what was recorded (form state is cleared after submit). */
-  const [lotterySuccessSummary, setLotterySuccessSummary] = useState<{
-    interest: string;
-    grade: string;
-  } | null>(null);
-  /** Dev-only: server reports whether Nodemailer actually sent (see .env.local SMTP_*). */
-  const [lotteryEmailDebug, setLotteryEmailDebug] = useState<{
-    userEmailSent: boolean;
-    businessEmailSent: boolean;
-    userEmailError?: string;
-    businessEmailError?: string;
-  } | null>(null);
+  /** API `error` string or dev hint when the response was not JSON (e.g. HTML error page). */
+  const [lotteryErrorDetail, setLotteryErrorDetail] = useState<string | null>(null);
   const [faqMount, setFaqMount] = useState(false);
   const slotsSectionRef = useRef<HTMLElement>(null);
   const faqSentinelRef = useRef<HTMLDivElement>(null);
@@ -147,6 +123,7 @@ export default function SummerCampPage() {
     if (lotteryStatus === 'error') {
       setLotteryStatus('idle');
       setLotteryErrorKind(null);
+      setLotteryErrorDetail(null);
     }
   };
 
@@ -170,7 +147,7 @@ export default function SummerCampPage() {
 
     setLotteryStatus('loading');
     setLotteryErrorKind(null);
-    setLotteryEmailDebug(null);
+    setLotteryErrorDetail(null);
     try {
       const res = await fetch('/api/summer-camp-lottery', {
         method: 'POST',
@@ -182,35 +159,59 @@ export default function SummerCampPage() {
           locale,
         }),
       });
-      const data = (await res.json()) as {
-        success?: boolean;
-        error?: string;
-        emailDebug?: {
-          userEmailSent: boolean;
-          businessEmailSent: boolean;
-          userEmailError?: string;
-          businessEmailError?: string;
-        };
-      };
-      if (!res.ok || !data.success) {
+      const raw = await res.text();
+      let parsed: { success?: boolean; error?: string } = {};
+      let jsonInvalid = false;
+      if (raw.trim()) {
+        try {
+          parsed = JSON.parse(raw) as typeof parsed;
+        } catch {
+          jsonInvalid = true;
+        }
+      }
+
+      const apiError =
+        typeof parsed.error === 'string' && parsed.error.trim()
+          ? parsed.error.trim().slice(0, 280)
+          : null;
+
+      if (!res.ok || parsed.success !== true) {
         setLotteryStatus('error');
-        setLotteryErrorKind(res.status === 400 ? 'invalid_form' : 'server');
+        const kind = res.status === 400 ? 'invalid_form' : 'server';
+        setLotteryErrorKind(kind);
+        if (jsonInvalid && raw.trim()) {
+          const html = raw.trimStart().startsWith('<');
+          setLotteryErrorDetail(
+            html && process.env.NODE_ENV === 'development'
+              ? 'Server returned an error page instead of JSON — check the terminal running next dev.'
+              : apiError
+          );
+          if (process.env.NODE_ENV === 'development' && html) {
+            console.error('[summer lottery] Non-JSON error response (first 200 chars):', raw.slice(0, 200));
+          }
+        } else {
+          setLotteryErrorDetail(apiError);
+        }
         return;
       }
-      if (data.emailDebug) {
-        setLotteryEmailDebug(data.emailDebug);
-      }
-      setLotterySuccessSummary({
-        interest: t(`lottery.interests.${lotteryCampInterest}`),
-        grade: t(`lottery.grades.${lotteryChildGrade}`),
+      trackLotteryEntry(lotteryCampInterest, lotteryChildGrade);
+      const qs = new URLSearchParams({
+        interest: lotteryCampInterest,
+        grade: lotteryChildGrade,
       });
-      setLotteryStatus('success');
+      router.push(
+        `${createLocaleUrl('/camps/summer/lottery-success', locale)}?${qs.toString()}`
+      );
       setLotteryChildGrade('');
       setLotteryCampInterest('');
       setLotteryEmail('');
-    } catch {
+      setLotteryStatus('idle');
+    } catch (err) {
       setLotteryStatus('error');
       setLotteryErrorKind('server');
+      setLotteryErrorDetail(
+        process.env.NODE_ENV === 'development' && err instanceof Error ? err.message : null
+      );
     }
   };
 
@@ -362,6 +363,8 @@ export default function SummerCampPage() {
     return () => io.disconnect();
   }, [locale, faqMount]);
 
+  useEffect(() => { if (!programsLoading) trackEarlyBirdReveal(); }, [programsLoading]);
+
   const scrollToLottery = () => {
     document.getElementById('lottery')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -428,8 +431,7 @@ export default function SummerCampPage() {
               </button>
               <a
                 href="/assets/camps/final%20brochure.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={trackBrochureDownload}
                 className="px-10 py-4 rounded-full bg-white/95 text-[#1F396D] font-extrabold text-base md:text-lg uppercase tracking-wider hover:bg-white transition-shadow duration-300 border border-white/50 shadow-[0_0_10px_rgba(255,255,255,0.35)] md:backdrop-blur-sm"
               >
                 Download Brochure
@@ -642,51 +644,12 @@ export default function SummerCampPage() {
             <p className="text-slate-600 text-sm md:text-base text-center mb-8 leading-relaxed">
               {t('lottery.subtitle')}
             </p>
-            {lotteryStatus === 'success' ? (
-              <div
-                className="rounded-xl border border-[#1D9E75]/40 bg-emerald-50/80 text-[#085041] text-center py-5 px-4 space-y-2"
-                role="status"
-              >
-                <p className="text-base font-bold">{t('lottery.successTitle')}</p>
-                <p className="text-sm font-medium leading-relaxed">{t('lottery.successBody')}</p>
-                {lotterySuccessSummary ? (
-                  <p className="text-xs sm:text-sm text-[#085041]/90 border-t border-[#1D9E75]/25 mt-3 pt-3">
-                    {t('lottery.successRecorded', {
-                      interest: lotterySuccessSummary.interest,
-                      grade: lotterySuccessSummary.grade,
-                    })}
-                  </p>
-                ) : null}
-                <p className="text-xs text-[#085041]/80">{t('lottery.successEmailNote')}</p>
-                {process.env.NODE_ENV === 'development' &&
-                lotteryEmailDebug &&
-                !lotteryEmailDebug.userEmailSent ? (
-                  <p
-                    className="text-left text-xs text-amber-900 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-2"
-                    role="status"
-                  >
-                    <strong>Local dev:</strong> confirmation email was not sent
-                    {lotteryEmailDebug.userEmailError
-                      ? ` (${lotteryEmailDebug.userEmailError}).`
-                      : '.'}{' '}
-                    Add{' '}
-                    <code className="text-[11px] bg-amber-100 px-1 rounded">SMTP_HOST</code>,{' '}
-                    <code className="text-[11px] bg-amber-100 px-1 rounded">SMTP_USER</code>,{' '}
-                    <code className="text-[11px] bg-amber-100 px-1 rounded">SMTP_PASS</code>, and{' '}
-                    <code className="text-[11px] bg-amber-100 px-1 rounded">FROM_EMAIL</code> to{' '}
-                    <code className="text-[11px] bg-amber-100 px-1 rounded">.env.local</code> — see{' '}
-                    <code className="text-[11px] bg-amber-100 px-1 rounded">.env.example</code>. Check the
-                    server terminal for <code className="text-[11px] bg-amber-100 px-1 rounded">[email]</code> logs.
-                  </p>
-                ) : null}
-              </div>
-            ) : (
-              <form
-                onSubmit={handleLotterySubmit}
-                className="space-y-4"
-                noValidate
-                aria-label={t('lottery.formAriaLabel')}
-              >
+            <form
+              onSubmit={handleLotterySubmit}
+              className="space-y-4"
+              noValidate
+              aria-label={t('lottery.formAriaLabel')}
+            >
                 <div className="space-y-2">
                   <Label htmlFor="summer-lottery-email">{t('lottery.emailLabel')}</Label>
                   <Input
@@ -758,8 +721,8 @@ export default function SummerCampPage() {
                     {lotteryErrorKind === 'invalid_email'
                       ? t('lottery.errorInvalidEmail')
                       : lotteryErrorKind === 'invalid_form'
-                        ? t('lottery.errorInvalidForm')
-                        : t('lottery.errorGeneric')}
+                        ? lotteryErrorDetail ?? t('lottery.errorInvalidForm')
+                        : lotteryErrorDetail ?? t('lottery.errorGeneric')}
                   </p>
                 ) : null}
                 <Button
@@ -769,8 +732,7 @@ export default function SummerCampPage() {
                 >
                   {lotteryStatus === 'loading' ? t('lottery.submitting') : t('lottery.submit')}
                 </Button>
-              </form>
-            )}
+            </form>
           </div>
         </section>
 

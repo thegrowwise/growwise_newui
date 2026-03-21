@@ -712,8 +712,6 @@
       "campInterestLabel": "Camp interest",
       "interestPlaceholder": "Select interest",
       "grades": {
-        "prek": "Pre-K",
-        "k": "Kindergarten",
         "1": "1st grade",
         "2": "2nd grade",
         "3": "3rd grade",
@@ -741,6 +739,8 @@
       "successBody": "Winner announced May 20th. Only 10 spots — results emailed directly.",
       "successRecorded": "We recorded: {interest} · {grade}",
       "successEmailNote": "Check your inbox for the same confirmation.",
+      "successBackToSummer": "Back to Summer Camp",
+      "successRedirecting": "Redirecting…",
       "errorInvalidEmail": "Please enter a valid email address.",
       "errorInvalidForm": "Please add your email, choose camp interest, and select a grade.",
       "errorGeneric": "Something went wrong. Please try again."
