@@ -7,6 +7,21 @@ import type { SendEmailResult } from '@/lib/email';
 
 const BREVO_API_BASE = 'https://api.brevo.com/v3';
 
+/** Fetch with timeout — works on Node 16+; avoids AbortSignal.timeout (Node 17.3+ only). */
+async function fetchWithTimeout(
+  url: string,
+  init: Omit<RequestInit, 'signal'>,
+  timeoutMs = 25_000
+): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(id);
+  }
+}
+
 function getBrevoSender(): { apiKey: string; email: string; name: string } | null {
   const apiKey = process.env.BREVO_API_KEY?.trim();
   const email = process.env.BREVO_SENDER_EMAIL?.trim();
@@ -44,7 +59,7 @@ export async function sendBrevoTransactionalEmail(
   }
 
   try {
-    const res = await fetch(`${BREVO_API_BASE}/smtp/email`, {
+    const res = await fetchWithTimeout(`${BREVO_API_BASE}/smtp/email`, {
       method: 'POST',
       headers: {
         accept: 'application/json',
@@ -103,7 +118,7 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
   }
 
   try {
-    const res = await fetch(`${BREVO_API_BASE}/contacts`, {
+    const res = await fetchWithTimeout(`${BREVO_API_BASE}/contacts`, {
       method: 'POST',
       headers: {
         accept: 'application/json',

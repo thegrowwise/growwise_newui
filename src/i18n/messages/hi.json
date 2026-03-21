@@ -656,8 +656,6 @@
       "campInterestLabel": "कैंप में रुचि",
       "interestPlaceholder": "विकल्प चुनें",
       "grades": {
-        "prek": "प्री-के",
-        "k": "किंडरगार्टन",
         "1": "कक्षा 1",
         "2": "कक्षा 2",
         "3": "कक्षा 3",
@@ -685,6 +683,8 @@
       "successBody": "विजेता 20 मई को घोषित। केवल 10 स्पॉट — परिणाम सीधे ईमेल पर।",
       "successRecorded": "दर्ज किया: {interest} · {grade}",
       "successEmailNote": "वही पुष्टि ईमेल में भी देखें।",
+      "successBackToSummer": "समर कैंप पर वापस जाएँ",
+      "successRedirecting": "पुनर्निर्देशित किया जा रहा है…",
       "errorInvalidEmail": "कृपया मान्य ईमेल दर्ज करें।",
       "errorInvalidForm": "ईमेल, कैंप रुचि और कक्षा भरें।",
       "errorGeneric": "कुछ गलत हुआ। पुनः प्रयास करें।"

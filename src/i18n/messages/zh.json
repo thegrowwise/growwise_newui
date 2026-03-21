@@ -656,8 +656,6 @@
       "campInterestLabel": "营地意向",
       "interestPlaceholder": "请选择",
       "grades": {
-        "prek": "学前班",
-        "k": "幼儿园",
         "1": "一年级",
         "2": "二年级",
         "3": "三年级",
@@ -685,6 +683,8 @@
       "successBody": "5月20日公布获奖者。仅10个名额——结果将直接发送至您的邮箱。",
       "successRecorded": "已记录：{interest} · {grade}",
       "successEmailNote": "请查收邮箱中的相同确认邮件。",
+      "successBackToSummer": "返回夏令营页面",
+      "successRedirecting": "正在跳转…",
       "errorInvalidEmail": "请输入有效的电子邮箱。",
       "errorInvalidForm": "请填写邮箱、选择营地意向并选择年级。",
       "errorGeneric": "出错了，请重试。"

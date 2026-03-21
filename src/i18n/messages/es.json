@@ -656,8 +656,6 @@
       "campInterestLabel": "Interés en el campamento",
       "interestPlaceholder": "Selecciona una opción",
       "grades": {
-        "prek": "Pre-K",
-        "k": "Kínder",
         "1": "1.º grado",
         "2": "2.º grado",
         "3": "3.º grado",
@@ -685,6 +683,8 @@
       "successBody": "Ganador anunciado el 20 de mayo. Solo 10 lugares — los resultados se enviarán por correo.",
       "successRecorded": "Registrado: {interest} · {grade}",
       "successEmailNote": "Revisa tu correo para la misma confirmación.",
+      "successBackToSummer": "Volver a Summer Camp",
+      "successRedirecting": "Redirigiendo…",
       "errorInvalidEmail": "Introduce un correo electrónico válido.",
       "errorInvalidForm": "Indica tu correo, el interés en el campamento y el grado.",
       "errorGeneric": "Algo salió mal. Inténtalo de nuevo."

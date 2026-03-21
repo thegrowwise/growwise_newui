@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+import { trackEnrollClick } from '@/lib/meta-pixel';
 
 function InfoModal({
   program,
@@ -290,6 +291,7 @@ export function SlotsPanel({
 
   const handleAdd = (level: Level, slot: Slot) => {
     if (summerCampItemIds.has(slot.id)) return;
+    trackEnrollClick(program.title, slot.price);
     addItem(toGlobalCartItem(program, level, slot));
   };
 

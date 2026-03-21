@@ -38,7 +38,7 @@ export default async function LocaleLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages}>
       {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
