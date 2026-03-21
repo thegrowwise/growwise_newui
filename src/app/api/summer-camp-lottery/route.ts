@@ -1,12 +1,15 @@
 import { NextResponse } from 'next/server';
 import { CONTACT_INFO } from '@/lib/constants';
-import { sendEmail } from '@/lib/email';
+import {
+  addSummerCampLotteryContactToBrevoList,
+  isBrevoTransactionalReady,
+  sendBrevoTransactionalEmail,
+} from '@/lib/brevo';
+import { sendEmail, type SendEmailResult } from '@/lib/email';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const GRADE_KEYS = [
-  'prek',
-  'k',
   '1',
   '2',
   '3',
@@ -28,8 +31,6 @@ type GradeKey = (typeof GRADE_KEYS)[number];
 type InterestKey = (typeof INTEREST_KEYS)[number];
 
 const GRADE_LABELS: Record<GradeKey, string> = {
-  prek: 'Pre-K',
-  k: 'Kindergarten',
   '1': '1st grade',
   '2': '2nd grade',
   '3': '3rd grade',
@@ -113,12 +114,35 @@ export async function POST(request: Request) {
       '— GrowWise Educational Services',
     ].join('\n');
 
-    const userResult = await sendEmail({
-      to: email,
-      subject: userSubject,
-      html: userHtml,
-      text: userText,
-    });
+    const useBrevo = isBrevoTransactionalReady();
+
+    let listAddResult: SendEmailResult | undefined;
+    if (useBrevo) {
+      listAddResult = await addSummerCampLotteryContactToBrevoList(email);
+      if (!listAddResult.success) {
+        console.warn('[summer-camp-lottery] Brevo lottery list add skipped.', listAddResult.error);
+      }
+    }
+
+    let userResult: SendEmailResult;
+    let businessResult: SendEmailResult;
+
+    if (useBrevo) {
+      userResult = await sendBrevoTransactionalEmail({
+        to: email,
+        subject: userSubject,
+        html: userHtml,
+        text: userText,
+        replyTo: { email: CONTACT_INFO.email, name: 'GrowWise' },
+      });
+    } else {
+      userResult = await sendEmail({
+        to: email,
+        subject: userSubject,
+        html: userHtml,
+        text: userText,
+      });
+    }
 
     if (!userResult.success) {
       console.warn('[summer-camp-lottery] User confirmation email skipped.', userResult.error);
@@ -150,12 +174,22 @@ export async function POST(request: Request) {
       .filter(Boolean)
       .join('\n');
 
-    const businessResult = await sendEmail({
-      to: CONTACT_INFO.businessEmail,
-      subject: businessSubject,
-      html: businessHtml,
-      text: businessText,
-    });
+    if (useBrevo) {
+      businessResult = await sendBrevoTransactionalEmail({
+        to: CONTACT_INFO.businessEmail,
+        subject: businessSubject,
+        html: businessHtml,
+        text: businessText,
+        replyTo: { email: CONTACT_INFO.email, name: 'GrowWise' },
+      });
+    } else {
+      businessResult = await sendEmail({
+        to: CONTACT_INFO.businessEmail,
+        subject: businessSubject,
+        html: businessHtml,
+        text: businessText,
+      });
+    }
 
     if (!businessResult.success) {
       console.warn('[summer-camp-lottery] Business notification skipped.', businessResult.error);
@@ -171,6 +205,12 @@ export async function POST(request: Request) {
       payload.emailDebug = {
         userEmailSent: userResult.success,
         businessEmailSent: businessResult.success,
+        ...(useBrevo && listAddResult
+          ? {
+              brevoListAddSent: listAddResult.success,
+              ...(listAddResult.error ? { brevoListAddError: listAddResult.error } : {}),
+            }
+          : {}),
         ...(userResult.error ? { userEmailError: userResult.error } : {}),
         ...(businessResult.error ? { businessEmailError: businessResult.error } : {}),
       };
