@@ -1,8 +1,7 @@
 'use client';
 
-import { useState, useEffect, useMemo, lazy, Suspense } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import {
   LEARNING_MODE_KEYS,
@@ -19,7 +18,7 @@ import {
 } from '@/lib/summer-camp-data';
 import { useCart } from '@/components/gw/CartContext';
 import { Button } from '@/components/ui/button';
-import { Check, X, Clock, Info, CalendarDays, CheckCircle2 } from 'lucide-react';
+import { X, Clock, Info, CalendarDays, CheckCircle2 } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -28,137 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-
-export function ProgramList({
-  programs = [],
-  onSelectProgram,
-  selectedProgramId,
-}: {
-  programs?: Program[] | null;
-  onSelectProgram: (p: Program) => void;
-  selectedProgramId: string | null;
-}) {
-  const t = useTranslations('summerCamp');
-  const list = programs ?? [];
-
-  const categories = Array.from(
-    new Set(list.map((p) => p.category))
-  );
-
-  const isHalfDay = (category: Program['category']) => category === 'Half-Day Camps';
-
-  return (
-    <div className="space-y-8" role="group" aria-label={t('page.title')}>
-      {categories.map((category) => {
-        const categoryPrograms = list.filter(
-          (p) => p.category === category
-        );
-        const hasOddCount = categoryPrograms.length % 2 !== 0;
-        const halfDay = isHalfDay(category);
-
-        return (
-          <div key={category} className="space-y-3" role="group">
-            {/* Category heading */}
-            <div
-              className={`flex items-center gap-4 px-5 py-4 rounded-2xl border-2
-                ${halfDay
-                  ? 'bg-[#1F396D]/10 border-[#1F396D]/30'
-                  : 'bg-orange-100 border-orange-400'
-                }
-              `}
-            >
-              <span
-                aria-hidden="true"
-                className={`w-3.5 h-3.5 rounded-full flex-shrink-0 shadow-sm ${
-                  halfDay ? 'bg-[#1F396D]' : 'bg-orange-500'
-                }`}
-              />
-              <h3
-                className={`font-heading font-black text-xl uppercase tracking-widest
-                  ${halfDay ? 'text-[#1F396D]' : 'text-orange-700'}
-                `}
-              >
-                {category}
-              </h3>
-              <span
-                className={`ml-auto text-xs font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider
-                  ${halfDay
-                    ? 'bg-[#1F396D]/30 text-[#1F396D]'
-                    : 'bg-orange-300 text-orange-900'
-                  }
-                `}
-              >
-                {t('category.programs', { count: categoryPrograms.length })}
-              </span>
-            </div>
-
-            <ul className="grid grid-cols-2 gap-3 list-none p-0 m-0" aria-label={t('category.programs', { count: categoryPrograms.length })}>
-              {categoryPrograms.map((program, idx) => {
-                const isSelected = selectedProgramId === program.id;
-                const isLastAndAlone = hasOddCount && idx === categoryPrograms.length - 1;
-                return (
-                  <li key={program.id} className={isLastAndAlone ? 'col-span-2' : ''}>
-                    <button
-                      type="button"
-                      aria-pressed={isSelected}
-                      aria-label={program.title}
-                      onClick={() => onSelectProgram(program)}
-                      className={`text-left flex flex-col rounded-xl overflow-hidden border-2 transition-all duration-300 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 bg-white w-full
-                        ${isSelected
-                          ? 'border-[#1F396D] shadow-lg'
-                          : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
-                        }
-                      `}
-                    >
-                      {/* Image — aspect ratio set directly on the img for reliable rendering */}
-                      <img
-                        src={program.image}
-                        alt={`${program.title}: ${program.description}`}
-                        draggable={false}
-                        loading="lazy"
-                        className="w-full object-cover flex-shrink-0 group-hover:scale-105 transition-transform duration-500 bg-slate-200"
-                        style={{
-                          display: 'block',
-                          aspectRatio: '650/450',
-                          maxHeight: isLastAndAlone ? '200px' : undefined,
-                        }}
-                      />
-
-                      {/* Content — white area below image */}
-                      <div className="px-4 py-3 flex flex-col flex-1">
-                        <h4
-                          className={`font-black text-sm uppercase tracking-tight leading-snug line-clamp-2
-                            ${isSelected ? 'text-[#1F396D]' : 'text-slate-900'}
-                          `}
-                        >
-                          {program.title}
-                        </h4>
-                        <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
-                          {program.description}
-                        </p>
-                        {isSelected && (
-                          <div
-                            aria-live="polite"
-                            className="mt-2 flex items-center gap-1 text-[#1F396D] text-[10px] font-black uppercase tracking-widest"
-                          >
-                            {t('card.active')} <Check className="w-3 h-3" aria-hidden="true" />
-                          </div>
-                        )}
-                      </div>
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-// Config constants are defined in summer-camp-data.ts (SSOT).
-// Display labels are resolved via useTranslations('summerCamp') inside each component.
+import { trackEnrollClick } from '@/lib/meta-pixel';
 
 function InfoModal({
   program,
@@ -422,6 +291,7 @@ export function SlotsPanel({
 
   const handleAdd = (level: Level, slot: Slot) => {
     if (summerCampItemIds.has(slot.id)) return;
+    trackEnrollClick(program.title, slot.price);
     addItem(toGlobalCartItem(program, level, slot));
   };
 

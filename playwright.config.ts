@@ -47,5 +47,13 @@ export default defineConfig({
       use: { ...devices['Desktop Safari'] },
     },
   ],
+  webServer: process.env.E2E_BASE_URL
+    ? undefined
+    : {
+        command: 'npm run dev',
+        url: BASE_URL,
+        reuseExistingServer: !process.env.CI,
+        timeout: 180_000,
+      },
 });
 

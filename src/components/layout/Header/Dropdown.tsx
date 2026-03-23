@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
+import { cn } from '@/components/ui/utils';
 import { MenuItem } from './types';
 import { getVariant, isMenuItemActive, getVisibleDropdownItems } from './utils';
 import DropdownItem from './DropdownItem';
@@ -42,6 +43,11 @@ export default function Dropdown({
 
   // Prevent navigation for "Camps" menu item
   const isCamps = item.key === 'camps';
+
+  const triggerStateClass =
+    isOpen || isActive
+      ? v.activeBg
+      : `text-gray-700 ${v.hoverText} hover:bg-gray-100`;
   
   const linkContent = (
     <>
@@ -68,9 +74,11 @@ export default function Dropdown({
     >
       {isCamps ? (
         <span
-          className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap cursor-default ${
-            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
-          }`}
+          suppressHydrationWarning
+          className={cn(
+            'header-dropdown-nav-trigger group cursor-default',
+            triggerStateClass,
+          )}
           onClick={() => onItemClick()}
         >
           {linkContent}
@@ -78,9 +86,8 @@ export default function Dropdown({
       ) : (
         <Link
           href={createLocaleUrl(item.href)}
-          className={`px-4 py-2 rounded-full text-base font-medium transition-all duration-300 flex items-center gap-1 relative group whitespace-nowrap ${
-            isOpen || isActive ? v.activeBg : `text-gray-700 ${v.hoverText} hover:bg-gray-100`
-          }`}
+          suppressHydrationWarning
+          className={cn('header-dropdown-nav-trigger group', triggerStateClass)}
           onClick={() => onItemClick()}
         >
           {linkContent}

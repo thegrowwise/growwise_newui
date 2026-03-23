@@ -34,6 +34,8 @@ function getTransporter(): nodemailer.Transporter | null {
     port: port ? parseInt(port, 10) : 587,
     secure: process.env.SMTP_SECURE === 'true',
     auth: { user, pass },
+    connectionTimeout: 10_000,
+    socketTimeout: 25_000,
   });
 }
 

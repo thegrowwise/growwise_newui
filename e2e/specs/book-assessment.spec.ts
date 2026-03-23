@@ -47,18 +47,10 @@ test.describe('Book assessment form', () => {
       .getByRole('option', { name: /Weekdays After School/i })
       .click();
 
-    // Consent checkbox (by role so we target the right control)
-    await page.locator('#agreeToCommunications').click();
+    // Submit form (consent defaults to checked on this page)
     const submitBtn = page.getByTestId('assessment-submit');
     await expect(submitBtn).toBeEnabled({ timeout: 8000 });
-
-    // Option 2: restrict to the form’s submit button
-    const responsePromise = page.waitForResponse(
-      (res) => res.url().includes('/api/assessment') && res.request().method() === 'POST',
-      { timeout: 15000 },
-    );
-    await page.locator('form').evaluate((el) => (el as HTMLFormElement).requestSubmit());
-    await responsePromise;
+    await submitBtn.click();
 
     // Success view (page resets form after 5s, so assert promptly)
     await expect(

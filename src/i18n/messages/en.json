@@ -691,6 +691,60 @@
     "infoModal": {
       "detailsUnavailable": "Details are not available for this program."
     },
+    "filter": {
+      "allCamps": "All Camps",
+      "ariaLabel": "Filter camps by type"
+    },
+    "mobile": {
+      "viewAllCamps": "View all camps ↑",
+      "earlyBirdBar": "Early bird ends May 15",
+      "winFreeSpot": "Win free spot",
+      "lotteryLink": "Enter free lottery instead",
+      "enrollNow": "Enroll Now",
+      "earlyBirdBadge": "Early bird — GWSUMMER15"
+    },
+    "lottery": {
+      "title": "Win a free Summer Camp spot",
+      "subtitle": "Quick entry — email, camp interest, and grade. We’ll email you if you win.",
+      "formAriaLabel": "Free camp spot lottery entry",
+      "childGradeLabel": "Child’s grade (2025–26)",
+      "gradePlaceholder": "Select grade",
+      "campInterestLabel": "Camp interest",
+      "interestPlaceholder": "Select interest",
+      "grades": {
+        "1": "1st grade",
+        "2": "2nd grade",
+        "3": "3rd grade",
+        "4": "4th grade",
+        "5": "5th grade",
+        "6": "6th grade",
+        "7": "7th grade",
+        "8": "8th grade",
+        "9": "9th grade",
+        "10": "10th grade",
+        "11": "11th grade",
+        "12": "12th grade",
+        "other": "Other"
+      },
+      "interests": {
+        "academic": "Academic",
+        "game_development": "Game development",
+        "coding": "Coding"
+      },
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "submit": "Enter lottery",
+      "submitting": "Submitting…",
+      "successTitle": "You’re entered!",
+      "successBody": "Winner announced May 20th. Only 10 spots — results emailed directly.",
+      "successRecorded": "We recorded: {interest} · {grade}",
+      "successEmailNote": "Check your inbox for the same confirmation.",
+      "successBackToSummer": "Back to Summer Camp",
+      "successRedirecting": "Redirecting…",
+      "errorInvalidEmail": "Please enter a valid email address.",
+      "errorInvalidForm": "Please add your email, choose camp interest, and select a grade.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
     "faq": {
       "title": "FAQ",
       "subtitle": "Common questions about Summer Camps, programs, and enrollment."
@@ -703,6 +757,66 @@
       "payment": "Payment",
       "back": "Back"
     }
+  },
+  "pricingUi": {
+    "deliveryMode": {
+      "live": "Live",
+      "studio": "Studio",
+      "studioOnlyBadge": "In-person only"
+    },
+    "tier": {
+      "mostChosen": "Most chosen"
+    },
+    "enroll": {
+      "cta": "Enroll",
+      "oneTime": "one-time",
+      "ages": "Ages {min}–{max}"
+    }
+  },
+  "codingPage": {
+    "hero": {
+      "badge": "Coding programs · Ages 10–18",
+      "headline": "Real skills. Real projects. A journey that lasts years.",
+      "subtext": "Structured coding journeys for parents who want serious skills for their 10–18 year olds—from first Python scripts to building ML/AI and full applications.",
+      "ctaPrograms": "See coding programs",
+      "ctaAlt": "Looking for game dev?"
+    },
+    "programs": {
+      "title": "Coding learning journeys",
+      "subtitle": "Choose a track to see the full journey, tiers, and optional add-ons."
+    }
+  },
+  "gameDevPage": {
+    "hero": {
+      "badge": "Game development · Ages 6–16",
+      "headline": "Your child already loves games. Now they'll build them.",
+      "subtext": "A playful, structured journey for 6–16 year olds—turning curiosity into real game-building skills across Scratch, Roblox, Minecraft, and Robotics.",
+      "ctaPrograms": "See game dev programs",
+      "ctaAlt": "Looking for coding?"
+    },
+    "ageRecommender": {
+      "label": "Child's age",
+      "placeholder": "Enter age",
+      "title": "Recommended program",
+      "cta": "Show program",
+      "reasons": {
+        "scratch": "Best for early creators learning core game logic.",
+        "roblox": "Great next step for building 3D worlds and systems.",
+        "minecraft": "Perfect for builders who want deeper modding skills.",
+        "robotics": "Hands-on building for kids who love engineering."
+      }
+    },
+    "scratchBridge": {
+      "title": "Scratch Level 4 unlocks the next journey",
+      "body": "Scratch graduates can continue into Roblox or Python to keep building."
+    },
+    "tabs": {
+      "inPersonBadge": "In-person"
+    }
+  },
+  "enrollnow": {
+    "h1": "Start Your Enrollment Today",
+    "metaDescription": "Enroll your child in GrowWise K-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and we’ll guide you within 24 hours."
   },
   "notFound": {
     "title": "Page not found",

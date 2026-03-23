@@ -634,6 +634,60 @@
     },
     "infoModal": {
       "detailsUnavailable": "इस प्रोग्राम के लिए विवरण उपलब्ध नहीं हैं।"
+    },
+    "filter": {
+      "allCamps": "All Camps",
+      "ariaLabel": "Filter camps by type"
+    },
+    "mobile": {
+      "viewAllCamps": "View all camps ↑",
+      "earlyBirdBar": "Early bird ends May 15",
+      "winFreeSpot": "Win free spot",
+      "lotteryLink": "Enter free lottery instead",
+      "enrollNow": "Enroll Now",
+      "earlyBirdBadge": "Early bird — GWSUMMER15"
+    },
+    "lottery": {
+      "title": "मुफ़्त समर कैंप स्पॉट जीतें",
+      "subtitle": "जल्दी भरें — ईमेल, कैंप रुचि और कक्षा। जीतने पर ईमेल मिलेगा।",
+      "formAriaLabel": "मुफ़्त कैंप स्पॉट लॉटरी फ़ॉर्म",
+      "childGradeLabel": "बच्चे की कक्षा (2025–26)",
+      "gradePlaceholder": "कक्षा चुनें",
+      "campInterestLabel": "कैंप में रुचि",
+      "interestPlaceholder": "विकल्प चुनें",
+      "grades": {
+        "1": "कक्षा 1",
+        "2": "कक्षा 2",
+        "3": "कक्षा 3",
+        "4": "कक्षा 4",
+        "5": "कक्षा 5",
+        "6": "कक्षा 6",
+        "7": "कक्षा 7",
+        "8": "कक्षा 8",
+        "9": "कक्षा 9",
+        "10": "कक्षा 10",
+        "11": "कक्षा 11",
+        "12": "कक्षा 12",
+        "other": "अन्य"
+      },
+      "interests": {
+        "academic": "शैक्षिक",
+        "game_development": "गेम डेवलपमेंट",
+        "coding": "कोडिंग"
+      },
+      "emailLabel": "ईमेल",
+      "emailPlaceholder": "aap@example.com",
+      "submit": "लॉटरी में शामिल हों",
+      "submitting": "भेजा जा रहा है…",
+      "successTitle": "आप शामिल हो गए!",
+      "successBody": "विजेता 20 मई को घोषित। केवल 10 स्पॉट — परिणाम सीधे ईमेल पर।",
+      "successRecorded": "दर्ज किया: {interest} · {grade}",
+      "successEmailNote": "वही पुष्टि ईमेल में भी देखें।",
+      "successBackToSummer": "समर कैंप पर वापस जाएँ",
+      "successRedirecting": "पुनर्निर्देशित किया जा रहा है…",
+      "errorInvalidEmail": "कृपया मान्य ईमेल दर्ज करें।",
+      "errorInvalidForm": "ईमेल, कैंप रुचि और कक्षा भरें।",
+      "errorGeneric": "कुछ गलत हुआ। पुनः प्रयास करें।"
     }
   },
   "enroll": {
@@ -643,6 +697,10 @@
       "payment": "Payment",
       "back": "Back"
     }
+  },
+  "enrollnow": {
+    "h1": "आज ही अपना नामांकन शुरू करें",
+    "metaDescription": "अपने बच्चे का GrowWise की K-12 ट्यूशन और STEAM प्रोग्राम में नामांकन करें। शैक्षणिक और STEM विकल्प चुनें। फॉर्म भरें और हम 24 घंटों के भीतर मार्गदर्शन करेंगे।"
   },
   "notFound": {
     "title": "Page not found",

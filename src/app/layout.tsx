@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import GTM from '../components/analytics/GTM';
+import MetaPixel from '../components/analytics/MetaPixel';
 // Optimize font loading with next/font
 const inter = Inter({
   subsets: ['latin'],
@@ -49,7 +50,7 @@ export default function RootLayout({
         </a>
         <Script
           id="remove-extension-attributes"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
@@ -100,6 +101,9 @@ export default function RootLayout({
         {/* If GTM is configured, load GTM (script + noscript) immediately after opening <body> so the noscript iframe is available for no-JS users. */}
         {process.env.NEXT_PUBLIC_GTM_ID ? (
           <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        ) : null}
+        {process.env.NEXT_PUBLIC_META_PIXEL_ID ? (
+          <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
         ) : null}
         {children}
         {/* If GTM isn't configured, fall back to direct GoogleAnalytics integration */}

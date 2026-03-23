@@ -150,7 +150,15 @@ const blogPosts: BlogPost[] = [
     excerpt: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.',
     href: '/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills',
     readMore: 'Read More »'
-  }
+  },
+  {
+    id: '17',
+    category: 'academic',
+    title: 'Thinking Gap: Your Kids Aren’t Distracted',
+    excerpt: 'Many children are not truly distracted—they are experiencing a thinking gap. Learn how to identify the signs early and use practical strategies to improve focus, confidence, and independent learning.',
+    href: '/growwise-blogs/thinking-gap-your-kids-arent-distracted',
+    readMore: 'Read More »'
+  },
 ];
 
 interface PageProps {
@@ -217,7 +225,8 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
                   {/* Content */}
                   <div className="p-6">
                     <h2 className="text-xl md:text-2xl font-bold text-[#1F396D] mb-3 hover:text-[#F16112] transition-colors">
-                      <Link href={post.href} className="hover:underline">
+                      {/* Ensure internal blog navigation keeps the active locale prefix */}
+                      <Link href={`/${locale}${post.href}`} className="hover:underline">
                         {post.title}
                       </Link>
                     </h2>
@@ -225,7 +234,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
                       {post.excerpt}
                     </p>
                     <Link
-                      href={post.href}
+                      href={`/${locale}${post.href}`}
                       className="inline-flex items-center text-[#F16112] font-semibold hover:text-[#F1894F] transition-colors group"
                     >
                       {post.readMore || 'Read More'}
@@ -294,7 +303,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
               Enroll Today to Unlock Learning Potential for K-12 Students!
             </h2>
             <Link
-              href="/enroll"
+              href={`/${locale}/enroll`}
               className="inline-flex items-center gap-2 mt-6 px-8 py-4 bg-white text-[#1F396D] rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors shadow-lg"
             >
               Enroll Now
