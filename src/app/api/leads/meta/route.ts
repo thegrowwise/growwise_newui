@@ -1,7 +1,64 @@
-import { NextResponse } from 'next/server';
+import { after, NextResponse } from 'next/server';
 import { createHmac, timingSafeEqual } from 'crypto';
+import { upsertMetaLeadContactInBrevo } from '@/lib/brevo';
+import {
+  extractLeadgenWebhookEvents,
+  fetchMetaLeadFromGraph,
+  normalizeMetaLead,
+  type WebhookLeadgenEvent,
+} from '@/lib/meta-lead';
 
 const LOG_PREFIX = '[meta-leads-webhook]';
+
+async function processLeadgenEvents(
+  events: WebhookLeadgenEvent[],
+  accessToken: string | undefined
+): Promise<void> {
+  if (events.length === 0) return;
+
+  if (!accessToken) {
+    console.error(
+      `${LOG_PREFIX} META_ACCESS_TOKEN not set; cannot fetch lead details for ${events.length} leadgen event(s)`
+    );
+    return;
+  }
+
+  for (const evt of events) {
+    if (!evt.leadgenId) {
+      console.warn(`${LOG_PREFIX} leadgen event ignored: missing leadgen_id`);
+      continue;
+    }
+
+    try {
+      const graph = await fetchMetaLeadFromGraph(evt.leadgenId, accessToken);
+      if (!graph) {
+        continue;
+      }
+
+      const normalized = normalizeMetaLead(evt, graph);
+      console.log(`${LOG_PREFIX} normalized lead`, {
+        leadgenId: evt.leadgenId,
+        hasEmail: !!normalized.email,
+        rawFieldCount: Object.keys(normalized.rawFieldData).length,
+      });
+
+      const brevoResult = await upsertMetaLeadContactInBrevo(normalized);
+      if (!brevoResult.success) {
+        console.warn(`${LOG_PREFIX} Brevo sync failed`, {
+          leadgenId: evt.leadgenId,
+          error: brevoResult.error,
+        });
+      } else {
+        console.log(`${LOG_PREFIX} Brevo sync ok`, { leadgenId: evt.leadgenId });
+      }
+    } catch (err) {
+      console.error(`${LOG_PREFIX} leadgen pipeline error`, {
+        leadgenId: evt.leadgenId,
+        message: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+}
 
 function getMetaVerifyToken(): string | undefined {
   return process.env.META_VERIFY_TOKEN?.trim();
@@ -119,7 +176,10 @@ export async function GET(request: Request) {
   });
 }
 
-/** POST — Meta webhook events (e.g. leadgen); responds quickly without syncing to Brevo yet */
+/**
+ * POST — Meta webhook (e.g. leadgen). Verifies signature, returns 200, then fetches lead from Graph
+ * and upserts Brevo (failures are logged; response stays 200).
+ */
 export async function POST(request: Request) {
   const rawBody = await request.text();
   const appSecret = getMetaAppSecret();
@@ -157,6 +217,19 @@ export async function POST(request: Request) {
   }
 
   logPostPayloadSummary(parsed);
+
+  const events = extractLeadgenWebhookEvents(parsed);
+  const accessToken = process.env.META_ACCESS_TOKEN?.trim();
+
+  after(async () => {
+    try {
+      await processLeadgenEvents(events, accessToken);
+    } catch (err) {
+      console.error(`${LOG_PREFIX} leadgen after() task error`, {
+        message: err instanceof Error ? err.message : String(err),
+      });
+    }
+  });
 
   return NextResponse.json({ success: true, received: true }, { status: 200 });
 }
