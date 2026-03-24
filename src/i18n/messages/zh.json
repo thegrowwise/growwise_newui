@@ -639,9 +639,13 @@
       "allCamps": "All Camps",
       "ariaLabel": "Filter camps by type"
     },
+    "hero": {
+      "downloadBrochure": "下载2026年宣传册",
+      "earlyBirdPromoBefore": "任意课程早鸟85折，4月30日截止 — 优惠码："
+    },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird ends May 15",
+      "earlyBirdBar": "早鸟优惠4月30日截止",
       "winFreeSpot": "Win free spot",
       "lotteryLink": "Enter free lottery instead",
       "enrollNow": "Enroll Now",
@@ -651,7 +655,7 @@
       "title": "赢取免费夏令营名额",
       "subtitle": "快速填写：邮箱、营地意向与年级。中奖后我们将邮件通知您。",
       "formAriaLabel": "免费夏令营名额抽奖报名表",
-      "childGradeLabel": "孩子年级（2025–26）",
+      "childGradeLabel": "孩子年级（2026–27）",
       "gradePlaceholder": "请选择年级",
       "campInterestLabel": "营地意向",
       "interestPlaceholder": "请选择",

@@ -639,9 +639,13 @@
       "allCamps": "All Camps",
       "ariaLabel": "Filter camps by type"
     },
+    "hero": {
+      "downloadBrochure": "2026 ब्रॉशर डाउनलोड करें",
+      "earlyBirdPromoBefore": "30 अप्रैल तक किसी भी कोर्स पर 15% अर्ली बर्ड छूट — कोड: "
+    },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird ends May 15",
+      "earlyBirdBar": "अर्ली बर्ड 30 अप्रैल को समाप्त",
       "winFreeSpot": "Win free spot",
       "lotteryLink": "Enter free lottery instead",
       "enrollNow": "Enroll Now",
@@ -651,7 +655,7 @@
       "title": "मुफ़्त समर कैंप स्पॉट जीतें",
       "subtitle": "जल्दी भरें — ईमेल, कैंप रुचि और कक्षा। जीतने पर ईमेल मिलेगा।",
       "formAriaLabel": "मुफ़्त कैंप स्पॉट लॉटरी फ़ॉर्म",
-      "childGradeLabel": "बच्चे की कक्षा (2025–26)",
+      "childGradeLabel": "बच्चे की कक्षा (2026–27)",
       "gradePlaceholder": "कक्षा चुनें",
       "campInterestLabel": "कैंप में रुचि",
       "interestPlaceholder": "विकल्प चुनें",

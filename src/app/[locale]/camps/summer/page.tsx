@@ -419,7 +419,10 @@ export default function SummerCampPage() {
               <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/95 shadow-lg border border-white/80 text-[#1F396D] font-bold text-sm sm:text-base text-center md:backdrop-blur-sm">
                 {/* Static dot — avoids continuous animate-ping repaints (major CPU saver) */}
                 <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500 shrink-0" aria-hidden />
-                <span>15% off for early bird on any course is live now — Use code: <strong className="font-extrabold">GWSUMMER15</strong></span>
+                <span>
+                  {t('hero.earlyBirdPromoBefore')}
+                  <strong className="font-extrabold">GWSUMMER15</strong>
+                </span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 hero-fade-in hero-fade-in-delay">
@@ -434,7 +437,7 @@ export default function SummerCampPage() {
                 onClick={trackBrochureDownload}
                 className="px-10 py-4 rounded-full bg-white/95 text-[#1F396D] font-extrabold text-base md:text-lg uppercase tracking-wider hover:bg-white transition-shadow duration-300 border border-white/50 shadow-[0_0_10px_rgba(255,255,255,0.35)] md:backdrop-blur-sm"
               >
-                Download Brochure
+                {t('hero.downloadBrochure')}
               </a>
             </div>
           </div>
