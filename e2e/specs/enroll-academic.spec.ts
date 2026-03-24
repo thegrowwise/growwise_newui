@@ -34,8 +34,7 @@ test.describe('Academic enrollment form', () => {
     await page.getByLabel(/^City\b/i).fill('Dublin');
     await page.getByLabel(/Postal Code/i).fill('94568');
 
-    // Consent checkbox
-    await page.getByLabel(/I agree to receive/i).click();
+    await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
 
     // Submit
     await page.getByRole('button', { name: /Complete Registration/i }).click();

@@ -32,8 +32,7 @@ test.describe('Enrollment form', () => {
     await page.getByLabel(/^Level\b/i).click();
     await page.getByRole('option', { name: /Elementary/i }).click();
 
-    // Agree to privacy/consent checkbox via label text
-    await page.getByLabel(/I agree to receive/i).click();
+    await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
 
     await page.getByRole('button', { name: /Register for Assessment/i }).click();
 

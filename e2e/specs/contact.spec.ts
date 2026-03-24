@@ -26,8 +26,8 @@ test.describe('Contact form', () => {
       'I would like more information about programs.',
     );
 
-    // Consent checkbox
-    await page.getByLabel(/I agree to receive/i).click();
+    // Radix Checkbox: use role + check() so state updates (label click alone can leave submit disabled)
+    await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
 
     // Submit
     await page.getByRole('button', { name: /Send|submit/i }).click();

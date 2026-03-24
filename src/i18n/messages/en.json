@@ -695,9 +695,13 @@
       "allCamps": "All Camps",
       "ariaLabel": "Filter camps by type"
     },
+    "hero": {
+      "downloadBrochure": "Download 2026 Brochure",
+      "earlyBirdPromoBefore": "15% off for early bird on any course through April 30 — Use code: "
+    },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird ends May 15",
+      "earlyBirdBar": "Early bird ends April 30",
       "winFreeSpot": "Win free spot",
       "lotteryLink": "Enter free lottery instead",
       "enrollNow": "Enroll Now",
@@ -707,7 +711,7 @@
       "title": "Win a free Summer Camp spot",
       "subtitle": "Quick entry — email, camp interest, and grade. We’ll email you if you win.",
       "formAriaLabel": "Free camp spot lottery entry",
-      "childGradeLabel": "Child’s grade (2025–26)",
+      "childGradeLabel": "Child’s grade (2026–27)",
       "gradePlaceholder": "Select grade",
       "campInterestLabel": "Camp interest",
       "interestPlaceholder": "Select interest",
