@@ -1,9 +1,11 @@
 /**
  * Brevo (Sendinblue) REST API v3 — transactional email + contacts/lists.
- * Env: BREVO_API_KEY, BREVO_SENDER_EMAIL, BREVO_SENDER_NAME (optional), BREVO_LIST_LOTTERY (numeric list id).
+ * Env: BREVO_API_KEY, BREVO_SENDER_EMAIL, BREVO_SENDER_NAME (optional), BREVO_LIST_LOTTERY (numeric list id),
+ * BREVO_META_LEADS_LIST_ID (optional list for Meta Lead Ads sync).
  */
 
 import type { SendEmailResult } from '@/lib/email';
+import type { NormalizedMetaLead } from '@/lib/meta-lead';
 
 const BREVO_API_BASE = 'https://api.brevo.com/v3';
 
@@ -22,8 +24,13 @@ async function fetchWithTimeout(
   }
 }
 
-function getBrevoSender(): { apiKey: string; email: string; name: string } | null {
+function getBrevoApiKey(): string | null {
   const apiKey = process.env.BREVO_API_KEY?.trim();
+  return apiKey || null;
+}
+
+function getBrevoSender(): { apiKey: string; email: string; name: string } | null {
+  const apiKey = getBrevoApiKey();
   const email = process.env.BREVO_SENDER_EMAIL?.trim();
   const name = process.env.BREVO_SENDER_NAME?.trim() || 'GrowWise';
   if (!apiKey || !email) return null;
@@ -150,6 +157,85 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
   } catch (err) {
     const error = err instanceof Error ? err.message : 'List add failed';
     console.warn('[brevo] Lottery list contact error:', error);
+    return { success: false, error };
+  }
+}
+
+/**
+ * POST /v3/contacts — upsert Meta Lead Ads contact with CRM attributes (requires email).
+ * Create matching contact attributes in Brevo if needed (FIRSTNAME, PHONE, SOURCE, etc.).
+ */
+export async function upsertMetaLeadContactInBrevo(lead: NormalizedMetaLead): Promise<SendEmailResult> {
+  const apiKey = getBrevoApiKey();
+  if (!apiKey) {
+    console.warn('[brevo] BREVO_API_KEY not set; skipping Meta lead upsert.');
+    return { success: false, error: 'Brevo not configured' };
+  }
+
+  const email = lead.email?.trim().toLowerCase();
+  if (!email) {
+    console.warn('[brevo] Meta lead upsert skipped: no email on normalized lead.');
+    return { success: false, error: 'No email' };
+  }
+
+  const listIdRaw = process.env.BREVO_META_LEADS_LIST_ID?.trim();
+  let listIds: number[] | undefined;
+  if (listIdRaw) {
+    const n = Number.parseInt(listIdRaw, 10);
+    if (Number.isFinite(n)) {
+      listIds = [n];
+    } else {
+      console.warn('[brevo] BREVO_META_LEADS_LIST_ID must be numeric; omitting listIds.');
+    }
+  }
+
+  const attributes: Record<string, string> = {
+    SOURCE: lead.source,
+    SOURCE_DETAIL: lead.sourceDetail,
+  };
+  if (lead.firstName) attributes.FIRSTNAME = lead.firstName;
+  if (lead.lastName) attributes.LASTNAME = lead.lastName;
+  if (lead.phone) attributes.PHONE = lead.phone;
+  if (lead.formId) attributes.FORM_ID = lead.formId;
+  if (lead.pageId) attributes.PAGE_ID = lead.pageId;
+  if (lead.adId) attributes.AD_ID = lead.adId;
+  if (lead.adgroupId) attributes.ADGROUP_ID = lead.adgroupId;
+  if (lead.submittedAt) attributes.SUBMITTED_AT = lead.submittedAt;
+
+  try {
+    const res = await fetchWithTimeout(`${BREVO_API_BASE}/contacts`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'api-key': apiKey,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        attributes,
+        ...(listIds ? { listIds } : {}),
+        updateEnabled: true,
+      }),
+    });
+
+    const raw = await res.text();
+    let parsed: { message?: string } = {};
+    try {
+      parsed = raw ? (JSON.parse(raw) as typeof parsed) : {};
+    } catch {
+      /* ignore */
+    }
+
+    if (!res.ok) {
+      const errMsg = parsed.message || raw || `HTTP ${res.status}`;
+      console.warn('[brevo] Meta lead contact upsert failed:', errMsg);
+      return { success: false, error: errMsg };
+    }
+
+    return { success: true };
+  } catch (err) {
+    const error = err instanceof Error ? err.message : 'Meta lead upsert failed';
+    console.warn('[brevo] Meta lead contact upsert error:', error);
     return { success: false, error };
   }
 }
