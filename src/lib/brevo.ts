@@ -1,7 +1,7 @@
 /**
  * Brevo (Sendinblue) REST API v3 — transactional email + contacts/lists.
- * Env: BREVO_API_KEY, BREVO_SENDER_EMAIL, BREVO_SENDER_NAME (optional), BREVO_LIST_LOTTERY (numeric list id),
- * BREVO_META_LEADS_LIST_ID (optional list for Meta Lead Ads sync).
+ * Env: BREVO_API_KEY, BREVO_SENDER_EMAIL, BREVO_SENDER_NAME (optional),
+ * BREVO_LIST_LOTTERY (numeric list id — summer lottery list add + Meta Lead Ads upsert).
  */
 
 import type { SendEmailResult } from '@/lib/email';
@@ -161,9 +161,20 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
   }
 }
 
+/** Meta Lead form `field_data.name` from Graph — keys must match exactly. */
+const META_FIELD_CAMP_INTEREST = 'which_camp_interests_your_child_most?';
+const META_FIELD_GRADE_FALL_2026 = 'what_grade_is_your_child_entering_in_fall_2026?';
+
+function metaRawFieldValue(raw: Record<string, string>, exactKey: string): string | undefined {
+  const v = raw[exactKey];
+  if (typeof v !== 'string') return undefined;
+  const t = v.trim();
+  return t.length > 0 ? t : undefined;
+}
+
 /**
  * POST /v3/contacts — upsert Meta Lead Ads contact with CRM attributes (requires email).
- * Create matching contact attributes in Brevo if needed (FIRSTNAME, PHONE, SOURCE, etc.).
+ * In Brevo: create Text attributes (CAMP_INTEREST, GRADE, FIRSTNAME, PHONE, SOURCE, etc.) as needed.
  */
 export async function upsertMetaLeadContactInBrevo(lead: NormalizedMetaLead): Promise<SendEmailResult> {
   const apiKey = getBrevoApiKey();
@@ -178,14 +189,14 @@ export async function upsertMetaLeadContactInBrevo(lead: NormalizedMetaLead): Pr
     return { success: false, error: 'No email' };
   }
 
-  const listIdRaw = process.env.BREVO_META_LEADS_LIST_ID?.trim();
+  const listIdRaw = process.env.BREVO_LIST_LOTTERY?.trim();
   let listIds: number[] | undefined;
   if (listIdRaw) {
     const n = Number.parseInt(listIdRaw, 10);
     if (Number.isFinite(n)) {
       listIds = [n];
     } else {
-      console.warn('[brevo] BREVO_META_LEADS_LIST_ID must be numeric; omitting listIds.');
+      console.warn('[brevo] BREVO_LIST_LOTTERY must be numeric; omitting listIds for Meta upsert.');
     }
   }
 
@@ -201,6 +212,11 @@ export async function upsertMetaLeadContactInBrevo(lead: NormalizedMetaLead): Pr
   if (lead.adId) attributes.AD_ID = lead.adId;
   if (lead.adgroupId) attributes.ADGROUP_ID = lead.adgroupId;
   if (lead.submittedAt) attributes.SUBMITTED_AT = lead.submittedAt;
+
+  const campInterest = metaRawFieldValue(lead.rawFieldData, META_FIELD_CAMP_INTEREST);
+  if (campInterest) attributes.CAMP_INTEREST = campInterest;
+  const grade = metaRawFieldValue(lead.rawFieldData, META_FIELD_GRADE_FALL_2026);
+  if (grade) attributes.GRADE = grade;
 
   try {
     const res = await fetchWithTimeout(`${BREVO_API_BASE}/contacts`, {
