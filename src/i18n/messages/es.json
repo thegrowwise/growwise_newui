@@ -694,6 +694,14 @@
       "errorGeneric": "Algo salió mal. Inténtalo de nuevo."
     }
   },
+  "enroll": {
+    "stepper": {
+      "review": "Review",
+      "details": "Your details",
+      "payment": "Payment",
+      "back": "Back"
+    }
+  },
   "pricingUi": {
     "deliveryMode": {
       "live": "Live",

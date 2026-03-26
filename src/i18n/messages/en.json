@@ -754,6 +754,14 @@
       "subtitle": "Common questions about Summer Camps, programs, and enrollment."
     }
   },
+  "enroll": {
+    "stepper": {
+      "review": "Review",
+      "details": "Your details",
+      "payment": "Payment",
+      "back": "Back"
+    }
+  },
   "pricingUi": {
     "deliveryMode": {
       "live": "Live",
