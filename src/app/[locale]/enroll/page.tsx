@@ -2,7 +2,6 @@
 
 import React, { Suspense, useState, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
-import { BACKEND_URL } from '@/lib/config';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -69,8 +68,8 @@ function EnrollPageInner() {
         recaptchaToken: recaptchaToken || undefined,
       };
 
-      // This app exposes POST at /api/enroll (not /api/enrollment). Wrong path returns HTML 404 → JSON parse error.
-      const response = await fetch(`${BACKEND_URL.replace(/\/$/, '')}/api/enroll`, {
+      // Same-origin `/api/enroll` — implemented in this app (`src/app/api/enroll`). Avoids NEXT_PUBLIC_BACKEND_URL pointing at a host without this route.
+      const response = await fetch('/api/enroll', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
