@@ -433,7 +433,7 @@ export default function SummerCampPage() {
                 Explore
               </button>
               <a
-                href="/assets/camps/final%20brochure.pdf"
+                href="/assets/camps/SummerCampBrochure.pdf"
                 onClick={trackBrochureDownload}
                 className="px-10 py-4 rounded-full bg-white/95 text-[#1F396D] font-extrabold text-base md:text-lg uppercase tracking-wider hover:bg-white transition-shadow duration-300 border border-white/50 shadow-[0_0_10px_rgba(255,255,255,0.35)] md:backdrop-blur-sm"
               >

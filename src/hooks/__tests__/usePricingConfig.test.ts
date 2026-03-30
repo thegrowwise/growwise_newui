@@ -1,7 +1,7 @@
 /**
  * Unit tests for usePricingConfig data and helpers.
  *
- * Validates: pricing-config.json structure, getProgramsByTrack counts,
+ * Validates: fixture pricing JSON shape, getProgramsByTrack counts,
  * robotics studio_only, and getTierPrice/getLevelPrice logic.
  */
 
@@ -16,7 +16,8 @@ import type {
   DeliveryMode,
 } from '../usePricingConfig';
 
-const MOCK_JSON_PATH = join(
+/** Test fixture only (same file the backend may read); API route does not serve this. */
+const PRICING_FIXTURE_PATH = join(
   process.cwd(),
   'public',
   'api',
@@ -26,7 +27,7 @@ const MOCK_JSON_PATH = join(
 );
 
 function loadPricingConfig(): PricingConfig {
-  const raw = readFileSync(MOCK_JSON_PATH, 'utf8');
+  const raw = readFileSync(PRICING_FIXTURE_PATH, 'utf8');
   return JSON.parse(raw);
 }
 
