@@ -1,31 +1,22 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { Loader2, AlertCircle } from 'lucide-react';
 import { usePricingConfig, type Program } from '@/hooks/usePricingConfig';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/components/ui/utils';
 import { ProgramJourneyCard } from '@/components/shared/ProgramJourneyCard';
 import { AgeRecommender } from '@/components/game-dev/AgeRecommender';
 import { ScratchBridgeBanner } from '@/components/game-dev/ScratchBridgeBanner';
-
-type GameDevProgramId = 'scratch' | 'roblox' | 'minecraft' | 'robotics';
-
-const GAME_DEV_ORDER: GameDevProgramId[] = ['scratch', 'roblox', 'minecraft', 'robotics'];
-
-const TAB_ACCENT: Record<GameDevProgramId, string> = {
-  scratch: 'text-amber-700',
-  roblox: 'text-red-700',
-  minecraft: 'text-emerald-700',
-  robotics: 'text-orange-700',
-};
+import {
+  getProgramAccentColorClass,
+  getProgramAccentHex,
+} from '@/lib/programThemeRegistry';
 
 export function GameDevPrograms() {
   const t = useTranslations();
   const { data, loading, error } = usePricingConfig();
-  const [activeTab, setActiveTab] = useState<GameDevProgramId>('scratch');
+  const [activeTab, setActiveTab] = useState<string>('scratch');
 
   const programs = useMemo(() => {
     if (!data) return [] as Program[];
@@ -34,77 +25,83 @@ export function GameDevPrograms() {
       .sort((a, b) => a.sort_order - b.sort_order);
   }, [data]);
 
-  const programsById = useMemo(() => {
-    const map = new Map<string, Program>();
-    programs.forEach((p) => map.set(p.id, p));
-    return map;
-  }, [programs]);
+  useEffect(() => {
+    if (!programs.length) return;
+    const hasActive = programs.some((p) => p.id === activeTab);
+    if (!activeTab || !hasActive) {
+      setActiveTab(programs[0].id);
+    }
+  }, [programs, activeTab]);
 
-  const activeProgram = programsById.get(activeTab) ?? programs[0] ?? null;
+  const activeProgram =
+    programs.find((p) => p.id === activeTab) ?? programs[0] ?? null;
+
+  if (loading && !data) {
+    return (
+      <div className="flex min-h-[40vh] items-center justify-center bg-transparent">
+        <Loader2 className="h-10 w-10 animate-spin text-[#F16112]" aria-hidden />
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="flex min-h-[40vh] flex-col items-center justify-center bg-transparent px-4 text-center text-red-700">
+        <AlertCircle className="mb-4 h-12 w-12" aria-hidden />
+        <p className="font-semibold">{t('gameDevPage.programs.error')}</p>
+      </div>
+    );
+  }
 
   return (
-    <section id="programs" className="bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
-      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 md:px-6 lg:px-8">
-        <Card className="border border-gray-200 bg-white/80 shadow-md backdrop-blur">
-          <CardContent className="space-y-6 pt-6">
-            <AgeRecommender onRecommend={(id) => setActiveTab(id as GameDevProgramId)} />
+    <section id="programs" className="px-4 pb-32">
+      <div className="max-w-6xl mx-auto">
+        <AgeRecommender onRecommend={(id) => setActiveTab(id)} />
 
-            <div className="inline-flex flex-wrap items-center gap-2 rounded-2xl bg-gray-100 p-2">
-              {GAME_DEV_ORDER.map((tabId) => {
-                const isActive = tabId === activeTab;
-                const program = programsById.get(tabId);
-                const label = program?.name ?? tabId;
-                const isInPersonOnly = !!program?.studio_only;
-
-                return (
-                  <Button
-                    key={tabId}
-                    type="button"
-                    size="sm"
-                    variant={isActive ? 'default' : 'ghost'}
+        <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {programs.map((prog) => {
+            const isActive = prog.id === activeTab;
+            return (
+              <button
+                key={prog.id}
+                type="button"
+                onClick={() => setActiveTab(prog.id)}
+                className={cn(
+                  'flex items-center gap-2 px-6 py-3 rounded-full font-bold text-lg transition-all border-2',
+                  isActive
+                    ? 'border-[#1F396D] bg-[#1F396D] text-white shadow-lg shadow-[#1F396D]/25 scale-105'
+                    : 'border-[#1F396D]/25 bg-white text-[#1F396D] hover:border-[#F16112]/50 hover:bg-[#F16112]/8',
+                )}
+              >
+                <span>{prog.name}</span>
+                {prog.studio_only && (
+                  <span
                     className={cn(
-                      'rounded-full px-4 py-1 text-xs md:text-sm',
-                      isActive ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600',
-                      !isActive && TAB_ACCENT[tabId],
+                      'ml-1 rounded px-2 py-0.5 text-xs font-semibold',
+                      isActive
+                        ? 'bg-[#F16112]/25 text-white'
+                        : 'bg-[#F16112]/15 text-[#B45309] border border-[#F16112]/30',
                     )}
-                    onClick={() => setActiveTab(tabId)}
                   >
-                    <span className="mr-2">{label}</span>
-                    {isInPersonOnly && (
-                      <Badge
-                        variant="secondary"
-                        className="rounded-full bg-white/70 text-[10px] font-semibold text-gray-700"
-                      >
-                        {t('gameDevPage.tabs.inPersonBadge')}
-                      </Badge>
-                    )}
-                  </Button>
-                );
-              })}
-            </div>
+                    {t('pricingUi.deliveryMode.studioOnlyBadge')}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-            {loading && (
-              <div className="flex justify-center py-10">
-                <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-600/30 border-t-emerald-600" />
-              </div>
-            )}
-
-            {!loading && error && (
-              <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
-                {error}
-              </div>
-            )}
-
-            {!loading && !error && activeProgram && (
-              <div className="space-y-4">
-                <ProgramJourneyCard program={activeProgram} />
-                {activeTab === 'scratch' && <ScratchBridgeBanner />}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        {activeProgram && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <ProgramJourneyCard
+              program={activeProgram}
+              colorThemeClass={getProgramAccentColorClass(activeProgram.id)}
+              colorThemeHex={getProgramAccentHex(activeProgram.id)}
+            />
+            {activeProgram.id === 'scratch' && <ScratchBridgeBanner />}
+          </div>
+        )}
       </div>
     </section>
   );
 }
-

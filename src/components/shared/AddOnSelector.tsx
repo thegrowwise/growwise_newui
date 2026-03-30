@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/components/ui/utils';
+import { Plus } from 'lucide-react';
 
 export interface AddOnVM {
   id: string;
@@ -24,37 +24,58 @@ export function AddOnSelector({
   onToggle,
   className,
 }: AddOnSelectorProps) {
-  const activeAddons = addons
-    .filter((a) => a.active)
-    .sort((a, b) => a.id.localeCompare(b.id));
+  const activeAddons = addons.filter((a) => a.active);
 
   if (!activeAddons.length) return null;
 
   return (
-    <div className={cn('flex flex-wrap gap-2', className)}>
-      {activeAddons.map((addon) => {
-        const selected = selectedIds.includes(addon.id);
-        return (
-          <Button
-            key={addon.id}
-            type="button"
-            variant="outline"
-            size="sm"
-            className={cn(
-              'rounded-full border px-3 py-1 text-xs',
-              selected
-                ? 'border-[#F16112] bg-[#F16112]/10 text-[#F16112]'
-                : 'border-gray-300 text-gray-700 hover:border-[#F16112]/40',
-            )}
-            onClick={() => onToggle?.(addon.id)}
-          >
-            <span className="truncate">{addon.name}</span>
-            <span className="ml-1 text-[11px] text-gray-500">
-              +{addon.priceLabel}
-            </span>
-          </Button>
-        );
-      })}
+    <div className={cn('my-8', className)}>
+      <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+        Optional Monthly Add-ons
+      </h4>
+
+      <div className="flex flex-wrap gap-3">
+        {activeAddons.map((addon) => {
+          const selected = selectedIds.includes(addon.id);
+
+          return (
+            <button
+              key={addon.id}
+              type="button"
+              onClick={() => onToggle?.(addon.id)}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border',
+                selected
+                  ? 'bg-primary text-primary-foreground border-primary shadow-md shadow-primary/20'
+                  : 'bg-card text-foreground border-border hover:border-primary/30 hover:bg-secondary',
+              )}
+            >
+              <div
+                className={cn(
+                  'flex items-center justify-center w-5 h-5 rounded-full transition-colors',
+                  selected ? 'bg-white/20' : 'bg-primary/10 text-primary',
+                )}
+              >
+                <Plus
+                  className={cn(
+                    'w-3.5 h-3.5 transition-transform',
+                    selected && 'rotate-45',
+                  )}
+                />
+              </div>
+              {addon.name}
+              <span
+                className={cn(
+                  'opacity-70',
+                  selected ? 'text-primary-foreground' : 'text-muted-foreground',
+                )}
+              >
+                +{addon.priceLabel}
+              </span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 /**
  * Unit tests for usePricingConfig data and helpers.
  *
- * Validates: pricing-config.json structure, getProgramsByTrack counts,
+ * Validates: fixture pricing JSON shape, getProgramsByTrack counts,
  * robotics studio_only, and getTierPrice/getLevelPrice logic.
  */
 
@@ -16,7 +16,8 @@ import type {
   DeliveryMode,
 } from '../usePricingConfig';
 
-const MOCK_JSON_PATH = join(
+/** Test fixture only (same file the backend may read); API route does not serve this. */
+const PRICING_FIXTURE_PATH = join(
   process.cwd(),
   'public',
   'api',
@@ -26,7 +27,7 @@ const MOCK_JSON_PATH = join(
 );
 
 function loadPricingConfig(): PricingConfig {
-  const raw = readFileSync(MOCK_JSON_PATH, 'utf8');
+  const raw = readFileSync(PRICING_FIXTURE_PATH, 'utf8');
   return JSON.parse(raw);
 }
 
@@ -60,18 +61,18 @@ describe('usePricingConfig data and helpers', () => {
   it('getProgramsByTrack("coding") returns 3 programs', () => {
     const programs = getProgramsByTrack(config, 'coding');
     expect(programs).toHaveLength(3);
-    expect(programs.map((p) => p.name)).toContain('Python Programming');
-    expect(programs.map((p) => p.name)).toContain('Machine Learning and Generative AI');
-    expect(programs.map((p) => p.name)).toContain('AppSpark - App Development');
+    expect(programs.map((p) => p.name)).toContain('Python');
+    expect(programs.map((p) => p.name)).toContain('ML / AI');
+    expect(programs.map((p) => p.name)).toContain('App development');
   });
 
   it('getProgramsByTrack("game-dev") returns 4 programs', () => {
     const programs = getProgramsByTrack(config, 'game-dev');
     expect(programs).toHaveLength(4);
-    expect(programs.map((p) => p.name)).toContain('Scratch Game Development');
-    expect(programs.map((p) => p.name)).toContain('Roblox Game Development');
-    expect(programs.map((p) => p.name)).toContain('Minecraft Game Development');
-    expect(programs.map((p) => p.name)).toContain('Robotics Fundamentals');
+    expect(programs.map((p) => p.name)).toContain('Scratch');
+    expect(programs.map((p) => p.name)).toContain('Roblox');
+    expect(programs.map((p) => p.name)).toContain('Minecraft');
+    expect(programs.map((p) => p.name)).toContain('Robotics');
   });
 
   it('robotics program has studio_only: true', () => {
