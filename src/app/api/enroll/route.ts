@@ -1,5 +1,22 @@
 import { NextResponse } from 'next/server';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
+import { sendEmail, type SendEmailResult } from '@/lib/email';
+import { CONTACT_INFO } from '@/lib/constants';
+import {
+  isBrevoTransactionalReady,
+  sendBrevoTransactionalEmail,
+} from '@/lib/brevo';
+
+/** Serverless: allow Brevo HTTP + dual sends to finish (matches summer-camp-lottery). */
+export const maxDuration = 60;
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 interface EnrollFormData {
   fullName: string;
@@ -87,11 +104,17 @@ export async function POST(request: Request) {
         emailIds: emailResult.emailIds
       });
 
-      return NextResponse.json({
+      const payload: Record<string, unknown> = {
         success: true,
         message: 'Enrollment information received successfully. We will contact you within 24 hours.',
-        emailIds: emailResult.emailIds
-      });
+        emailIds: emailResult.emailIds,
+      };
+      if (process.env.NODE_ENV === 'development') {
+        payload.emailDebug = {
+          channel: isBrevoTransactionalReady() ? 'brevo' : 'smtp',
+        };
+      }
+      return NextResponse.json(payload);
     } else {
       throw new Error(emailResult.error || 'Failed to send emails');
     }
@@ -109,13 +132,40 @@ export async function POST(request: Request) {
   }
 }
 
+interface EnrollmentPayload {
+  fullName: string;
+  email: string;
+  mobile: string;
+  city: string;
+  postal: string;
+  bootcamp: string;
+  course: string;
+  level: string;
+  agree: boolean;
+  timestamp: string;
+  ip: string;
+}
+
+/** Brevo when configured (typical production); otherwise Nodemailer SMTP — same as summer-camp-lottery. */
+async function deliverEnrollmentEmail(options: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  text: string;
+}): Promise<SendEmailResult> {
+  if (isBrevoTransactionalReady()) {
+    return sendBrevoTransactionalEmail({
+      ...options,
+      replyTo: { email: CONTACT_INFO.email, name: 'GrowWise' },
+    });
+  }
+  return sendEmail(options);
+}
+
 // Email service function for enrollment
-async function sendEnrollmentEmails(enrollmentData: any) {
+async function sendEnrollmentEmails(enrollmentData: EnrollmentPayload) {
   try {
-    // Send email to business (receiver)
     const businessEmailResult = await sendBusinessEnrollmentEmail(enrollmentData);
-    
-    // Send confirmation email to user (sender)
     const userEmailResult = await sendUserConfirmationEmail(enrollmentData);
 
     if (businessEmailResult.success && userEmailResult.success) {
@@ -127,13 +177,11 @@ async function sendEnrollmentEmails(enrollmentData: any) {
         },
         message: 'Both emails sent successfully'
       };
-    } else {
-      return {
-        success: false,
-        error: `Business email: ${businessEmailResult.success ? 'sent' : 'failed'}, User email: ${userEmailResult.success ? 'sent' : 'failed'}`
-      };
     }
-
+    return {
+      success: false,
+      error: `Business email: ${businessEmailResult.success ? 'sent' : 'failed'}, User email: ${userEmailResult.success ? 'sent' : 'failed'}`
+    };
   } catch (error) {
     console.error('Enrollment email sending error:', error);
     return {
@@ -143,107 +191,71 @@ async function sendEnrollmentEmails(enrollmentData: any) {
   }
 }
 
-// Send email to business about new enrollment
-async function sendBusinessEnrollmentEmail(enrollmentData: any) {
-  try {
-    const emailContent = {
-      to: [
-        'connect@thegrowwise.com', // Your business email
-      ],
-      subject: `New Course Enrollment from ${enrollmentData.fullName}`,
-      html: generateBusinessEnrollmentEmailHTML(enrollmentData),
-      text: generateBusinessEnrollmentEmailText(enrollmentData)
-    };
-
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // In production, replace this with actual email service call
-    // Example with SendGrid, Mailgun, AWS SES, etc.
-
-    const emailId = `enroll_business_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log('Business enrollment email sent successfully:', {
-      emailId,
-      to: emailContent.to,
-      subject: emailContent.subject,
-      enrollmentData
-    });
-
-    return {
-      success: true,
-      emailId,
-      message: 'Business email sent successfully'
-    };
-
-  } catch (error) {
-    console.error('Business enrollment email error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to send business email'
-    };
+async function sendBusinessEnrollmentEmail(
+  enrollmentData: EnrollmentPayload
+): Promise<{ success: boolean; emailId?: string; error?: string }> {
+  const subject = `New Course Enrollment from ${enrollmentData.fullName.replace(/\s+/g, ' ').slice(0, 200)}`;
+  const result = await deliverEnrollmentEmail({
+    to: CONTACT_INFO.businessEmail,
+    subject,
+    html: generateBusinessEnrollmentEmailHTML(enrollmentData),
+    text: generateBusinessEnrollmentEmailText(enrollmentData),
+  });
+  if (result.success) {
+    console.log('Business enrollment email sent:', { messageId: result.messageId });
+    return { success: true, emailId: result.messageId };
   }
+  console.error('Business enrollment email failed:', result.error);
+  return { success: false, error: result.error };
 }
 
-// Send confirmation email to user
-async function sendUserConfirmationEmail(enrollmentData: any) {
-  try {
-    const emailContent = {
-      to: [enrollmentData.email],
-      subject: 'Thank you for enrolling with GrowWise!',
-      html: generateUserConfirmationEmailHTML(enrollmentData),
-      text: generateUserConfirmationEmailText(enrollmentData)
-    };
-
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // In production, replace this with actual email service call
-
-    const emailId = `enroll_user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log('User confirmation email sent successfully:', {
-      emailId,
-      to: emailContent.to,
-      subject: emailContent.subject,
-      enrollmentData
-    });
-
-    return {
-      success: true,
-      emailId,
-      message: 'User confirmation email sent successfully'
-    };
-
-  } catch (error) {
-    console.error('User confirmation email error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to send user confirmation email'
-    };
+async function sendUserConfirmationEmail(
+  enrollmentData: EnrollmentPayload
+): Promise<{ success: boolean; emailId?: string; error?: string }> {
+  const result = await deliverEnrollmentEmail({
+    to: enrollmentData.email,
+    subject: 'Thank you for enrolling with GrowWise!',
+    html: generateUserConfirmationEmailHTML(enrollmentData),
+    text: generateUserConfirmationEmailText(enrollmentData),
+  });
+  if (result.success) {
+    console.log('User enrollment confirmation sent:', { messageId: result.messageId });
+    return { success: true, emailId: result.messageId };
   }
+  console.error('User enrollment confirmation failed:', result.error);
+  return { success: false, error: result.error };
 }
 
 // Generate HTML email for business (receiver)
-function generateBusinessEnrollmentEmailHTML(data: any) {
+function generateBusinessEnrollmentEmailHTML(data: EnrollmentPayload) {
+  const n = escapeHtml(data.fullName);
+  const e = escapeHtml(data.email);
+  const m = escapeHtml(data.mobile);
+  const city = escapeHtml(data.city);
+  const postal = escapeHtml(data.postal);
+  const lvl = escapeHtml(data.level);
+  const boot = escapeHtml(data.bootcamp);
+  const crs = escapeHtml(data.course);
+  const submitted = escapeHtml(new Date(data.timestamp).toLocaleString());
+  const ip = escapeHtml(data.ip);
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #1F396D;">New Course Enrollment</h2>
       
       <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #F16112; margin-top: 0;">Student Information</h3>
-        <p><strong>Name:</strong> ${data.fullName}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Mobile:</strong> ${data.mobile}</p>
-        <p><strong>Location:</strong> ${data.city}, ${data.postal}</p>
-        <p><strong>Level:</strong> ${data.level}</p>
-        <p><strong>Submitted:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+        <p><strong>Name:</strong> ${n}</p>
+        <p><strong>Email:</strong> ${e}</p>
+        <p><strong>Mobile:</strong> ${m}</p>
+        <p><strong>Location:</strong> ${city}, ${postal}</p>
+        <p><strong>Level:</strong> ${lvl}</p>
+        <p><strong>Submitted:</strong> ${submitted}</p>
       </div>
 
       <div style="background-color: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid #F16112;">
         <h3 style="color: #1F396D; margin-top: 0;">Course Selection</h3>
-        <p><strong>Bootcamp:</strong> ${data.bootcamp}</p>
-        <p><strong>Course:</strong> ${data.course}</p>
+        <p><strong>Bootcamp:</strong> ${boot}</p>
+        <p><strong>Course:</strong> ${crs}</p>
       </div>
 
       <div style="margin-top: 30px; padding: 20px; background-color: #e8f4f8; border-radius: 8px;">
@@ -260,14 +272,14 @@ function generateBusinessEnrollmentEmailHTML(data: any) {
       <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
       <p style="color: #666; font-size: 12px;">
         This email was generated from the GrowWise enrollment form.<br>
-        IP Address: ${data.ip}
+        IP Address: ${ip}
       </p>
     </div>
   `;
 }
 
 // Generate text email for business (receiver)
-function generateBusinessEnrollmentEmailText(data: any) {
+function generateBusinessEnrollmentEmailText(data: EnrollmentPayload) {
   return `
 New Course Enrollment
 
@@ -293,7 +305,15 @@ Next Steps:
 }
 
 // Generate HTML email for user (sender)
-function generateUserConfirmationEmailHTML(data: any) {
+function generateUserConfirmationEmailHTML(data: EnrollmentPayload) {
+  const n = escapeHtml(data.fullName);
+  const e = escapeHtml(data.email);
+  const m = escapeHtml(data.mobile);
+  const city = escapeHtml(data.city);
+  const postal = escapeHtml(data.postal);
+  const lvl = escapeHtml(data.level);
+  const boot = escapeHtml(data.bootcamp);
+  const crs = escapeHtml(data.course);
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="text-align: center; margin-bottom: 30px;">
@@ -303,17 +323,17 @@ function generateUserConfirmationEmailHTML(data: any) {
       
       <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #1F396D; margin-top: 0;">Your Enrollment Details</h3>
-        <p><strong>Name:</strong> ${data.fullName}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Mobile:</strong> ${data.mobile}</p>
-        <p><strong>Location:</strong> ${data.city}, ${data.postal}</p>
-        <p><strong>Level:</strong> ${data.level}</p>
+        <p><strong>Name:</strong> ${n}</p>
+        <p><strong>Email:</strong> ${e}</p>
+        <p><strong>Mobile:</strong> ${m}</p>
+        <p><strong>Location:</strong> ${city}, ${postal}</p>
+        <p><strong>Level:</strong> ${lvl}</p>
       </div>
 
       <div style="background-color: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid #F16112;">
         <h3 style="color: #1F396D; margin-top: 0;">Selected Programs</h3>
-        <p><strong>Bootcamp:</strong> ${data.bootcamp}</p>
-        <p><strong>Course:</strong> ${data.course}</p>
+        <p><strong>Bootcamp:</strong> ${boot}</p>
+        <p><strong>Course:</strong> ${crs}</p>
       </div>
 
       <div style="margin-top: 30px; padding: 20px; background-color: #e8f4f8; border-radius: 8px;">
@@ -343,7 +363,7 @@ function generateUserConfirmationEmailHTML(data: any) {
 }
 
 // Generate text email for user (sender)
-function generateUserConfirmationEmailText(data: any) {
+function generateUserConfirmationEmailText(data: EnrollmentPayload) {
   return `
 Welcome to GrowWise!
 
