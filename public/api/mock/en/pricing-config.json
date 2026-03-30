@@ -3,49 +3,49 @@
     {
       "id": "python",
       "track": "coding",
-      "name": "Python Programming",
-      "tagline": "Master Python Programming - From Beginner to Advanced",
+      "name": "Python",
+      "tagline": "From first script to AI-ready developer",
       "age_min": 10,
       "age_max": 18,
       "studio_only": false,
       "active": true,
-      "sort_order": 0,
+      "sort_order": 1,
       "journey_levels": [
         {
           "id": "python-l1",
           "program_id": "python",
           "level_num": 1,
-          "name": "Foundations",
-          "milestones": "Variables, loops, functions",
+          "name": "Kickstart",
+          "milestones": "Variables · loops · functions · first project",
           "price_live": 199,
-          "price_studio": 149
+          "price_studio": 229
         },
         {
           "id": "python-l2",
           "program_id": "python",
           "level_num": 2,
-          "name": "Projects",
-          "milestones": "Games, utilities, and automation",
-          "price_live": 219,
-          "price_studio": 169
+          "name": "Builder",
+          "milestones": "OOP · APIs · data projects · code review",
+          "price_live": 269,
+          "price_studio": 309
         },
         {
           "id": "python-l3",
           "program_id": "python",
           "level_num": 3,
-          "name": "Applied",
-          "milestones": "APIs, data, and real-world builds",
-          "price_live": 239,
-          "price_studio": 189
+          "name": "Pro",
+          "milestones": "Algorithms · data structures · capstone",
+          "price_live": 349,
+          "price_studio": 389
         },
         {
           "id": "python-l4",
           "program_id": "python",
           "level_num": 4,
-          "name": "Advanced",
-          "milestones": "Capstones and portfolio projects",
-          "price_live": 259,
-          "price_studio": 209
+          "name": "AI track",
+          "milestones": "ML basics · model training · research project",
+          "price_live": 429,
+          "price_studio": 479
         }
       ],
       "tiers": [
@@ -54,247 +54,456 @@
           "program_id": "python",
           "name": "core",
           "price_live": 199,
-          "price_studio": 149,
+          "price_studio": 229,
           "is_featured": false,
-          "includes": ["Small group instruction", "Weekly projects"],
-          "sort_order": 0
+          "includes": [
+            "Weekly live class",
+            "Group of 8 max",
+            "Weekly assignments",
+            "Email progress updates"
+          ],
+          "sort_order": 1
         },
         {
           "id": "python-plus",
           "program_id": "python",
           "name": "plus",
-          "price_live": 229,
-          "price_studio": 179,
+          "price_live": 269,
+          "price_studio": 309,
           "is_featured": true,
-          "includes": ["Everything in Core", "Extra practice", "Progress updates"],
-          "sort_order": 1
+          "includes": [
+            "Weekly class",
+            "Project review",
+            "Monthly progress report",
+            "Make-up class protection",
+            "Peer code review"
+          ],
+          "sort_order": 2
         },
         {
           "id": "python-elite",
           "program_id": "python",
           "name": "elite",
-          "price_live": 269,
-          "price_studio": 219,
+          "price_live": 349,
+          "price_studio": 389,
           "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
-          "sort_order": 2
+          "includes": [
+            "Weekly class",
+            "Lab + coach support",
+            "Monthly assessment",
+            "Portfolio review",
+            "Quarterly parent conference"
+          ],
+          "sort_order": 3
         }
       ],
-      "program_fees": [],
-      "program_addons": []
-    },
-    {
-      "id": "ml-ai",
-      "track": "coding",
-      "name": "Machine Learning and Generative AI",
-      "tagline": "Learn real-world AI and machine learning for middle and high school",
-      "age_min": 10,
-      "age_max": 18,
-      "studio_only": false,
-      "active": true,
-      "sort_order": 1,
-      "journey_levels": [
+      "program_fees": [
         {
-          "id": "ml-l1",
-          "program_id": "ml-ai",
-          "level_num": 1,
-          "name": "Intro to ML",
-          "milestones": "Data, models, evaluation basics",
-          "price_live": 249,
-          "price_studio": 199
+          "id": "python-fee-enrollment",
+          "program_id": "python",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 75,
+          "description": "One-time per student"
         },
         {
-          "id": "ml-l2",
-          "program_id": "ml-ai",
-          "level_num": 2,
-          "name": "Applied ML",
-          "milestones": "Projects with real datasets",
-          "price_live": 269,
-          "price_studio": 219
+          "id": "python-fee-diagnostic",
+          "program_id": "python",
+          "fee_type": "diagnostic",
+          "name": "Placement assessment",
+          "amount": 99,
+          "description": "Required for level placement"
         },
         {
-          "id": "ml-l3",
-          "program_id": "ml-ai",
-          "level_num": 3,
-          "name": "AI Systems",
-          "milestones": "Pipelines and deployment basics",
-          "price_live": 289,
-          "price_studio": 239
-        },
-        {
-          "id": "ml-l4",
-          "program_id": "ml-ai",
-          "level_num": 4,
-          "name": "Capstone",
-          "milestones": "Portfolio-ready AI build",
-          "price_live": 309,
-          "price_studio": 259
+          "id": "python-fee-kit",
+          "program_id": "python",
+          "fee_type": "kit",
+          "name": "Project kit",
+          "amount": 49,
+          "description": "Materials and resources"
         }
       ],
-      "tiers": [
+      "program_addons": [
         {
-          "id": "ml-core",
-          "program_id": "ml-ai",
-          "name": "core",
-          "price_live": 249,
-          "price_studio": 199,
-          "is_featured": false,
-          "includes": ["Concepts + labs", "Guided builds"],
-          "sort_order": 0
-        },
-        {
-          "id": "ml-plus",
-          "program_id": "ml-ai",
-          "name": "plus",
-          "price_live": 279,
-          "price_studio": 229,
-          "is_featured": true,
-          "includes": ["Everything in Core", "Extra projects", "Progress updates"],
+          "id": "python-addon-1",
+          "program_id": "python",
+          "name": "Competition prep pod",
+          "price": 99,
+          "active": true,
           "sort_order": 1
         },
         {
-          "id": "ml-elite",
-          "program_id": "ml-ai",
-          "name": "elite",
-          "price_live": 319,
-          "price_studio": 269,
-          "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
+          "id": "python-addon-2",
+          "program_id": "python",
+          "name": "Monthly 1:1 mentor",
+          "price": 79,
+          "active": true,
           "sort_order": 2
+        },
+        {
+          "id": "python-addon-3",
+          "program_id": "python",
+          "name": "Portfolio review",
+          "price": 59,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "python-addon-4",
+          "program_id": "python",
+          "name": "Parent progress report",
+          "price": 29,
+          "active": true,
+          "sort_order": 4
         }
-      ],
-      "program_fees": [],
-      "program_addons": []
+      ]
     },
     {
-      "id": "app-dev",
+      "id": "aiml",
       "track": "coding",
-      "name": "AppSpark - App Development",
-      "tagline": "App development - Learn to Code & Build Apps",
-      "age_min": 10,
+      "name": "ML / AI",
+      "tagline": "From AI concepts to original research",
+      "age_min": 13,
       "age_max": 18,
       "studio_only": false,
       "active": true,
       "sort_order": 2,
       "journey_levels": [
         {
-          "id": "app-l1",
-          "program_id": "app-dev",
+          "id": "aiml-l1",
+          "program_id": "aiml",
           "level_num": 1,
-          "name": "App Basics",
-          "milestones": "UI, state, routing basics",
-          "price_live": 229,
-          "price_studio": 179
-        },
-        {
-          "id": "app-l2",
-          "program_id": "app-dev",
-          "level_num": 2,
-          "name": "Build & Ship",
-          "milestones": "Auth, data, deployments",
+          "name": "AI intro",
+          "milestones": "What is AI · prompting · first AI project",
           "price_live": 249,
-          "price_studio": 199
+          "price_studio": 289
         },
         {
-          "id": "app-l3",
-          "program_id": "app-dev",
+          "id": "aiml-l2",
+          "program_id": "aiml",
+          "level_num": 2,
+          "name": "AI builder",
+          "milestones": "Python + AI · model use · project showcase",
+          "price_live": 329,
+          "price_studio": 379
+        },
+        {
+          "id": "aiml-l3",
+          "program_id": "aiml",
           "level_num": 3,
-          "name": "Advanced Apps",
-          "milestones": "Performance and integrations",
-          "price_live": 269,
-          "price_studio": 219
+          "name": "AI pro",
+          "milestones": "Fine-tuning · datasets · capstone project",
+          "price_live": 429,
+          "price_studio": 479
         },
         {
-          "id": "app-l4",
-          "program_id": "app-dev",
+          "id": "aiml-l4",
+          "program_id": "aiml",
           "level_num": 4,
-          "name": "Capstone",
-          "milestones": "Portfolio-ready production app",
-          "price_live": 289,
-          "price_studio": 239
+          "name": "Research",
+          "milestones": "Original research · paper · invitational track",
+          "price_live": 529,
+          "price_studio": 589
         }
       ],
       "tiers": [
         {
-          "id": "app-core",
-          "program_id": "app-dev",
+          "id": "aiml-core",
+          "program_id": "aiml",
           "name": "core",
-          "price_live": 229,
-          "price_studio": 179,
+          "price_live": 249,
+          "price_studio": 289,
           "is_featured": false,
-          "includes": ["Small group instruction", "Weekly builds"],
-          "sort_order": 0
-        },
-        {
-          "id": "app-plus",
-          "program_id": "app-dev",
-          "name": "plus",
-          "price_live": 259,
-          "price_studio": 209,
-          "is_featured": true,
-          "includes": ["Everything in Core", "Extra practice", "Progress updates"],
+          "includes": [
+            "Weekly class",
+            "Small group",
+            "Guided AI projects",
+            "Assignments"
+          ],
           "sort_order": 1
         },
         {
-          "id": "app-elite",
-          "program_id": "app-dev",
-          "name": "elite",
-          "price_live": 299,
-          "price_studio": 249,
-          "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
+          "id": "aiml-plus",
+          "program_id": "aiml",
+          "name": "plus",
+          "price_live": 329,
+          "price_studio": 379,
+          "is_featured": true,
+          "includes": [
+            "Weekly class",
+            "Project lab review",
+            "Monthly AI showcase",
+            "Progress report",
+            "Make-up protection"
+          ],
           "sort_order": 2
+        },
+        {
+          "id": "aiml-elite",
+          "program_id": "aiml",
+          "name": "elite",
+          "price_live": 429,
+          "price_studio": 479,
+          "is_featured": false,
+          "includes": [
+            "Weekly class",
+            "Research coaching",
+            "Monthly assessment",
+            "Research portfolio",
+            "Parent conference"
+          ],
+          "sort_order": 3
         }
       ],
-      "program_fees": [],
-      "program_addons": []
+      "program_fees": [
+        {
+          "id": "aiml-fee-enrollment",
+          "program_id": "aiml",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 99,
+          "description": "One-time per student"
+        },
+        {
+          "id": "aiml-fee-diagnostic",
+          "program_id": "aiml",
+          "fee_type": "diagnostic",
+          "name": "Placement assessment",
+          "amount": 149,
+          "description": "Required — AI readiness assessment"
+        }
+      ],
+      "program_addons": [
+        {
+          "id": "aiml-addon-1",
+          "program_id": "aiml",
+          "name": "Research mentoring",
+          "price": 99,
+          "active": true,
+          "sort_order": 1
+        },
+        {
+          "id": "aiml-addon-2",
+          "program_id": "aiml",
+          "name": "Monthly 1:1 session",
+          "price": 79,
+          "active": true,
+          "sort_order": 2
+        },
+        {
+          "id": "aiml-addon-3",
+          "program_id": "aiml",
+          "name": "Portfolio review",
+          "price": 59,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "aiml-addon-4",
+          "program_id": "aiml",
+          "name": "Parent progress report",
+          "price": 29,
+          "active": true,
+          "sort_order": 4
+        }
+      ]
+    },
+    {
+      "id": "appdev",
+      "track": "coding",
+      "name": "App development",
+      "tagline": "From idea to published app",
+      "age_min": 12,
+      "age_max": 18,
+      "studio_only": false,
+      "active": true,
+      "sort_order": 3,
+      "journey_levels": [
+        {
+          "id": "appdev-l1",
+          "program_id": "appdev",
+          "level_num": 1,
+          "name": "Explorer",
+          "milestones": "HTML · CSS · JavaScript basics · first webpage",
+          "price_live": 219,
+          "price_studio": 259
+        },
+        {
+          "id": "appdev-l2",
+          "program_id": "appdev",
+          "level_num": 2,
+          "name": "Builder",
+          "milestones": "React basics · UI design · interactive apps",
+          "price_live": 289,
+          "price_studio": 329
+        },
+        {
+          "id": "appdev-l3",
+          "program_id": "appdev",
+          "level_num": 3,
+          "name": "Developer",
+          "milestones": "Full-stack · backend · deploy live app",
+          "price_live": 369,
+          "price_studio": 409
+        },
+        {
+          "id": "appdev-l4",
+          "program_id": "appdev",
+          "level_num": 4,
+          "name": "Launcher",
+          "milestones": "App store · monetisation · startup pitch",
+          "price_live": 449,
+          "price_studio": 499
+        }
+      ],
+      "tiers": [
+        {
+          "id": "appdev-core",
+          "program_id": "appdev",
+          "name": "core",
+          "price_live": 219,
+          "price_studio": 259,
+          "is_featured": false,
+          "includes": [
+            "Weekly class",
+            "Group of 8 max",
+            "Project assignments",
+            "Email updates"
+          ],
+          "sort_order": 1
+        },
+        {
+          "id": "appdev-plus",
+          "program_id": "appdev",
+          "name": "plus",
+          "price_live": 289,
+          "price_studio": 329,
+          "is_featured": true,
+          "includes": [
+            "Weekly class",
+            "Design + code review",
+            "Monthly report",
+            "Make-up class",
+            "UX feedback sessions"
+          ],
+          "sort_order": 2
+        },
+        {
+          "id": "appdev-elite",
+          "program_id": "appdev",
+          "name": "elite",
+          "price_live": 369,
+          "price_studio": 409,
+          "is_featured": false,
+          "includes": [
+            "Weekly class",
+            "1:1 build sessions",
+            "Monthly assessment",
+            "App portfolio",
+            "Parent conference"
+          ],
+          "sort_order": 3
+        }
+      ],
+      "program_fees": [
+        {
+          "id": "appdev-fee-enrollment",
+          "program_id": "appdev",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 79,
+          "description": "One-time per student"
+        },
+        {
+          "id": "appdev-fee-diagnostic",
+          "program_id": "appdev",
+          "fee_type": "diagnostic",
+          "name": "Placement assessment",
+          "amount": 99,
+          "description": "Required for level placement"
+        }
+      ],
+      "program_addons": [
+        {
+          "id": "appdev-addon-1",
+          "program_id": "appdev",
+          "name": "UI/UX mentoring",
+          "price": 79,
+          "active": true,
+          "sort_order": 1
+        },
+        {
+          "id": "appdev-addon-2",
+          "program_id": "appdev",
+          "name": "App store guidance",
+          "price": 99,
+          "active": true,
+          "sort_order": 2
+        },
+        {
+          "id": "appdev-addon-3",
+          "program_id": "appdev",
+          "name": "Portfolio review",
+          "price": 59,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "appdev-addon-4",
+          "program_id": "appdev",
+          "name": "Parent progress report",
+          "price": 29,
+          "active": true,
+          "sort_order": 4
+        }
+      ]
     },
     {
       "id": "scratch",
       "track": "game-dev",
-      "name": "Scratch Game Development",
-      "tagline": "Learn Scratch Game Development for kids with GrowWise. Build games, boost logic skills, and start coding early—online or in-person in Dublin, CA.",
+      "name": "Scratch",
+      "tagline": "The first step into coding and games",
       "age_min": 6,
-      "age_max": 16,
+      "age_max": 9,
       "studio_only": false,
       "active": true,
-      "sort_order": 0,
+      "sort_order": 1,
       "journey_levels": [
         {
           "id": "scratch-l1",
           "program_id": "scratch",
           "level_num": 1,
-          "name": "Block Coding",
-          "milestones": "Sprites, events, loops",
-          "price_live": 149,
-          "price_studio": 99
+          "name": "Explorer",
+          "milestones": "Blocks · sequences · first animation",
+          "price_live": 99,
+          "price_studio": 129
         },
         {
           "id": "scratch-l2",
           "program_id": "scratch",
           "level_num": 2,
-          "name": "Games",
-          "milestones": "Game rules and scoring",
-          "price_live": 159,
-          "price_studio": 109
+          "name": "Creator",
+          "milestones": "Events · loops · simple game",
+          "price_live": 139,
+          "price_studio": 169
         },
         {
           "id": "scratch-l3",
           "program_id": "scratch",
           "level_num": 3,
-          "name": "Design",
-          "milestones": "Animations and UX",
-          "price_live": 169,
-          "price_studio": 119
+          "name": "Designer",
+          "milestones": "Variables · custom blocks · showcase",
+          "price_live": 179,
+          "price_studio": 209
         },
         {
           "id": "scratch-l4",
           "program_id": "scratch",
           "level_num": 4,
           "name": "Bridge",
-          "milestones": "Projects that prepare for next track",
-          "price_live": 179,
-          "price_studio": 129
+          "milestones": "Into Roblox or Python — pathway unlocked",
+          "price_live": 219,
+          "price_studio": 249
         }
       ],
       "tiers": [
@@ -302,82 +511,148 @@
           "id": "scratch-core",
           "program_id": "scratch",
           "name": "core",
-          "price_live": 149,
-          "price_studio": 99,
+          "price_live": 99,
+          "price_studio": 129,
           "is_featured": false,
-          "includes": ["Guided builds", "Weekly projects"],
-          "sort_order": 0
+          "includes": [
+            "Weekly class",
+            "Small group",
+            "Build-along projects",
+            "Parent updates"
+          ],
+          "sort_order": 1
         },
         {
           "id": "scratch-plus",
           "program_id": "scratch",
           "name": "plus",
-          "price_live": 169,
-          "price_studio": 119,
+          "price_live": 139,
+          "price_studio": 169,
           "is_featured": true,
-          "includes": ["Everything in Core", "Extra practice", "Progress updates"],
-          "sort_order": 1
+          "includes": [
+            "Weekly class",
+            "Project feedback",
+            "Monthly showcase",
+            "Make-up class"
+          ],
+          "sort_order": 2
         },
         {
           "id": "scratch-elite",
           "program_id": "scratch",
           "name": "elite",
-          "price_live": 189,
-          "price_studio": 139,
+          "price_live": 179,
+          "price_studio": 209,
           "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
-          "sort_order": 2
+          "includes": [
+            "Weekly class",
+            "1:1 build time",
+            "Monthly assessment",
+            "Portfolio",
+            "Parent conference"
+          ],
+          "sort_order": 3
         }
       ],
-      "program_fees": [],
-      "program_addons": []
+      "program_fees": [
+        {
+          "id": "scratch-fee-enrollment",
+          "program_id": "scratch",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 49,
+          "description": "One-time per student"
+        },
+        {
+          "id": "scratch-fee-kit",
+          "program_id": "scratch",
+          "fee_type": "kit",
+          "name": "Starter kit",
+          "amount": 29,
+          "description": "Activity booklet and materials"
+        }
+      ],
+      "program_addons": [
+        {
+          "id": "scratch-addon-1",
+          "program_id": "scratch",
+          "name": "Extra build lab",
+          "price": 39,
+          "active": true,
+          "sort_order": 1
+        },
+        {
+          "id": "scratch-addon-2",
+          "program_id": "scratch",
+          "name": "Showcase entry",
+          "price": 29,
+          "active": true,
+          "sort_order": 2
+        },
+        {
+          "id": "scratch-addon-3",
+          "program_id": "scratch",
+          "name": "Monthly 1:1 session",
+          "price": 59,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "scratch-addon-4",
+          "program_id": "scratch",
+          "name": "Parent progress report",
+          "price": 19,
+          "active": true,
+          "sort_order": 4
+        }
+      ]
     },
     {
       "id": "roblox",
       "track": "game-dev",
-      "name": "Roblox Game Development",
-      "tagline": "Learn Roblox Game Development for kids with GrowWise. Build games, boost logic skills, start coding early, and publish a game—online or in-person in Dublin, CA.",
-      "age_min": 6,
-      "age_max": 16,
+      "name": "Roblox",
+      "tagline": "From playing to building your own world",
+      "age_min": 8,
+      "age_max": 13,
       "studio_only": false,
       "active": true,
-      "sort_order": 1,
+      "sort_order": 2,
       "journey_levels": [
         {
           "id": "roblox-l1",
           "program_id": "roblox",
           "level_num": 1,
-          "name": "Roblox Studio",
-          "milestones": "World building and gameplay",
-          "price_live": 179,
-          "price_studio": 129
+          "name": "Game builder",
+          "milestones": "Roblox Studio basics · first map · publish",
+          "price_live": 149,
+          "price_studio": 179
         },
         {
           "id": "roblox-l2",
           "program_id": "roblox",
           "level_num": 2,
-          "name": "Systems",
-          "milestones": "Game loops, currency, UI",
-          "price_live": 189,
-          "price_studio": 139
+          "name": "Game creator",
+          "milestones": "Lua scripting · interactions · game mechanics",
+          "price_live": 199,
+          "price_studio": 229
         },
         {
           "id": "roblox-l3",
           "program_id": "roblox",
           "level_num": 3,
-          "name": "Scripting",
-          "milestones": "Core scripting patterns",
-          "price_live": 199,
-          "price_studio": 149
+          "name": "Game dev",
+          "milestones": "Advanced scripting · multiplayer · showcase",
+          "price_live": 259,
+          "price_studio": 299
         },
         {
           "id": "roblox-l4",
           "program_id": "roblox",
           "level_num": 4,
-          "name": "Capstone",
-          "milestones": "Publish-ready game",
-          "price_live": 209,
-          "price_studio": 159
+          "name": "Python bridge",
+          "milestones": "Python foundations · game logic · portfolio",
+          "price_live": 329,
+          "price_studio": 369
         }
       ],
       "tiers": [
@@ -385,82 +660,149 @@
           "id": "roblox-core",
           "program_id": "roblox",
           "name": "core",
-          "price_live": 179,
-          "price_studio": 129,
+          "price_live": 149,
+          "price_studio": 179,
           "is_featured": false,
-          "includes": ["Guided builds", "Weekly projects"],
-          "sort_order": 0
+          "includes": [
+            "Weekly class",
+            "Small group",
+            "Build-along projects",
+            "Assignments"
+          ],
+          "sort_order": 1
         },
         {
           "id": "roblox-plus",
           "program_id": "roblox",
           "name": "plus",
           "price_live": 199,
-          "price_studio": 149,
+          "price_studio": 229,
           "is_featured": true,
-          "includes": ["Everything in Core", "Extra practice", "Progress updates"],
-          "sort_order": 1
+          "includes": [
+            "Weekly class",
+            "Project feedback",
+            "Monthly showcase",
+            "Make-up class",
+            "Logic challenge track"
+          ],
+          "sort_order": 2
         },
         {
           "id": "roblox-elite",
           "program_id": "roblox",
           "name": "elite",
-          "price_live": 229,
-          "price_studio": 179,
+          "price_live": 259,
+          "price_studio": 299,
           "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
-          "sort_order": 2
+          "includes": [
+            "Weekly class",
+            "Lab build support",
+            "Monthly assessment",
+            "Public portfolio",
+            "Parent conference"
+          ],
+          "sort_order": 3
         }
       ],
-      "program_fees": [],
-      "program_addons": []
+      "program_fees": [
+        {
+          "id": "roblox-fee-enrollment",
+          "program_id": "roblox",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 59,
+          "description": "One-time per student"
+        },
+        {
+          "id": "roblox-fee-kit",
+          "program_id": "roblox",
+          "fee_type": "kit",
+          "name": "Project kit",
+          "amount": 39,
+          "description": "Roblox resources and project files"
+        }
+      ],
+      "program_addons": [
+        {
+          "id": "roblox-addon-1",
+          "program_id": "roblox",
+          "name": "Weekly lab hour",
+          "price": 49,
+          "active": true,
+          "sort_order": 1
+        },
+        {
+          "id": "roblox-addon-2",
+          "program_id": "roblox",
+          "name": "Showcase spotlight",
+          "price": 39,
+          "active": true,
+          "sort_order": 2
+        },
+        {
+          "id": "roblox-addon-3",
+          "program_id": "roblox",
+          "name": "Monthly 1:1 mentor",
+          "price": 79,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "roblox-addon-4",
+          "program_id": "roblox",
+          "name": "Parent progress report",
+          "price": 29,
+          "active": true,
+          "sort_order": 4
+        }
+      ]
     },
     {
       "id": "minecraft",
       "track": "game-dev",
-      "name": "Minecraft Game Development",
-      "tagline": "Discover Minecraft Game Development for kids at GrowWise. Learn to code, build custom games, enhance logic skills, and publish your own game.",
-      "age_min": 6,
-      "age_max": 16,
+      "name": "Minecraft",
+      "tagline": "Build worlds, learn systems thinking",
+      "age_min": 8,
+      "age_max": 14,
       "studio_only": false,
       "active": true,
-      "sort_order": 2,
+      "sort_order": 3,
       "journey_levels": [
         {
           "id": "minecraft-l1",
           "program_id": "minecraft",
           "level_num": 1,
-          "name": "Build Logic",
-          "milestones": "Redstone and systems thinking",
-          "price_live": 169,
-          "price_studio": 119
+          "name": "World builder",
+          "milestones": "Survival basics · redstone intro · first build",
+          "price_live": 149,
+          "price_studio": 179
         },
         {
           "id": "minecraft-l2",
           "program_id": "minecraft",
           "level_num": 2,
-          "name": "Mods",
-          "milestones": "Mod concepts and building blocks",
-          "price_live": 179,
-          "price_studio": 129
+          "name": "Engineer",
+          "milestones": "Redstone circuits · command blocks · automation",
+          "price_live": 189,
+          "price_studio": 219
         },
         {
           "id": "minecraft-l3",
           "program_id": "minecraft",
           "level_num": 3,
-          "name": "Automation",
-          "milestones": "Systems and optimization",
-          "price_live": 189,
-          "price_studio": 139
+          "name": "Architect",
+          "milestones": "Mod basics · Java intro · custom world",
+          "price_live": 239,
+          "price_studio": 279
         },
         {
           "id": "minecraft-l4",
           "program_id": "minecraft",
           "level_num": 4,
-          "name": "Capstone",
-          "milestones": "Showcase build",
-          "price_live": 199,
-          "price_studio": 149
+          "name": "Modder",
+          "milestones": "Java modding · publish · portfolio project",
+          "price_live": 289,
+          "price_studio": 329
         }
       ],
       "tiers": [
@@ -468,82 +810,141 @@
           "id": "minecraft-core",
           "program_id": "minecraft",
           "name": "core",
-          "price_live": 169,
-          "price_studio": 119,
+          "price_live": 149,
+          "price_studio": 179,
           "is_featured": false,
-          "includes": ["Guided builds", "Weekly projects"],
-          "sort_order": 0
+          "includes": [
+            "Weekly class",
+            "Small group",
+            "Build challenges",
+            "Assignments"
+          ],
+          "sort_order": 1
         },
         {
           "id": "minecraft-plus",
           "program_id": "minecraft",
           "name": "plus",
           "price_live": 189,
-          "price_studio": 139,
+          "price_studio": 219,
           "is_featured": true,
-          "includes": ["Everything in Core", "Extra practice", "Progress updates"],
-          "sort_order": 1
+          "includes": [
+            "Weekly class",
+            "Build review",
+            "Monthly showcase",
+            "Make-up class",
+            "Redstone challenges"
+          ],
+          "sort_order": 2
         },
         {
           "id": "minecraft-elite",
           "program_id": "minecraft",
           "name": "elite",
-          "price_live": 219,
-          "price_studio": 169,
+          "price_live": 239,
+          "price_studio": 279,
           "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
-          "sort_order": 2
+          "includes": [
+            "Weekly class",
+            "1:1 build time",
+            "Monthly assessment",
+            "Mod portfolio",
+            "Parent conference"
+          ],
+          "sort_order": 3
         }
       ],
-      "program_fees": [],
-      "program_addons": []
+      "program_fees": [
+        {
+          "id": "minecraft-fee-enrollment",
+          "program_id": "minecraft",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 59,
+          "description": "One-time per student"
+        }
+      ],
+      "program_addons": [
+        {
+          "id": "minecraft-addon-1",
+          "program_id": "minecraft",
+          "name": "Extra lab hour",
+          "price": 39,
+          "active": true,
+          "sort_order": 1
+        },
+        {
+          "id": "minecraft-addon-2",
+          "program_id": "minecraft",
+          "name": "Showcase entry",
+          "price": 29,
+          "active": true,
+          "sort_order": 2
+        },
+        {
+          "id": "minecraft-addon-3",
+          "program_id": "minecraft",
+          "name": "Monthly 1:1 mentor",
+          "price": 69,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "minecraft-addon-4",
+          "program_id": "minecraft",
+          "name": "Parent progress report",
+          "price": 29,
+          "active": true,
+          "sort_order": 4
+        }
+      ]
     },
     {
       "id": "robotics",
       "track": "game-dev",
-      "name": "Robotics Fundamentals",
-      "tagline": "Learn Robotics with GrowWise. Build, program, and test robots while mastering engineering and problem-solving skills.",
-      "age_min": 6,
+      "name": "Robotics",
+      "tagline": "From first build to competition team",
+      "age_min": 8,
       "age_max": 16,
       "studio_only": true,
       "active": true,
-      "sort_order": 3,
+      "sort_order": 4,
       "journey_levels": [
         {
           "id": "robotics-l1",
           "program_id": "robotics",
           "level_num": 1,
-          "name": "Robotics Intro",
-          "milestones": "Hardware, sensors, coding",
+          "name": "Foundations",
+          "milestones": "Basic builds · sensors · simple programs",
           "price_live": null,
-          "price_studio": 249
+          "price_studio": 269
         },
         {
           "id": "robotics-l2",
           "program_id": "robotics",
           "level_num": 2,
-          "name": "Build",
-          "milestones": "Mechanical design and assembly",
+          "name": "Builder",
+          "milestones": "Motors · logic · team challenges",
           "price_live": null,
-          "price_studio": 269
+          "price_studio": 339
         },
         {
           "id": "robotics-l3",
           "program_id": "robotics",
           "level_num": 3,
-          "name": "Program",
-          "milestones": "Control loops and autonomy",
+          "name": "Competition",
+          "milestones": "Competition prep · strategy · engineering log",
           "price_live": null,
-          "price_studio": 289
+          "price_studio": 439
         },
         {
           "id": "robotics-l4",
           "program_id": "robotics",
           "level_num": 4,
-          "name": "Capstone",
-          "milestones": "Competition-style project",
+          "name": "Engineering",
+          "milestones": "Advanced design · capstone · portfolio",
           "price_live": null,
-          "price_studio": 309
+          "price_studio": 499
         }
       ],
       "tiers": [
@@ -552,37 +953,104 @@
           "program_id": "robotics",
           "name": "core",
           "price_live": null,
-          "price_studio": 249,
+          "price_studio": 229,
           "is_featured": false,
-          "includes": ["Studio sessions", "Kit supported"],
-          "sort_order": 0
+          "includes": [
+            "Weekly studio class",
+            "Project kit included",
+            "Small group",
+            "Engineering log"
+          ],
+          "sort_order": 1
         },
         {
           "id": "robotics-plus",
           "program_id": "robotics",
           "name": "plus",
           "price_live": null,
-          "price_studio": 279,
+          "price_studio": 299,
           "is_featured": true,
-          "includes": ["Everything in Core", "Extra practice", "Progress updates"],
-          "sort_order": 1
+          "includes": [
+            "Weekly class",
+            "Extended lab time",
+            "Monthly demo day",
+            "Progress report",
+            "Make-up support"
+          ],
+          "sort_order": 2
         },
         {
           "id": "robotics-elite",
           "program_id": "robotics",
           "name": "elite",
           "price_live": null,
-          "price_studio": 319,
+          "price_studio": 389,
           "is_featured": false,
-          "includes": ["Everything in Plus", "Portfolio guidance", "1:1 feedback"],
-          "sort_order": 2
+          "includes": [
+            "Weekly class",
+            "Full lab + coach",
+            "Competition track access",
+            "Engineering portfolio",
+            "Parent conference"
+          ],
+          "sort_order": 3
         }
       ],
-      "program_fees": [],
-      "program_addons": []
+      "program_fees": [
+        {
+          "id": "robotics-fee-enrollment",
+          "program_id": "robotics",
+          "fee_type": "enrollment",
+          "name": "Enrollment fee",
+          "amount": 89,
+          "description": "One-time per student"
+        },
+        {
+          "id": "robotics-fee-kit",
+          "program_id": "robotics",
+          "fee_type": "kit",
+          "name": "Robot kit",
+          "amount": 75,
+          "description": "Physical robot kit — kept by student"
+        }
+      ],
+      "program_addons": [
+        {
+          "id": "robotics-addon-1",
+          "program_id": "robotics",
+          "name": "Competition prep pod",
+          "price": 99,
+          "active": true,
+          "sort_order": 1
+        },
+        {
+          "id": "robotics-addon-2",
+          "program_id": "robotics",
+          "name": "Extra lab hour",
+          "price": 49,
+          "active": true,
+          "sort_order": 2
+        },
+        {
+          "id": "robotics-addon-3",
+          "program_id": "robotics",
+          "name": "Monthly 1:1 mentoring",
+          "price": 79,
+          "active": true,
+          "sort_order": 3
+        },
+        {
+          "id": "robotics-addon-4",
+          "program_id": "robotics",
+          "name": "Parent progress report",
+          "price": 29,
+          "active": true,
+          "sort_order": 4
+        }
+      ]
     }
   ],
-  "last_updated": "2026-03-18T00:00:00Z",
+  "last_updated": "2026-03-30T00:00:00Z",
   "age_recommender": {
     "game_dev": [
       { "min": 6, "max": 8, "program_id": "scratch", "reason_key": "scratch" },
@@ -592,4 +1060,3 @@
     ]
   }
 }
-

@@ -172,6 +172,19 @@ html {
   .subtitle { @apply text-xl text-gray-600; }
   .subtitle-sm { @apply text-lg text-gray-600; }
   .highlight-orange { @apply text-[#F16112]; }
+  /* Brand: GrowWise blue (#1F396D) + orange (#F16112) — used on /coding and /game-dev */
+  .text-gradient-coding {
+    @apply bg-gradient-to-r from-[#1F396D] via-[#2d4f8f] to-[#F16112] bg-clip-text text-transparent;
+  }
+  .text-gradient-gamedev {
+    @apply bg-gradient-to-r from-[#F16112] via-[#F1894F] to-[#1F396D] bg-clip-text text-transparent;
+  }
+  .page-bg-coding {
+    @apply bg-gradient-to-b from-[#F8FAFC] via-white to-[#F16112]/[0.07];
+  }
+  .page-bg-gamedev {
+    @apply bg-gradient-to-b from-[#FFFBF0] via-white to-[#1F396D]/[0.06];
+  }
   /* Contact section utilities */
   .contact-section { @apply py-16 lg:py-24 bg-white; }
   .container-7xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }

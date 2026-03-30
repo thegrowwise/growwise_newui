@@ -764,12 +764,12 @@
   },
   "pricingUi": {
     "deliveryMode": {
-      "live": "Live",
-      "studio": "Studio",
-      "studioOnlyBadge": "In-person only"
+      "live": "Live Online",
+      "studio": "In-Person Studio",
+      "studioOnlyBadge": "In-person"
     },
     "tier": {
-      "mostChosen": "Most chosen"
+      "mostChosen": "Most Chosen"
     },
     "enroll": {
       "cta": "Enroll",
@@ -778,25 +778,43 @@
     }
   },
   "codingPage": {
+    "nav": {
+      "homeAria": "Go to GrowWise home",
+      "brand": "GrowWise",
+      "crossLink": "Explore game development"
+    },
     "hero": {
       "badge": "Coding programs · Ages 10–18",
       "headline": "Real skills. Real projects. A journey that lasts years.",
+      "headlineLine1": "Real skills. Real projects.",
+      "headlineLine2": "A journey that lasts years.",
       "subtext": "Structured coding journeys for parents who want serious skills for their 10–18 year olds—from first Python scripts to building ML/AI and full applications.",
       "ctaPrograms": "See coding programs",
       "ctaAlt": "Looking for game dev?"
     },
     "programs": {
       "title": "Coding learning journeys",
-      "subtitle": "Choose a track to see the full journey, tiers, and optional add-ons."
+      "subtitle": "Choose a track to see the full journey, tiers, and optional add-ons.",
+      "error": "We couldn’t load program pricing. Please refresh or try again later."
     }
   },
   "gameDevPage": {
+    "nav": {
+      "homeAria": "Go to GrowWise home",
+      "brand": "GrowWise",
+      "crossLink": "Explore coding programs"
+    },
     "hero": {
       "badge": "Game development · Ages 6–16",
       "headline": "Your child already loves games. Now they'll build them.",
+      "headlineLine1": "Your child already loves games.",
+      "headlineLine2": "Now they'll build them.",
       "subtext": "A playful, structured journey for 6–16 year olds—turning curiosity into real game-building skills across Scratch, Roblox, Minecraft, and Robotics.",
       "ctaPrograms": "See game dev programs",
       "ctaAlt": "Looking for coding?"
+    },
+    "programs": {
+      "error": "We couldn’t load program pricing. Please refresh or try again later."
     },
     "ageRecommender": {
       "label": "Child's age",

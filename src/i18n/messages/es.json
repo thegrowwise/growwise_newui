@@ -718,25 +718,43 @@
     }
   },
   "codingPage": {
+    "nav": {
+      "homeAria": "Ir al inicio de GrowWise",
+      "brand": "GrowWise",
+      "crossLink": "Explorar desarrollo de juegos"
+    },
     "hero": {
       "badge": "Programas de coding · Edades 10–18",
       "headline": "Habilidades reales. Proyectos reales. Un camino que dura años.",
+      "headlineLine1": "Habilidades reales. Proyectos reales.",
+      "headlineLine2": "Un camino que dura años.",
       "subtext": "Trayectorias estructuradas de programación para familias con niños de 10–18 años—desde Python hasta ML/AI y desarrollo de apps.",
       "ctaPrograms": "Ver programas de coding",
       "ctaAlt": "¿Buscas game dev?"
     },
     "programs": {
       "title": "Trayectorias de aprendizaje en coding",
-      "subtitle": "Elige una ruta para ver el recorrido completo, niveles y complementos."
+      "subtitle": "Elige una ruta para ver el recorrido completo, niveles y complementos.",
+      "error": "No pudimos cargar los precios de los programas. Actualiza la página o inténtalo más tarde."
     }
   },
   "gameDevPage": {
+    "nav": {
+      "homeAria": "Ir al inicio de GrowWise",
+      "brand": "GrowWise",
+      "crossLink": "Explorar programas de coding"
+    },
     "hero": {
       "badge": "Game development · Edades 6–16",
       "headline": "A tu hijo ya le encantan los juegos. Ahora los va a construir.",
+      "headlineLine1": "A tu hijo ya le encantan los juegos.",
+      "headlineLine2": "Ahora los va a construir.",
       "subtext": "Un camino divertido y estructurado para niños de 6–16 años—de Scratch a Roblox, Minecraft y Robótica.",
       "ctaPrograms": "Ver programas de game dev",
       "ctaAlt": "¿Buscas coding?"
+    },
+    "programs": {
+      "error": "No pudimos cargar los precios de los programas. Actualiza la página o inténtalo más tarde."
     },
     "ageRecommender": {
       "label": "Edad del niño",
