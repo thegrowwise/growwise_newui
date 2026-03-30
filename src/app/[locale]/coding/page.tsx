@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function CodingPage() {
   return (
     <EnrollProvider>
-      <main className="min-h-screen bg-[#F8FAFC]">
+      <main className="min-h-screen page-bg-coding">
         <CodingHero />
         <CodingPrograms />
       </main>

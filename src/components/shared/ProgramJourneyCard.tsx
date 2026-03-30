@@ -195,6 +195,7 @@ export function ProgramJourneyCard({
         <JourneyVisual
           levels={levelsVM}
           accentColorClass={colorThemeClass}
+          accentColorHex={colorThemeHex}
         />
 
         <TierCards tiers={tiersVM} selected={selectedTierForProgram} onSelect={handleTierSelect} />

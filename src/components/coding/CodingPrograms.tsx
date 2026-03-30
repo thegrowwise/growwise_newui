@@ -36,7 +36,7 @@ export function CodingPrograms() {
 
   if (loading && !data) {
     return (
-      <div className="flex min-h-[40vh] items-center justify-center bg-[#F8FAFC]">
+      <div className="flex min-h-[40vh] items-center justify-center bg-transparent">
         <Loader2 className="h-10 w-10 animate-spin text-[#1F396D]" aria-hidden />
       </div>
     );
@@ -44,7 +44,7 @@ export function CodingPrograms() {
 
   if (error || !data) {
     return (
-      <div className="flex min-h-[40vh] flex-col items-center justify-center bg-[#F8FAFC] px-4 text-center text-red-700">
+      <div className="flex min-h-[40vh] flex-col items-center justify-center bg-transparent px-4 text-center text-red-700">
         <AlertCircle className="mb-4 h-12 w-12" aria-hidden />
         <p className="font-semibold">{t('codingPage.programs.error')}</p>
       </div>
@@ -63,10 +63,10 @@ export function CodingPrograms() {
                 type="button"
                 onClick={() => setActiveTab(prog.id)}
                 className={cn(
-                  'px-6 py-3 rounded-full font-bold text-lg transition-all',
+                  'px-6 py-3 rounded-full font-bold text-lg transition-all border-2',
                   isActive
-                    ? 'bg-foreground text-background shadow-lg scale-105'
-                    : 'bg-white text-muted-foreground hover:bg-slate-100 border border-border',
+                    ? 'border-[#1F396D] bg-[#1F396D] text-white shadow-lg shadow-[#1F396D]/25 scale-105'
+                    : 'border-[#1F396D]/25 bg-white text-[#1F396D] hover:border-[#F16112]/50 hover:bg-[#F16112]/8',
                 )}
               >
                 {prog.name}

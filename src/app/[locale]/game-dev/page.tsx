@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function GameDevPage() {
   return (
     <EnrollProvider>
-      <main className="min-h-screen bg-[#FFFBF0]">
+      <main className="min-h-screen page-bg-gamedev">
         <GameDevHero />
         <GameDevPrograms />
       </main>

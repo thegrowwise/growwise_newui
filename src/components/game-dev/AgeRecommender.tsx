@@ -41,19 +41,19 @@ export function AgeRecommender({ onRecommend, className }: AgeRecommenderProps) 
   return (
     <div
       className={cn(
-        'bg-gradient-to-br from-indigo-900 to-purple-900 rounded-2xl p-6 shadow-xl mb-12 text-white overflow-hidden relative',
+        'bg-gradient-to-br from-[#1F396D] via-[#243f78] to-[#1a3058] rounded-2xl p-6 shadow-xl shadow-[#1F396D]/20 mb-12 text-white overflow-hidden relative ring-1 ring-[#F16112]/35',
         className,
       )}
     >
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-[#F16112]/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
 
       <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 justify-between">
         <div className="flex-1">
           <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-amber-400" />
+            <Sparkles className="w-5 h-5 text-[#F16112]" />
             Not sure where to start?
           </h3>
-          <p className="text-indigo-200 text-sm">
+          <p className="text-white/80 text-sm">
             Enter your child's age and we'll recommend the best starting point for their journey.
           </p>
         </div>
@@ -69,14 +69,14 @@ export function AgeRecommender({ onRecommend, className }: AgeRecommenderProps) 
               const v = e.target.value;
               setAge(v === '' ? '' : Number(v));
             }}
-            className="w-24 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-amber-400 text-center font-bold text-lg appearance-none"
+            className="w-24 px-4 py-3 rounded-xl bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[#F16112] text-center font-bold text-lg appearance-none"
           />
 
           {rec && (
             <button
               type="button"
               onClick={() => onRecommend(rec.programId)}
-              className="flex items-center gap-3 bg-amber-500 hover:bg-amber-400 text-indigo-950 px-6 py-3 rounded-xl font-bold transition-colors shadow-lg"
+              className="flex items-center gap-3 bg-[#F16112] hover:bg-[#F1894F] text-white px-6 py-3 rounded-xl font-bold transition-colors shadow-lg shadow-[#F16112]/30"
             >
               Start with {rec.programName}
               <ArrowRight className="w-4 h-4" />
@@ -86,7 +86,7 @@ export function AgeRecommender({ onRecommend, className }: AgeRecommenderProps) 
       </div>
 
       {rec && (
-        <p className="text-amber-200 text-sm italic relative z-10 mt-6">
+        <p className="text-[#F1894F] text-sm italic relative z-10 mt-6">
           Why? {rec.reasonText}
         </p>
       )}

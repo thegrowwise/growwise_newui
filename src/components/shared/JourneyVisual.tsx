@@ -16,15 +16,20 @@ export interface JourneyVisualLevel {
 interface JourneyVisualProps {
   levels: JourneyVisualLevel[];
   accentColorClass?: string;
+  accentColorHex?: string;
   className?: string;
 }
 
 export function JourneyVisual({
   levels,
   accentColorClass = 'bg-primary',
+  accentColorHex,
   className,
 }: JourneyVisualProps) {
   if (!levels.length) return null;
+
+  const accentBgStyle = accentColorHex ? { backgroundColor: accentColorHex } : undefined;
+  const accentBgClass = accentColorHex ? '' : accentColorClass;
 
   return (
     <div className={cn('w-full py-8', className)}>
@@ -35,7 +40,10 @@ export function JourneyVisual({
       <div className="relative">
         {/* Connecting line */}
         <div className="absolute top-6 left-0 right-0 h-1 bg-muted rounded-full overflow-hidden">
-          <div className={`h-full w-1/4 ${accentColorClass} opacity-50`} />
+          <div
+            className={cn('h-full w-1/4 opacity-50', accentBgClass)}
+            style={accentBgStyle}
+          />
         </div>
 
         <div className="grid grid-cols-4 gap-4 relative z-10">
@@ -49,9 +57,10 @@ export function JourneyVisual({
                   className={cn(
                     'w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-sm border-4 border-background transition-transform hover:scale-110',
                     isFirst
-                      ? `${accentColorClass} text-white`
+                      ? cn(accentBgClass, 'text-white')
                       : 'bg-white text-muted-foreground border-muted',
                   )}
+                  style={isFirst ? accentBgStyle : undefined}
                 >
                   {level.levelNumber}
                 </div>
