@@ -1,14 +1,8 @@
 import React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/components/ui/utils';
 import type { TierName } from '@/hooks/usePricingConfig';
 import { useTranslations } from 'next-intl';
+import { Check } from 'lucide-react';
 
 export interface TierCardVM {
   id: string;
@@ -37,60 +31,67 @@ export function TierCards({
   if (!tiers.length) return null;
 
   return (
-    <div
-      className={cn(
-        'grid grid-cols-1 gap-4 md:grid-cols-3',
-        className,
-      )}
-    >
+    <div className={cn('grid grid-cols-1 md:grid-cols-3 gap-6 my-8', className)}>
       {tiers.map((tier) => {
         const isSelected = tier.name === selected;
+        const isFeatured = !!tier.isFeatured;
 
         return (
-          <button
+          <div
             key={tier.id}
-            type="button"
+            role="button"
+            tabIndex={0}
             onClick={() => onSelect?.(tier.name)}
-            className="text-left"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') onSelect?.(tier.name);
+            }}
+            className={cn(
+              'relative rounded-2xl p-6 cursor-pointer transition-all duration-300 border-2 text-left flex flex-col group',
+              isSelected
+                ? 'border-primary bg-primary/5 shadow-lg shadow-primary/10 scale-[1.02]'
+                : isFeatured
+                  ? 'border-primary/30 bg-card hover:border-primary/60 hover:shadow-md'
+                  : 'border-border bg-card hover:border-border/80 hover:shadow-md',
+            )}
           >
-            <Card
-              className={cn(
-                'h-full transition-all duration-200 border-2',
-                isSelected
-                  ? 'border-[#F16112] bg-[#F16112]/5 shadow-md'
-                  : 'border-gray-200 hover:border-[#F16112]/40 hover:shadow-sm',
-              )}
-            >
-              <CardHeader className="space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <CardTitle className="text-base font-semibold">
-                    {tier.title}
-                  </CardTitle>
-                  {tier.isFeatured && (
-                    <Badge
-                      variant="secondary"
-                      className="rounded-full bg-[#1F396D]/10 text-[10px] font-semibold text-[#1F396D]"
-                    >
-                      {mostChosenLabel}
-                    </Badge>
-                  )}
-                </div>
-                <div className="text-lg font-bold text-[#1F396D]">
-                  {tier.priceLabel}
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <ul className="space-y-1 text-xs text-gray-600">
-                  {tier.includes.map((item) => (
-                    <li key={item} className="flex items-start gap-2">
-                      <span className="mt-0.5 h-3 w-3 rounded-full bg-emerald-500" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </button>
+            {isFeatured && (
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-primary to-indigo-500 text-white text-xs font-bold uppercase tracking-wider py-1 px-3 rounded-full shadow-sm">
+                {mostChosenLabel}
+              </div>
+            )}
+
+            <div className="mb-4">
+              <h4 className="font-bold text-xl capitalize text-foreground">{tier.title}</h4>
+              <div className="mt-2 flex items-baseline gap-1">
+                <span className="text-3xl font-bold text-foreground">{tier.priceLabel}</span>
+                <span className="text-sm font-medium text-muted-foreground">/mo</span>
+              </div>
+            </div>
+
+            <div className="flex-grow">
+              <ul className="space-y-3">
+                {tier.includes.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-sm text-foreground/80">
+                    <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-border/50">
+              <div
+                className={cn(
+                  'w-full py-2.5 rounded-xl text-sm font-semibold text-center transition-colors',
+                  isSelected
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-secondary text-secondary-foreground group-hover:bg-primary/10',
+                )}
+              >
+                {isSelected ? 'Selected' : 'Select Tier'}
+              </div>
+            </div>
+          </div>
         );
       })}
     </div>

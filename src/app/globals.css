@@ -172,6 +172,12 @@ html {
   .subtitle { @apply text-xl text-gray-600; }
   .subtitle-sm { @apply text-lg text-gray-600; }
   .highlight-orange { @apply text-[#F16112]; }
+  .text-gradient-coding {
+    @apply bg-gradient-to-r from-blue-600 via-sky-600 to-teal-500 bg-clip-text text-transparent;
+  }
+  .text-gradient-gamedev {
+    @apply bg-gradient-to-r from-amber-600 via-orange-500 to-rose-600 bg-clip-text text-transparent;
+  }
   /* Contact section utilities */
   .contact-section { @apply py-16 lg:py-24 bg-white; }
   .container-7xl { @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8; }

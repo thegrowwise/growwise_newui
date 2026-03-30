@@ -702,6 +702,80 @@
       "back": "Back"
     }
   },
+  "pricingUi": {
+    "deliveryMode": {
+      "live": "Live",
+      "studio": "Studio",
+      "studioOnlyBadge": "仅线下"
+    },
+    "tier": {
+      "mostChosen": "最受欢迎"
+    },
+    "enroll": {
+      "cta": "报名",
+      "oneTime": "一次性",
+      "ages": "年龄 {min}–{max}"
+    }
+  },
+  "codingPage": {
+    "nav": {
+      "homeAria": "返回 GrowWise 首页",
+      "brand": "GrowWise",
+      "crossLink": "了解游戏开发"
+    },
+    "hero": {
+      "badge": "编程课程 · 10–18 岁",
+      "headline": "真实技能。真实项目。可持续多年的成长路径。",
+      "headlineLine1": "真实技能。真实项目。",
+      "headlineLine2": "可持续多年的成长路径。",
+      "subtext": "为 10–18 岁学生设计的结构化编程路径——从 Python 到机器学习/人工智能与完整应用开发。",
+      "ctaPrograms": "查看编程课程",
+      "ctaAlt": "想找游戏开发？"
+    },
+    "programs": {
+      "title": "编程学习路径",
+      "subtitle": "选择一条路径查看完整旅程、级别与可选加购。",
+      "error": "无法加载课程价格。请刷新页面或稍后再试。"
+    }
+  },
+  "gameDevPage": {
+    "nav": {
+      "homeAria": "返回 GrowWise 首页",
+      "brand": "GrowWise",
+      "crossLink": "了解编程课程"
+    },
+    "hero": {
+      "badge": "游戏开发 · 6–16 岁",
+      "headline": "孩子已经爱玩游戏。现在让他们亲手制作。",
+      "headlineLine1": "孩子已经爱玩游戏。",
+      "headlineLine2": "现在让他们亲手制作。",
+      "subtext": "为 6–16 岁设计的趣味结构化路径——从 Scratch 到 Roblox、Minecraft 与机器人。",
+      "ctaPrograms": "查看游戏开发课程",
+      "ctaAlt": "想找编程？"
+    },
+    "programs": {
+      "error": "无法加载课程价格。请刷新页面或稍后再试。"
+    },
+    "ageRecommender": {
+      "label": "孩子年龄",
+      "placeholder": "输入年龄",
+      "title": "推荐课程",
+      "cta": "显示课程",
+      "reasons": {
+        "scratch": "适合早期创作者学习核心游戏逻辑。",
+        "roblox": "适合构建 3D 世界与系统的下一步。",
+        "minecraft": "适合想深入模组搭建的建造者。",
+        "robotics": "适合喜欢动手与工程的孩子。"
+      }
+    },
+    "scratchBridge": {
+      "title": "Scratch 第 4 级解锁下一段旅程",
+      "body": "Scratch 结业后可继续 Roblox 或 Python，持续创作。"
+    },
+    "tabs": {
+      "inPersonBadge": "线下"
+    }
+  },
   "enrollnow": {
     "h1": "立即开始报名",
     "metaDescription": "让孩子加入 GrowWise 的 K-12 辅导与 STEAM 项目。选择学术与 STEM 方向，填写表单，我们将在 24 小时内为您提供指导。"

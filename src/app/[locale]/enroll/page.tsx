@@ -293,7 +293,7 @@ function EnrollPageInner() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="python">Python Programming</SelectItem>
-                      <SelectItem value="ml-ai">ML / AI</SelectItem>
+                      <SelectItem value="aiml">ML / AI</SelectItem>
                       <SelectItem value="game-dev">Game Development</SelectItem>
                     </SelectContent>
                   </Select>

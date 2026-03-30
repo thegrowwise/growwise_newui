@@ -1,10 +1,9 @@
 'use client';
 
 import { DeliveryMode } from '@/hooks/usePricingConfig';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/components/ui/utils';
 import { useTranslations } from 'next-intl';
+import { MonitorPlay, Users } from 'lucide-react';
 
 interface DeliveryModeToggleProps {
   value: DeliveryMode;
@@ -26,10 +25,16 @@ export function DeliveryModeToggle({
 
   if (studioOnly) {
     return (
-      <div className={cn('inline-flex items-center gap-2', className)}>
-        <Badge className="rounded-full bg-[#F16112]/10 px-3 py-1 text-xs font-semibold text-[#F16112]">
+      <div
+        className={cn(
+          'inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-100 text-orange-800 border border-orange-200',
+          className,
+        )}
+      >
+        <Users className="w-4 h-4" />
+        <span className="text-sm font-semibold tracking-wide uppercase">
           {studioOnlyLabel}
-        </Badge>
+        </span>
       </div>
     );
   }
@@ -37,34 +42,46 @@ export function DeliveryModeToggle({
   return (
     <div
       className={cn(
-        'inline-flex items-center gap-1 rounded-full bg-gray-100 p-1',
+        'inline-flex p-1 bg-muted rounded-full relative shadow-inner',
         className,
       )}
     >
-      <Button
+      <button
         type="button"
-        variant={value === 'live' ? 'default' : 'ghost'}
-        size="sm"
-        className={cn(
-          'rounded-full px-4 py-1 text-xs',
-          value === 'live' && 'bg-[#F16112] hover:bg-[#F1894F] text-white',
-        )}
         onClick={() => onChange('live')}
-      >
-        {liveLabel}
-      </Button>
-      <Button
-        type="button"
-        variant={value === 'studio' ? 'default' : 'ghost'}
-        size="sm"
         className={cn(
-          'rounded-full px-4 py-1 text-xs',
-          value === 'studio' && 'bg-[#1F396D] hover:bg-[#243f78] text-white',
+          'relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors',
+          value === 'live'
+            ? 'text-primary-foreground'
+            : 'text-muted-foreground hover:text-foreground',
         )}
-        onClick={() => onChange('studio')}
       >
+        <MonitorPlay className="w-4 h-4" />
+        {liveLabel}
+      </button>
+
+      <button
+        type="button"
+        onClick={() => onChange('studio')}
+        className={cn(
+          'relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-colors',
+          value === 'studio'
+            ? 'text-primary-foreground'
+            : 'text-muted-foreground hover:text-foreground',
+        )}
+      >
+        <Users className="w-4 h-4" />
         {studioLabel}
-      </Button>
+      </button>
+
+      {/* Active pill background */}
+      <div
+        className="absolute inset-y-1 bg-primary rounded-full shadow-md transition-all duration-300"
+        style={{
+          left: value === 'live' ? '4px' : '50%',
+          right: value === 'live' ? '50%' : '4px',
+        }}
+      />
     </div>
   );
 }

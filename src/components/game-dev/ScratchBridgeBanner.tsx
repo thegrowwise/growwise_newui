@@ -3,6 +3,7 @@
 import React from 'react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/components/ui/utils';
+import { ArrowUpRight } from 'lucide-react';
 
 interface ScratchBridgeBannerProps {
   className?: string;
@@ -14,15 +15,24 @@ export function ScratchBridgeBanner({ className }: ScratchBridgeBannerProps) {
   return (
     <div
       className={cn(
-        'rounded-xl border border-amber-200 bg-amber-50 px-4 py-3',
+        'mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm',
         className,
       )}
     >
-      <div className="text-sm font-semibold text-amber-900">
-        {t('gameDevPage.scratchBridge.title')}
+      <div>
+        <h4 className="text-amber-900 font-bold text-lg">
+          {t('gameDevPage.scratchBridge.title')}
+        </h4>
+        <p className="text-amber-700/80 text-sm mt-1">{t('gameDevPage.scratchBridge.body')}</p>
       </div>
-      <div className="mt-1 text-xs text-amber-800">
-        {t('gameDevPage.scratchBridge.body')}
+
+      <div className="flex gap-2 shrink-0">
+        <div className="px-4 py-2 bg-white rounded-lg text-sm font-semibold text-amber-900 border border-amber-100 shadow-sm flex items-center gap-1">
+          Roblox <ArrowUpRight className="w-3 h-3" />
+        </div>
+        <div className="px-4 py-2 bg-white rounded-lg text-sm font-semibold text-amber-900 border border-amber-100 shadow-sm flex items-center gap-1">
+          Python <ArrowUpRight className="w-3 h-3" />
+        </div>
       </div>
     </div>
   );
