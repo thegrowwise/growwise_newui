@@ -48,6 +48,26 @@ const CheckoutSuccessContent: React.FC = () => {
         if (data.session.payment_status === 'paid') {
           console.log('Payment successful, clearing cart');
           clearCart();
+
+          // GTM / Google Ads — fire once per successful session fetch (effect is guarded by hasFetched)
+          const cents = data.session.amount_total;
+          const value =
+            typeof cents === 'number' && Number.isFinite(cents)
+              ? parseFloat((cents / 100).toFixed(2))
+              : 0;
+          const transactionId = data.session.id ?? sessionId;
+          if (transactionId) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+              event: 'purchase',
+              value,
+              currency: (typeof data.session.currency === 'string'
+                ? data.session.currency
+                : 'usd'
+              ).toUpperCase(),
+              transaction_id: transactionId,
+            });
+          }
         }
       } catch (err) {
         console.error('Error fetching session:', err);
@@ -141,7 +161,7 @@ const CheckoutSuccessContent: React.FC = () => {
                     <div>
                       <div className="text-gray-600 mb-1">Payment Status:</div>
                       <div className="font-medium text-green-600 capitalize">
-                        {session.payment_status}
+                        {session?.payment_status ?? 'paid'}
                       </div>
                     </div>
                   </div>

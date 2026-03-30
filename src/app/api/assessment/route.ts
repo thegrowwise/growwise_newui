@@ -1,5 +1,21 @@
 import { NextResponse } from 'next/server';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
+import { sendEmail, type SendEmailResult } from '@/lib/email';
+import { CONTACT_INFO } from '@/lib/constants';
+import {
+  isBrevoTransactionalReady,
+  sendBrevoTransactionalEmail,
+} from '@/lib/brevo';
+
+export const maxDuration = 60;
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
 interface AssessmentFormData {
   parentName: string;
@@ -94,11 +110,18 @@ export async function POST(request: Request) {
         emailIds: emailResult.emailIds
       });
 
-      return NextResponse.json({
+      const payload: Record<string, unknown> = {
         success: true,
-        message: 'Assessment booking received successfully. We will contact you within 24 hours to confirm your appointment.',
-        emailIds: emailResult.emailIds
-      });
+        message:
+          'Assessment booking received successfully. We will contact you within 24 hours to confirm your appointment.',
+        emailIds: emailResult.emailIds,
+      };
+      if (process.env.NODE_ENV === 'development') {
+        payload.emailDebug = {
+          channel: isBrevoTransactionalReady() ? 'brevo' : 'smtp',
+        };
+      }
+      return NextResponse.json(payload);
     } else {
       throw new Error(emailResult.error || 'Failed to send emails');
     }
@@ -116,148 +139,133 @@ export async function POST(request: Request) {
   }
 }
 
-// Email service function for assessment
-async function sendAssessmentEmails(assessmentData: any) {
+interface AssessmentPayload {
+  parentName: string;
+  email: string;
+  countryCode: string;
+  phone: string;
+  studentName: string;
+  grade: string;
+  subjects: string[];
+  assessmentType: string;
+  mode: string;
+  schedule: string;
+  notes: string;
+  timestamp: string;
+  ip: string;
+}
+
+async function deliverAssessmentEmail(options: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  text: string;
+}): Promise<SendEmailResult> {
+  if (isBrevoTransactionalReady()) {
+    return sendBrevoTransactionalEmail({
+      ...options,
+      replyTo: { email: CONTACT_INFO.email, name: 'GrowWise' },
+    });
+  }
+  return sendEmail(options);
+}
+
+async function sendAssessmentEmails(assessmentData: AssessmentPayload) {
   try {
-    // Send email to business (receiver)
     const businessEmailResult = await sendBusinessAssessmentEmail(assessmentData);
-    
-    // Send confirmation email to user (sender)
-    const userEmailResult = await sendUserConfirmationEmail(assessmentData);
+    const userEmailResult = await sendUserAssessmentConfirmationEmail(assessmentData);
 
     if (businessEmailResult.success && userEmailResult.success) {
       return {
         success: true,
         emailIds: {
           business: businessEmailResult.emailId,
-          user: userEmailResult.emailId
+          user: userEmailResult.emailId,
         },
-        message: 'Both emails sent successfully'
-      };
-    } else {
-      return {
-        success: false,
-        error: `Business email: ${businessEmailResult.success ? 'sent' : 'failed'}, User email: ${userEmailResult.success ? 'sent' : 'failed'}`
+        message: 'Both emails sent successfully',
       };
     }
-
+    return {
+      success: false,
+      error: `Business email: ${businessEmailResult.success ? 'sent' : 'failed'}, User email: ${userEmailResult.success ? 'sent' : 'failed'}`,
+    };
   } catch (error) {
     console.error('Assessment email sending error:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to send emails'
+      error: error instanceof Error ? error.message : 'Failed to send emails',
     };
   }
 }
 
-// Send email to business about new assessment booking
-async function sendBusinessAssessmentEmail(assessmentData: any) {
-  try {
-    const emailContent = {
-      to: [
-        'connect@thegrowwise.com', // Your business email
-      ],
-      subject: `New Assessment Booking from ${assessmentData.parentName}`,
-      html: generateBusinessAssessmentEmailHTML(assessmentData),
-      text: generateBusinessAssessmentEmailText(assessmentData)
-    };
-
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // In production, replace this with actual email service call
-    // Example with SendGrid, Mailgun, AWS SES, etc.
-
-    const emailId = `assessment_business_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log('Business assessment email sent successfully:', {
-      emailId,
-      to: emailContent.to,
-      subject: emailContent.subject,
-      assessmentData
-    });
-
-    return {
-      success: true,
-      emailId,
-      message: 'Business email sent successfully'
-    };
-
-  } catch (error) {
-    console.error('Business assessment email error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to send business email'
-    };
+async function sendBusinessAssessmentEmail(
+  assessmentData: AssessmentPayload
+): Promise<{ success: boolean; emailId?: string; error?: string }> {
+  const subject = `New Assessment Booking from ${assessmentData.parentName.replace(/\s+/g, ' ').slice(0, 200)}`;
+  const result = await deliverAssessmentEmail({
+    to: CONTACT_INFO.businessEmail,
+    subject,
+    html: generateBusinessAssessmentEmailHTML(assessmentData),
+    text: generateBusinessAssessmentEmailText(assessmentData),
+  });
+  if (result.success) {
+    console.log('Business assessment email sent:', { messageId: result.messageId });
+    return { success: true, emailId: result.messageId };
   }
+  console.error('Business assessment email failed:', result.error);
+  return { success: false, error: result.error };
 }
 
-// Send confirmation email to user
-async function sendUserConfirmationEmail(assessmentData: any) {
-  try {
-    const emailContent = {
-      to: [assessmentData.email],
-      subject: 'Thank you for booking an assessment with GrowWise!',
-      html: generateUserConfirmationEmailHTML(assessmentData),
-      text: generateUserConfirmationEmailText(assessmentData)
-    };
-
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // In production, replace this with actual email service call
-
-    const emailId = `assessment_user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log('User confirmation email sent successfully:', {
-      emailId,
-      to: emailContent.to,
-      subject: emailContent.subject,
-      assessmentData
-    });
-
-    return {
-      success: true,
-      emailId,
-      message: 'User confirmation email sent successfully'
-    };
-
-  } catch (error) {
-    console.error('User confirmation email error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Failed to send user confirmation email'
-    };
+async function sendUserAssessmentConfirmationEmail(
+  assessmentData: AssessmentPayload
+): Promise<{ success: boolean; emailId?: string; error?: string }> {
+  const result = await deliverAssessmentEmail({
+    to: assessmentData.email,
+    subject: 'Thank you for booking an assessment with GrowWise!',
+    html: generateUserAssessmentConfirmationEmailHTML(assessmentData),
+    text: generateUserAssessmentConfirmationEmailText(assessmentData),
+  });
+  if (result.success) {
+    console.log('User assessment confirmation sent:', { messageId: result.messageId });
+    return { success: true, emailId: result.messageId };
   }
+  console.error('User assessment confirmation failed:', result.error);
+  return { success: false, error: result.error };
 }
 
-// Generate HTML email for business (receiver)
-function generateBusinessAssessmentEmailHTML(data: any) {
+function generateBusinessAssessmentEmailHTML(data: AssessmentPayload) {
+  const subjectsLine =
+    data.subjects.length > 0
+      ? data.subjects.map((s) => escapeHtml(s)).join(', ')
+      : 'Not specified';
+  const notesBlock = data.notes
+    ? `<p><strong>Notes:</strong> ${escapeHtml(data.notes)}</p>`
+    : '';
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #1F396D;">New Assessment Booking</h2>
       
       <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #F16112; margin-top: 0;">Parent/Guardian Information</h3>
-        <p><strong>Name:</strong> ${data.parentName}</p>
-        <p><strong>Email:</strong> ${data.email}</p>
-        <p><strong>Phone:</strong> ${data.countryCode} ${data.phone}</p>
-        <p><strong>Submitted:</strong> ${new Date(data.timestamp).toLocaleString()}</p>
+        <p><strong>Name:</strong> ${escapeHtml(data.parentName)}</p>
+        <p><strong>Email:</strong> ${escapeHtml(data.email)}</p>
+        <p><strong>Phone:</strong> ${escapeHtml(data.countryCode)} ${escapeHtml(data.phone)}</p>
+        <p><strong>Submitted:</strong> ${escapeHtml(new Date(data.timestamp).toLocaleString())}</p>
       </div>
 
       <div style="background-color: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid #F16112; margin: 20px 0;">
         <h3 style="color: #1F396D; margin-top: 0;">Student Information</h3>
-        <p><strong>Student Name:</strong> ${data.studentName}</p>
-        <p><strong>Grade:</strong> ${data.grade}</p>
-        <p><strong>Subjects:</strong> ${data.subjects && data.subjects.length > 0 ? data.subjects.join(', ') : 'Not specified'}</p>
+        <p><strong>Student Name:</strong> ${escapeHtml(data.studentName)}</p>
+        <p><strong>Grade:</strong> ${escapeHtml(data.grade)}</p>
+        <p><strong>Subjects:</strong> ${subjectsLine}</p>
       </div>
 
       <div style="background-color: #e8f4f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #1F396D; margin-top: 0;">Assessment Details</h3>
-        <p><strong>Assessment Type:</strong> ${data.assessmentType}</p>
-        <p><strong>Mode:</strong> ${data.mode}</p>
-        <p><strong>Preferred Schedule:</strong> ${data.schedule}</p>
-        ${data.notes ? `<p><strong>Notes:</strong> ${data.notes}</p>` : ''}
+        <p><strong>Assessment Type:</strong> ${escapeHtml(data.assessmentType)}</p>
+        <p><strong>Mode:</strong> ${escapeHtml(data.mode)}</p>
+        <p><strong>Preferred Schedule:</strong> ${escapeHtml(data.schedule)}</p>
+        ${notesBlock}
       </div>
 
       <div style="margin-top: 30px; padding: 20px; background-color: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107;">
@@ -274,14 +282,13 @@ function generateBusinessAssessmentEmailHTML(data: any) {
       <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
       <p style="color: #666; font-size: 12px;">
         This email was generated from the GrowWise assessment booking form.<br>
-        IP Address: ${data.ip}
+        IP Address: ${escapeHtml(data.ip)}
       </p>
     </div>
   `;
 }
 
-// Generate text email for business (receiver)
-function generateBusinessAssessmentEmailText(data: any) {
+function generateBusinessAssessmentEmailText(data: AssessmentPayload) {
   return `
 New Assessment Booking
 
@@ -311,8 +318,7 @@ Next Steps:
   `;
 }
 
-// Generate HTML email for user (sender)
-function generateUserConfirmationEmailHTML(data: any) {
+function generateUserAssessmentConfirmationEmailHTML(data: AssessmentPayload) {
   return `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="text-align: center; margin-bottom: 30px;">
@@ -322,11 +328,11 @@ function generateUserConfirmationEmailHTML(data: any) {
       
       <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
         <h3 style="color: #1F396D; margin-top: 0;">Booking Details</h3>
-        <p><strong>Student Name:</strong> ${data.studentName}</p>
-        <p><strong>Grade:</strong> ${data.grade}</p>
-        <p><strong>Assessment Type:</strong> ${data.assessmentType}</p>
-        <p><strong>Mode:</strong> ${data.mode}</p>
-        <p><strong>Preferred Schedule:</strong> ${data.schedule}</p>
+        <p><strong>Student Name:</strong> ${escapeHtml(data.studentName)}</p>
+        <p><strong>Grade:</strong> ${escapeHtml(data.grade)}</p>
+        <p><strong>Assessment Type:</strong> ${escapeHtml(data.assessmentType)}</p>
+        <p><strong>Mode:</strong> ${escapeHtml(data.mode)}</p>
+        <p><strong>Preferred Schedule:</strong> ${escapeHtml(data.schedule)}</p>
       </div>
 
       <div style="background-color: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid #F16112; margin: 20px 0;">
@@ -355,8 +361,7 @@ function generateUserConfirmationEmailHTML(data: any) {
   `;
 }
 
-// Generate text email for user (sender)
-function generateUserConfirmationEmailText(data: any) {
+function generateUserAssessmentConfirmationEmailText(data: AssessmentPayload) {
   return `
 Thank You for Booking!
 

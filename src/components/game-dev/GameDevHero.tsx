@@ -1,10 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
+import { Gamepad2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { cn } from '@/components/ui/utils';
 
 interface GameDevHeroProps {
@@ -14,52 +12,32 @@ interface GameDevHeroProps {
 export function GameDevHero({ className }: GameDevHeroProps) {
   const t = useTranslations();
 
-  const handleScrollToPrograms = () => {
-    const el = document.getElementById('programs');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   return (
-    <section
-      className={cn(
-        'relative overflow-hidden bg-gradient-to-br from-emerald-700 via-emerald-800 to-emerald-950 text-white',
-        'py-16 md:py-24',
-        className,
-      )}
-    >
-      <div className="mx-auto flex max-w-5xl flex-col gap-8 px-4 md:flex-row md:items-center md:justify-between md:px-6 lg:px-8">
-        <div className="space-y-6 md:max-w-xl">
-          <Badge className="rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white backdrop-blur">
+    <div className={cn('bg-transparent', className)}>
+      <section className="pt-20 pb-12 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#F16112]/10 text-[#1F396D] ring-1 ring-[#1F396D]/25 text-sm font-bold uppercase tracking-wider mb-6">
+            <Gamepad2 className="w-4 h-4 mr-2 text-[#F16112]" aria-hidden />
             {t('gameDevPage.hero.badge')}
-          </Badge>
-          <h1 className="text-3xl font-semibold leading-tight md:text-4xl lg:text-5xl">
-            {t('gameDevPage.hero.headline')}
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-[#1F396D] mb-6">
+            {t('gameDevPage.hero.headlineLine1')}
+            <br />
+            <span className="text-gradient-gamedev">{t('gameDevPage.hero.headlineLine2')}</span>
           </h1>
-          <p className="max-w-xl text-sm text-white/80 md:text-base">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
             {t('gameDevPage.hero.subtext')}
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Button
-              type="button"
-              onClick={handleScrollToPrograms}
-              className="bg-emerald-400 text-emerald-950 hover:bg-emerald-300"
-            >
-              {t('gameDevPage.hero.ctaPrograms')}
-            </Button>
-            <Link href="/coding" className="inline-flex">
-              <Button
-                type="button"
-                variant="outline"
-                className="border-white/40 bg-white/5 text-white hover:bg-white/10"
-              >
-                <span className="mr-1">{t('gameDevPage.hero.ctaAlt')}</span>
-                <span className="text-lg leading-none">→</span>
-              </Button>
-            </Link>
+
+          <div className="aspect-[21/9] w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-[0_24px_60px_-12px_rgba(241,97,18,0.2)] ring-2 ring-[#F16112]/25 ring-offset-2 ring-offset-[#FFFBF0] mb-12">
+            <img
+              src="/images/hero-gamedev.png"
+              alt="Kid excited about game dev"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }
-

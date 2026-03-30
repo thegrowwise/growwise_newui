@@ -26,7 +26,6 @@ import { useRouter } from 'next/navigation';
 import { PHONE_PLACEHOLDER, CONTACT_INFO } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 import { validatePhoneWithCountryCode, getPhonePlaceholder, getCallingCode, DIAL_CODE_TO_ISO2 } from '@/lib/phoneValidation';
-import { BACKEND_URL } from '@/lib/config';
 import { getRecaptchaToken } from '@/lib/recaptcha';
 
 interface FormData {
@@ -276,7 +275,7 @@ export default function BookAssessmentPage() {
         recaptchaToken: recaptchaToken || undefined,
       };
 
-      const response = await fetch(`${BACKEND_URL}/api/assessment`, {
+      const response = await fetch('/api/assessment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
