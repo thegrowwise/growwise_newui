@@ -32,33 +32,58 @@ interface EnrollFormData {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { 
-      fullName, 
-      email, 
-      mobile, 
-      city, 
-      postal, 
-      bootcamp, 
-      course, 
-      level, 
-      agree 
-    }: EnrollFormData = body;
+    const body = (await request.json()) as unknown;
 
-    // Validate required fields
+    if (body && typeof body === 'object' && 'payment_method_id' in body) {
+      const safeBody = body as {
+        payment_method_id: string;
+        parent_email?: string;
+        parent_name?: string;
+      };
+
+      if (!safeBody.payment_method_id || typeof safeBody.payment_method_id !== 'string') {
+        return NextResponse.json(
+          { success: false, error: 'Missing payment_method_id' },
+          { status: 400 },
+        );
+      }
+
+      console.log('Enroll payment payload received', {
+        payment_method_id: safeBody.payment_method_id,
+        parent_email: safeBody.parent_email,
+        parent_name: safeBody.parent_name,
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: 'Enrollment received. Payment method captured.',
+      });
+    }
+
+    const {
+      fullName,
+      email,
+      mobile,
+      city,
+      postal,
+      bootcamp,
+      course,
+      level,
+      agree,
+    }: EnrollFormData = body as EnrollFormData;
+
     if (!fullName || !email || !mobile || !city || !postal || !level) {
       return NextResponse.json(
         { error: 'Missing required fields' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -66,19 +91,17 @@ export async function POST(request: Request) {
     if (!phoneResult.isValid) {
       return NextResponse.json(
         { error: phoneResult.errorMessage },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Validate agreement
     if (!agree) {
       return NextResponse.json(
         { error: 'You must agree to receive communications' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Prepare enrollment data
     const enrollmentData = {
       fullName: fullName.trim(),
       email: email.trim().toLowerCase(),
@@ -90,18 +113,16 @@ export async function POST(request: Request) {
       level: level.trim(),
       agree,
       timestamp: new Date().toISOString(),
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
     };
 
-    // Send emails to both receiver and sender
     const emailResult = await sendEnrollmentEmails(enrollmentData);
 
     if (emailResult.success) {
-      // Log the enrollment submission (in production, save to database)
       console.log('Enrollment form submission:', {
         ...enrollmentData,
         emailsSent: true,
-        emailIds: emailResult.emailIds
+        emailIds: emailResult.emailIds,
       });
 
       const payload: Record<string, unknown> = {
@@ -115,19 +136,18 @@ export async function POST(request: Request) {
         };
       }
       return NextResponse.json(payload);
-    } else {
-      throw new Error(emailResult.error || 'Failed to send emails');
     }
 
+    throw new Error(emailResult.error || 'Failed to send emails');
   } catch (error) {
     console.error('Enrollment API Error:', error);
     return NextResponse.json(
       {
         success: false,
         error: error instanceof Error ? error.message : 'An unknown error occurred',
-        message: 'Failed to process your enrollment. Please try again or contact us directly.'
+        message: 'Failed to process your enrollment. Please try again or contact us directly.',
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { TierName, DeliveryMode } from '@/hooks/usePricingConfig';
 
 interface EnrollState {
@@ -33,6 +34,7 @@ const EnrollContext = createContext<EnrollContextValue | null>(null);
 
 export function EnrollProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<EnrollState>(defaultState);
+  const searchParams = useSearchParams();
 
   const setProgram = (programId: string) =>
     setState((s) => ({ ...s, programId }));
@@ -55,6 +57,40 @@ export function EnrollProvider({ children }: { children: ReactNode }) {
     setState((s) => ({ ...s, childCount }));
 
   const reset = () => setState(defaultState);
+
+  useEffect(() => {
+    const programFromUrl = searchParams.get('program');
+    const tierFromUrl = searchParams.get('tier') as TierName | null;
+    const modeFromUrl = searchParams.get('mode') as DeliveryMode | null;
+    const addonsFromUrl = searchParams.get('addons');
+    const childrenFromUrl = searchParams.get('children');
+
+    const hasParams =
+      programFromUrl || tierFromUrl || modeFromUrl || addonsFromUrl || childrenFromUrl;
+
+    if (!hasParams) return;
+
+    setState((current) => {
+      if (current.programId || current.tierName || current.addonIds.length) {
+        return current;
+      }
+
+      const next: EnrollState = {
+        programId: programFromUrl ?? null,
+        tierName:
+          tierFromUrl === 'core' || tierFromUrl === 'plus' || tierFromUrl === 'elite'
+            ? tierFromUrl
+            : null,
+        deliveryMode: modeFromUrl === 'studio' || modeFromUrl === 'live'
+          ? modeFromUrl
+          : current.deliveryMode,
+        addonIds: addonsFromUrl ? addonsFromUrl.split(',').filter(Boolean) : [],
+        childCount: childrenFromUrl ? Number(childrenFromUrl) || 1 : current.childCount,
+      };
+
+      return next;
+    });
+  }, [searchParams]);
 
   const buildEnrollUrl = () => {
     const p = new URLSearchParams();
