@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { EnrollProvider } from '@/contexts/EnrollContext';
 import { GameDevHero } from '@/components/game-dev/GameDevHero';
@@ -12,12 +12,20 @@ export const metadata: Metadata = {
 
 export default function GameDevPage() {
   return (
-    <EnrollProvider>
-      <main className="min-h-screen page-bg-gamedev">
-        <GameDevHero />
-        <GameDevPrograms />
-      </main>
-    </EnrollProvider>
+    <Suspense
+      fallback={
+        <div className="min-h-screen page-bg-gamedev flex items-center justify-center text-[#1F396D]">
+          Loading…
+        </div>
+      }
+    >
+      <EnrollProvider>
+        <main className="min-h-screen page-bg-gamedev">
+          <GameDevHero />
+          <GameDevPrograms />
+        </main>
+      </EnrollProvider>
+    </Suspense>
   );
 }
 

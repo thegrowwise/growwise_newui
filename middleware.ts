@@ -1,6 +1,7 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest, NextResponse } from 'next/server';
-import { ENABLED_LOCALES, DEFAULT_LOCALE } from './i18n/localeConfig';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import { ENABLED_LOCALES, DEFAULT_LOCALE } from '@/i18n/localeConfig';
 
 const intlMiddleware = createMiddleware({
   locales: [...ENABLED_LOCALES],
@@ -27,8 +28,11 @@ function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | n
   return NextResponse.rewrite(url);
 }
 
-/** Next.js 16+ convention: `proxy.ts` runs before routes (replaces `middleware.ts`). */
-export function proxy(request: NextRequest) {
+/**
+ * Edge middleware (single root file) — avoids importing `./src/proxy`, which can break
+ * Vercel/Next output file tracing (`middleware.js.nft.json` ENOENT on Next 16.2).
+ */
+export default function middleware(request: NextRequest) {
   const rewritten = rewriteLocalePrefixedNextAssets(request);
   if (rewritten) return rewritten;
   return intlMiddleware(request);
