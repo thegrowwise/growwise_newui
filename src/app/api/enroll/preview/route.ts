@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+<<<<<<< HEAD
 
 export const maxDuration = 30;
 
@@ -10,6 +11,14 @@ function backendBaseUrl(): string | null {
 
 export async function POST(request: Request) {
   const baseUrl = backendBaseUrl();
+=======
+import { getBackendBaseUrlForProxy } from '@/lib/config';
+
+export const maxDuration = 30;
+
+export async function POST(request: Request) {
+  const baseUrl = getBackendBaseUrlForProxy();
+>>>>>>> origin/pricingandUI
   if (!baseUrl) {
     return NextResponse.json(
       {
