@@ -4,3 +4,26 @@
  */
 export const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
+/**
+ * Returns the configured backend base URL (trimmed), or null when unset.
+ * Use when you must not guess (e.g. logging, debug).
+ */
+export function getBackendBaseUrl(): string | null {
+  const raw = process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
+  if (!raw) return null;
+  return raw.replace(/\/$/, '');
+}
+
+/**
+ * Base URL for Next Route Handlers that proxy to Express.
+ * Preview/Production must set `NEXT_PUBLIC_BACKEND_URL`; local dev falls back to :3001.
+ */
+export function getBackendBaseUrlForProxy(): string | null {
+  const explicit = getBackendBaseUrl();
+  if (explicit) return explicit;
+  if (process.env.NODE_ENV === 'development') {
+    return 'http://localhost:3001';
+  }
+  return null;
+}
