@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -31,7 +31,7 @@ interface EnrollPreviewError {
   message: string;
 }
 
-export default function EnrollConfirmationPage() {
+function EnrollConfirmationContent() {
   const searchParams = useSearchParams();
   const [preview, setPreview] = useState<EnrollPreviewResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -197,6 +197,20 @@ export default function EnrollConfirmationPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EnrollConfirmationPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 flex items-center justify-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-[#F16112]" />
+        </div>
+      }
+    >
+      <EnrollConfirmationContent />
+    </Suspense>
   );
 }
 

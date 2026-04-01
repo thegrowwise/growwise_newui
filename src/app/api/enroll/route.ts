@@ -136,9 +136,9 @@ export async function POST(request: Request) {
         };
       }
       return NextResponse.json(payload);
+    } else {
+      throw new Error(emailResult.error || 'Failed to send emails');
     }
-
-    throw new Error(emailResult.error || 'Failed to send emails');
   } catch (error) {
     console.error('Enrollment API Error:', error);
     return NextResponse.json(
