@@ -94,6 +94,25 @@ export const FALLBACK_MENU_ITEMS: MenuItem[] = [
           icon: 'BookOpen',
           href: '/courses',
           gradient: 'from-[#1F396D] to-[#F16112]',
+          hasSubmenu: true,
+          submenuItems: [
+            {
+              key: 'math',
+              title: 'Math Courses',
+              description: 'Master mathematics from basics to advanced',
+              icon: 'Calculator',
+              href: '/courses/math',
+              gradient: 'from-[#1F396D] to-[#29335C]',
+            },
+            {
+              key: 'english',
+              title: 'English Courses',
+              description: 'Comprehensive English language arts',
+              icon: 'BookOpen',
+              href: '/courses/english',
+              gradient: 'from-[#F16112] to-[#F1894F]',
+            },
+          ],
         },
         {
           key: 'highSchoolMath',
