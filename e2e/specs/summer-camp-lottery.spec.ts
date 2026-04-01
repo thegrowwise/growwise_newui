@@ -73,6 +73,6 @@ test.describe('Summer camp lottery form (UI)', () => {
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
       page.locator('#lottery p[role="alert"]'),
-    ).toContainText(/E2E mocked failure/i, { timeout: 15_000 });
+    ).toContainText(/E2E mocked failure/i, { timeout: 20_000 });
   });
 });

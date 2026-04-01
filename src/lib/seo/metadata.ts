@@ -80,8 +80,8 @@ export function generatePageMetadata({
     'SAT prep Dublin',
     'personalized learning',
   ]
-  
-  const finalKeywords = keywords 
+
+  const finalKeywords = keywords
     ? `${keywords}, ${defaultKeywords.join(', ')}`
     : defaultKeywords.join(', ')
 
@@ -127,4 +127,3 @@ export function generatePageMetadata({
     },
   }
 }
-

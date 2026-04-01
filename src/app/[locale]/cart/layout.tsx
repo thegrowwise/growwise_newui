@@ -29,4 +29,3 @@ export async function generateMetadata({
 export default function CartLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
-

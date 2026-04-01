@@ -12,4 +12,3 @@ export default async function CatchAllRedirectPage({
   const path = rest ? `/${rest}` : '/';
   redirect(publicPath(path, DEFAULT_LOCALE));
 }
-
