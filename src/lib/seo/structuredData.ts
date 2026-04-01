@@ -4,14 +4,17 @@
  */
 
 import { CONTACT_INFO } from '@/lib/constants'
+import { getCanonicalSiteUrl } from './siteUrl'
+
+const CANONICAL_BASE = getCanonicalSiteUrl()
 
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
   "name": "GrowWise",
   "alternateName": "GrowWise School",
-  "url": "https://growwiseschool.org",
-  "logo": "https://growwiseschool.org/logo.png",
+  "url": CANONICAL_BASE,
+  "logo": `${CANONICAL_BASE}/logo.png`,
   "description": "Empowering students through personalized K-12 education and innovative STEAM programs in Dublin, CA. Expert instruction, proven results, and flexible scheduling.",
   "address": {
     "@type": "PostalAddress",
@@ -44,13 +47,13 @@ export const organizationSchema = {
 export const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://growwiseschool.org/#organization",
+  "@id": `${CANONICAL_BASE}/#organization`,
   "name": "GrowWise",
   "alternateName": "GrowWise School",
-  "image": "https://growwiseschool.org/logo.png",
+  "image": `${CANONICAL_BASE}/logo.png`,
   "telephone": CONTACT_INFO.phone,
   "email": CONTACT_INFO.email,
-  "url": "https://growwiseschool.org",
+  "url": CANONICAL_BASE,
   "address": {
     "@type": "PostalAddress",
     "streetAddress": CONTACT_INFO.street,
@@ -172,12 +175,12 @@ export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "GrowWise",
-  "url": "https://growwiseschool.org",
+  "url": CANONICAL_BASE,
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://growwiseschool.org/search?q={search_term_string}"
+      "urlTemplate": `${CANONICAL_BASE}/search?q={search_term_string}`
     },
     "query-input": "required name=search_term_string"
   }
@@ -223,7 +226,7 @@ export function generateCourseSchema({
     "provider": {
       "@type": "EducationalOrganization",
       "name": provider || "GrowWise",
-      "url": "https://growwiseschool.org",
+      "url": CANONICAL_BASE,
       "address": {
         "@type": "PostalAddress",
         "streetAddress": CONTACT_INFO.street,
@@ -327,7 +330,7 @@ export function generateEventSchema({
     "organizer": {
       "@type": "Organization",
       "name": organizer?.name || "GrowWise",
-      "url": organizer?.url || "https://growwiseschool.org",
+      "url": organizer?.url || CANONICAL_BASE,
     },
     ...(image && { "image": image }),
     ...(offers && {

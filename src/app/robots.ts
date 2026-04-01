@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://growwiseschool.org'
+  const baseUrl = getCanonicalSiteUrl()
   
   return {
     rules: [

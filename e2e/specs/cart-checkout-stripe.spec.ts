@@ -1,11 +1,10 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Cart, checkout, and Stripe test checkout', () => {
   test('go to checkout from pre-filled cart and redirect to Stripe test page', async ({ page, context }) => {
     // Seed cart in localStorage before visiting cart page
-    await page.goto(`/${LOCALE}`);
+    await page.goto(localePath('/'));
     await page.evaluate(() => {
       const cartState = {
         items: [
@@ -23,7 +22,7 @@ test.describe('Cart, checkout, and Stripe test checkout', () => {
     });
 
     // Go directly to cart; CartContext will hydrate from localStorage
-    await page.goto(`/${LOCALE}/cart`);
+    await page.goto(localePath('/cart'));
     await expect(page.getByText(/Shopping Cart/i)).toBeVisible();
 
     // Proceed to checkout
@@ -31,7 +30,8 @@ test.describe('Cart, checkout, and Stripe test checkout', () => {
       name: /Proceed to Checkout/i,
     });
     await proceedToCheckout.click();
-    await expect(page).toHaveURL(new RegExp(`/${LOCALE}/checkout`));
+    const checkoutPath = localePath('/checkout').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    await expect(page).toHaveURL(new RegExp(`${checkoutPath}(\\?|$)`));
 
     // Intercept create-checkout-session and return a Stripe test checkout URL
     let checkoutRequestSeen = false;

@@ -15,6 +15,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RelatedContent } from '@/components/seo/RelatedContent';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { absoluteSiteUrl } from '@/lib/publicPath';
 import { CourseFAQ } from '@/components/seo/CourseFAQ';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
@@ -338,9 +339,9 @@ function EnglishCoursesContent() {
       {/* Breadcrumbs */}
       <Breadcrumbs 
         items={[
-          { name: 'Programs', url: `/${locale}/programs` },
-          { name: 'Academic', url: `/${locale}/academic` },
-          { name: 'English Courses', url: `/${locale}/courses/english` },
+          { name: 'Programs', url: absoluteSiteUrl('/programs', locale) },
+          { name: 'Academic', url: absoluteSiteUrl('/academic', locale) },
+          { name: 'English Courses', url: absoluteSiteUrl('/courses/english', locale) },
         ]}
       />
 

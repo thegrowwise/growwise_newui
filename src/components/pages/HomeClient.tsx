@@ -199,7 +199,26 @@ export default function HomeClient({ initialData }: HomeClientProps) {
   const pauseCarousel = () => setIsPaused(true);
   const resumeCarousel = () => setIsPaused(false);
 
-  if (loading || !data || (data && (!data.heroSlides || data.heroSlides.length === 0))) {
+  // Failed fetch with no server data: show error — do not leave the user on a permanent skeleton.
+  if (error && !data) {
+    return (
+      <div
+        className="relative z-10 min-h-screen flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-gray-50 via-white to-gray-100 px-4"
+        style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}
+      >
+        <p className="text-center text-red-700 max-w-md">{error}</p>
+        <button
+          type="button"
+          onClick={() => dispatch(fetchHomeStart())}
+          className="rounded-full bg-[#1F396D] px-6 py-2 text-white hover:bg-[#29335C]"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (loading || !data) {
     return (
       <div
         className="relative z-10 min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100"

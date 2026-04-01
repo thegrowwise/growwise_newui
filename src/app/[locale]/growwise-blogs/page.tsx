@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 import Link from 'next/link'
 import { BookOpen, ArrowRight, ArrowLeft } from 'lucide-react'
 
@@ -168,11 +170,11 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
   const endIndex = startIndex + postsPerPage
   const currentPosts = blogPosts.slice(startIndex, endIndex)
   
-  const baseUrl = 'https://thegrowwise.com'
+  const baseUrl = getCanonicalSiteUrl()
   
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Blogs', url: `${baseUrl}/${locale}/growwise-blogs` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
   ])
 
   return (
@@ -241,7 +243,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
               <div className="mt-12 flex justify-center items-center gap-4">
                 {currentPage > 1 ? (
                   <Link
-                    href={`/${locale}/growwise-blogs${currentPage > 2 ? `?page=${currentPage - 1}` : ''}`}
+                    href={publicPath(`/growwise-blogs${currentPage > 2 ? `?page=${currentPage - 1}` : ''}`, locale)}
                     className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:border-[#F16112] hover:text-[#F16112] transition-colors"
                   >
                     <ArrowLeft className="w-4 h-4" />
@@ -257,7 +259,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                     <Link
                       key={pageNum}
-                      href={`/${locale}/growwise-blogs${pageNum > 1 ? `?page=${pageNum}` : ''}`}
+                      href={publicPath(`/growwise-blogs${pageNum > 1 ? `?page=${pageNum}` : ''}`, locale)}
                       className={`px-4 py-2 rounded-lg font-semibold transition-colors ${
                         currentPage === pageNum
                           ? 'bg-[#F16112] text-white'
@@ -270,7 +272,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
                 </div>
                 {currentPage < totalPages ? (
                   <Link
-                    href={`/${locale}/growwise-blogs?page=${currentPage + 1}`}
+                    href={publicPath(`/growwise-blogs?page=${currentPage + 1}`, locale)}
                     className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-gray-300 rounded-lg hover:border-[#F16112] hover:text-[#F16112] transition-colors"
                   >
                     <span>Next</span>

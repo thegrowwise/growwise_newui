@@ -3,6 +3,7 @@
 import { useLocale } from 'next-intl';
 import { useRouter, usePathname } from 'next/navigation';
 import { ENABLED_LOCALES, LOCALE_NAMES, isLocaleEnabled, DEFAULT_LOCALE } from '../i18n/localeConfig';
+import { pathWithoutLocalePrefix, publicPath } from '@/lib/publicPath';
 import { useEffect, useState } from 'react';
 
 export default function LocaleSwitcher() {
@@ -11,11 +12,11 @@ export default function LocaleSwitcher() {
   const pathname = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   
-  // Extract locale from pathname as fallback
+  // Extract locale from pathname as fallback (supports default locale without /en prefix)
   const getLocaleFromPath = () => {
     if (!pathname) return DEFAULT_LOCALE;
-    const segments = pathname.split('/');
-    const pathLocale = segments[1];
+    const segments = pathname.split('/').filter(Boolean);
+    const pathLocale = segments[0];
     return isLocaleEnabled(pathLocale) ? pathLocale : DEFAULT_LOCALE;
   };
   
@@ -31,29 +32,8 @@ export default function LocaleSwitcher() {
   }, [locale, pathname]);
 
   const handleLocaleChange = (newLocale: string) => {
-    // Get the path without the current locale prefix
-    let pathWithoutLocale = pathname || '/';
-    
-    // Remove the current locale from the beginning of the path
-    if (pathname && pathname.startsWith(`/${currentLocale}`)) {
-      pathWithoutLocale = pathname.substring(`/${currentLocale}`.length);
-    }
-    
-    // Ensure we have a valid path
-    if (!pathWithoutLocale || pathWithoutLocale === '') {
-      pathWithoutLocale = '/';
-    }
-    
-    // Ensure the path starts with /
-    if (!pathWithoutLocale.startsWith('/')) {
-      pathWithoutLocale = `/${pathWithoutLocale}`;
-    }
-    
-    // If the path is just '/', don't add it to avoid double slashes
-    const finalPath = pathWithoutLocale === '/' ? `/${newLocale}` : `/${newLocale}${pathWithoutLocale}`;
-    
-    // Navigate to the new locale
-    router.push(finalPath);
+    const pathWithoutLocale = pathWithoutLocalePrefix(pathname || '/');
+    router.push(publicPath(pathWithoutLocale, newLocale));
   };
 
   // Prevent hydration mismatch by not rendering until mounted

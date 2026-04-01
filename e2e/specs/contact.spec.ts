@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Contact form', () => {
   test('submits contact form successfully with mocked backend', async ({ page }) => {
@@ -14,7 +13,7 @@ test.describe('Contact form', () => {
       });
     });
 
-    await page.goto(`/${LOCALE}/contact`);
+    await page.goto(localePath('/contact'));
 
     const fillStable = async (re: RegExp, value: string) => {
       const loc = page.getByLabel(re);

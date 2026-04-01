@@ -4,6 +4,8 @@ import { ArrowLeft, Download, MessageSquare } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { BlogImage } from '@/components/blogs/BlogImage'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 const PDF_PATH = '/downloads/ThinkingGap_Playbook_for_parents.pdf'
 const HERO_IMAGE = '/images/blogs/thinking-gap-classroom.webp'
@@ -31,13 +33,12 @@ interface PageProps {
 export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
   const { locale } = await params
 
-  // Note: other blog posts in this repo use this domain for breadcrumbs.
-  const baseUrl = 'https://thegrowwise.com'
-  const pageUrl = `${baseUrl}/${locale}${SLUG}`
+  const baseUrl = getCanonicalSiteUrl()
+  const pageUrl = absoluteSiteUrl(SLUG, locale, baseUrl)
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Blogs', url: `${baseUrl}/${locale}/growwise-blogs` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
     { name: "Your Kids Aren't Distracted", url: pageUrl },
   ])
 

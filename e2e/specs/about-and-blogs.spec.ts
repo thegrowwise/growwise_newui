@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('About and blogs pages', () => {
   test('About page shows mission and contact CTA', async ({ page }) => {
-    await page.goto(`/${LOCALE}/about`);
+    await page.goto(localePath('/about'));
 
     await expect(
       page.getByRole('heading', { name: /About/i }),
@@ -16,7 +15,7 @@ test.describe('About and blogs pages', () => {
   });
 
   test('Blogs listing page loads and shows posts', async ({ page }) => {
-    await page.goto(`/${LOCALE}/growwise-blogs`);
+    await page.goto(localePath('/growwise-blogs'));
 
     await expect(
       page.getByRole('heading', { name: /Blogs|Articles|Resources/i }),

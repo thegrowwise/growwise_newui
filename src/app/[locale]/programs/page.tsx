@@ -6,11 +6,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { HelpCircle } from "lucide-react";
 import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
 import { generateFAQPageSchema } from '@/lib/seo/structuredData';
+import { publicPath } from '@/lib/publicPath';
 
 export default function ProgramsPage() {
   const t = useTranslations('navigation');
   const locale = useLocale();
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
   
   const faqs = [
     {

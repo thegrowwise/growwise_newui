@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath, E2E_LOCALE } from '../localePath';
 
 test.describe('Summer camp lottery form (UI)', () => {
   test('submits lottery form and navigates to thank-you page with mocked API', async ({ page }) => {
@@ -18,7 +17,7 @@ test.describe('Summer camp lottery form (UI)', () => {
       expect(body.email).toBe('lottery.e2e@example.com');
       expect(body.childGrade).toBe('5');
       expect(body.campInterest).toBe('academic');
-      expect(body.locale).toBe(LOCALE);
+      expect(body.locale).toBe(E2E_LOCALE);
 
       await route.fulfill({
         status: 200,
@@ -27,7 +26,7 @@ test.describe('Summer camp lottery form (UI)', () => {
       });
     });
 
-    await page.goto(`/${LOCALE}/camps/summer#lottery`);
+    await page.goto(`${localePath('/camps/summer')}#lottery`);
 
     await page.locator('#summer-lottery-email').fill('lottery.e2e@example.com');
     await page.locator('#summer-lottery-interest').selectOption('academic');
@@ -35,7 +34,8 @@ test.describe('Summer camp lottery form (UI)', () => {
 
     await page.getByRole('button', { name: /Enter lottery/i }).click();
 
-    await expect(page).toHaveURL(new RegExp(`/${LOCALE}/camps/summer/lottery-success`), {
+    const successPath = localePath('/camps/summer/lottery-success').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    await expect(page).toHaveURL(new RegExp(`${successPath}(\\?|$)`), {
       timeout: 60_000,
     });
     const thankYou = new URL(page.url());
@@ -62,7 +62,7 @@ test.describe('Summer camp lottery form (UI)', () => {
       });
     });
 
-    await page.goto(`/${LOCALE}/camps/summer#lottery`);
+    await page.goto(`${localePath('/camps/summer')}#lottery`);
 
     await page.locator('#summer-lottery-email').fill('fail@example.com');
     await page.locator('#summer-lottery-interest').selectOption('coding');
@@ -73,6 +73,6 @@ test.describe('Summer camp lottery form (UI)', () => {
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
       page.locator('#lottery p[role="alert"]'),
-    ).toContainText('E2E mocked failure', { timeout: 20_000 });
+    ).toContainText(/E2E mocked failure/i, { timeout: 20_000 });
   });
 });

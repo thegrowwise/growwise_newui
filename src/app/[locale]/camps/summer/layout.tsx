@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { generateMetadataFromPath } from '@/lib/seo/metadata';
 import { generateEventSchema } from '@/lib/seo/structuredData';
 import { CONTACT_INFO } from '@/lib/constants';
+import { absoluteSiteUrl } from '@/lib/publicPath';
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
 
 export async function generateMetadata({
   params,
@@ -26,7 +28,7 @@ export default async function SummerCampLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const baseUrl = 'https://growwiseschool.org';
+  const baseUrl = getCanonicalSiteUrl();
 
   const eventSchema = generateEventSchema({
     name: 'Summer Camp 2026 - Math, Coding & Robotics',
@@ -53,7 +55,7 @@ export default async function SummerCampLayout({
       price: '249',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
-      url: `${baseUrl}/${locale}/camps/summer`,
+      url: absoluteSiteUrl('/camps/summer', locale, baseUrl),
     },
     eventStatus: 'https://schema.org/EventScheduled',
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',

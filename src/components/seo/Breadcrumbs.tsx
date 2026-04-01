@@ -7,9 +7,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useLocale } from 'next-intl'
 import { ChevronRight, Home } from 'lucide-react'
 import { StructuredDataScript } from './StructuredDataScript'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl, pathWithoutLocalePrefix } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 interface BreadcrumbItem {
   name: string
@@ -23,41 +26,41 @@ interface BreadcrumbsProps {
 
 export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
   const pathname = usePathname()
-  const baseUrl = 'https://growwiseschool.org'
-  
-  // Extract locale from pathname (first segment after /)
-  const pathSegments = pathname.split('/').filter(Boolean)
-  const locale = pathSegments[0] || 'en'
-  
+  const locale = useLocale()
+  const baseUrl = getCanonicalSiteUrl()
+
   // Auto-generate breadcrumbs from pathname if items not provided
   let breadcrumbItems: Array<{ name: string; url: string }> = []
-  
+
   if (items && items.length > 0) {
     // Use provided items, but ensure URLs are properly formatted
     breadcrumbItems = items.map(item => ({
       name: item.name,
-      url: item.url || `${baseUrl}${pathname}`
+      url: item.url || absoluteSiteUrl(pathname || '/', locale, baseUrl),
     }))
   } else {
-    // Auto-generate from pathname
-    let currentPath = `/${locale}`
-    breadcrumbItems = [{ name: 'Home', url: `${baseUrl}${currentPath}` }]
-    
-    pathSegments.slice(1).forEach((segment) => {
-      currentPath += `/${segment}`
+    // Auto-generate from pathname (strip optional locale prefix for default locale)
+    const pathWithoutLocale = pathWithoutLocalePrefix(pathname || '/')
+    const segments = pathWithoutLocale.split('/').filter(Boolean)
+
+    let currentPath = '/'
+    breadcrumbItems = [{ name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) }]
+
+    segments.forEach((segment) => {
+      currentPath = currentPath === '/' ? `/${segment}` : `${currentPath}/${segment}`
       const name = segment
         .split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ')
-      breadcrumbItems.push({ name, url: `${baseUrl}${currentPath}` })
+      breadcrumbItems.push({ name, url: absoluteSiteUrl(currentPath, locale, baseUrl) })
     })
   }
-  
+
   // Ensure Home is first
   if (breadcrumbItems[0]?.name !== 'Home') {
     breadcrumbItems = [
-      { name: 'Home', url: `${baseUrl}/${locale}` },
-      ...breadcrumbItems
+      { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+      ...breadcrumbItems,
     ]
   }
 
@@ -66,8 +69,8 @@ export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
   return (
     <>
       <StructuredDataScript data={structuredData} id="breadcrumb-structured-data" />
-      <nav 
-        aria-label="Breadcrumb" 
+      <nav
+        aria-label="Breadcrumb"
         className={`py-4 px-4 lg:px-8 bg-gray-50 ${className}`}
       >
         <div className="max-w-7xl mx-auto">
@@ -75,12 +78,12 @@ export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
             {breadcrumbItems.map((item, index) => {
               const isLast = index === breadcrumbItems.length - 1
               const href = item.url?.replace(baseUrl, '') || '#'
-              
+
               return (
                 <li key={index} className="flex items-center">
                   {index === 0 ? (
-                    <Link 
-                      href={href} 
+                    <Link
+                      href={href}
                       className="hover:text-[#F16112] transition-colors flex items-center"
                     >
                       <Home className="w-4 h-4" />
@@ -91,8 +94,8 @@ export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
                       {isLast ? (
                         <span className="text-gray-900 font-medium">{item.name}</span>
                       ) : (
-                        <Link 
-                          href={href} 
+                        <Link
+                          href={href}
                           className="hover:text-[#F16112] transition-colors"
                         >
                           {item.name}
@@ -109,4 +112,3 @@ export function Breadcrumbs({ items, className = '' }: BreadcrumbsProps) {
     </>
   )
 }
-

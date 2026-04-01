@@ -9,11 +9,12 @@ import { useCart } from '@/components/gw/CartContext';
 import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 
 const CartPage: React.FC = () => {
   const { state, updateQuantity, removeItem, clearCart } = useCart();
   const locale = useLocale();
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   const handleQuantityChange = (id: string, newQuantity: number) => {
     if (newQuantity <= 0) {
