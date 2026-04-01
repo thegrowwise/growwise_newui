@@ -12,17 +12,17 @@ export async function GET() {
       | { data?: unknown };
 
     // Backend returns: { success: true, data: { programs, last_updated, ... } }
-    // This route must forward that `data` shape to the frontend.
+    // This route must forward that `data` shape to the frontend (see usePricingConfig).
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Stripe/backend JSON shape varies
+    const b = backendJson as any;
     const data =
-      // common case: backendJson.data is the pricing config
-      (backendJson as any)?.data?.programs !== undefined
-        ? (backendJson as any).data
-        : // compat: if the backend response was already double-wrapped
-          (backendJson as any)?.data?.data?.programs !== undefined
-          ? (backendJson as any).data.data
-          : (backendJson as any).data;
+      b?.data?.programs !== undefined
+        ? b.data
+        : b?.data?.data?.programs !== undefined
+          ? b.data.data
+          : b.data;
 
-    if (!data) {
+    if (!data || !Array.isArray(data.programs)) {
       throw new Error('Backend returned empty pricing config');
     }
 
@@ -35,4 +35,3 @@ export async function GET() {
     );
   }
 }
-
