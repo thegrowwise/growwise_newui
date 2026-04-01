@@ -8,7 +8,6 @@ export interface JourneyVisualLevel {
   id: string;
   levelNumber: number;
   name: string;
-  priceLabel: string;
   milestones: string;
   isActive?: boolean;
 }
@@ -18,6 +17,8 @@ interface JourneyVisualProps {
   accentColorClass?: string;
   accentColorHex?: string;
   className?: string;
+  /** When set, level columns are keyboard-focusable and update selection on click. */
+  onLevelSelect?: (index: number) => void;
 }
 
 export function JourneyVisual({
@@ -25,11 +26,23 @@ export function JourneyVisual({
   accentColorClass = 'bg-primary',
   accentColorHex,
   className,
+  onLevelSelect,
 }: JourneyVisualProps) {
   if (!levels.length) return null;
 
   const accentBgStyle = accentColorHex ? { backgroundColor: accentColorHex } : undefined;
   const accentBgClass = accentColorHex ? '' : accentColorClass;
+  const visibleLevels = [...levels].slice(0, 4);
+  const activeIndex = Math.max(
+    0,
+    visibleLevels.findIndex((l) => !!l.isActive),
+  );
+  const progressPercent = (() => {
+    if (visibleLevels.length <= 1) return 0;
+    const last = visibleLevels.length - 1;
+    if (activeIndex >= last) return 100;
+    return ((activeIndex + 0.5) / last) * 100;
+  })();
 
   return (
     <div className={cn('w-full py-8', className)}>
@@ -41,39 +54,54 @@ export function JourneyVisual({
         {/* Connecting line */}
         <div className="absolute top-6 left-0 right-0 h-1 bg-muted rounded-full overflow-hidden">
           <div
-            className={cn('h-full w-1/4 opacity-50', accentBgClass)}
-            style={accentBgStyle}
+            className={cn('h-full opacity-50 transition-[width] duration-200', accentBgClass)}
+            style={{ ...accentBgStyle, width: `${progressPercent}%` }}
           />
         </div>
 
         <div className="grid grid-cols-4 gap-4 relative z-10">
-          {[...levels].slice(0, 4).map((level, idx) => {
-            const isFirst = idx === 0;
+          {visibleLevels.map((level, idx) => {
+            const isActive = !!level.isActive;
 
             return (
-              <div key={level.id} className="flex flex-col items-center text-center">
+              <div
+                key={level.id}
+                role={onLevelSelect ? 'button' : undefined}
+                tabIndex={onLevelSelect ? 0 : undefined}
+                aria-pressed={onLevelSelect ? isActive : undefined}
+                aria-label={onLevelSelect ? `${level.name}, level ${level.levelNumber}` : undefined}
+                onClick={onLevelSelect ? () => onLevelSelect(idx) : undefined}
+                onKeyDown={
+                  onLevelSelect
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          onLevelSelect(idx);
+                        }
+                      }
+                    : undefined
+                }
+                className={cn(
+                  'flex flex-col items-center text-center rounded-xl outline-none',
+                  onLevelSelect && 'cursor-pointer focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+                )}
+              >
                 {/* Step circle */}
                 <div
                   className={cn(
                     'w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg mb-4 shadow-sm border-4 border-background transition-transform hover:scale-110',
-                    isFirst
+                    isActive
                       ? cn(accentBgClass, 'text-white')
                       : 'bg-white text-muted-foreground border-muted',
                   )}
-                  style={isFirst ? accentBgStyle : undefined}
+                  style={isActive ? accentBgStyle : undefined}
                 >
                   {level.levelNumber}
                 </div>
 
                 <h4 className="font-bold text-foreground mb-1">{level.name}</h4>
 
-                {level.priceLabel && (
-                  <p className="text-sm font-semibold text-muted-foreground mb-3">
-                    {level.priceLabel}/mo
-                  </p>
-                )}
-
-                <ul className="text-xs text-muted-foreground text-left space-y-2 w-full px-2">
+                <ul className="text-xs text-muted-foreground text-left space-y-2 w-full px-2 mt-3">
                   {String(level.milestones || '')
                     .split(/[·•]/)
                     .map((m, i) => {
@@ -84,7 +112,7 @@ export function JourneyVisual({
                           <CheckCircle2
                             className={cn(
                               'w-3.5 h-3.5 mt-0.5 shrink-0',
-                              isFirst ? 'text-primary' : 'text-muted-foreground/50',
+                              isActive ? 'text-primary' : 'text-muted-foreground/50',
                             )}
                           />
                           <span className="leading-tight">{trimmed}</span>
