@@ -17,7 +17,7 @@ export function CodingPrograms() {
   const [activeTab, setActiveTab] = useState<string>('python');
 
   const programs = useMemo(() => {
-    if (!data) return [] as Program[];
+    if (!data?.programs) return [] as Program[];
     return data.programs
       .filter((p) => p.track === 'coding' && p.active)
       .sort((a, b) => a.sort_order - b.sort_order);

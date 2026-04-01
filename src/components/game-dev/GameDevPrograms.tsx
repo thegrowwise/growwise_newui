@@ -19,7 +19,7 @@ export function GameDevPrograms() {
   const [activeTab, setActiveTab] = useState<string>('scratch');
 
   const programs = useMemo(() => {
-    if (!data) return [] as Program[];
+    if (!data?.programs) return [] as Program[];
     return data.programs
       .filter((p) => p.track === 'game-dev' && p.active)
       .sort((a, b) => a.sort_order - b.sort_order);
