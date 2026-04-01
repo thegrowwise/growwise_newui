@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { useCart } from '@/components/gw/CartContext';
 import LocaleSwitcher from '@/components/LocaleSwitcher';
 import { CONTACT_INFO } from '@/lib/constants';
+import { publicPath } from '@/lib/publicPath';
 
 // Icon mapping for dynamic icon rendering
 const iconMap: { [key: string]: any } = {
@@ -539,7 +540,7 @@ export default function Header() {
           <div className="header-dropdown-footer">
             <p className="header-dropdown-footer-text">
               {footerHelper}{' '}
-              <Link href={`/${locale}/contact`} className="text-[#1F396D] font-medium hover:underline">
+              <Link href={publicPath('/contact', locale)} className="text-[#1F396D] font-medium hover:underline">
                 {footerContactCta}
               </Link>
             </p>
@@ -589,7 +590,7 @@ export default function Header() {
         <div className="header-mainrow">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href={`/${locale}`} className="cursor-pointer" aria-label="GrowWise home">
+            <Link href={publicPath('/', locale)} className="cursor-pointer" aria-label="GrowWise home">
               <img
                 src="/assets/growwise-logo.png"
                 alt="GrowWise"
@@ -634,7 +635,7 @@ export default function Header() {
                 <Search className="w-5 h-5" aria-hidden />
               </button>
               <Link
-                href={`/${locale}/cart`}
+                href={publicPath('/cart', locale)}
                 className="relative text-gray-700 hover:text-[#F16112] transition-colors"
                 aria-label={cartState.itemCount > 0 ? `Shopping cart, ${cartState.itemCount} items` : 'Shopping cart'}
               >

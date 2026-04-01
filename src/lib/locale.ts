@@ -1,9 +1,18 @@
-export function getCurrentLocale(defaultLocale: string = 'en'): string {
+import { DEFAULT_LOCALE, isLocaleEnabled } from '@/i18n/localeConfig';
+
+/**
+ * Locale for mock JSON paths. Only the first segment is a locale when it is an
+ * enabled locale code (e.g. /es/about). Clean default-locale URLs like /coding
+ * or /about must not treat the first segment as a locale.
+ */
+export function getCurrentLocale(defaultLocale: string = DEFAULT_LOCALE): string {
   if (typeof window === 'undefined') return defaultLocale;
   try {
     const path = window.location.pathname || '';
     const seg = path.split('/').filter(Boolean)[0];
-    return seg || defaultLocale;
+    if (!seg) return defaultLocale;
+    if (isLocaleEnabled(seg)) return seg;
+    return defaultLocale;
   } catch {
     return defaultLocale;
   }

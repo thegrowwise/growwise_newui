@@ -6,6 +6,8 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, Code, Zap, Globe, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
 // Option 1: Local image in public folder: '/images/blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era.webp'
@@ -22,12 +24,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const baseUrl = 'https://thegrowwise.com'
+  const baseUrl = getCanonicalSiteUrl()
   
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Blogs', url: `${baseUrl}/${locale}/growwise-blogs` },
-    { name: 'Harnessing the Power of Code: A Skill for the Modern Era', url: `${baseUrl}/${locale}/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Harnessing the Power of Code: A Skill for the Modern Era', url: absoluteSiteUrl('/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era', locale, baseUrl) },
   ])
 
   return (

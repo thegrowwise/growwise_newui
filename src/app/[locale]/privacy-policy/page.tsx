@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 import { CONTACT_INFO } from '@/lib/constants'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -14,11 +16,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function PrivacyPolicyPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const baseUrl = 'https://thegrowwise.com'
+  const baseUrl = getCanonicalSiteUrl()
   
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Privacy Policy', url: `${baseUrl}/${locale}/privacy-policy` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Privacy Policy', url: absoluteSiteUrl('/privacy-policy', locale, baseUrl) },
   ])
 
   return (

@@ -6,7 +6,8 @@ import { ENABLED_LOCALES, DEFAULT_LOCALE } from '@/i18n/localeConfig';
 const intlMiddleware = createMiddleware({
   locales: [...ENABLED_LOCALES],
   defaultLocale: DEFAULT_LOCALE,
-  localePrefix: 'always',
+  // Default locale (English) uses clean URLs with no /en prefix.
+  localePrefix: 'never',
 });
 
 /** Must match every segment in `ENABLED_LOCALES` (kept in sync with next-intl `locales` above). */
@@ -14,8 +15,8 @@ const localePattern =
   ENABLED_LOCALES.length > 0 ? ENABLED_LOCALES.join('|') : 'en';
 
 /**
- * When the matcher `/(locale)/:path*` runs, `/en/_next/static/...` is treated as a localized route.
- * The browser then loads chunks from `/en/_next/...` and Next returns 500. Rewrite to real `/_next/...`.
+ * When the matcher runs, `/en/_next/static/...` is treated as a localized route.
+ * Rewrite to real `/_next/...` so chunks load.
  */
 function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | null {
   const pathname = request.nextUrl.pathname;
@@ -29,8 +30,9 @@ function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | n
 }
 
 /**
- * Edge middleware (single root file) — avoids importing `./src/proxy`, which can break
- * Vercel/Next output file tracing (`middleware.js.nft.json` ENOENT on Next 16.2).
+ * With `src/app`, Next.js expects middleware beside `src/app` (`src/middleware.ts`).
+ * A root-level `middleware.ts` can be ignored in some setups, which makes `/` 404
+ * because there is no root `app/page.tsx` (only `app/[locale]/...`).
  */
 export default function middleware(request: NextRequest) {
   const rewritten = rewriteLocalePrefixedNextAssets(request);
@@ -41,8 +43,6 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    // Do not use `/(locale)/:path*` — it matches `/en/_next/...` and breaks chunk URLs.
-    // next-intl: match everything except api, Next internals, and static files with extensions.
     '/((?!api|_next|_vercel|.*\\..*).*)',
   ],
 };

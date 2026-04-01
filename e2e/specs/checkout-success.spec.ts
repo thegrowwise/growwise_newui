@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Checkout success page', () => {
   test('displays payment success and clears cart with mocked session', async ({ page }) => {
@@ -21,7 +20,7 @@ test.describe('Checkout success page', () => {
     });
 
     // Seed cart to verify it gets cleared
-    await page.goto(`/${LOCALE}`);
+    await page.goto(localePath('/'));
     await page.evaluate(() => {
       const cartState = {
         items: [
@@ -34,7 +33,7 @@ test.describe('Checkout success page', () => {
     });
 
     // Visit success page with session_id in query
-    await page.goto(`/${LOCALE}/checkout/success?session_id=cs_test_123`);
+    await page.goto(`${localePath('/checkout/success')}?session_id=cs_test_123`);
 
     // Success heading
     await expect(

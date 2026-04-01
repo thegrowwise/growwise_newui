@@ -1,6 +1,7 @@
 import { MenuItem, VariantStyles } from './types';
 import { VARIANT_STYLES, ROUTE_PATH_PATTERNS_HIDE_CART } from './constants';
 import { ENABLED_LOCALES } from '@/i18n/localeConfig';
+import { publicPath } from '@/lib/publicPath';
 
 /** True when the current path is one where the header cart should not be shown. */
 export function isCartHiddenOnPath(pathname: string | null): boolean {
@@ -10,7 +11,7 @@ export function isCartHiddenOnPath(pathname: string | null): boolean {
 
 export function createLocaleUrl(path: string, locale: string): string {
   // Keep external/absolute URLs intact (including protocol-relative URLs).
-  if (!path) return `/${locale}`;
+  if (!path) return publicPath('/', locale);
   const trimmed = path.trim();
   if (
     /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(trimmed) || // http(s)://, etc.
@@ -21,20 +22,18 @@ export function createLocaleUrl(path: string, locale: string): string {
     return trimmed;
   }
 
-  // Normalize to a pathname-like string we can safely prefix.
   let normalized = trimmed;
   if (normalized.startsWith('#') || normalized.startsWith('?')) {
-    normalized = `/${normalized}`; // treat as in-page/query on current locale root
+    normalized = `/${normalized}`;
   }
   if (!normalized.startsWith('/')) normalized = `/${normalized}`;
 
-  // Prevent double-locale URLs like `/en/es/contact` when CMS already returns localized paths.
   const localePattern =
     ENABLED_LOCALES.length > 0 ? ENABLED_LOCALES.join('|') : 'en';
   normalized = normalized.replace(new RegExp(`^/(?:${localePattern})(?=/|$)`), '');
   if (normalized === '') normalized = '/';
 
-  return normalized === '/' ? `/${locale}` : `/${locale}${normalized}`;
+  return publicPath(normalized === '/' ? '/' : normalized, locale);
 }
 
 export function getVariant(variant?: string): VariantStyles {
@@ -43,8 +42,8 @@ export function getVariant(variant?: string): VariantStyles {
 
 export function isMenuItemActive(item: MenuItem, pathname: string | null, locale: string): boolean {
   if (item.type === 'dropdown' && item.dropdown) {
-    return item.dropdown.items.some((dropdownItem) => 
-      pathname?.startsWith(createLocaleUrl(dropdownItem.href, locale))
+    return item.dropdown.items.some((dropdownItem) =>
+      pathname?.startsWith(createLocaleUrl(dropdownItem.href, locale)),
     );
   }
   return pathname === createLocaleUrl(item.href, locale);

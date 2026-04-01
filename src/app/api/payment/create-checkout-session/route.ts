@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import type { CheckoutSessionRequest } from '@/lib/paymentService';
+import { publicPath } from '@/lib/publicPath';
 
 export const maxDuration = 60;
 
@@ -63,8 +64,8 @@ export async function POST(request: Request) {
       mode: 'payment',
       line_items,
       allow_promotion_codes: true,
-      success_url: `${origin}/${locale}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/${locale}/cart`,
+      success_url: `${origin}${publicPath('/checkout/success', locale)}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}${publicPath('/cart', locale)}`,
     });
 
     if (!session.url) {

@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('STEAM landing page', () => {
   test('shows STEAM overview and key CTAs', async ({ page }) => {
-    await page.goto(`/${LOCALE}/steam`);
+    await page.goto(localePath('/steam'));
 
     await expect(
       page.getByRole('heading', { name: 'Our STEAM Programs', exact: true }),

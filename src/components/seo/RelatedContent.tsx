@@ -6,6 +6,7 @@
 'use client'
 
 import Link from 'next/link'
+import { publicPath } from '@/lib/publicPath'
 import { 
   BookOpen, 
   Calculator, 
@@ -22,13 +23,11 @@ interface RelatedContentProps {
 }
 
 export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
-  const basePath = `/${locale}`
-  
   // Define all related content items
   const allItems = [
     {
       id: 'math',
-      href: `${basePath}/courses/math`,
+      href: publicPath('/courses/math', locale),
       title: 'Math Courses',
       description: 'Comprehensive K-12 math courses: Grade-level, Accelerated, and Integrated Math programs.',
       icon: Calculator,
@@ -39,7 +38,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
     },
     {
       id: 'english',
-      href: `${basePath}/courses/english`,
+      href: publicPath('/courses/english', locale),
       title: 'English Courses',
       description: 'Comprehensive English Language Arts programs for K-12 students. Reading, writing, and grammar.',
       icon: BookOpen,
@@ -50,7 +49,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
     },
     {
       id: 'sat-prep',
-      href: `${basePath}/courses/sat-prep`,
+      href: publicPath('/courses/sat-prep', locale),
       title: 'SAT Prep',
       description: 'Boost your SAT score with expert test preparation strategies and practice tests.',
       icon: Target,
@@ -61,7 +60,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
     },
     {
       id: 'high-school-math',
-      href: `${basePath}/courses/high-school-math`,
+      href: publicPath('/courses/high-school-math', locale),
       title: 'High School Math',
       description: 'Advanced math courses including Algebra, Geometry, Pre-Calculus, and Calculus.',
       icon: GraduationCap,
@@ -72,7 +71,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
     },
     {
       id: 'academic',
-      href: `${basePath}/academic`,
+      href: publicPath('/academic', locale),
       title: 'Academic Programs',
       description: 'Explore all our K-12 academic programs aligned with DUSD & PUSD standards.',
       icon: Award,
@@ -83,7 +82,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
     },
     {
       id: 'steam',
-      href: `${basePath}/steam`,
+      href: publicPath('/steam', locale),
       title: 'STEAM Programs',
       description: 'Innovative STEAM programs: ML/AI, Game Development, and Coding classes.',
       icon: Sparkles,
@@ -94,7 +93,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
     },
     {
       id: 'assessment',
-      href: `${basePath}/book-assessment`,
+      href: publicPath('/book-assessment', locale),
       title: 'Free Assessment',
       description: 'Book a free academic assessment to identify strengths and areas for improvement.',
       icon: CheckCircle,

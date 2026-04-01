@@ -4,10 +4,10 @@ test.use({ ...devices['iPhone 14'] });
 
 test.describe('Courses pages (mobile)', () => {
   const paths = [
-    '/en/courses/math',
-    '/en/courses/english',
-    '/en/courses/sat-prep',
-    '/en/courses/high-school-math',
+    '/courses/math',
+    '/courses/english',
+    '/courses/sat-prep',
+    '/courses/high-school-math',
   ];
 
   for (const path of paths) {
@@ -20,7 +20,7 @@ test.describe('Courses pages (mobile)', () => {
 });
 
 test.describe('Camps pages (mobile)', () => {
-  const paths = ['/en/camps/summer', '/en/camps/winter'];
+  const paths = ['/camps/summer', '/camps/winter'];
 
   for (const path of paths) {
     test(`${path} does not 404`, async ({ page }) => {
@@ -30,4 +30,3 @@ test.describe('Camps pages (mobile)', () => {
     });
   }
 });
-

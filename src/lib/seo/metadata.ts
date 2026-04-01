@@ -6,7 +6,9 @@
 import { Metadata } from 'next'
 import { CONTACT_INFO } from '@/lib/constants'
 import { getMetadataConfig, PageMetadataConfig } from './metadataConfig'
-import { ENABLED_LOCALES } from '@/i18n/localeConfig'
+import { getValidLocale } from '@/i18n/localeConfig'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 interface PageMetadataOptions {
   title: string
@@ -56,18 +58,17 @@ export function generatePageMetadata({
   keywords,
   locale,
   path = '',
-  image = 'https://growwiseschool.org/og-image.jpg',
+  image = `${getCanonicalSiteUrl()}/og-image.jpg`,
   type = 'website',
   publishedTime,
   modifiedTime,
 }: PageMetadataOptions): Metadata {
-  const baseUrl = 'https://growwiseschool.org'
-  const url = `${baseUrl}/${locale}${path}`
+  const baseUrl = getCanonicalSiteUrl()
+  const pathForUrl = path === '' ? '/' : path
+  // Single-language / clean-URL: canonical and OG url must follow publicPath + locale rules only (no hreflang alternates).
+  const effectiveLocale = getValidLocale(locale)
+  const url = absoluteSiteUrl(pathForUrl, effectiveLocale, baseUrl)
 
-  const hreflangLanguages: Record<string, string> = Object.fromEntries(
-    ENABLED_LOCALES.map((l) => [l, `${baseUrl}/${l}${path}`])
-  )
-  
   // Default keywords if not provided
   const defaultKeywords = [
     'tutoring Dublin CA',
@@ -99,7 +100,7 @@ export function generatePageMetadata({
         height: 630,
         alt: title,
       }],
-      locale: locale,
+      locale: effectiveLocale,
       type: type,
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
@@ -112,7 +113,6 @@ export function generatePageMetadata({
     },
     alternates: {
       canonical: url,
-      languages: hreflangLanguages,
     },
     robots: {
       index: true,

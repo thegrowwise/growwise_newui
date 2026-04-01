@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateCourseSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -16,7 +18,7 @@ export default async function SATPrepLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const baseUrl = 'https://growwiseschool.org'
+  const baseUrl = getCanonicalSiteUrl()
   
   const courseSchema = generateCourseSchema({
     name: "SAT Prep Course Dublin CA | SAT Test Preparation & Strategies | SAT Tutoring",
@@ -34,13 +36,13 @@ export default async function SATPrepLayout({
       "Test-Taking Techniques"
     ],
     coursePrerequisites: "High school student preparing for SAT exam",
-    url: `${baseUrl}/${locale}/courses/sat-prep`,
+    url: absoluteSiteUrl('/courses/sat-prep', locale, baseUrl),
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {
       price: "35",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
-      url: `${baseUrl}/${locale}/enroll`,
+      url: absoluteSiteUrl('/enroll', locale, baseUrl),
     }
   })
 
