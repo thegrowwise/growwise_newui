@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Loader2, CreditCard, ArrowLeft, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { publicPath } from '@/lib/publicPath';
 
 const CheckoutPage: React.FC = () => {
   const { state } = useCart();
@@ -18,7 +19,7 @@ const CheckoutPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   useEffect(() => {
     // Redirect to cart if cart is empty

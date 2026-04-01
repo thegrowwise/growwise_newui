@@ -8,6 +8,7 @@ import { useCart } from '@/components/gw/CartContext';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { getIconComponent } from '@/lib/iconMap';
+import { publicPath } from '@/lib/publicPath';
 
 interface DateSlot {
   date: string;
@@ -32,7 +33,7 @@ function WinterCampCalendarContent() {
   const searchParams = useSearchParams();
   const workshopRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   // Get scroll target from URL params
   const scrollToWorkshopId = searchParams.get('workshop');

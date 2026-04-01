@@ -4,6 +4,7 @@ import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { ChevronRight } from 'lucide-react';
 
 export interface ProgramVM {
@@ -109,14 +110,14 @@ export function ProgramsSection({
                     : levelParam
                     ? `level=${encodeURIComponent(levelParam)}`
                     : '';
-                  const href = isMathProgram 
-                    ? `/${locale}/courses/math${query ? `?${query}` : ''}#courses`
+                  const href = isMathProgram
+                    ? `${publicPath(`/courses/math${query ? `?${query}` : ''}`, locale)}#courses`
                     : (isEnglishProgram || isWritingProgram)
-                    ? `/${locale}/courses/english${query ? `?${query}` : ''}#courses`
+                    ? `${publicPath(`/courses/english${query ? `?${query}` : ''}`, locale)}#courses`
                     : isSteamGameProgram
-                    ? `/${locale}/steam/game-development${query ? `?${query}` : ''}#courses`
+                    ? `${publicPath(`/steam/game-development${query ? `?${query}` : ''}`, locale)}#courses`
                     : isSteamPythonProgram
-                    ? `/${locale}/steam/ml-ai-coding${query ? `?${query}` : ''}#courses`
+                    ? `${publicPath(`/steam/ml-ai-coding${query ? `?${query}` : ''}`, locale)}#courses`
                     : '';
                   const content = (
                     <div className={`flex items-center gap-4 p-4 rounded-xl bg-white/50 backdrop-blur-2xl border-2 border-white/70 transition-all duration-500 hover:bg-white/70 hover:shadow-[0px_10px_30px_rgba(255,255,255,0.5)] ring-1 ring-white/40 ${isLinked ? 'cursor-pointer hover:scale-105' : ''}`}>

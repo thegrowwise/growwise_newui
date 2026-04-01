@@ -42,6 +42,7 @@ import {
   Linkedin,
   X
 } from 'lucide-react';
+import { publicPath } from '@/lib/publicPath';
 
 // ImageWithFallback component
 const ImageWithFallback: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = (props) => {
@@ -74,7 +75,7 @@ export default function SteamPage() {
   const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
 
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   // STEAM Programs Overview Data
   const steamPrograms = [

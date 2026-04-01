@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Academic landing page', () => {
   test('shows key academic content and links', async ({ page }) => {
-    await page.goto(`/${LOCALE}/academic`);
+    await page.goto(localePath('/academic'));
 
     // Hero / main heading (specific academic hero)
     await expect(

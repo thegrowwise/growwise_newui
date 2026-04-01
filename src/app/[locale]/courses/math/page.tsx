@@ -18,6 +18,7 @@ import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { absoluteSiteUrl } from '@/lib/publicPath';
 import type { MathCourse } from '@/data/mathCourses';
 
 // Dynamically load heavier, below-the-fold components to reduce initial JS and improve LCP
@@ -362,9 +363,9 @@ const MathCoursesPage: React.FC = () => {
       {/* Breadcrumbs */}
       <Breadcrumbs 
         items={[
-          { name: 'Programs', url: `/${locale}/programs` },
-          { name: 'Academic', url: `/${locale}/academic` },
-          { name: 'Math Courses', url: `/${locale}/courses/math` },
+          { name: 'Programs', url: absoluteSiteUrl('/programs', locale) },
+          { name: 'Academic', url: absoluteSiteUrl('/academic', locale) },
+          { name: 'Math Courses', url: absoluteSiteUrl('/courses/math', locale) },
         ]}
       />
 

@@ -55,7 +55,8 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'], // Use modern image formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60, // Cache images for 60 seconds
+    // Short TTL in dev; longer in prod so repeat views hit the image optimizer cache more often.
+    minimumCacheTTL: isProd ? 86_400 : 60,
   },
   
   // Experimental features for better performance
@@ -155,6 +156,14 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+    ];
+  },
+
+  // Legacy /en/* URLs → clean URLs (301) for SEO after switching off locale prefix for English.
+  async redirects() {
+    return [
+      { source: '/en', destination: '/', permanent: true },
+      { source: '/en/:path*', destination: '/:path*', permanent: true },
     ];
   },
 };

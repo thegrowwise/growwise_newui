@@ -9,6 +9,8 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jsdom',
+  // Avoid jest-haste-map trying to parse incomplete/missing .next/package.json when .next is absent.
+  modulePathIgnorePatterns: ['<rootDir>/.next/'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },

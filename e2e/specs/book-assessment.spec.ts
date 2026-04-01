@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Book assessment form', () => {
   test('submits free assessment booking with mocked backend', async ({ page }) => {
@@ -19,7 +18,7 @@ test.describe('Book assessment form', () => {
       }
     });
 
-    await page.goto(`/${LOCALE}/book-assessment`);
+    await page.goto(localePath('/book-assessment'));
 
     // Required fields
     await page.getByLabel(/Parent Name/i).fill('Parent Name');

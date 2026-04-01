@@ -53,9 +53,8 @@ async function collectStaticAppPaths(): Promise<string[]> {
         // ignore route groups
         if (p.startsWith('(') && p.endsWith(')')) continue;
 
-        // treat [locale] as /en (audit only one locale)
+        // Default locale has no URL prefix (matches publicPath / localePrefix: 'never')
         if (p === '[locale]') {
-          urlParts.push('en');
           continue;
         }
 
@@ -71,7 +70,7 @@ async function collectStaticAppPaths(): Promise<string[]> {
       if (isDynamic) continue;
 
       const path = '/' + urlParts.join('/');
-      results.push(path === '/en' ? '/en' : path);
+      results.push(path);
     }
   }
 

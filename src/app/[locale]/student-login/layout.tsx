@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
-
-function getBaseUrl() {
-  return (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.growwiseschool.org').replace(/\/$/, '');
-}
+import { absoluteSiteUrl } from '@/lib/publicPath';
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
 
 export async function generateMetadata({
   params,
@@ -10,8 +8,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const baseUrl = getBaseUrl();
-  const url = `${baseUrl}/${locale}/student-login`;
+  const baseUrl = getCanonicalSiteUrl();
+  const url = absoluteSiteUrl('/student-login', locale, baseUrl);
 
   return {
     title: 'Student Login | GrowWise',
@@ -31,4 +29,3 @@ export async function generateMetadata({
 export default function StudentLoginLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
-

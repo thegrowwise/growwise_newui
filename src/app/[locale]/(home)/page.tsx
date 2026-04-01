@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { getValidLocale } from '@/i18n/localeConfig';
 import { getHomeDataServer } from '@/lib/homeDataServer';
 import HomeClient from '@/components/pages/HomeClient';
 
@@ -7,7 +8,8 @@ export default async function HomePage({
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = await params;
+  const { locale: rawLocale } = await params;
+  const locale = getValidLocale(rawLocale);
   const initialData = getHomeDataServer(locale);
   const firstSlideImage = initialData?.heroSlides?.[0]?.bgImage;
 

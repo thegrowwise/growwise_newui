@@ -37,6 +37,7 @@ import { CONTACT_INFO } from '@/lib/constants';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from '@/components/ui/alert-dialog';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { getIconComponent } from '@/lib/iconMap';
+import { publicPath } from '@/lib/publicPath';
 
 export default function WinterCampPage() {
   const t = useTranslations();
@@ -50,7 +51,7 @@ export default function WinterCampPage() {
   const benefitsRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   // Contact information for modal
   const contactInfo = [

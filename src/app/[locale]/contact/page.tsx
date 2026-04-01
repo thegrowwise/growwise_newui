@@ -2,6 +2,8 @@ import Contact from '@/components/sections/Contact'
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -11,11 +13,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const baseUrl = 'https://growwiseschool.org'
+  const baseUrl = getCanonicalSiteUrl()
   
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Contact', url: `${baseUrl}/${locale}/contact` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Contact', url: absoluteSiteUrl('/contact', locale, baseUrl) },
   ])
 
   return (

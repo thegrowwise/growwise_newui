@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateEventSchema } from '@/lib/seo/structuredData'
 import { CONTACT_INFO } from '@/lib/constants'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -17,7 +19,7 @@ export default async function WinterCampLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const baseUrl = 'https://growwiseschool.org'
+  const baseUrl = getCanonicalSiteUrl()
   
   // Generate Event structured data for Winter Camp 2025
   const eventSchema = generateEventSchema({
@@ -44,7 +46,7 @@ export default async function WinterCampLayout({
       price: "75",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
-      url: `${baseUrl}/${locale}/camps/winter`,
+      url: absoluteSiteUrl('/camps/winter', locale, baseUrl),
     },
     eventStatus: "https://schema.org/EventScheduled",
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode"
