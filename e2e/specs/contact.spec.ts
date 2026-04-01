@@ -16,15 +16,23 @@ test.describe('Contact form', () => {
 
     await page.goto(`/${LOCALE}/contact`);
 
+    const fillStable = async (re: RegExp, value: string) => {
+      const loc = page.getByLabel(re);
+      for (let i = 0; i < 3; i++) {
+        await loc.fill(value);
+        const v = await loc.inputValue();
+        if (v === value) break;
+      }
+      await expect(loc).toHaveValue(value);
+    };
+
     // Fill required fields
-    await page.getByLabel(/First Name/i).fill('First');
-    await page.getByLabel(/Last Name/i).fill('Last');
-    await page.getByLabel(/Email Address/i).fill('first.last@example.com');
-    await page.getByLabel(/Phone Number/i).fill('5551234567');
-    await page.getByLabel(/^Subject \*/i).fill('Free Assessment Request');
-    await page.getByLabel(/^Message \*/i).fill(
-      'I would like more information about programs.',
-    );
+    await fillStable(/First Name/i, 'First');
+    await fillStable(/Last Name/i, 'Last');
+    await fillStable(/Email Address/i, 'first.last@example.com');
+    await fillStable(/Phone Number/i, '5551234567');
+    await fillStable(/^Subject \*/i, 'Free Assessment Request');
+    await fillStable(/^Message \*/i, 'I would like more information about programs.');
 
     // Radix Checkbox: use role + check() so state updates (label click alone can leave submit disabled)
     await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
