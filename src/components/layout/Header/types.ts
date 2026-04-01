@@ -4,7 +4,10 @@ export interface MenuItem {
   href: string;
   type: 'link' | 'dropdown' | 'simple';
   visible?: boolean;
+  active?: boolean;
   variant?: string;
+  isButton?: boolean;
+  buttonStyle?: string;
   dropdown?: DropdownConfig;
 }
 

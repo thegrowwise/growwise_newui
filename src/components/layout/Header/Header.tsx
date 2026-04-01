@@ -105,6 +105,7 @@ export default function Header() {
             onSubmenuLeave={onSubmenuLeave}
             createLocaleUrl={createLocaleUrlHelper}
             pathname={pathname}
+            locale={locale}
             cartItemCount={cartState.itemCount}
             showCart={showCart}
             footerHelper={footerHelper}
@@ -119,6 +120,7 @@ export default function Header() {
             onCloseMobileMenu={closeMobileMenu}
             createLocaleUrl={createLocaleUrlHelper}
             pathname={pathname}
+            locale={locale}
             cartItemCount={cartState.itemCount}
             showCart={showCart}
           />

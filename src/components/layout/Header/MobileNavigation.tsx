@@ -14,6 +14,7 @@ interface MobileNavigationProps {
   onCloseMobileMenu: () => void;
   createLocaleUrl: (path: string) => string;
   pathname: string | null;
+  locale: string;
   cartItemCount: number;
   showCart: boolean;
 }
@@ -25,6 +26,7 @@ export default function MobileNavigation({
   onCloseMobileMenu,
   createLocaleUrl,
   pathname,
+  locale,
   cartItemCount,
   showCart
 }: MobileNavigationProps) {
@@ -134,7 +136,7 @@ export default function MobileNavigation({
                     const isActive = isMenuItemActive(
                       item,
                       pathname,
-                      createLocaleUrl('').split('/')[1]
+                      locale
                     );
 
                     return (
