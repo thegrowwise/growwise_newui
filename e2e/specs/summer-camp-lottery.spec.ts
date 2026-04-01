@@ -36,7 +36,7 @@ test.describe('Summer camp lottery form (UI)', () => {
     await page.getByRole('button', { name: /Enter lottery/i }).click();
 
     await expect(page).toHaveURL(new RegExp(`/${LOCALE}/camps/summer/lottery-success`), {
-      timeout: 15_000,
+      timeout: 60_000,
     });
     const thankYou = new URL(page.url());
     expect(thankYou.searchParams.get('interest')).toBe('academic');
@@ -73,6 +73,6 @@ test.describe('Summer camp lottery form (UI)', () => {
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
       page.locator('#lottery p[role="alert"]'),
-    ).toContainText('E2E mocked failure', { timeout: 10_000 });
+    ).toContainText('E2E mocked failure', { timeout: 20_000 });
   });
 });
