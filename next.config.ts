@@ -157,6 +157,33 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  // Redirect non-locale routes to default (English) locale.
+  // This avoids 404s for direct hits like `/courses/math` when routes live under `/[locale]/...`.
+  async redirects() {
+    return [
+      // Home
+      { source: '/', destination: '/en', permanent: false },
+
+      // Common top-level pages (expand as needed)
+      { source: '/about', destination: '/en/about', permanent: true },
+      { source: '/contact', destination: '/en/contact', permanent: true },
+      { source: '/programs', destination: '/en/programs', permanent: true },
+      { source: '/academic', destination: '/en/academic', permanent: true },
+      { source: '/steam', destination: '/en/steam', permanent: true },
+      { source: '/workshop-calendar', destination: '/en/workshop-calendar', permanent: true },
+      { source: '/book-assessment', destination: '/en/book-assessment', permanent: true },
+      { source: '/enroll', destination: '/en/enroll', permanent: true },
+      { source: '/enroll-academic', destination: '/en/enroll-academic', permanent: true },
+      { source: '/cart', destination: '/en/cart', permanent: true },
+      { source: '/checkout', destination: '/en/checkout', permanent: true },
+
+      // Courses & camps
+      { source: '/courses/:path*', destination: '/en/courses/:path*', permanent: true },
+      { source: '/camps/:path*', destination: '/en/camps/:path*', permanent: true },
+      { source: '/growwise-blogs/:path*', destination: '/en/growwise-blogs/:path*', permanent: true },
+    ];
+  },
 };
 
 export default withNextIntl(nextConfig);

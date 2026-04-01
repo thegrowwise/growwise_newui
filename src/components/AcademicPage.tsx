@@ -1,7 +1,7 @@
 // AcademicPage migrated from Vite project
 import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { Card, CardContent } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import { Badge } from "../components/ui/badge";
@@ -24,6 +24,7 @@ import { getIconComponent } from '@/lib/iconMap';
 const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => void }) => {
     const [isLearnMoreModalOpen, setIsLearnMoreModalOpen] = useState(false);
     const t = useTranslations('academic');
+    const locale = useLocale();
     const router = useRouter();
     const dispatch = useDispatch();
     const academic = useSelector((state: RootState) => state.academic.data);
@@ -348,7 +349,7 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 							{/* Math Courses Option */}
                             <Card 
                                 onClick={() => {
-                                    router.push('/courses/math');
+                                    router.push(`/${locale}/courses/math`);
                                     setIsLearnMoreModalOpen(false);
                                 }}
 								className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full"
@@ -389,7 +390,7 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 									</div>
 
 									{/* Enhanced CTA Button */}
-                                        <Button onClick={(e) => { e.stopPropagation(); router.push('/courses/math'); setIsLearnMoreModalOpen(false); }} className="w-full bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
+                                        <Button onClick={(e) => { e.stopPropagation(); router.push(`/${locale}/courses/math`); setIsLearnMoreModalOpen(false); }} className="w-full bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
                                             {t('modal.viewMore')}
 										<ChevronRight className="ml-2 w-4 h-4" />
 									</Button>
@@ -399,7 +400,7 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 							{/* English Courses Option */}
                             <Card 
                                 onClick={() => {
-                                    router.push('/courses/english');
+                                    router.push(`/${locale}/courses/english`);
                                     setIsLearnMoreModalOpen(false);
                                 }}
 								className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full"
@@ -440,7 +441,7 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 									</div>
 
 									{/* Enhanced CTA Button */}
-                                    <Button onClick={(e) => { e.stopPropagation(); router.push('/courses/english'); setIsLearnMoreModalOpen(false); }} className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
+                                    <Button onClick={(e) => { e.stopPropagation(); router.push(`/${locale}/courses/english`); setIsLearnMoreModalOpen(false); }} className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20 mt-auto">
                                         {t('modal.viewMore')}
 										<ChevronRight className="ml-2 w-4 h-4" />
 									</Button>

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchHeaderRequested } from '@/store/slices/headerSlice';
 import { Menu, X, Phone, Mail, MapPin, ChevronDown, Search, ShoppingCart, Calculator, BookOpen, Brain, Gamepad2, ChevronRight, Facebook, Twitter, Instagram, Linkedin, GraduationCap, Target, BookMarked, UserCheck } from 'lucide-react';
@@ -26,6 +26,7 @@ const iconMap: { [key: string]: any } = {
 
 export default function Header() {
   const t = useTranslations();
+  const locale = useLocale();
   const { state: cartState } = useCart();
   const pathname = usePathname();
   const dispatch = useAppDispatch();
@@ -537,7 +538,10 @@ export default function Header() {
           {/* Footer Section */}
           <div className="header-dropdown-footer">
             <p className="header-dropdown-footer-text">
-              {footerHelper} <Link href="/contact" className="text-[#1F396D] font-medium hover:underline">{footerContactCta}</Link>
+              {footerHelper}{' '}
+              <Link href={`/${locale}/contact`} className="text-[#1F396D] font-medium hover:underline">
+                {footerContactCta}
+              </Link>
             </p>
           </div>
         </div>
@@ -585,7 +589,7 @@ export default function Header() {
         <div className="header-mainrow">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="cursor-pointer" aria-label="GrowWise home">
+            <Link href={`/${locale}`} className="cursor-pointer" aria-label="GrowWise home">
               <img
                 src="/assets/growwise-logo.png"
                 alt="GrowWise"
@@ -629,7 +633,11 @@ export default function Header() {
               <button type="button" className="text-gray-700 hover:text-[#F16112] transition-colors" aria-label="Search">
                 <Search className="w-5 h-5" aria-hidden />
               </button>
-              <Link href="/cart" className="relative text-gray-700 hover:text-[#F16112] transition-colors" aria-label={cartState.itemCount > 0 ? `Shopping cart, ${cartState.itemCount} items` : 'Shopping cart'}>
+              <Link
+                href={`/${locale}/cart`}
+                className="relative text-gray-700 hover:text-[#F16112] transition-colors"
+                aria-label={cartState.itemCount > 0 ? `Shopping cart, ${cartState.itemCount} items` : 'Shopping cart'}
+              >
                 <ShoppingCart className="w-5 h-5" aria-hidden />
                 {cartState.itemCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-[#F16112] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium" aria-hidden>
