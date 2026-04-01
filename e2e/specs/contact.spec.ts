@@ -25,16 +25,6 @@ test.describe('Contact form', () => {
       await expect(loc).toHaveValue(value);
     };
 
-    const fillStable = async (re: RegExp, value: string) => {
-      const loc = page.getByLabel(re);
-      for (let i = 0; i < 3; i++) {
-        await loc.fill(value);
-        const v = await loc.inputValue();
-        if (v === value) break;
-      }
-      await expect(loc).toHaveValue(value);
-    };
-
     // Fill required fields
     await fillStable(/First Name/i, 'First');
     await fillStable(/Last Name/i, 'Last');
