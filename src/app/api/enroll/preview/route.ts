@@ -1,15 +1,10 @@
 import { NextResponse } from 'next/server';
+import { getBackendBaseUrlForProxy } from '@/lib/config';
 
 export const maxDuration = 30;
 
-function backendBaseUrl(): string | null {
-  const raw = process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
-  if (!raw) return null;
-  return raw.replace(/\/$/, '');
-}
-
 export async function POST(request: Request) {
-  const baseUrl = backendBaseUrl();
+  const baseUrl = getBackendBaseUrlForProxy();
   if (!baseUrl) {
     return NextResponse.json(
       {
