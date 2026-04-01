@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import { EnrollProvider } from '@/contexts/EnrollContext';
 import { CodingHero } from '@/components/coding/CodingHero';
@@ -12,12 +12,19 @@ export const metadata: Metadata = {
 
 export default function CodingPage() {
   return (
-    <EnrollProvider>
-      <main className="min-h-screen page-bg-coding">
-        <CodingHero />
-        <CodingPrograms />
-      </main>
-    </EnrollProvider>
+    <Suspense
+      fallback={
+        <div className="min-h-screen page-bg-coding flex items-center justify-center text-[#1F396D]">
+          Loading…
+        </div>
+      }
+    >
+      <EnrollProvider>
+        <main className="min-h-screen page-bg-coding">
+          <CodingHero />
+          <CodingPrograms />
+        </main>
+      </EnrollProvider>
+    </Suspense>
   );
 }
-

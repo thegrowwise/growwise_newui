@@ -10,6 +10,9 @@ import enMessages from '@/i18n/messages/en.json';
 import esMessages from '@/i18n/messages/es.json';
 import zhMessages from '@/i18n/messages/zh.json';
 import hiMessages from '@/i18n/messages/hi.json';
+import { ReviewStep } from './steps/ReviewStep';
+import { ChildStep } from './steps/ChildStep';
+import { PaymentStep } from './steps/PaymentStep';
 
 function EnrollPhase3Inner() {
   const searchParams = useSearchParams();
@@ -32,6 +35,11 @@ function EnrollPhase3Inner() {
   // If someone attempts to load `step=3` directly, we prevent it by forcing them back to step 2.
   const initialStep = requestedStep === 3 ? 2 : requestedStep;
   const [currentStep, setCurrentStep] = useState<EnrollStep>(initialStep);
+  const [parentName, setParentName] = useState('');
+  const [parentEmail, setParentEmail] = useState('');
+  const [parentPhone, setParentPhone] = useState('');
+  const [childName, setChildName] = useState('');
+  const [childAge, setChildAge] = useState<number | ''>('');
 
   const handleBack = () => {
     setCurrentStep((prev) => (prev > 1 ? (prev - 1) as EnrollStep : prev));
@@ -49,7 +57,7 @@ function EnrollPhase3Inner() {
   };
 
   const showBack = currentStep > 1;
-  const canAdvance = currentStep < 3;
+  const canAdvance = currentStep === 1;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
@@ -84,7 +92,35 @@ function EnrollPhase3Inner() {
         </div>
 
         <div className="mt-6 rounded-xl border bg-white/70 backdrop-blur p-4" data-testid="enroll-phase3-content">
-          <div data-testid={`enroll-phase3-step-${currentStep}`} />
+          <div data-testid={`enroll-phase3-step-${currentStep}`}>
+            {currentStep === 1 && <ReviewStep onContinue={handleNext} />}
+            {currentStep === 2 && (
+              <ChildStep
+                parentName={parentName}
+                parentEmail={parentEmail}
+                parentPhone={parentPhone}
+                childName={childName}
+                childAge={childAge}
+                onChange={(next) => {
+                  setParentName(next.parentName);
+                  setParentEmail(next.parentEmail);
+                  setParentPhone(next.parentPhone);
+                  setChildName(next.childName);
+                  setChildAge(next.childAge);
+                }}
+                onContinue={handleNext}
+              />
+            )}
+            {currentStep === 3 && (
+              <PaymentStep
+                parentName={parentName}
+                parentEmail={parentEmail}
+                parentPhone={parentPhone}
+                childName={childName}
+                childAge={childAge}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
