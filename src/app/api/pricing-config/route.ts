@@ -12,17 +12,17 @@ export async function GET() {
       | { data?: unknown };
 
     // Backend returns: { success: true, data: { programs, last_updated, ... } }
-    // Forward the inner config so the client gets json.data.programs (see usePricingConfig).
-    const raw = backendJson as Record<string, unknown>;
-    const inner = raw?.data as Record<string, unknown> | undefined;
+    // This route must forward that `data` shape to the frontend (see usePricingConfig).
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Stripe/backend JSON shape varies
+    const b = backendJson as any;
     const data =
-      inner && Array.isArray(inner.programs)
-        ? inner
-        : inner && typeof inner.data === 'object' && inner.data !== null && Array.isArray((inner.data as Record<string, unknown>).programs)
-          ? (inner.data as Record<string, unknown>)
-          : raw?.data;
+      b?.data?.programs !== undefined
+        ? b.data
+        : b?.data?.data?.programs !== undefined
+          ? b.data.data
+          : b.data;
 
-    if (!data || typeof data !== 'object' || !Array.isArray((data as { programs?: unknown }).programs)) {
+    if (!data || !Array.isArray(data.programs)) {
       throw new Error('Backend returned empty pricing config');
     }
 
