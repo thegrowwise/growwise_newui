@@ -15,8 +15,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
-
-
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'Contact', url: absoluteSiteUrl('/contact', locale, baseUrl) },
