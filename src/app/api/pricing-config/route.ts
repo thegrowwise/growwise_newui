@@ -21,16 +21,18 @@ export async function GET() {
       | { success?: boolean; data?: unknown; error?: string }
       | { data?: unknown };
 
-    // Backend returns: { success: true, data: { programs, last_updated, ... } }
-    // This route must forward that `data` shape to the frontend (see usePricingConfig).
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Stripe/backend JSON shape varies
+    // Express backend serves the JSON file as-is: { programs, last_updated, ... } at root.
+    // Some deployments may wrap { data: { programs } }; keep both shapes.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- backend JSON shape varies
     const b = backendJson as any;
     const data =
-      b?.data?.programs !== undefined
-        ? b.data
-        : b?.data?.data?.programs !== undefined
-          ? b.data.data
-          : b.data;
+      Array.isArray(b?.programs)
+        ? b
+        : b?.data?.programs !== undefined
+          ? b.data
+          : b?.data?.data?.programs !== undefined
+            ? b.data.data
+            : b.data;
 
     if (!data || !Array.isArray(data.programs)) {
       throw new Error('Backend returned empty pricing config');

@@ -58,34 +58,41 @@ function formatPrice(amount: number | null): string {
   }).format(amount);
 }
 
-function toTierVM(tiers: Tier[], mode: DeliveryMode): TierCardVM[] {
+/**
+ * Tier list prices in config are tier premiums; journey level rows define the level base.
+ * Displayed monthly total = tierPrice + (selectedLevelPrice - firstLevelPrice), using the same delivery mode.
+ */
+function toTierVM(
+  tiers: Tier[],
+  mode: DeliveryMode,
+  levelAdjust: { selected: JourneyLevel; first: JourneyLevel } | null,
+): TierCardVM[] {
+  const delta =
+    levelAdjust != null
+      ? levelPriceForMode(levelAdjust.selected, mode) -
+        levelPriceForMode(levelAdjust.first, mode)
+      : 0;
+
   return [...tiers]
     .sort((a, b) => a.sort_order - b.sort_order)
     .map((tier) => ({
       id: tier.id,
       name: tier.name,
       title: tier.name.charAt(0).toUpperCase() + tier.name.slice(1),
-      priceLabel: formatPrice(tierPriceForMode(tier, mode)),
+      priceLabel: formatPrice(tierPriceForMode(tier, mode) + delta),
       includes: tier.includes,
       isFeatured: tier.is_featured,
     }));
 }
 
-function toLevelVM(
-  levels: JourneyLevel[],
-  mode: DeliveryMode,
-): JourneyVisualLevel[] {
-  return [...levels]
-    .sort((a, b) => a.level_num - b.level_num)
-    .slice(0, 4)
-    .map((level, index) => ({
-      id: level.id,
-      levelNumber: level.level_num,
-      name: level.name,
-      priceLabel: formatPrice(levelPriceForMode(level, mode)),
-      milestones: level.milestones,
-      isActive: index === 0,
-    }));
+function toLevelVM(levels: JourneyLevel[], selectedIndex: number): JourneyVisualLevel[] {
+  return levels.map((level, index) => ({
+    id: level.id,
+    levelNumber: level.level_num,
+    name: level.name,
+    milestones: level.milestones,
+    isActive: index === selectedIndex,
+  }));
 }
 
 function toAddOnVM(addons: ProgramAddon[]): AddOnVM[] {
@@ -123,13 +130,29 @@ export function ProgramJourneyCard({
 
   const [mode, setMode] = useState<DeliveryMode>(program.studio_only ? 'studio' : 'live');
 
+  const sortedJourneyLevels = useMemo(
+    () =>
+      [...program.journey_levels].sort((a, b) => a.level_num - b.level_num).slice(0, 4),
+    [program.journey_levels],
+  );
+
+  const [selectedLevelIndex, setSelectedLevelIndex] = useState(0);
+
+  const levelAdjust = useMemo(() => {
+    if (sortedJourneyLevels.length === 0) return null;
+    const first = sortedJourneyLevels[0];
+    const selected =
+      sortedJourneyLevels[Math.min(selectedLevelIndex, sortedJourneyLevels.length - 1)] ?? first;
+    return { selected, first };
+  }, [sortedJourneyLevels, selectedLevelIndex]);
+
   const tiersVM = useMemo(
-    () => toTierVM(program.tiers, mode),
-    [program.tiers, mode],
+    () => toTierVM(program.tiers, mode, levelAdjust),
+    [program.tiers, mode, levelAdjust],
   );
   const levelsVM = useMemo(
-    () => toLevelVM(program.journey_levels, mode),
-    [program.journey_levels, mode],
+    () => toLevelVM(sortedJourneyLevels, selectedLevelIndex),
+    [sortedJourneyLevels, selectedLevelIndex],
   );
   const addonsVM = useMemo(
     () => toAddOnVM(program.program_addons),
@@ -196,6 +219,7 @@ export function ProgramJourneyCard({
           levels={levelsVM}
           accentColorClass={colorThemeClass}
           accentColorHex={colorThemeHex}
+          onLevelSelect={(index) => setSelectedLevelIndex(index)}
         />
 
         <TierCards tiers={tiersVM} selected={selectedTierForProgram} onSelect={handleTierSelect} />

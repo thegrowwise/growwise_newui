@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
+import { absoluteSiteUrl } from '@/lib/publicPath'
 import { CONTACT_INFO } from '@/lib/constants'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -9,11 +10,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return metadata || { title: 'Book Assessment | GrowWise', description: 'Book your free assessment' }
 }
 
-export default function BookAssessmentLayout({
+export default async function BookAssessmentLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ locale: string }>
 }) {
+  const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
 
   const serviceSchema = {
@@ -43,7 +47,7 @@ export default function BookAssessmentLayout({
       "priceCurrency": "USD",
       "description": "Complimentary 60-minute placement assessment",
     },
-    "url": `${baseUrl}/book-assessment`,
+    "url": absoluteSiteUrl('/book-assessment', locale, baseUrl),
   }
 
   return (

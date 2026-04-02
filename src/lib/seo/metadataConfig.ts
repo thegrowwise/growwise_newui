@@ -80,6 +80,21 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     path: '/courses/high-school-math',
   },
 
+  // Standalone program pages (mirror of STEAM routes — separate URLs, unique metadata)
+  '/coding': {
+    title: 'Coding Classes for Kids Dublin CA | Python, JavaScript & Web Dev | GrowWise',
+    description: 'Structured coding programs for kids aged 10–18 in Dublin, CA. Learn Python, JavaScript, and web development in small groups with expert instructors. Project-based curriculum. Book a free assessment.',
+    keywords: 'coding classes Dublin CA, coding for kids Dublin, Python classes kids, JavaScript course kids, web development course Dublin, coding programs K-12, coding tutor Dublin, learn to code Dublin CA, kids coding near me, programming classes Dublin CA, coding classes near me',
+    path: '/coding',
+  },
+
+  '/game-dev': {
+    title: 'Game Development for Kids Dublin CA | Scratch, Roblox & Minecraft | GrowWise',
+    description: 'Game development courses for kids aged 6–16 in Dublin, CA. Build real games with Scratch, Roblox, and Minecraft. Hands-on project-based learning, no experience required. Book a free assessment.',
+    keywords: 'game development Dublin CA, game development for kids, Scratch programming Dublin, Roblox coding classes, Minecraft modding, kids game design, game development courses near me, learn game development Dublin, coding games for kids Dublin CA, game programming classes',
+    path: '/game-dev',
+  },
+
   // STEAM pages
   '/steam': {
     title: "STEAM Programs Dublin CA | ML/AI, Game Development & Coding Classes | GrowWise",
