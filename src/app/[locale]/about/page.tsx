@@ -15,6 +15,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
 
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'About', url: absoluteSiteUrl('/about', locale, baseUrl) },
