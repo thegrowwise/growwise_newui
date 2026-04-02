@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, ExternalLink } from 'lucide-react';
+import { publicPath } from '@/lib/publicPath';
 
 // After installing the WordPress minimal template, update this URL to point to your new page
 // Example: 'https://thegrowwise.com/student-login-minimal/'
@@ -19,7 +20,7 @@ export default function StudentLoginPage() {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [useRedirect, setUseRedirect] = useState(false);
 
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   // Check if iframe loads successfully, fallback to redirect if not
   useEffect(() => {

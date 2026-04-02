@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, Loader2, Home, FileText, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { publicPath } from '@/lib/publicPath';
 
 const CheckoutSuccessContent: React.FC = () => {
   const searchParams = useSearchParams();
@@ -22,7 +23,7 @@ const CheckoutSuccessContent: React.FC = () => {
   const [hasFetched, setHasFetched] = useState(false);
 
   const sessionId = searchParams.get('session_id');
-  const createLocaleUrl = (path: string) => `/${locale}${path}`;
+  const createLocaleUrl = (path: string) => publicPath(path, locale);
 
   useEffect(() => {
     // Prevent multiple fetches

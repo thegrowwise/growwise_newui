@@ -15,6 +15,7 @@ interface NavigationProps {
   onSubmenuLeave: (key: string) => void;
   createLocaleUrl: (path: string) => string;
   pathname: string | null;
+  locale: string;
   cartItemCount: number;
   showCart: boolean;
   footerHelper: string;
@@ -33,6 +34,7 @@ export default function Navigation({
   onSubmenuLeave,
   createLocaleUrl,
   pathname,
+  locale,
   cartItemCount,
   showCart,
   footerHelper,
@@ -50,6 +52,7 @@ export default function Navigation({
               key={item.key}
               item={item}
               pathname={pathname}
+              locale={locale}
               openDropdowns={openDropdowns}
               openSubmenus={openSubmenus}
               onDropdownEnter={onDropdownEnter}

@@ -1,10 +1,9 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Student login page', () => {
   test('renders login form fields and CTA', async ({ page }) => {
-    await page.goto(`/${LOCALE}/student-login`);
+    await page.goto(localePath('/student-login'));
 
     await expect(
       page.getByRole('heading', { name: /Welcome back/i }),

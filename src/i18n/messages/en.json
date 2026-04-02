@@ -539,7 +539,7 @@
   },
   "englishCourses": {
     "hero": {
-      "title": "Excel in English Arts",
+      "title": "English Tutoring in Dublin, CA",
       "subtitle": "Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
       "badge": "Master English with Excellence"
     },
@@ -552,7 +552,7 @@
   },
   "mathCourses": {
     "hero": {
-      "title": "Master Mathematics with Confidence",
+      "title": "Math Tutoring in Dublin, CA",
       "subtitle": "Comprehensive math programs for students in Grades K–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
       "badge": "Master Math with Excellence"
     },
@@ -733,7 +733,11 @@
       "interests": {
         "academic": "Academic",
         "game_development": "Game development",
-        "coding": "Coding"
+        "coding": "Coding",
+        "robotics": "Robotics",
+        "math_olympiad": "Math & Olympiad",
+        "ai": "AI & Innovation",
+        "young_authors": "Young Authors"
       },
       "emailLabel": "Email",
       "emailPlaceholder": "you@example.com",

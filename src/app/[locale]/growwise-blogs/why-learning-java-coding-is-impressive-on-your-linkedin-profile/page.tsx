@@ -6,6 +6,8 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, Code, Linkedin, TrendingUp, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
 // Option 1: Local image in public folder: '/images/blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile.webp'
@@ -22,12 +24,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const baseUrl = 'https://thegrowwise.com'
+  const baseUrl = getCanonicalSiteUrl()
   
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Blogs', url: `${baseUrl}/${locale}/growwise-blogs` },
-    { name: 'Why Learning Java Coding is Impressive on Your LinkedIn Profile', url: `${baseUrl}/${locale}/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Why Learning Java Coding is Impressive on Your LinkedIn Profile', url: absoluteSiteUrl('/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile', locale, baseUrl) },
   ])
 
   return (

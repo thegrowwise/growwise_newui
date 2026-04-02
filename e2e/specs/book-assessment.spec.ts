@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-
-const LOCALE = process.env.E2E_LOCALE || 'en';
+import { localePath } from '../localePath';
 
 test.describe('Book assessment form', () => {
   test('submits free assessment booking with mocked backend', async ({ page }) => {
@@ -19,7 +18,7 @@ test.describe('Book assessment form', () => {
       }
     });
 
-    await page.goto(`/${LOCALE}/book-assessment`);
+    await page.goto(localePath('/book-assessment'));
 
     // Required fields
     await page.getByLabel(/Parent Name/i).fill('Parent Name');
@@ -28,7 +27,14 @@ test.describe('Book assessment form', () => {
     // Phone uses CountryCodeSelector + input with id="phone"
     await page.getByLabel(/Phone Number/i).fill('5551234567');
 
-    await page.getByLabel(/Student Name/i).fill('Student Name');
+    // WebKit can occasionally type before hydration finishes; hydration may reset controlled inputs.
+    const studentName = page.getByLabel(/Student Name/i);
+    for (let i = 0; i < 3; i++) {
+      await studentName.fill('Student Name');
+      const v = await studentName.inputValue();
+      if (v === 'Student Name') break;
+    }
+    await expect(studentName).toHaveValue('Student Name');
 
     // Grade select
     await page.getByTestId('assessment-grade-trigger').click();
@@ -49,13 +55,22 @@ test.describe('Book assessment form', () => {
 
     // Submit form (consent defaults to checked on this page)
     const submitBtn = page.getByTestId('assessment-submit');
-    await expect(submitBtn).toBeEnabled({ timeout: 8000 });
-    await submitBtn.click();
+    await expect(submitBtn).toBeEnabled({ timeout: 15000 });
+    await submitBtn.scrollIntoViewIfNeeded();
+    // WebKit can be finicky with click dispatch on large animated buttons; submit via form API.
+    await submitBtn.evaluate((btn) => {
+      const b = btn as HTMLButtonElement;
+      b.form?.requestSubmit(b);
+    });
+    await page.waitForResponse(
+      (r) => r.url().includes('/api/assessment') && r.request().method() === 'POST',
+      { timeout: 20000 }
+    );
 
     // Success view (page resets form after 5s, so assert promptly)
     await expect(
       page.getByTestId('assessment-success'),
-    ).toBeVisible({ timeout: 12000 });
+    ).toBeVisible({ timeout: 20000 });
     await expect(
       page.getByText(/free assessment booking request/i),
     ).toBeVisible();

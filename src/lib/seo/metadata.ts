@@ -6,6 +6,9 @@
 import { Metadata } from 'next'
 import { CONTACT_INFO } from '@/lib/constants'
 import { getMetadataConfig, PageMetadataConfig } from './metadataConfig'
+import { getValidLocale } from '@/i18n/localeConfig'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 interface PageMetadataOptions {
   title: string
@@ -55,14 +58,17 @@ export function generatePageMetadata({
   keywords,
   locale,
   path = '',
-  image = 'https://growwiseschool.org/og-image.jpg',
+  image = `${getCanonicalSiteUrl()}/og-image.jpg`,
   type = 'website',
   publishedTime,
   modifiedTime,
 }: PageMetadataOptions): Metadata {
-  const baseUrl = 'https://growwiseschool.org'
-  const url = `${baseUrl}/${locale}${path}`
-  
+  const baseUrl = getCanonicalSiteUrl()
+  const pathForUrl = path === '' ? '/' : path
+  // Single-language / clean-URL: canonical and OG url must follow publicPath + locale rules only (no hreflang alternates).
+  const effectiveLocale = getValidLocale(locale)
+  const url = absoluteSiteUrl(pathForUrl, effectiveLocale, baseUrl)
+
   // Default keywords if not provided
   const defaultKeywords = [
     'tutoring Dublin CA',
@@ -74,8 +80,8 @@ export function generatePageMetadata({
     'SAT prep Dublin',
     'personalized learning',
   ]
-  
-  const finalKeywords = keywords 
+
+  const finalKeywords = keywords
     ? `${keywords}, ${defaultKeywords.join(', ')}`
     : defaultKeywords.join(', ')
 
@@ -94,7 +100,7 @@ export function generatePageMetadata({
         height: 630,
         alt: title,
       }],
-      locale: locale,
+      locale: effectiveLocale,
       type: type,
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
@@ -107,12 +113,6 @@ export function generatePageMetadata({
     },
     alternates: {
       canonical: url,
-      languages: {
-        'en': `${baseUrl}/en${path}`,
-        'es': `${baseUrl}/es${path}`,
-        'hi': `${baseUrl}/hi${path}`,
-        'zh': `${baseUrl}/zh${path}`,
-      },
     },
     robots: {
       index: true,
@@ -127,4 +127,3 @@ export function generatePageMetadata({
     },
   }
 }
-

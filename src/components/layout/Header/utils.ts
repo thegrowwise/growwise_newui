@@ -1,5 +1,7 @@
 import { MenuItem, VariantStyles } from './types';
 import { VARIANT_STYLES, ROUTE_PATH_PATTERNS_HIDE_CART } from './constants';
+import { ENABLED_LOCALES } from '@/i18n/localeConfig';
+import { publicPath } from '@/lib/publicPath';
 
 /** True when the current path is one where the header cart should not be shown. */
 export function isCartHiddenOnPath(pathname: string | null): boolean {
@@ -8,7 +10,30 @@ export function isCartHiddenOnPath(pathname: string | null): boolean {
 }
 
 export function createLocaleUrl(path: string, locale: string): string {
-  return `/${locale}${path}`;
+  // Keep external/absolute URLs intact (including protocol-relative URLs).
+  if (!path) return publicPath('/', locale);
+  const trimmed = path.trim();
+  if (
+    /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(trimmed) || // http(s)://, etc.
+    trimmed.startsWith('//') || // protocol-relative
+    trimmed.startsWith('mailto:') ||
+    trimmed.startsWith('tel:')
+  ) {
+    return trimmed;
+  }
+
+  let normalized = trimmed;
+  if (normalized.startsWith('#') || normalized.startsWith('?')) {
+    normalized = `/${normalized}`;
+  }
+  if (!normalized.startsWith('/')) normalized = `/${normalized}`;
+
+  const localePattern =
+    ENABLED_LOCALES.length > 0 ? ENABLED_LOCALES.join('|') : 'en';
+  normalized = normalized.replace(new RegExp(`^/(?:${localePattern})(?=/|$)`), '');
+  if (normalized === '') normalized = '/';
+
+  return publicPath(normalized === '/' ? '/' : normalized, locale);
 }
 
 export function getVariant(variant?: string): VariantStyles {
@@ -17,8 +42,8 @@ export function getVariant(variant?: string): VariantStyles {
 
 export function isMenuItemActive(item: MenuItem, pathname: string | null, locale: string): boolean {
   if (item.type === 'dropdown' && item.dropdown) {
-    return item.dropdown.items.some((dropdownItem) => 
-      pathname?.startsWith(createLocaleUrl(dropdownItem.href, locale))
+    return item.dropdown.items.some((dropdownItem) =>
+      pathname?.startsWith(createLocaleUrl(dropdownItem.href, locale)),
     );
   }
   return pathname === createLocaleUrl(item.href, locale);

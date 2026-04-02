@@ -6,6 +6,8 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, Code, TrendingUp, Target, Briefcase, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
 // Option 1: Local image in public folder: '/images/blogs/unlock-your-future-the-best-programming-languages-for-career-advancement.webp'
@@ -22,12 +24,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function BlogPostPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const baseUrl = 'https://thegrowwise.com'
+  const baseUrl = getCanonicalSiteUrl()
   
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: `${baseUrl}/${locale}` },
-    { name: 'Blogs', url: `${baseUrl}/${locale}/growwise-blogs` },
-    { name: 'Unlock Your Future: The Best Programming Languages for Career Advancement', url: `${baseUrl}/${locale}/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement` },
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Unlock Your Future: The Best Programming Languages for Career Advancement', url: absoluteSiteUrl('/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement', locale, baseUrl) },
   ])
 
   return (

@@ -1,9 +1,19 @@
 import { NextResponse } from 'next/server';
-import { BACKEND_URL } from '@/lib/config';
+import { getBackendBaseUrlForProxy } from '@/lib/config';
 
 export async function GET() {
   try {
-    const base = BACKEND_URL.replace(/\/$/, '');
+    const base = getBackendBaseUrlForProxy();
+    if (!base) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'Backend is not configured',
+          message: 'Set NEXT_PUBLIC_BACKEND_URL in the Vercel / server environment (e.g. https://api.growwiseschool.org).',
+        },
+        { status: 503 },
+      );
+    }
     const res = await fetch(`${base}/api/pricing-config`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`Backend responded with HTTP ${res.status}`);
 
@@ -33,7 +43,7 @@ export async function GET() {
     const message = error instanceof Error ? error.message : 'Failed to load pricing config';
     return NextResponse.json(
       { success: false, error: message },
-      { status: 500 },
+      { status: 502 },
     );
   }
 }

@@ -7,7 +7,7 @@ export const BACKEND_URL =
 
 /**
  * Returns the configured backend base URL (trimmed), or null when unset.
- * Useful for debugging/telemetry without guessing.
+ * Use when you must not guess (e.g. logging, debug).
  */
 export function getBackendBaseUrl(): string | null {
   const raw = process.env.NEXT_PUBLIC_BACKEND_URL?.trim();

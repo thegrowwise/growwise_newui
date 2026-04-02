@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateCourseSchema } from '@/lib/seo/structuredData'
+import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -16,7 +18,7 @@ export default async function SATPrepLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const baseUrl = 'https://growwiseschool.org'
+  const baseUrl = getCanonicalSiteUrl()
   
   const courseSchema = generateCourseSchema({
     name: "SAT Prep Course Dublin CA | SAT Test Preparation & Strategies | SAT Tutoring",
@@ -34,21 +36,32 @@ export default async function SATPrepLayout({
       "Test-Taking Techniques"
     ],
     coursePrerequisites: "High school student preparing for SAT exam",
-    url: `${baseUrl}/${locale}/courses/sat-prep`,
+    url: absoluteSiteUrl('/courses/sat-prep', locale, baseUrl),
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {
       price: "35",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
-      url: `${baseUrl}/${locale}/enroll`,
+      url: absoluteSiteUrl('/enroll', locale, baseUrl),
     }
   })
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Programs', url: absoluteSiteUrl('/programs', locale, baseUrl) },
+    { name: 'Academic', url: absoluteSiteUrl('/academic', locale, baseUrl) },
+    { name: 'SAT Prep', url: absoluteSiteUrl('/courses/sat-prep', locale, baseUrl) },
+  ])
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>

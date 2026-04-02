@@ -1,6 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateCourseSchema } from '@/lib/seo/structuredData'
+import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { absoluteSiteUrl } from '@/lib/publicPath'
+import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
@@ -16,7 +18,7 @@ export default async function MLAICodingLayout({
   params: Promise<{ locale: string }>
 }) {
   const { locale } = await params
-  const baseUrl = 'https://growwiseschool.org'
+  const baseUrl = getCanonicalSiteUrl()
   
   const courseSchema = generateCourseSchema({
     name: "ML/AI Coding Course Dublin CA | Machine Learning & AI for Kids | GrowWise",
@@ -34,21 +36,32 @@ export default async function MLAICodingLayout({
       "Deep Learning Basics"
     ],
     coursePrerequisites: "Basic programming knowledge recommended but not required",
-    url: `${baseUrl}/${locale}/steam/ml-ai-coding`,
+    url: absoluteSiteUrl('/steam/ml-ai-coding', locale, baseUrl),
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {
       price: "35",
       priceCurrency: "USD",
       availability: "https://schema.org/InStock",
-      url: `${baseUrl}/${locale}/enroll`,
+      url: absoluteSiteUrl('/enroll', locale, baseUrl),
     }
   })
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Programs', url: absoluteSiteUrl('/programs', locale, baseUrl) },
+    { name: 'STEAM', url: absoluteSiteUrl('/steam', locale, baseUrl) },
+    { name: 'ML/AI Coding', url: absoluteSiteUrl('/steam/ml-ai-coding', locale, baseUrl) },
+  ])
 
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>

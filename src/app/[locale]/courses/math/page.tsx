@@ -18,6 +18,7 @@ import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { absoluteSiteUrl } from '@/lib/publicPath';
 import type { MathCourse } from '@/data/mathCourses';
 
 // Dynamically load heavier, below-the-fold components to reduce initial JS and improve LCP
@@ -362,9 +363,9 @@ const MathCoursesPage: React.FC = () => {
       {/* Breadcrumbs */}
       <Breadcrumbs 
         items={[
-          { name: 'Programs', url: `/${locale}/programs` },
-          { name: 'Academic', url: `/${locale}/academic` },
-          { name: 'Math Courses', url: `/${locale}/courses/math` },
+          { name: 'Programs', url: absoluteSiteUrl('/programs', locale) },
+          { name: 'Academic', url: absoluteSiteUrl('/academic', locale) },
+          { name: 'Math Courses', url: absoluteSiteUrl('/courses/math', locale) },
         ]}
       />
 
@@ -727,6 +728,34 @@ const MathCoursesPage: React.FC = () => {
               <div className="w-4 h-4 bg-[#1F396D]/30 rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* SEO Content Sections */}
+      <section className="py-16 px-4 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto space-y-10">
+          <p className="text-gray-600 leading-relaxed text-lg">
+            GrowWise offers structured math tutoring and math classes in Dublin, CA for grades 1–12. Whether your child needs foundational support or accelerated challenge, our programs are built around how each student actually learns — not one-size-fits-all instruction.
+          </p>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Elementary Math Tutoring</h2>
+            <p className="text-gray-600 leading-relaxed">For grades 1–5, we build number sense, arithmetic fluency, and problem-solving foundations. Our elementary math tutors work in small groups of 4–6 students, giving every child direct attention each session.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Middle School Math Tutoring</h2>
+            <p className="text-gray-600 leading-relaxed">Grades 6–8 is where math confidence is made or broken. Our middle school math program covers Pre-Algebra, Algebra 1, and grade-level math aligned with DUSD and PUSD curriculum.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Math Enrichment &amp; Olympiad Prep</h2>
+            <p className="text-gray-600 leading-relaxed">For students ready to go beyond the classroom, our math enrichment program develops competition-level thinking. Our Math Olympiad prep track covers AMC 8, MATHCOUNTS, and advanced problem sets — math olympiad classes near you in Dublin.</p>
+          </div>
+
+          <p className="text-gray-600 leading-relaxed">
+            Looking for math tutoring near you in the Tri-Valley area? GrowWise is at 4564 Dublin Blvd, Dublin CA, serving Dublin, Pleasanton, San Ramon, and Livermore.
+          </p>
         </div>
       </section>
 
