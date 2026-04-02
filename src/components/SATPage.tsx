@@ -218,9 +218,9 @@ const SATPage: React.FC = () => {
             </div>
             
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              Master the
+              SAT Tutoring
               <span className="block bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
-                SAT & PSAT
+                in Dublin, CA
               </span>
             </h1>
             
@@ -506,6 +506,29 @@ const SATPage: React.FC = () => {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* SEO Content Sections */}
+      <section className="py-16 px-4 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto space-y-10">
+          <p className="text-gray-600 leading-relaxed text-lg">
+            GrowWise offers structured SAT prep classes and SAT test prep for high school students in Dublin, CA. Our program covers every section of the SAT — math, reading, and writing — with personalized coaching and full practice tests.
+          </p>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">SAT Math Tutoring</h2>
+            <p className="text-gray-600 leading-relaxed">The SAT math section tests algebra, problem-solving, and data analysis under time pressure. Our SAT math tutoring builds both content knowledge and test-taking strategy so students perform consistently on exam day.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">SAT Coaching — Strategy and Practice</h2>
+            <p className="text-gray-600 leading-relaxed">Beyond content, our SAT coaching covers pacing, elimination strategies, and section-specific techniques. Students take full timed practice tests with detailed score analysis after every session.</p>
+          </div>
+
+          <p className="text-gray-600 leading-relaxed">
+            Offering SAT tutoring in Dublin CA and serving students from San Ramon, Pleasanton, and Livermore. Located at 4564 Dublin Blvd, Dublin CA 94568.
+          </p>
         </div>
       </section>
 

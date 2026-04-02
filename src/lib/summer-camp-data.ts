@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import { Calculator, Brain, Gamepad2, Bot, Code2, Lightbulb, PenTool } from 'lucide-react';
+import enProgramsJson from '../../public/api/mock/en/summer-camp-programs.json';
 
 export type Slot = {
   id: string;
@@ -249,6 +250,18 @@ export function hydrateSummerCampData(raw: SummerCampDataJson): {
         )
       : [];
   return { programs, olympiadTierConfigs };
+}
+
+/**
+ * Returns hydrated summer camp data synchronously from the bundled English JSON.
+ * Use as the initial useState value so SSR renders camp names in HTML.
+ */
+let _defaultData: ReturnType<typeof hydrateSummerCampData> | null = null;
+export function getDefaultSummerCampData(): ReturnType<typeof hydrateSummerCampData> {
+  if (!_defaultData) {
+    _defaultData = hydrateSummerCampData(enProgramsJson as SummerCampDataJson);
+  }
+  return _defaultData;
 }
 
 /** Fetches summer camp data from the mock API (same pattern as FAQ, academic, math, steam). Fallback to en if locale file missing. */

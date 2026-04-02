@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateCourseSchema } from '@/lib/seo/structuredData'
+import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -43,11 +43,22 @@ export default async function HighSchoolMathLayout({
     }
   })
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Programs', url: absoluteSiteUrl('/programs', locale, baseUrl) },
+    { name: 'Academic', url: absoluteSiteUrl('/academic', locale, baseUrl) },
+    { name: 'High School Math', url: absoluteSiteUrl('/courses/high-school-math', locale, baseUrl) },
+  ])
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>

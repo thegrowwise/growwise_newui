@@ -986,6 +986,40 @@ function EnglishCoursesContent() {
         />
       )}
       
+      {/* SEO Content Sections */}
+      <section className="py-16 px-4 lg:px-8 bg-white">
+        <div className="max-w-4xl mx-auto space-y-10">
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Reading Comprehension Tutoring for Grades 1–8</h2>
+            <p className="text-gray-600 leading-relaxed">We build reading skills systematically — from decoding and fluency in early grades to inference, analysis, and comprehension strategies through Grade 8.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Essay Writing Help for Middle &amp; High School Students</h2>
+            <p className="text-gray-600 leading-relaxed">Students learn to construct arguments, organize ideas, and write with clarity. We cover five-paragraph essays through long-form analytical writing for high school.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Writing Classes for Kids — Small Group Format</h2>
+            <p className="text-gray-600 leading-relaxed">Our writing classes run in groups of 4–6 students, giving each child direct instructor feedback every session.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Middle School English Tutoring</h2>
+            <p className="text-gray-600 leading-relaxed">For grades 6–8, we focus on the skills that matter most at this level — literary analysis, vocabulary development, grammar, and structured writing.</p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">High School English Tutoring</h2>
+            <p className="text-gray-600 leading-relaxed">We support grades 9–12 with essay writing, literary analysis, AP English preparation, and college essay coaching.</p>
+          </div>
+
+          <p className="text-gray-600 leading-relaxed">
+            For families searching for English tutoring near me in the Tri-Valley area — GrowWise is at 4564 Dublin Blvd, Dublin CA, serving Dublin, Pleasanton, San Ramon, and Livermore. We offer English classes for kids and a reading and writing tutor program in one center.
+          </p>
+        </div>
+      </section>
+
       {/* FAQ Section for SEO */}
       <CourseFAQ 
         faqs={[

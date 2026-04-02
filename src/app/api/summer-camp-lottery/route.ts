@@ -10,7 +10,15 @@ import { LOTTERY_GRADES, type LotteryGrade } from '@/lib/summer-lottery-keys';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const INTEREST_KEYS = ['academic', 'game_development', 'coding'] as const;
+const INTEREST_KEYS = [
+  'academic',
+  'game_development',
+  'coding',
+  'robotics',
+  'math_olympiad',
+  'ai',
+  'young_authors',
+] as const;
 
 type InterestKey = (typeof INTEREST_KEYS)[number];
 
@@ -34,6 +42,10 @@ const INTEREST_LABELS: Record<InterestKey, string> = {
   academic: 'Academic',
   game_development: 'Game development',
   coding: 'Coding',
+  robotics: 'Robotics',
+  math_olympiad: 'Math & Olympiad',
+  ai: 'AI & Innovation',
+  young_authors: 'Young Authors',
 };
 
 function escapeHtml(s: string): string {
