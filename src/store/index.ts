@@ -10,7 +10,6 @@ import englishCoursesReducer from './slices/englishCoursesSlice';
 import mathCoursesReducer from './slices/mathCoursesSlice';
 import steamReducer from './slices/steamSlice';
 import footerReducer from './slices/footerSlice';
-import rootSaga from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -36,9 +35,10 @@ export const store = configureStore({
     }).concat(sagaMiddleware),
 });
 
-// Only run sagas on the client side
 if (typeof window !== 'undefined') {
-  sagaMiddleware.run(rootSaga);
+  import('./sagas').then(({ default: rootSaga }) => {
+    sagaMiddleware.run(rootSaga);
+  });
 }
 
 export type RootState = ReturnType<typeof store.getState>;

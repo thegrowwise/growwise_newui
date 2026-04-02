@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
 
-// LCP: preload hero image only on home so first paint isn't blocked on other routes
-const HERO_IMAGE_PRELOAD = '/assets/hero-master-the-core.jpg';
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   const baseUrl = getCanonicalSiteUrl();
@@ -36,12 +34,6 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
-      />
-      <link
-        rel="preload"
-        as="image"
-        href={HERO_IMAGE_PRELOAD}
-        fetchPriority="high"
       />
       {children}
     </>
