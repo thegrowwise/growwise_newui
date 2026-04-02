@@ -7,9 +7,6 @@ import { Button } from '@/components/ui/button';
 import { EnrollStepper, type EnrollStep } from '@/components/enroll/EnrollStepper';
 import { DEFAULT_LOCALE } from '@/i18n/localeConfig';
 import enMessages from '@/i18n/messages/en.json';
-import esMessages from '@/i18n/messages/es.json';
-import zhMessages from '@/i18n/messages/zh.json';
-import hiMessages from '@/i18n/messages/hi.json';
 import { ReviewStep } from './steps/ReviewStep';
 import { ChildStep } from './steps/ChildStep';
 import { PaymentStep } from './steps/PaymentStep';
@@ -128,18 +125,8 @@ function EnrollPhase3Inner() {
 }
 
 export default function EnrollPhase3Page() {
-  const messagesByLocale: Record<string, unknown> = {
-    en: enMessages,
-    es: esMessages,
-    zh: zhMessages,
-    hi: hiMessages,
-  };
-
   return (
-    <NextIntlClientProvider
-      locale={DEFAULT_LOCALE}
-      messages={messagesByLocale[DEFAULT_LOCALE] ?? enMessages}
-    >
+    <NextIntlClientProvider locale={DEFAULT_LOCALE} messages={enMessages}>
       <Suspense fallback={null}>
         <EnrollPhase3Inner />
       </Suspense>

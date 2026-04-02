@@ -52,7 +52,7 @@ const mlaiCourses: MLAICourse[] = [
       'Portfolio building opportunities',
       'Industry-standard tools and practices'
     ],
-    image: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1526379095098-d400fd0bf935.jpg',
     instructor: 'Dr. Alex Martinez',
     rating: 4.9,
     studentsEnrolled: 156,
@@ -79,7 +79,7 @@ const mlaiCourses: MLAICourse[] = [
       'Industry-standard development tools',
       'Collaborative coding practices'
     ],
-    image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1551650975-87deedd944c3.jpg',
     instructor: 'Sarah Chen',
     rating: 4.8,
     studentsEnrolled: 89,
@@ -106,7 +106,7 @@ const mlaiCourses: MLAICourse[] = [
       'Industry-standard ML frameworks',
       'Portfolio of AI/ML projects'
     ],
-    image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1555949963-aa79dcee981c.jpg',
     instructor: 'Dr. Priya Patel',
     rating: 4.9,
     studentsEnrolled: 124,

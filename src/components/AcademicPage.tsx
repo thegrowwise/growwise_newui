@@ -179,7 +179,7 @@ const AcademicPage = ({ setCurrentPage }: { setCurrentPage?: (page: string) => v
 							<Card className="bg-white/80 backdrop-blur-xl rounded-[32px] shadow-[0px_20px_50px_0px_rgba(31,57,109,0.12)] border border-white/40 overflow-hidden">
 								<CardContent className="p-0">
 									<OptimizedImage
-										src="https://images.unsplash.com/photo-1532788592275-3f310c81dd95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHN0dWRlbnQlMjBsZWFybmluZyUyMHdpdGglMjBoZWFkcGhvbmVzfGVufDF8fHx8MTc1NzI2Nzg1OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+										src="/assets/photos/photo-1532788592275-3f310c81dd95.jpg"
 										alt="Happy student learning with headphones"
 										width={800}
 										height={600}

@@ -225,9 +225,9 @@ const AcademicPage: React.FC = () => {
   ];
 
   const successStories = [
-    { name: 'Emma Rodriguez', grade: '7th Grade', subject: 'Math', improvement: 'From C to A+ in Algebra', quote: 'GrowWise helped me understand math concepts I never thought I could master!', image: 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=100&h=100&fit=crop&crop=face' },
-    { name: 'Michael Chen', grade: '5th Grade', subject: 'English', improvement: 'Reading level increased by 2 grades', quote: 'My writing has improved so much. I actually enjoy writing essays now!', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face' },
-    { name: 'Sarah Johnson', grade: '9th Grade', subject: 'Integrated Math', improvement: 'Passed to Honors Math', quote: 'The personalized attention helped me catch up and even get ahead in math.', image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face' }
+    { name: 'Emma Rodriguez', grade: '7th Grade', subject: 'Math', improvement: 'From C to A+ in Algebra', quote: 'GrowWise helped me understand math concepts I never thought I could master!', image: '/assets/photos/photo-1544717297-fa95b6ee9643.jpg' },
+    { name: 'Michael Chen', grade: '5th Grade', subject: 'English', improvement: 'Reading level increased by 2 grades', quote: 'My writing has improved so much. I actually enjoy writing essays now!', image: '/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg' },
+    { name: 'Sarah Johnson', grade: '9th Grade', subject: 'Integrated Math', improvement: 'Passed to Honors Math', quote: 'The personalized attention helped me catch up and even get ahead in math.', image: '/assets/photos/photo-1494790108755-2616b612b786.jpg' }
   ];
 
   return (
@@ -551,7 +551,7 @@ const AcademicPage: React.FC = () => {
               <Card className="bg-white/80 backdrop-blur-xl rounded-[32px] shadow-[0px_20px_50px_0px_rgba(31,57,109,0.12)] border border-white/40 overflow-hidden">
                 <CardContent className="p-0">
                   <ImageWithFallback
-                    src="https://images.unsplash.com/photo-1532788592275-3f310c81dd95?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxoYXBweSUyMHN0dWRlbnQlMjBsZWFybmluZyUyMHdpdGglMjBoZWFkcGhvbmVzfGVufDF8fHx8MTc1NzI2Nzg1OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                    src="/assets/photos/photo-1532788592275-3f310c81dd95.jpg"
                     alt="Happy student learning with headphones"
                     className="w-full h-auto object-cover"
                   />

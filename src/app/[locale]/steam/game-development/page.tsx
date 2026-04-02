@@ -55,7 +55,7 @@ const gameDevCourses: GameDevCourse[] = [
       'User interface design for games',
       'Sharing and community engagement'
     ],
-    image: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1493711662062-fa541adb3fc8.jpg',
     instructor: 'Maya Rodriguez',
     rating: 4.9,
     studentsEnrolled: 312,
@@ -81,7 +81,7 @@ const gameDevCourses: GameDevCourse[] = [
       'Problem-solving through iterations',
       'Showcase and demo day'
     ],
-    image: 'https://images.unsplash.com/photo-1541996275315-1f66f1a222b7?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1541996275315-1f66f1a222b7.jpg',
     instructor: 'Priya Shah',
     rating: 4.8,
     studentsEnrolled: 205,
@@ -108,7 +108,7 @@ const gameDevCourses: GameDevCourse[] = [
       'Collaborative multiplayer game development',
       'Portfolio building with published games'
     ],
-    image: 'https://images.unsplash.com/photo-1556438064-2d7646166914?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1556438064-2d7646166914.jpg',
     instructor: 'Alex Thompson',
     rating: 4.8,
     studentsEnrolled: 234,
@@ -135,7 +135,7 @@ const gameDevCourses: GameDevCourse[] = [
       'Problem-solving through engineering',
       'Portfolio of completed projects'
     ],
-    image: 'https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=400&h=300&fit=crop',
+    image: '/assets/photos/photo-1606092195730-5d7b9af1efc5.jpg',
     instructor: 'Jordan Kim',
     rating: 4.7,
     studentsEnrolled: 189,

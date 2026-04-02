@@ -13,9 +13,7 @@ export async function GET(
       return NextResponse.json({ error: 'No file specified' }, { status: 400 });
     }
     
-    // Handle both patterns:
-    // /api/mock/en/english-courses (locale-specific)
-    // /api/mock/english-courses (fallback to English)
+    // /api/mock/en/<file> or /api/mock/<file> (defaults to en mock under public/api/mock/en/)
     
     let locale = 'en'; // default
     let fileName = path[path.length - 1]; // last segment is always the file
