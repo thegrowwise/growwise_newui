@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { generateMetadataFromPath } from '@/lib/seo/metadata';
-import { generateEventSchema } from '@/lib/seo/structuredData';
+import { generateEventSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData';
 import { CONTACT_INFO } from '@/lib/constants';
 import { absoluteSiteUrl } from '@/lib/publicPath';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
@@ -61,11 +61,21 @@ export default async function SummerCampLayout({
     eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   });
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Camps', url: absoluteSiteUrl('/camps/summer', locale, baseUrl) },
+    { name: 'Summer Camp 2026', url: absoluteSiteUrl('/camps/summer', locale, baseUrl) },
+  ]);
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>
