@@ -17,7 +17,15 @@ export const LOTTERY_GRADES = [
 
 export type LotteryGrade = (typeof LOTTERY_GRADES)[number];
 
-export const LOTTERY_INTERESTS = ['academic', 'game_development', 'coding'] as const;
+export const LOTTERY_INTERESTS = [
+  'academic',
+  'game_development',
+  'coding',
+  'robotics',
+  'math_olympiad',
+  'ai',
+  'young_authors',
+] as const;
 
 export type LotteryInterest = (typeof LOTTERY_INTERESTS)[number];
 

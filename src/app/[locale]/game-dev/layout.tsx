@@ -6,11 +6,11 @@ import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
-  const metadata = generateMetadataFromPath('/steam/game-development', locale)
-  return metadata || { title: 'Game Development | GrowWise', description: 'Game development course' }
+  const metadata = generateMetadataFromPath('/game-dev', locale)
+  return metadata || { title: 'Game Development for Kids | GrowWise', description: 'Scratch, Roblox, Minecraft, and Robotics journeys for kids aged 6–16.' }
 }
 
-export default async function GameDevelopmentLayout({
+export default async function GameDevLayout({
   children,
   params,
 }: {
@@ -19,38 +19,37 @@ export default async function GameDevelopmentLayout({
 }) {
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
-  
+
   const courseSchema = generateCourseSchema({
-    name: "Game Development Course Dublin CA | Learn to Build Games | Coding Classes | GrowWise",
-    description: "Game development course for K-12 students in Dublin, CA. Learn to create games using Roblox, Scratch, and Python. Build real game projects, develop coding skills. Hands-on game development classes with expert instructors. Start building games today!",
-    provider: "GrowWise",
-    courseCode: "GAME-DEV-K12",
-    educationalLevel: "K-12",
+    name: 'Game Development for Kids Dublin CA | Scratch, Roblox & Minecraft | GrowWise',
+    description: 'Game development courses for kids aged 6–16 in Dublin, CA. Build real games with Scratch, Roblox, Minecraft, and Robotics. Hands-on project-based learning with expert instructors. No experience required.',
+    provider: 'GrowWise',
+    courseCode: 'GAME-DEV-K12',
+    educationalLevel: 'K-12',
     teaches: [
-      "Game Design",
-      "Game Programming",
-      "Roblox Development",
-      "Scratch Programming",
-      "Python Game Development",
-      "Minecraft Modding",
-      "Game Mechanics"
+      'Scratch Programming',
+      'Roblox Game Development',
+      'Minecraft Modding',
+      'Robotics',
+      'Game Design',
+      'Creative Coding',
     ],
-    coursePrerequisites: "No prior experience required - perfect for beginners",
-    url: absoluteSiteUrl('/steam/game-development', locale, baseUrl),
+    coursePrerequisites: 'No prior experience required – perfect for beginners',
+    url: absoluteSiteUrl('/game-dev', locale, baseUrl),
     image: `${baseUrl}/assets/growwise-logo.png`,
     offers: {
-      price: "35",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
+      price: '35',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
       url: absoluteSiteUrl('/enroll', locale, baseUrl),
-    }
+    },
   })
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'Programs', url: absoluteSiteUrl('/programs', locale, baseUrl) },
     { name: 'STEAM', url: absoluteSiteUrl('/steam', locale, baseUrl) },
-    { name: 'Game Development', url: absoluteSiteUrl('/steam/game-development', locale, baseUrl) },
+    { name: 'Game Development', url: absoluteSiteUrl('/game-dev', locale, baseUrl) },
   ])
 
   return (
@@ -67,4 +66,3 @@ export default async function GameDevelopmentLayout({
     </>
   )
 }
-

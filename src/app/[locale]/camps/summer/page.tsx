@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import type { SummerCampFaqItem } from './SummerCampPageFaq';
-import { fetchSummerCampData, type Program, type OlympiadTierConfig } from '@/lib/summer-camp-data';
+import { fetchSummerCampData, getDefaultSummerCampData, type Program, type OlympiadTierConfig } from '@/lib/summer-camp-data';
 import { createLocaleUrl } from '@/components/layout/Header/utils';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -90,10 +90,12 @@ export default function SummerCampPage() {
   const t = useTranslations('summerCamp');
   const locale = useLocale();
   const router = useRouter();
-  const [programs, setPrograms] = useState<Program[]>([]);
-  const [olympiadTierConfigs, setOlympiadTierConfigs] = useState<OlympiadTierConfig[]>([]);
-  const [programsLoading, setProgramsLoading] = useState(true);
-  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
+  const _defaultCampData = getDefaultSummerCampData();
+  const [programs, setPrograms] = useState<Program[]>(_defaultCampData.programs);
+  const [olympiadTierConfigs, setOlympiadTierConfigs] = useState<OlympiadTierConfig[]>(_defaultCampData.olympiadTierConfigs);
+  // English data is already loaded from the static bundle; no skeleton needed on first render.
+  const [programsLoading, setProgramsLoading] = useState(false);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(_defaultCampData.programs[0] ?? null);
   const [campTypeFilter, setCampTypeFilter] = useState<CampTypeFilter>('all');
   const [faqs, setFaqs] = useState<SummerCampFaqItem[]>([]);
   const [faqsLoading, setFaqsLoading] = useState(true);
@@ -216,6 +218,17 @@ export default function SummerCampPage() {
   };
 
   useEffect(() => {
+    // English data is already hydrated from the static bundle — no fetch needed.
+    if (locale === 'en') {
+      const p = _defaultCampData.programs;
+      const isMobileViewport = typeof window !== 'undefined' && window.innerWidth <= 768;
+      setSelectedProgram((prev) => {
+        const mapped = prev ? p.find((x) => x.id === prev.id) : undefined;
+        if (isMobileViewport) return mapped ?? null;
+        return mapped ?? p[0] ?? null;
+      });
+      return;
+    }
     let cancelled = false;
     const load = async () => {
       setProgramsLoading(true);
@@ -246,7 +259,7 @@ export default function SummerCampPage() {
     return () => {
       cancelled = true;
     };
-  }, [locale]);
+  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // FAQ JSON after programs settle — avoids competing with hero + program images on the critical network path.
   useEffect(() => {

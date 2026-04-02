@@ -53,29 +53,29 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
 
   // Course pages - Enhanced with keyword-rich titles and descriptions
   '/courses/math': {
-    title: "Math Tutoring Dublin CA | K-12 Math Courses | Grade-Level, Accelerated & Integrated Math | GrowWise",
-    description: "Expert math tutoring in Dublin, CA. K-12 math courses including grade-level math, accelerated math, and integrated math 1 & 2. DUSD and PUSD aligned curriculum. Algebra, Geometry, Pre-Calculus. Small class sizes, personalized instruction. Book a free math assessment today!",
+    title: "Math Tutoring Near Me in Dublin CA | K-12 Math Classes | GrowWise",
+    description: "Expert math tutoring in Dublin, CA for grades 1–12. Elementary, middle school, and advanced math classes. Math Olympiad prep. Small groups. Book a free assessment.",
     keywords: "math tutoring Dublin CA, math tutor Dublin, K-12 math courses, grade-level math, accelerated math, integrated math, DUSD math, PUSD math, algebra tutoring, geometry tutoring, pre-calculus, elementary math, middle school math, high school math, math classes Dublin CA, math help Dublin, math tutoring near me",
     path: '/courses/math',
   },
 
   '/courses/english': {
-    title: "English Tutoring Dublin CA | Reading & Writing Courses | ELA Tutoring | GrowWise",
-    description: "Expert English Language Arts tutoring in Dublin, CA. Comprehensive ELA courses: reading comprehension, vocabulary development, grammar, and essay writing. California Common Core aligned. K-12 English tutoring with proven results. Book your free English assessment!",
+    title: "English Tutoring Dublin CA | Reading, Writing & ELA | GrowWise",
+    description: "Expert English tutoring in Dublin CA for grades 1–12. Reading comprehension, essay writing, and ELA classes. Small groups, personalized instruction. Book a free assessment.",
     keywords: "English tutoring Dublin CA, English tutor Dublin, reading comprehension, essay writing, grammar tutoring, vocabulary development, English Language Arts, ELA tutoring, writing tutor, reading tutor, English classes Dublin CA, English help Dublin, English tutoring near me, K-12 English courses",
     path: '/courses/english',
   },
 
   '/courses/sat-prep': {
-    title: "SAT Prep Dublin CA | SAT Test Preparation Course | SAT Tutoring | GrowWise",
-    description: "Top-rated SAT prep course in Dublin, CA. Comprehensive SAT preparation with practice tests, proven strategies, and personalized instruction. Expert SAT tutors help boost your score. Small classes, flexible scheduling. Book your SAT prep course today!",
+    title: "SAT Tutoring Near Me in Dublin CA | SAT Prep Classes | GrowWise",
+    description: "Expert SAT tutoring and SAT prep classes in Dublin, CA. SAT math tutoring, reading, and writing. Small groups, proven strategies. Serving Dublin and San Ramon. Book today.",
     keywords: "SAT prep Dublin CA, SAT preparation, SAT course, SAT tutoring Dublin, SAT test prep, SAT strategies, SAT practice tests, SAT classes Dublin CA, SAT help, SAT tutor near me, SAT prep course, SAT score improvement, college entrance exam prep",
     path: '/courses/sat-prep',
   },
 
   '/courses/high-school-math': {
-    title: "High School Math Courses - Algebra, Geometry, Pre-Calculus | GrowWise",
-    description: "High school math courses: Algebra, Geometry, Pre-Calculus, and more. Expert instruction for high school students. DUSD & PUSD aligned. Math tutoring in Dublin, CA.",
+    title: "High School Math Tutoring Dublin CA | Algebra, Pre-Calculus & Advanced Math | GrowWise",
+    description: "Expert high school math tutoring in Dublin, CA. Algebra 2, Pre-Calculus, advanced math classes and integrated math. DUSD aligned. Small groups. Book a free assessment.",
     keywords: "high school math, algebra tutoring, geometry tutoring, pre-calculus, high school math courses Dublin CA, advanced math",
     path: '/courses/high-school-math',
   },
