@@ -7,6 +7,7 @@ import NavLink from './NavLink';
 interface MenuItemRendererProps {
   item: MenuItem;
   pathname: string | null;
+  locale: string;
   openDropdowns: { [key: string]: boolean };
   openSubmenus: { [key: string]: boolean };
   onDropdownEnter: (key: string) => void;
@@ -23,6 +24,7 @@ interface MenuItemRendererProps {
 export default function MenuItemRenderer({
   item,
   pathname,
+  locale,
   openDropdowns,
   openSubmenus,
   onDropdownEnter,
@@ -46,7 +48,7 @@ export default function MenuItemRenderer({
         key={item.key}
         item={item}
         isOpen={openDropdowns[item.key] || false}
-        isActive={isMenuItemActive(item, pathname, createLocaleUrl('').split('/')[1])}
+        isActive={isMenuItemActive(item, pathname, locale)}
         openSubmenus={openSubmenus}
         onMouseEnter={() => onDropdownEnter(item.key)}
         onMouseLeave={() => onDropdownLeave(item.key)}
@@ -63,7 +65,7 @@ export default function MenuItemRenderer({
   }
 
   // Check if it's a button
-  const isButton = (item as any).isButton;
+  const isButton = item.isButton;
   if (isButton) {
     return (
       <NavButton
@@ -75,7 +77,7 @@ export default function MenuItemRenderer({
   }
 
   // Render as regular nav link
-  const isActive = isMenuItemActive(item, pathname, createLocaleUrl('').split('/')[1]);
+  const isActive = isMenuItemActive(item, pathname, locale);
   return (
     <NavLink
       key={item.key}
