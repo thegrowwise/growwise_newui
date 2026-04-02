@@ -34,7 +34,7 @@ export const mathCourses: MathCourse[] = [
       'Small group instruction',
       'Regular assessments'
     ],
-    image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1509228468518-180dd4864904.jpg'
   },
   {
     id: 'elementary-math',
@@ -55,7 +55,7 @@ export const mathCourses: MathCourse[] = [
       'Interactive learning activities',
       'Age-appropriate instruction'
     ],
-    image: 'https://images.unsplash.com/photo-1596496050755-c923e73e42e1?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1596496050755-c923e73e42e1.jpg'
   },
   {
     id: 'math-course-1-2',
@@ -76,7 +76,7 @@ export const mathCourses: MathCourse[] = [
       'Personalized instruction',
       'Progress tracking'
     ],
-    image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1635070041078-e363dbe005cb.jpg'
   },
   {
     id: 'math-course-3',
@@ -97,7 +97,7 @@ export const mathCourses: MathCourse[] = [
       'Challenging assignments',
       'College prep foundation'
     ],
-    image: 'https://images.unsplash.com/photo-1509869175650-a1d97972541a?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1509869175650-a1d97972541a.jpg'
   },
   {
     id: 'math-integrated-1',
@@ -118,7 +118,7 @@ export const mathCourses: MathCourse[] = [
       'Rigorous coursework',
       'Exceptional student preparation'
     ],
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1454165804606-c3d57bc86b40.jpg'
   },
   {
     id: 'math-integrated-2',
@@ -139,7 +139,7 @@ export const mathCourses: MathCourse[] = [
       'High school preparation',
       'Advanced problem solving'
     ],
-    image: 'https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1596495578065-6e0763fa1178.jpg'
   },
   {
     id: 'algebra-1',
@@ -160,7 +160,7 @@ export const mathCourses: MathCourse[] = [
       'Graphing techniques',
       'High school preparation'
     ],
-    image: 'https://images.unsplash.com/photo-1635070041409-bbf03b61710a?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1635070041409-bbf03b61710a.jpg'
   },
   {
     id: 'algebra-2',
@@ -181,6 +181,6 @@ export const mathCourses: MathCourse[] = [
       'Trigonometry introduction',
       'College readiness preparation'
     ],
-    image: 'https://images.unsplash.com/photo-1635070041701-cc4d4d4b8ca4?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1635070041701-cc4d4d4b8ca4.jpg'
   }
 ];

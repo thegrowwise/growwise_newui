@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import GTM from '../components/analytics/GTM';
 import MetaPixel from '../components/analytics/MetaPixel';
 // Optimize font loading with next/font
@@ -41,7 +40,6 @@ export default function RootLayout({
         <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
         {/* next/font (Inter) self-hosts — no Google Fonts preconnect needed */}
         <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://api.growwiseschool.org" />
       </head>
       <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
@@ -106,9 +104,28 @@ export default function RootLayout({
           <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
         ) : null}
         {children}
-        {/* If GTM isn't configured, fall back to direct GoogleAnalytics integration */}
-        {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
-        }
+        {/* gtag only when GTM is off — lazyOnload avoids competing with LCP (GA third-party default is afterInteractive) */}
+        {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID ? (
+          <>
+            <Script
+              id="_next-ga-init"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                `,
+              }}
+            />
+            <Script
+              id="_next-ga"
+              strategy="lazyOnload"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+          </>
+        ) : null}
       </body>
     </html>
   );
