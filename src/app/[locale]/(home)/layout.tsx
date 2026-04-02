@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
 
+
 export default function HomeLayout({ children }: { children: ReactNode }) {
   const baseUrl = getCanonicalSiteUrl();
 
