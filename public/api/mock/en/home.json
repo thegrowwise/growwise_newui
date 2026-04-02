@@ -11,7 +11,7 @@
       "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#2a4a7c]",
       "iconColor": "text-white",
       "ctaColor": "bg-[#E85A1C] hover:bg-[#d54f0a] text-white",
-      "bgImage": "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1200&h=800&fit=crop"
+      "bgImage": "/assets/hero-master-the-core.jpg"
     },
     {
       "id": 2,
@@ -24,7 +24,7 @@
       "bgGradient": "bg-gradient-to-br from-[#F16112] via-[#F1894F] to-[#d54f0a]",
       "iconColor": "text-white",
       "ctaColor": "bg-[#1F396D] hover:bg-[#29335C] text-white",
-      "bgImage": "https://images.unsplash.com/photo-1548686304-89d188a80029?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxraWRzJTIwY29kaW5nJTIwY29tcHV0ZXIlMjBwcm9ncmFtbWluZyUyMFNURUFNfGVufDF8fHx8MTc1NzQ4Mjg3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+      "bgImage": "/assets/hero-build-code-create.jpg"
     },
     {
       "id": 3,
@@ -37,7 +37,7 @@
       "bgGradient": "bg-gradient-to-br from-[#1F396D] via-[#F16112] to-[#F1894F]",
       "iconColor": "text-white",
       "ctaColor": "bg-white hover:bg-gray-100 text-[#1F396D]",
-      "bgImage": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=800&fit=crop"
+      "bgImage": "/assets/hero-one-on-one.jpg"
     }
   ],
   "popularCourses": [
@@ -98,9 +98,9 @@
     ] }
   ],
   "testimonials": [
-    { "name": "Sarah Johnson", "role": "Parent", "content": "GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.", "rating": 5, "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face" },
-    { "name": "Michael Chen", "role": "Student", "content": "The STEAM programs at GrowWise opened up a whole new world of possibilities. I'm now pursuing computer science in college!", "rating": 5, "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" },
-    { "name": "Lisa Rodriguez", "role": "Parent", "content": "The personalized attention and innovative teaching methods make GrowWise stand out from other programs.", "rating": 5, "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" }
+    { "name": "Sarah Johnson", "role": "Parent", "content": "GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.", "rating": 5, "image": "/assets/photos/photo-1494790108755-2616b612b786.jpg" },
+    { "name": "Michael Chen", "role": "Student", "content": "The STEAM programs at GrowWise opened up a whole new world of possibilities. I'm now pursuing computer science in college!", "rating": 5, "image": "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg" },
+    { "name": "Lisa Rodriguez", "role": "Parent", "content": "The personalized attention and innovative teaching methods make GrowWise stand out from other programs.", "rating": 5, "image": "/assets/photos/photo-1438761681033-6461ffad8d80.jpg" }
   ],
   "whyChooseUs": [
     { "icon": "UserCheck", "title": "1️⃣ Personalized Pathway", "description": "We build a unique learning plan for each child — aligned with school curriculum, grade level, and personal goals. No generic lessons — every session is customized for their needs.", "subtitle": "Tailored Learning for Every Student" },

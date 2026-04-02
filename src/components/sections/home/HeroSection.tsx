@@ -74,8 +74,9 @@ export function HeroSection({
                           alt={slide.title} 
                           fill
                           className="object-cover"
+                          style={{ objectFit: 'cover' }}
                           sizes="100vw"
-                          priority={isActive}
+                          priority={index === 0}
                         />
                       )}
                       <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>

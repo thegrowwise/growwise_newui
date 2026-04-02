@@ -30,7 +30,7 @@
     "images": [
       { "src": "/assets/3e32d074ecb0cbbf1938d278ea2251c0bae43f37.png", "alt": "Classroom Q&A", "style": "tilt" },
       { "src": "/assets/0fb554c814973287034758481cdce9617220c706.png", "alt": "Students Group", "style": "tilt-small" },
-      { "src": "/assets/f67b000f9bfa025e565ea4296e99a888a2ea5a33.png", "alt": "Founder", "style": "large" }
+      { "src": "/assets/founderImage.webp", "alt": "Founder", "style": "large" }
     ]
   },
   "mission": {
@@ -114,15 +114,15 @@
     { "icon": "Globe", "title": "STEM Outreach", "description": "Community events and coding workshops to inspire the next generation of innovators" }
   ],
   "testimonials": [
-    { "name": "Jennifer Martinez", "role": "Parent of Sofia (Grade 7)", "content": "GrowWise has been transformational for Sofia. She went from struggling with math to being excited about algebra. The personalized approach really works!", "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face", "rating": 5 },
-    { "name": "Alex Chen", "role": "High School Senior", "content": "The Python programming course at GrowWise opened up a whole new world for me. I'm now pursuing computer science in college thanks to the foundation I built here.", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face", "rating": 5 },
-    { "name": "Robert Johnson", "role": "Parent of Emma (Grade 4)", "content": "The reading enrichment program helped Emma develop a genuine love for books. Her confidence and comprehension have improved dramatically.", "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face", "rating": 5 }
+    { "name": "Jennifer Martinez", "role": "Parent of Sofia (Grade 7)", "content": "GrowWise has been transformational for Sofia. She went from struggling with math to being excited about algebra. The personalized approach really works!", "image": "/assets/photos/photo-1494790108755-2616b612b786.jpg", "rating": 5 },
+    { "name": "Alex Chen", "role": "High School Senior", "content": "The Python programming course at GrowWise opened up a whole new world for me. I'm now pursuing computer science in college thanks to the foundation I built here.", "image": "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg", "rating": 5 },
+    { "name": "Robert Johnson", "role": "Parent of Emma (Grade 4)", "content": "The reading enrichment program helped Emma develop a genuine love for books. Her confidence and comprehension have improved dramatically.", "image": "/assets/photos/photo-1472099645785-5658abf4ff4e.jpg", "rating": 5 }
   ],
   "teamMembers": [
-    { "name": "Anshika Verma", "role": "Founder & Director", "image": "https://growwise-assets.s3.us-west-1.amazonaws.com/images/founder/anshika-verma.png", "bio": "With over a decade of software engineering experience and inspired by her parents—both lifelong educators—Anshika Verma founded GrowWise to bridge academic excellence with modern digital tools, providing personalized learning experiences that help every student reach their full potential.", "expertise": ["Educational Leadership", "Curriculum Development", "Student Assessment"], "education": "Software Engineering & Education Innovation" },
-    { "name": "Michael Rodriguez", "role": "Lead Math Instructor", "image": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face", "bio": "A passionate mathematics educator who believes every student can excel in math with the right approach and support.", "expertise": ["Advanced Mathematics", "DUSD Accelerated Programs", "SAT/ACT Prep"], "education": "M.S. in Mathematics, UC Berkeley" },
-    { "name": "Lisa Thompson", "role": "English & Writing Specialist", "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face", "bio": "An award-winning educator specializing in reading comprehension, creative writing, and helping students find their unique voice.", "expertise": ["Reading Enrichment", "Creative Writing", "ESL Support"], "education": "M.A. in English Literature, UCLA" },
-    { "name": "David Kim", "role": "STEAM Program Director", "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face", "bio": "A tech industry veteran turned educator, passionate about introducing young minds to coding, robotics, and entrepreneurship.", "expertise": ["Python Programming", "AI/ML Education", "Young Entrepreneurship"], "education": "B.S. Computer Science, MIT" }
+    { "name": "Anshika Verma", "role": "Founder & Director", "image": "/assets/founderImage.webp", "bio": "With over a decade of software engineering experience and inspired by her parents—both lifelong educators—Anshika Verma founded GrowWise to bridge academic excellence with modern digital tools, providing personalized learning experiences that help every student reach their full potential.", "expertise": ["Educational Leadership", "Curriculum Development", "Student Assessment"], "education": "Software Engineering & Education Innovation" },
+    { "name": "Michael Rodriguez", "role": "Lead Math Instructor", "image": "/assets/photos/photo-1472099645785-5658abf4ff4e.jpg", "bio": "A passionate mathematics educator who believes every student can excel in math with the right approach and support.", "expertise": ["Advanced Mathematics", "DUSD Accelerated Programs", "SAT/ACT Prep"], "education": "M.S. in Mathematics, UC Berkeley" },
+    { "name": "Lisa Thompson", "role": "English & Writing Specialist", "image": "/assets/photos/photo-1438761681033-6461ffad8d80.jpg", "bio": "An award-winning educator specializing in reading comprehension, creative writing, and helping students find their unique voice.", "expertise": ["Reading Enrichment", "Creative Writing", "ESL Support"], "education": "M.A. in English Literature, UCLA" },
+    { "name": "David Kim", "role": "STEAM Program Director", "image": "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg", "bio": "A tech industry veteran turned educator, passionate about introducing young minds to coding, robotics, and entrepreneurship.", "expertise": ["Python Programming", "AI/ML Education", "Young Entrepreneurship"], "education": "B.S. Computer Science, MIT" }
   ]
 }
 

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { getBackendBaseUrlForProxy } from '@/lib/config';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
 import { sendEmail, type SendEmailResult } from '@/lib/email';
 import { CONTACT_INFO } from '@/lib/constants';
@@ -34,30 +35,56 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as unknown;
 
-    if (body && typeof body === 'object' && 'payment_method_id' in body) {
-      const safeBody = body as {
-        payment_method_id: string;
-        parent_email?: string;
-        parent_name?: string;
-      };
-
-      if (!safeBody.payment_method_id || typeof safeBody.payment_method_id !== 'string') {
+    if (
+      body &&
+      typeof body === 'object' &&
+      ('payment_method_id' in body || 'stripe_payment_method_id' in body)
+    ) {
+      const raw = body as Record<string, unknown>;
+      const pm = raw.payment_method_id ?? raw.stripe_payment_method_id;
+      if (!pm || typeof pm !== 'string') {
         return NextResponse.json(
           { success: false, error: 'Missing payment_method_id' },
           { status: 400 },
         );
       }
 
-      console.log('Enroll payment payload received', {
-        payment_method_id: safeBody.payment_method_id,
-        parent_email: safeBody.parent_email,
-        parent_name: safeBody.parent_name,
-      });
+      const baseUrl = getBackendBaseUrlForProxy();
+      if (!baseUrl) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Backend is not configured',
+            message: 'Set NEXT_PUBLIC_BACKEND_URL in the server environment.',
+          },
+          { status: 503 },
+        );
+      }
 
-      return NextResponse.json({
-        success: true,
-        message: 'Enrollment received. Payment method captured.',
-      });
+      try {
+        const upstream = await fetch(`${baseUrl}/api/enroll`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(body),
+          cache: 'no-store',
+        });
+
+        const contentType = upstream.headers.get('content-type') ?? 'application/json';
+        const text = await upstream.text();
+
+        return new NextResponse(text, {
+          status: upstream.status,
+          headers: {
+            'content-type': contentType,
+          },
+        });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Upstream request failed';
+        return NextResponse.json({ success: false, error: message, message }, { status: 502 });
+      }
     }
 
     const {

@@ -68,7 +68,7 @@ export const mockEnglishCourses = [
       'Reading comprehension techniques',
     ],
     detailedDescription: 'Our Reading Enrichment program for K-5 students builds strong literacy foundations.',
-    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1481627834876-b7833e8f5570.jpg',
   }
 ]
 
@@ -88,7 +88,7 @@ export const mockMathCourses = [
       'Comprehensive curriculum aligned with California standards',
       'Pre-algebra foundations',
     ],
-    image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1509228468518-180dd4864904.jpg',
   }
 ]
 

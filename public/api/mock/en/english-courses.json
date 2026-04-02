@@ -65,7 +65,7 @@
       "improvement": "Improved writing skills by 85% in one semester",
       "quote": "The English courses helped me find my voice and express my ideas clearly.",
       "course": "English Mastery K-12",
-      "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+      "image": "/assets/photos/photo-1494790108755-2616b612b786.jpg"
     },
     {
       "name": "Marcus Chen",
@@ -73,7 +73,7 @@
       "improvement": "Reading level increased by 2 grades in 4 months",
       "quote": "Reading Enrichment made books fun and exciting. Now I love reading every day!",
       "course": "Reading Enrichment K-5",
-      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      "image": "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg"
     },
     {
       "name": "Sofia Johnson",
@@ -81,7 +81,7 @@
       "improvement": "SAT Writing score improved by 150 points",
       "quote": "The grammar and writing courses gave me the confidence to tackle any writing assignment.",
       "course": "Grammar Boost K-8",
-      "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+      "image": "/assets/photos/photo-1438761681033-6461ffad8d80.jpg"
     }
   ],
   "programHighlights": [

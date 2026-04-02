@@ -22,7 +22,7 @@ export const englishCourses = [
       'Small group collaborative learning'
     ],
     detailedDescription: 'Our Reading Enrichment program for K-5 students builds strong literacy foundations through proven methodologies. Students develop critical reading skills, learn to annotate texts effectively, and expand their vocabulary through engaging activities. The program includes phonics instruction, comprehension strategies, and creative writing exercises tailored to each grade level.',
-    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1481627834876-b7833e8f5570.jpg'
   },
   {
     id: 'grammar-boost-k-8',
@@ -47,7 +47,7 @@ export const englishCourses = [
       'Diagnostic assessments'
     ],
     detailedDescription: 'Our Grammar Boost program provides systematic instruction in English grammar fundamentals. Students master parts of speech, verb tenses, sentence construction, and punctuation rules through interactive lessons and practical applications. The curriculum progresses from basic concepts to advanced grammar structures.',
-    image: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1503676260728-1c00da094a0b.jpg'
   },
   {
     id: 'english-mastery-k-12',
@@ -72,7 +72,7 @@ export const englishCourses = [
       'College and career preparation'
     ],
     detailedDescription: 'Our most comprehensive English program combines all aspects of language arts education. Students develop advanced reading comprehension, master grammar and mechanics, expand vocabulary, and excel in both creative and academic writing. The program includes literature analysis, research skills, and preparation for standardized tests.',
-    image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1456513080510-7bf3a84b82f8.jpg'
   },
   {
     id: 'creative-writing',
@@ -97,7 +97,7 @@ export const englishCourses = [
       'Portfolio development'
     ],
     detailedDescription: 'Our Creative Writing program nurtures students\' imagination and writing skills through structured yet flexible instruction. Students explore various genres, develop their unique voice, and learn to craft compelling narratives. The program includes workshops, peer review sessions, and opportunities to share their work.',
-    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1481627834876-b7833e8f5570.jpg'
   },
   {
     id: 'essay-writing',
@@ -122,7 +122,7 @@ export const englishCourses = [
       'College preparation skills'
     ],
     detailedDescription: 'Our Essay Writing program teaches students to craft well-structured, compelling essays for academic success. Students learn to develop strong thesis statements, organize arguments logically, and use evidence effectively. The program covers various essay types including argumentative, persuasive, and analytical writing.',
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1434030216411-0b793f4b4173.jpg'
   },
   {
     id: 'foundations-of-writing',
@@ -147,6 +147,6 @@ export const englishCourses = [
       'Communication fundamentals'
     ],
     detailedDescription: 'Our Foundations of Writing program provides students with the essential building blocks for effective written communication. Students develop critical thinking skills, learn fundamental writing structures, and practice basic composition techniques. This program serves as a foundation for all other writing courses.',
-    image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop'
+    image: '/assets/photos/photo-1481627834876-b7833e8f5570.jpg'
   }
 ];
