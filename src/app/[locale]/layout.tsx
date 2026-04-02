@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import dynamic from 'next/dynamic';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import Header from "@/components/layout/Header/Header";
-import Footer from "@/components/layout/Footer/Footer";
 import ContentProvider from "@/components/providers/ContentProvider";
 import { CartProvider } from "@/components/gw/CartContext";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
-import LazyChatbot from "@/components/chatbot/LazyChatbot";
 import { locales } from '@/i18n/config';
 import { PageTrackingWrapper } from '@/components/analytics/PageTrackingWrapper';
 import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/seo/structuredData';
+
+const Header = dynamic(() => import("@/components/layout/Header/Header"));
+const Footer = dynamic(() => import("@/components/layout/Footer/Footer"));
+const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"));
 
 // Default metadata - can be overridden by page-specific generateMetadata
 export const metadata: Metadata = {
