@@ -5,6 +5,7 @@ import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import GTM from '../components/analytics/GTM';
 import MetaPixel from '../components/analytics/MetaPixel';
+import { CartProvider } from '@/components/gw/CartContext';
 // Optimize font loading with next/font
 const inter = Inter({
   subsets: ['latin'],
@@ -105,7 +106,9 @@ export default function RootLayout({
         {process.env.NEXT_PUBLIC_META_PIXEL_ID ? (
           <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
         ) : null}
-        {children}
+        <CartProvider>
+          {children}
+        </CartProvider>
         {/* If GTM isn't configured, fall back to direct GoogleAnalytics integration */}
         {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
         }
