@@ -1,369 +1,193 @@
-🚨 ENGINEERING & QA CONSTITUTION (ENFORCED)
+# GROWWISE SCHOOL — CURSOR RULES (ENFORCED)
 
-These rules apply to ALL AI-generated changes in this repository.
-Violations = incorrect solution.
-
-No confirmations. No skipped steps. No shortcuts.
+These rules apply to ALL AI-generated changes in the GrowWise School repository (GROWWISE_NEWUI).
+Violations = incorrect solution. No exceptions. No shortcuts.
 
 **If constraints cannot be met:** STOP and explain the violation. Do not guess or invent compliance.
 
-1. ENGINEERING MODE
+---
 
-Act as:
+## 1. OPERATING MODES
 
-Principal Engineer
+Act as: Principal Engineer + Senior QA Engineer + Senior UX Designer.
 
-Senior QA Engineer
+**Engineering constraints:**
+- Long-term maintainability
+- Minimal change surface — fewest files touched wins
+- Predictable > clever
+- One concept → one file/config location max (+ new files if needed)
+- Multi-place edits = refactor first
 
-Design constraints:
+**UX Design constraints:**
+- This is a parent-facing enrollment site — every design decision must reduce friction to enrollment
+- Mobile-first — majority of Tri-Valley parents browse on phones via Nextdoor, WhatsApp, and Facebook links
+- Scannability > density — parents are time-pressed; key info (age, price, schedule, CTA) must be visible without scrolling past the fold
+- Trust signals matter — testimonials, credentials, location details, and recognizable program names build confidence
+- One primary CTA per viewport — never present competing actions at equal visual weight
+- Consistency > novelty — match existing site patterns; never introduce a new visual style that doesn't exist elsewhere on the site
 
-Long-term maintainability
+---
 
-Minimal change surface
+## 2. PERFORMANCE & LIGHTHOUSE PROTECTION
 
-Enterprise, multi-tenant, multi-role
+1. Never load third-party scripts synchronously — GTM, Facebook Pixel, GA4, and any future third-party must use `strategy="lazyOnload"` with deferred initialization (post-load timer or interaction trigger). Never use `strategy="afterInteractive"` or inline `<script>` tags.
+2. Never undo the GTM 2-second defer or Pixel interaction-based loading — these are intentional PSI optimizations. Any change to `GTM.tsx` or `MetaPixel.tsx` requires explicit approval with a stated reason.
+3. No new third-party scripts without approval — any new external script (analytics, chat widget, A/B testing, ads) must be proposed with its bundle size and loading strategy before adding.
+4. Tailwind content array must stay scoped to `src/` only — never broaden `tailwind.config.ts` content globs to include `node_modules`, `pages/`, test files, or root-level wildcards.
+5. No synchronous fonts or preconnects that block render — `next/font` self-hosts; never add `<link rel="stylesheet">` for Google Fonts or other external CSS in `<head>`.
 
-Predictable > clever
+---
 
-2. CHANGE SURFACE (CRITICAL)
+## 3. CONVERSION TRACKING PROTECTION
 
-Minimize files touched.
+1. Never modify the `purchase` dataLayer push on `/[locale]/checkout/success` without explicit approval — this event drives the GTM → GA4 → Google Ads conversion import chain (`event: 'purchase'` with `value`, `currency`, `transaction_id`).
+2. Never modify GTM trigger configurations or tag firing sequences — changes to `GTM.tsx`, dataLayer events, or the GTM container require a stated reason and approval. The GTM container ID is set via `NEXT_PUBLIC_GTM_ID` env var.
+3. Never remove or alter Meta Pixel event calls — the Pixel ID is set via `NEXT_PUBLIC_META_PIXEL_ID` env var; changes to `MetaPixel.tsx` or `meta-pixel.ts` require approval.
+4. Never modify the Stripe checkout redirect flow — the `/[locale]/checkout/success` page is the terminal conversion page. Its route, query parameters, and event firing must remain intact.
 
-One concept → one registry/config location max (+ new files).
+---
 
-Multi-place edits = refactor first.
+## 4. ROUTE PROTECTION
 
-3. ZERO HARDCODING (ABSOLUTE)
+1. Never rename, move, or delete existing page routes — especially:
+   - `/[locale]/checkout/success` (Stripe redirect + conversion tracking)
+   - `/[locale]/camps/summer` (Google Ads landing page)
+   - `/[locale]/coding` (Google Ads landing page)
+   - `/[locale]/courses/math` (Google Ads landing page)
+   - `/[locale]/steam/ml-ai-coding` (program page)
+   - `/[locale]/steam/game-development` (program page)
+   - Any route appearing in active Google Ads or Meta campaigns
+2. New pages must be added as new routes — never repurpose or merge existing routes.
+3. Never change the Next.js i18n routing configuration without understanding the canonical URL impact.
 
-Forbidden in components, services, hooks, APIs:
+---
 
-UI strings
+## 5. LAYOUT & VISUAL STABILITY
 
-Routes / paths
+1. Never change existing page layout unless the change is the explicit purpose of the task — only add new sections below existing content. Never reorder, remove, or restructure existing sections, hero banners, card grids, or navigation as a side effect.
+2. Use existing Tailwind classes and component patterns — never invent new CSS classes, layout components, or styling approaches. Match the spacing, colors, fonts, and border-radius of the existing page.
+3. Images must use `next/Image` — always with `sizes`, `alt`, appropriate `priority`/`loading`, and never raw `<img>` tags.
 
-Menus
+---
 
-Roles / permissions
+## 6. UX & DESIGN SYSTEM
 
-Feature flags
+**Enrollment funnel awareness:**
+1. Every page is part of the enrollment funnel — hero → program details → social proof → CTA. Never break this flow or bury CTAs below excessive content.
+2. Primary CTA (Enroll / Register / Book Trial) must use the existing brand button style (solid, high-contrast). Secondary actions (Learn More, View Schedule) must be visually subordinate (outline or text link).
+3. Pricing display must follow the comparison card pattern — price, what's included, age range, and CTA visible together without scrolling within the card. Never separate price from its CTA.
 
-Env-specific values
+**Mobile-first design:**
+4. Design for 375px viewport first — desktop is the enhancement, not the default. All layouts must be single-column readable on mobile before adding multi-column desktop breakpoints.
+5. Touch targets must be minimum 44x44px — buttons, links, and interactive elements must be comfortably tappable. Never stack small links close together on mobile.
+6. Sticky/fixed CTAs on mobile are encouraged for long pages — a persistent "Enroll Now" bar at the bottom keeps the conversion action always reachable.
 
-Backend display text
+**Visual hierarchy:**
+7. One `h1` per page — it must describe the program or page purpose, not be a generic tagline. Subheadings (`h2`, `h3`) must follow logical document hierarchy.
+8. Key decision info above the fold — program name, age range, price, and primary CTA must be visible on landing without scrolling, especially on ad landing pages.
+9. White space is intentional — never fill empty space with decorative elements or filler content. Breathing room improves scannability.
 
-console.*
+**Design system compliance:**
+10. Use the existing color palette — this includes both `tailwind.config.ts` CSS variable tokens AND the established brand hex colors used throughout the codebase (`#1F396D` navy, `#1D9E75` green, `#F16112` orange, `#F1894F` coral). Never introduce new brand colors outside these.
+11. Typography must use the existing font stack and size scale — never add new font families or arbitrary `text-[17px]` values. Use the defined Tailwind scale (`text-sm`, `text-base`, `text-lg`, etc.).
+12. Component patterns must match existing site — if a card, badge, section divider, or testimonial block already exists on the site, reuse that pattern. Never invent a new component style for something that already has a precedent.
+13. Icons must come from Lucide React (the existing icon library) — never add a new icon library or use inline SVGs unless Lucide doesn't cover the need (and if so, state the gap).
 
-Allowed sources only:
+**Competitive context:**
+14. GrowWise competes with YoungWonks, theCoderSchool, and Code Ninjas in the Tri-Valley. UX decisions should emphasize GrowWise's differentiators: curriculum depth, real programming languages (not just block-based), small class sizes, and instructor credentials. Never design in a way that makes GrowWise look generic or indistinguishable from franchise competitors.
 
-Typed registries
+---
 
-Typed config
+## 7. SEO & CONTENT INTEGRITY
 
-Backend manifests
+1. Never remove or weaken SEO metadata — page titles, descriptions, keywords, JSON-LD structured data, and canonical URLs are intentional. Changes require approval.
+2. All canonical URLs must use `https://growwiseschool.org` (non-www) — this is set via `getCanonicalSiteUrl()` in `src/lib/seo/siteUrl.ts`. Never generate canonical tags with `www.` prefix.
+3. Founding year is 2024 — all references to GrowWise founding date must use 2024.
+4. FAQ data lives in `public/api/mock/en/summer-camp-faq.json` — new FAQs should be prepended, never replace existing ones.
+5. Never alter `robots.txt` or `sitemap.xml` generation logic without explicit approval.
 
-Feature flag services
+---
 
-i18n keys
+## 8. PRICING & COURSE DATA — SINGLE SOURCE OF TRUTH
 
-Central logging framework
+1. Pricing data flows from the `/api/pricing-config` endpoint, consumed via the `usePricingConfig()` hook in `src/hooks/usePricingConfig.ts` — never hardcode prices, age ranges, session counts, or discount values in components.
+2. Summer camp program data flows from `src/lib/summer-camp-data.ts` via `fetchSummerCampData()` and `getDefaultSummerCampData()` — never duplicate camp details in components.
+3. If a component needs pricing or course data, it must use the existing hooks/functions — if they don't expose what's needed, extend them rather than duplicating values.
+4. Marketing copy must not contain specific dollar amounts — reference data-driven values or use i18n keys.
 
-4. SINGLE SOURCE OF TRUTH (SSOT)
+---
 
-Backend authoritative
+## 9. ZERO HARDCODING (GOAL)
 
-Feature flags / entitlements
+Prefer externalized values over inline strings. Allowed sources:
+- `en.json` for user-visible text (i18n keys via `useTranslations`)
+- `usePricingConfig()` hook for pricing data
+- `fetchSummerCampData()` for camp program data
+- Environment variables for API keys, URLs, IDs
+- `tailwind.config.ts` for design tokens
 
-Menu structure & visibility
+Where hardcoded English strings currently exist in components (e.g., button labels, link text), prefer migrating them to i18n keys when editing those components — but never refactor working code solely to externalize strings.
 
-Roles & permissions
+---
 
-Tenant plans
+## 10. LOCALIZATION
 
-Frontend authoritative
+1. All new user-visible text should use i18n keys from `en.json` via `useTranslations` — no new readable text hardcoded in components.
+2. After editing `en.json`, confirm all 22 top-level keys are intact — the key count must not decrease unless removal is the explicit task.
+3. Nested key structures must be preserved — never flatten or restructure existing i18n key hierarchies.
 
-Allowed routeIds / menuIds / featureKeys (typed)
+---
 
-UI metadata (i18n, icons, breadcrumbs)
+## 11. BUILD & QUALITY GATES
 
-Runtime gating (central services only)
+1. Every change must pass `npm run build` with 0 errors before committing — no exceptions.
+2. Every change must pass `npm run lint` with 0 new errors — pre-existing warnings are acceptable, new errors are not.
+3. Validate all JSON files after editing — `en.json`, mock data files, and any config JSON must parse without errors.
+4. Never commit environment variables, API keys, Stripe secrets, or tracking IDs to the repository.
 
-Navigation =
-Backend Manifest + Frontend Registry + Capability Service
+---
 
-Duplication = design failure.
+## 12. SECURITY
 
-5. REGISTRY-FIRST ARCHITECTURE
+1. All new API routes must validate input and return proper error responses — never expose raw error messages or stack traces to the client.
+2. Stripe webhook endpoints must verify signatures — never process unverified webhook payloads.
+3. No secrets in client-side code — API keys, Stripe keys, and service credentials belong in server-side env vars only. Public keys (e.g., Stripe publishable key) are the only exception.
 
-Routes, menus, features, permissions → registries only.
+---
 
-Components must NOT define:
+## 13. FAILURE MODES
 
-routes
+- Missing env vars → fail fast at build time, not silently at runtime
+- Failed API calls → show degraded UI with user-friendly message, never blank screen
+- Missing i18n key → show key name (dev) or fallback (prod), never crash
+- Invalid pricing data → show loading/error state, never serve broken pricing
 
-menus
+---
 
-permissions
+## 14. CHANGE IMPACT
 
-feature flags
+Include with every change:
+- Files touched and why
+- Why no other files were touched
+- Any assumptions made
 
-Page titles, headers, breadcrumbs → route metadata only.
+---
 
-No duplicated page titles.
+## 15. SELF-REVIEW
 
-6. CONFIGURATION-DRIVEN DESIGN
+Before final output, verify:
+- [ ] `npm run build` passes with 0 errors
+- [ ] `npm run lint` passes with 0 new errors
+- [ ] No hardcoded strings, prices, or routes added
+- [ ] No existing routes renamed or removed
+- [ ] No conversion tracking modified
+- [ ] No canonical URL logic changed
+- [ ] No third-party scripts added without approval
+- [ ] No layout changed as a side effect
+- [ ] `en.json` key count not reduced
+- [ ] Mobile viewport (375px) reviewed — single-column, tappable CTAs, key info above fold
+- [ ] Primary CTA is visually dominant — no competing actions at equal weight
+- [ ] Only existing color palette, font scale, and component patterns used
+- [ ] Heading hierarchy is correct (`h1` → `h2` → `h3`, one `h1` per page)
 
-Behavior via config, not conditionals.
-
-Config must be:
-
-Typed
-
-Schema-validated
-
-Environment-overrideable
-
-Invalid config → fail fast.
-
-6A. CONTENT EXTERNALIZATION
-
-Large content (>20 lines) must NOT live in business logic.
-
-Prompts, templates, messages → external storage.
-
-Loaded via content service/factory.
-
-Must support versioning & parameterization.
-
-Content changes must NOT require deployment.
-
-Forbidden:
-
-Large inline strings
-
-Duplicated content
-
-Logic mixed with content
-
-7. SERVER-DRIVEN FEATURES & MENUS
-
-Backend controls feature availability & menus.
-
-Frontend:
-
-Validates manifests
-
-Rejects unknown IDs (fail closed)
-
-Renders via registries only
-
-Centralization:
-
-Menus → MenuResolver
-
-Feature checks → CapabilityService
-
-Route guards → CapabilityService
-
-7A. ADMIN FEATURE FLAGS
-
-Backend is source of truth.
-
-UI toggles:
-
-Call backend API
-
-Refresh manifest
-
-Never toggle locally
-
-Required:
-
-RBAC
-
-Audit logs
-
-Tenant scope
-
-Rollback support
-
-Manifest versioning / ETag
-
-8. SECURITY & AUTHORIZATION
-
-Declarative, centralized authorization.
-
-No permission logic in components.
-
-Backend always enforces auth.
-
-Menu visibility ≠ authorization.
-
-8A. CROSS-CUTTING CONCERNS
-
-Handled ONLY via interceptors/aspects/middleware:
-
-Logging
-
-Metrics
-
-Rate limits
-
-Quotas
-
-Transactions
-
-Business logic must stay pure.
-
-9. LOCALIZATION
-
-All user-visible text → i18n keys.
-
-No readable text in UI or backend responses.
-
-Minimum 2 locales required.
-
-10. LOGGING & OBSERVABILITY
-
-Forbidden:
-
-console.*
-
-Required:
-
-Structured logging
-
-CorrelationId, userId (safe), tenantId
-
-No secrets / PII
-
-Mockable in tests
-
-11. API CONTRACTS
-
-Contract-first (OpenAPI / GraphQL / Proto).
-
-Breaking changes → versioning.
-
-Feature flags must not alter API shape.
-
-12. DATA & MIGRATIONS
-
-Clear data ownership.
-
-Versioned, reversible migrations.
-
-Repositories only.
-
-Flags guard partial migrations.
-
-13. PERFORMANCE
-
-No N+1 calls.
-
-Pagination & caching for large data.
-
-Loading / empty / degraded states required.
-
-14. ACCESSIBILITY
-
-WCAG AA minimum.
-
-Keyboard navigation for core flows.
-
-Automated a11y checks.
-
-15. DEPENDENCIES
-
-Justify new deps.
-
-No overlaps.
-
-Pin versions.
-
-Vulnerabilities block builds.
-
-16. TESTING (NON-NEGOTIABLE)
-
-Every change includes tests:
-
-Unit
-
-Integration
-
-E2E (critical flows)
-
-Coverage:
-
-Business logic ≥ 90%
-
-Policy / gating = 100%
-
-17. QUALITY GATES
-
-Must pass:
-
-Types
-
-Lint
-
-Tests
-
-Schema validation
-
-Security scans
-
-A11y checks
-
-No bypassing.
-
-18. FAILURE MODES
-
-Missing flags → OFF
-
-Missing permissions → DENY
-
-Partial data → degraded UI
-
-Admin actions → reversible
-
-19. DOCUMENTATION
-
-Update docs when:
-
-Patterns change
-
-Assumptions change
-
-Limitations are discovered
-
-20. CHANGE IMPACT (ONLY WHEN CODE CHANGES)
-
-Include only if code was modified:
-
-Files touched
-
-Why
-
-Why no others
-
-21. DEFAULT TO REFACTOR
-
-Duplication, tight coupling, or multi-place edits → refactor first.
-
-22. AI DISCIPLINE
-
-No architectural drift.
-
-Preserve existing patterns.
-
-Prefer explicit, testable designs.
-
-Explain trade-offs only when non-obvious.
-
-23. SELF-REVIEW
-
-Before final output:
-
-- Run `.ai/review-checklist.md` (verify each item).
-- State **PASS** or **FAIL** only.
-- If FAIL: fix or refuse and explain.
+State **PASS** or **FAIL**. If FAIL: fix or refuse and explain.

@@ -7,7 +7,7 @@
 3. **GET APPROVAL** → Wait for explicit "yes/approved/proceed"
 4. **Implement** → Write code only after approval
 5. **Verify** → Confirm it works
-6. **Layout**  → Do not change the layout of thr page while adding new changes.
+6. **Layout** → Do not change the layout of the page while adding new changes.
 
 ## Approval Request Format
 ```
