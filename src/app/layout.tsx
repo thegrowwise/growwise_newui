@@ -2,16 +2,15 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import GTM from '../components/analytics/GTM';
 import MetaPixel from '../components/analytics/MetaPixel';
 import { CartProvider } from '@/components/gw/CartContext';
 // Optimize font loading with next/font
 const inter = Inter({
   subsets: ['latin'],
-  display: 'swap', // Use font-display: swap for better performance
+  display: 'swap',
   variable: '--font-inter',
-  preload: true,
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -109,9 +108,28 @@ export default function RootLayout({
         <CartProvider>
           {children}
         </CartProvider>
-        {/* If GTM isn't configured, fall back to direct GoogleAnalytics integration */}
-        {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID && <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID!} />
-        }
+        {/* gtag only when GTM is off — lazyOnload avoids competing with LCP (GA third-party default is afterInteractive) */}
+        {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID ? (
+          <>
+            <Script
+              id="_next-ga-init"
+              strategy="lazyOnload"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                `,
+              }}
+            />
+            <Script
+              id="_next-ga"
+              strategy="lazyOnload"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+          </>
+        ) : null}
       </body>
     </html>
   );

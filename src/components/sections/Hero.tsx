@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight, BookOpen, Code, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -20,7 +21,7 @@ const heroSlides = [
     bgGradient: "bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#2a4a7c]",
     iconColor: "text-white",
     ctaColor: "bg-[#F1894F] hover:bg-[#F16112] text-white",
-    bgImage: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=1200&h=800&fit=crop"
+    bgImage: "/assets/hero-master-the-core.jpg"
   },
   {
     id: 2,
@@ -32,7 +33,7 @@ const heroSlides = [
     bgGradient: "bg-gradient-to-br from-[#F16112] via-[#F1894F] to-[#d54f0a]",
     iconColor: "text-white",
     ctaColor: "bg-[#1F396D] hover:bg-[#29335C] text-white",
-    bgImage: "https://images.unsplash.com/photo-1515378791036-0648a814a05f?w=1200&h=800&fit=crop"
+    bgImage: "/assets/hero-build-code-create.jpg"
   },
   {
     id: 3,
@@ -44,7 +45,7 @@ const heroSlides = [
     bgGradient: "bg-gradient-to-br from-[#1F396D] via-[#F16112] to-[#F1894F]",
     iconColor: "text-white",
     ctaColor: "bg-white hover:bg-gray-100 text-[#1F396D]",
-    bgImage: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&h=800&fit=crop"
+    bgImage: "/assets/hero-one-on-one.jpg"
   }
 ];
 
@@ -111,10 +112,19 @@ function HeroCarousel() {
             <div className="relative h-full flex flex-col lg:flex-row items-center overflow-hidden">
               {/* Background Image */}
               <div className="absolute inset-0">
-                <div 
-                  className="w-full h-full bg-cover bg-center bg-no-repeat"
-                  style={{ backgroundImage: `url(${slide.bgImage})` }}
-                />
+                <div className="relative h-full w-full">
+                  <Image
+                    src={slide.bgImage}
+                    alt=""
+                    fill
+                    className="object-cover object-center"
+                    style={{ objectFit: 'cover' }}
+                    priority={index === 0}
+                    loading={index === 0 ? undefined : 'lazy'}
+                    sizes="100vw"
+                    fetchPriority={index === 0 ? 'high' : 'low'}
+                  />
+                </div>
                 <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
               </div>
 
@@ -210,10 +220,18 @@ function HeroStatic() {
       <div className="absolute inset-0 opacity-100 translate-x-0">
         <div className="relative h-full flex flex-col lg:flex-row items-center overflow-hidden">
           <div className="absolute inset-0">
-            <div 
-              className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${slide.bgImage})` }}
-            />
+            <div className="relative h-full w-full">
+              <Image
+                src={slide.bgImage}
+                alt=""
+                fill
+                className="object-cover object-center"
+                style={{ objectFit: 'cover' }}
+                priority
+                sizes="100vw"
+                fetchPriority="high"
+              />
+            </div>
             <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
           </div>
           <div className="flex-1 text-center lg:text-left p-8 lg:p-12 relative z-10 lg:max-w-md">

@@ -461,7 +461,7 @@
   "about": {
     "hero": {
       "title": "About GrowWise",
-      "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
+      "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
     },
     "foundation": { 
       "title": "Our Foundation",
@@ -469,7 +469,7 @@
     },
     "story": { 
       "title": "Our Story",
-      "p1": "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
+      "p1": "Founded in 2024 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
       "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Anshika Verma, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
       "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     },
@@ -756,6 +756,67 @@
     "faq": {
       "title": "FAQ",
       "subtitle": "Common questions about Summer Camps, programs, and enrollment."
+    },
+    "highlights": {
+      "heading": "Summer STEAM & Coding Camps",
+      "intro": "GrowWise summer STEAM camp Dublin CA 2026 — weekly sessions from June through August for grades K–12. Families across Dublin, Pleasanton, San Ramon, Danville, and Livermore trust our small-group, expert-led programs.",
+      "programs": [
+        {
+          "icon": "💻",
+          "title": "Coding & Python",
+          "description": "Our summer coding camp in Dublin, CA offers structured Python coding for kids and Scratch pathways — the coding camp kids across the Tri-Valley trust."
+        },
+        {
+          "icon": "📐",
+          "title": "Math & Olympiad",
+          "description": "Summer math camp in Dublin, CA with Math Olympiad prep for grades 4–8 and advanced Algebra for high schoolers. Competition-level problem-solving."
+        },
+        {
+          "icon": "🤖",
+          "title": "AI & Machine Learning",
+          "description": "AI camp for kids in Dublin, CA — grades 7–12 build real-world projects. Our machine learning camp for kids covers modern tools and entrepreneurship."
+        },
+        {
+          "icon": "🔧",
+          "title": "Robotics",
+          "description": "Robotics camp for kids in Dublin, CA — full-day hands-on engineering challenges that teach critical thinking, teamwork, and STEM fundamentals."
+        },
+        {
+          "icon": "🎮",
+          "title": "Game Development",
+          "description": "Game development camp for kids turns screen time into skill-building. Students create playable games in Scratch, Roblox, and Minecraft."
+        },
+        {
+          "icon": "✍️",
+          "title": "Young Authors",
+          "description": "Young authors camp summer 2026 — a full-day writing and publishing program where students produce a portfolio-ready book by the final day."
+        }
+      ]
+    },
+    "whyGrowWise": {
+      "heading": "Why Families Choose GrowWise",
+      "items": [
+        {
+          "icon": "👩‍🏫",
+          "title": "Expert Instructors",
+          "description": "Small-group, project-based instruction led by experienced STEAM educators who keep kids engaged and challenged."
+        },
+        {
+          "icon": "📈",
+          "title": "Proven Results",
+          "description": "98% parent satisfaction — students return year after year and build skills that last well beyond summer."
+        },
+        {
+          "icon": "📅",
+          "title": "Flexible Scheduling",
+          "description": "Half-day and full-day sessions, June through August, with week-by-week enrollment and early bird savings."
+        },
+        {
+          "icon": "📍",
+          "title": "Tri-Valley Trusted",
+          "description": "Families in Dublin, Pleasanton, San Ramon, Danville, and Livermore choose GrowWise for quality STEM and coding education."
+        }
+      ]
     }
   },
   "enroll": {

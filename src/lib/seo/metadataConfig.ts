@@ -155,11 +155,11 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/camps/summer': {
-    title: "Summer Camp 2026 - Math, Coding & Robotics | GrowWise",
+    title: 'Summer Coding & STEAM Camps 2026 | Dublin CA | GrowWise',
     description:
-      "Enroll in GrowWise Summer Camp 2026 in Dublin, CA. Half-day and full-day programs: Math Olympiad prep, coding, robotics, AI, Young Authors, and more. Small cohorts, in-person and online options. Early bird savings available.",
+      'Award-winning summer STEAM camps in Dublin CA for grades K-12. Coding, math, AI, robotics & Young Authors. Small groups, expert instructors. Enroll now.',
     keywords:
-      "summer camp 2026 Dublin CA, summer coding camp, math olympiad summer camp, robotics camp kids, AI camp teens, GrowWise summer enrollment, half-day summer camp, full-day summer camp, Dublin California STEM camp",
+      'summer coding camp Dublin CA, summer STEAM camp Dublin CA 2026, coding camp kids Tri-Valley, summer math camp Dublin CA, AI camp for kids Dublin CA, robotics camp kids Dublin CA, game development camp kids, young authors camp summer 2026, summer camp 2026 Dublin CA, STEM camp Pleasanton, STEM camp San Ramon, coding camp Livermore, kids coding camp Danville, machine learning camp for kids, Python coding camp kids',
     path: '/camps/summer',
     image: 'https://growwiseschool.org/assets/camps/summer-camp-banner.png',
   },

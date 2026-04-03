@@ -12,7 +12,7 @@ const testimonials = [
     role: "Parent of 8th Grader",
     content: "GrowWise has transformed my daughter's approach to math. The personalized attention and engaging teaching methods have boosted her confidence tremendously. She went from struggling with algebra to excelling in advanced math concepts.",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+    avatar: "/assets/photos/photo-1494790108755-2616b612b786.jpg"
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ const testimonials = [
     role: "Parent of 6th Grader",
     content: "The STEAM programs at GrowWise are incredible! My son loves the coding classes and has already created his first game. The instructors are patient and make complex concepts easy to understand. Highly recommended!",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+    avatar: "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg"
   },
   {
     id: 3,
@@ -28,7 +28,7 @@ const testimonials = [
     role: "Parent of 10th Grader",
     content: "The SAT prep program exceeded our expectations. My daughter improved her score by 200 points! The structured approach and regular practice tests gave her the confidence she needed. Thank you, GrowWise!",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+    avatar: "/assets/photos/photo-1438761681033-6461ffad8d80.jpg"
   },
   {
     id: 4,
@@ -36,7 +36,7 @@ const testimonials = [
     role: "Parent of 4th Grader",
     content: "The one-on-one tutoring has been a game-changer for my son. He was falling behind in reading, but now he's reading above grade level. The teachers truly care about each student's success.",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+    avatar: "/assets/photos/photo-1472099645785-5658abf4ff4e.jpg"
   },
   {
     id: 5,
@@ -44,7 +44,7 @@ const testimonials = [
     role: "Parent of 7th Grader",
     content: "We've tried several tutoring centers, but GrowWise stands out for their comprehensive approach. They don't just teach subjects; they build confidence and critical thinking skills. My daughter loves coming here!",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face"
+    avatar: "/assets/photos/photo-1544005313-94ddf0286df2.jpg"
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ const testimonials = [
     role: "Parent of 9th Grader",
     content: "The writing lab program has been fantastic for my son. His essay writing skills have improved dramatically, and he's now more confident in expressing his ideas. The teachers provide excellent feedback.",
     rating: 5,
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face"
+    avatar: "/assets/photos/photo-1500648767791-00dcc994a43e.jpg"
   }
 ];
 

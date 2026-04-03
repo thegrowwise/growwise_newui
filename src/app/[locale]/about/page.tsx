@@ -14,8 +14,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
-
-
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'About', url: absoluteSiteUrl('/about', locale, baseUrl) },
@@ -31,7 +29,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       "@type": "EducationalOrganization",
       "name": "GrowWise",
       "url": baseUrl,
-      "foundingDate": "2019",
+      "foundingDate": "2024",
       "description": "Empowering K-12 students through personalized education and innovative STEAM programs in Dublin, CA.",
     },
   }

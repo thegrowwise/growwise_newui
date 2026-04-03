@@ -296,7 +296,7 @@ export default function SteamPage() {
       age: 14,
       program: 'Python Programming',
       achievement: 'Built a web app that tracks homework for his entire school',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+      image: '/assets/photos/photo-1472099645785-5658abf4ff4e.jpg',
       quote: 'GrowWise taught me that coding isn\'t just about syntax - it\'s about solving real problems.'
     },
     {
@@ -305,7 +305,7 @@ export default function SteamPage() {
       age: 16,
       program: 'Game Development',
       achievement: 'Published her first game on Roblox with 10,000+ plays',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face',
+      image: '/assets/photos/photo-1494790108755-2616b612b786.jpg',
       quote: 'Creating games taught me creativity, problem-solving, and how to turn ideas into reality.'
     },
   ];
@@ -379,7 +379,7 @@ export default function SteamPage() {
             <Card className="bg-white/30 backdrop-blur-3xl rounded-[40px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.25)] border-2 border-white/60 overflow-hidden ring-1 ring-white/30">
               <CardContent className="p-0">
                 <ImageWithFallback
-                  src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&h=600&fit=crop"
+                  src="/assets/photos/photo-1581091226825-a6a2a5aee158.jpg"
                   alt="Students coding and learning STEAM subjects"
                   className="w-full h-[400px] object-cover"
                 />

@@ -134,22 +134,22 @@ export default function About() {
             <div className="relative">
               <div className="grid grid-cols-2 gap-4">
                 <img
-                  src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=300&h=300&fit=crop"
+                  src="/assets/hero-master-the-core.jpg"
                   alt="Students learning in classroom"
                   className="w-full h-48 object-cover rounded-xl shadow-lg"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=300&h=300&fit=crop"
+                  src="/assets/photos/photo-1522071820081-009f0129c71c.jpg"
                   alt="STEAM learning activities"
                   className="w-full h-48 object-cover rounded-xl shadow-lg mt-8"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=300&h=300&fit=crop"
+                  src="/assets/hero-one-on-one.jpg"
                   alt="One-on-one tutoring session"
                   className="w-full h-48 object-cover rounded-xl shadow-lg -mt-8"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&h=300&fit=crop"
+                  src="/assets/photos/photo-1503676260728-1c00da094a0b.jpg"
                   alt="Modern learning environment"
                   className="w-full h-48 object-cover rounded-xl shadow-lg"
                 />

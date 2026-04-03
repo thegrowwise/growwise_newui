@@ -6,6 +6,7 @@ import { OptimizedImage } from '../../gw/OptimizedImage';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { StructuredDataScript } from '../../seo/StructuredDataScript';
 import { generateReviewSchema, generateAggregateRatingSchema } from '@/lib/seo/structuredData';
+import { useTestimonials } from '@/hooks/useTestimonials';
 
 export interface TestimonialVM {
   name: string;
@@ -110,10 +111,42 @@ function TestimonialCard({ testimonial }: { testimonial: TestimonialVM }) {
   );
 }
 
-export function TestimonialsSection({ testimonials, error, onRetry }: { testimonials: TestimonialVM[] | null; error?: string | null; onRetry?: () => void }) {
+export function TestimonialsSection({
+  fallbackTestimonials,
+  homeError,
+  onRetryHome,
+}: {
+  /** Mock/home JSON when API has not returned yet */
+  fallbackTestimonials?: TestimonialVM[] | null;
+  homeError?: string | null;
+  onRetryHome?: () => void;
+}) {
+  const {
+    testimonials: apiTestimonials,
+    error: testimonialsError,
+    retry: retryTestimonials,
+  } = useTestimonials({
+    limit: 20,
+    autoRefresh: true,
+    refreshInterval: 300000,
+    minRating: 4,
+  });
+
+  const testimonials = useMemo(() => {
+    if (apiTestimonials && apiTestimonials.length > 0) return apiTestimonials;
+    return fallbackTestimonials ?? [];
+  }, [apiTestimonials, fallbackTestimonials]);
+
+  const error = testimonialsError || homeError;
+
+  const onRetry = () => {
+    void retryTestimonials();
+    onRetryHome?.();
+  };
+
   const [currentSet, setCurrentSet] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
+
   if (error) return <SectionError title="Testimonials unavailable" message={error} onRetry={onRetry} />;
   if (!testimonials || testimonials.length === 0) return <SectionError title="No testimonials yet" message="Check back later." onRetry={onRetry} />;
   

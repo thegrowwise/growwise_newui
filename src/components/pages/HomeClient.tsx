@@ -10,8 +10,6 @@ import { getIconComponent } from '@/lib/iconMap';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { HeroSection } from '../sections/home/HeroSection';
 import { useRouter } from 'next/navigation';
-import { PopularCoursesSection } from '../sections/home/PopularCoursesSection';
-import { useTestimonials } from '@/hooks/useTestimonials';
 import {
   HeroSkeleton,
   StatisticsSkeleton,
@@ -21,6 +19,14 @@ import {
   TestimonialsSkeleton,
 } from '../ui/loading-skeletons';
 import type { HomeContentData } from '@/store/slices/homeSlice';
+
+const PopularCoursesSection = dynamic(
+  () =>
+    import('../sections/home/PopularCoursesSection').then((m) => ({
+      default: m.PopularCoursesSection,
+    })),
+  { ssr: false, loading: () => <PopularCoursesSkeleton /> }
+);
 
 const StatisticsSection = dynamic(
   () => import('../sections/home/StatisticsSection').then((m) => ({ default: m.StatisticsSection })),
@@ -146,22 +152,6 @@ export default function HomeClient({ initialData }: HomeClientProps) {
     [data]
   );
 
-  const {
-    testimonials: apiTestimonials,
-    error: testimonialsError,
-    retry: retryTestimonials,
-  } = useTestimonials({
-    limit: 20,
-    autoRefresh: true,
-    refreshInterval: 300000,
-    minRating: 4,
-  });
-
-  const testimonials = useMemo(() => {
-    if (apiTestimonials && apiTestimonials.length > 0) return apiTestimonials;
-    return data?.testimonials || [];
-  }, [apiTestimonials, data?.testimonials]);
-
   const whyChooseUs = useMemo(
     () =>
       (data?.whyChooseUs || []).map((w) => ({
@@ -282,12 +272,9 @@ export default function HomeClient({ initialData }: HomeClientProps) {
       />
 
       <TestimonialsSection
-        testimonials={testimonials as any}
-        error={testimonialsError || error}
-        onRetry={() => {
-          retryTestimonials();
-          dispatch(fetchHomeStart());
-        }}
+        fallbackTestimonials={data?.testimonials ?? null}
+        homeError={error}
+        onRetryHome={() => dispatch(fetchHomeStart())}
       />
 
       <CtaSection
