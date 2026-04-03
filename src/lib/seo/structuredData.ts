@@ -37,7 +37,7 @@ export const organizationSchema = {
     "https://www.instagram.com/growwise.dublin/",
     "https://www.linkedin.com/company/thegrowwise/"
   ],
-  "foundingDate": "2019",
+  "foundingDate": "2024",
   "numberOfEmployees": {
     "@type": "QuantitativeValue",
     "value": "10-50"

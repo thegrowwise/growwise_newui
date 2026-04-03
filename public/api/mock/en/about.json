@@ -1,9 +1,9 @@
 {
   "hero": {
     "title": "About GrowWise",
-    "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed.",
+    "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed.",
     "stats": [
-      { "label": "Founded", "value": "2019", "color": "text-[#1F396D]" },
+      { "label": "Founded", "value": "2024", "color": "text-[#1F396D]" },
       { "label": "Students Served", "value": "325+", "color": "text-[#F16112]" },
       { "label": "Courses Offered", "value": "25+", "color": "text-[#F1894F]" },
       { "label": "Satisfaction Rate", "value": "98%", "color": "text-[#29335C]" }
@@ -12,7 +12,7 @@
   "story": {
     "title": "Our Story",
     "paragraphs": [
-      "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
+      "Founded in 2024 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
       "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Anshika Verma, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
       "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     ]
@@ -97,10 +97,10 @@
     { "icon": "Award", "title": "Our Values", "description": "Excellence in education, personalized attention, innovative teaching methods, strong community partnerships, and unwavering commitment to student success.", "gradient": "from-[#F1894F] to-[#F16112]", "bgColor": "bg-[#F1894F]/10" }
   ],
   "achievements": [
-    { "icon": "Users", "title": "325+ Students Served", "description": "Since 2019, we've helped over 325 students achieve their academic goals", "value": "325+", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
+    { "icon": "Users", "title": "325+ Students Served", "description": "Since 2024, we've helped over 325 students achieve their academic goals", "value": "325+", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
     { "icon": "Star", "title": "98% Satisfaction Rate", "description": "Consistently high parent and student satisfaction scores", "value": "98%", "color": "text-[#F16112]", "bgColor": "bg-[#F16112]/10" },
     { "icon": "TrendingUp", "title": "95% Improvement Rate", "description": "95% of students show measurable improvement within first semester", "value": "95%", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" },
-    { "icon": "Award", "title": "5+ Years of Excellence", "description": "Recognized as a leading educational center in Dublin and Tri-Valley area", "value": "2019", "color": "text-[#29335C]", "bgColor": "bg-[#29335C]/10" }
+    { "icon": "Award", "title": "Serving Since 2024", "description": "Recognized as a leading educational center in Dublin and Tri-Valley area", "value": "2024", "color": "text-[#29335C]", "bgColor": "bg-[#29335C]/10" }
   ],
   "educationalApproach": [
     { "icon": "UserCheck", "title": "Personalized Learning", "description": "Every student receives instruction tailored to their unique learning style, pace, and academic goals through individualized assessment and customized lesson plans.", "benefits": ["Individual assessment", "Custom lesson plans", "Progress tracking"] },
