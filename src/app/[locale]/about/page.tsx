@@ -29,7 +29,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       "@type": "EducationalOrganization",
       "name": "GrowWise",
       "url": baseUrl,
-      "foundingDate": "2019",
+      "foundingDate": "2024",
       "description": "Empowering K-12 students through personalized education and innovative STEAM programs in Dublin, CA.",
     },
   }
