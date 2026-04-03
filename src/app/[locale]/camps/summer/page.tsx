@@ -644,6 +644,81 @@ export default function SummerCampPage() {
           </div>
         </section>
 
+        {/* SEO content — keyword-rich program highlights */}
+        <section className="py-14 md:py-20 bg-white border-t border-slate-200">
+          <div className="container mx-auto px-4 md:px-6 max-w-5xl">
+            <h2 className="font-heading font-black text-2xl md:text-3xl text-slate-900 uppercase tracking-tight text-center mb-3">
+              {t('highlights.heading')}
+            </h2>
+            <p className="text-slate-500 text-sm md:text-base text-center max-w-2xl mx-auto mb-10 leading-relaxed">
+              {t('highlights.intro')}
+            </p>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {([0, 1, 2, 3, 4, 5] as const).map((i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 flex gap-4 items-start hover:shadow-md transition-shadow"
+                >
+                  <span className="text-2xl leading-none shrink-0 mt-0.5" aria-hidden>
+                    {t(`highlights.programs.${i}.icon`)}
+                  </span>
+                  <div>
+                    <h3 className="font-heading font-bold text-base text-slate-900 mb-1">
+                      {t(`highlights.programs.${i}.title`)}
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {t(`highlights.programs.${i}.description`)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap justify-center gap-3 mt-10">
+              <Link href={createLocaleUrl('/courses/math', locale)}>
+                <Button variant="outline" className="rounded-full">Math Programs</Button>
+              </Link>
+              <Link href={createLocaleUrl('/steam/ml-ai-coding', locale)}>
+                <Button variant="outline" className="rounded-full">ML &amp; AI Coding</Button>
+              </Link>
+              <Link href={createLocaleUrl('/steam/game-development', locale)}>
+                <Button variant="outline" className="rounded-full">Game Development</Button>
+              </Link>
+              <Link href={createLocaleUrl('/enroll', locale)}>
+                <Button className="rounded-full bg-[#1D9E75] hover:bg-[#178a66] text-white">Enroll Now</Button>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Why GrowWise — 4 differentiators */}
+        <section className="py-14 md:py-20 bg-gradient-to-b from-slate-50 to-white border-t border-slate-200">
+          <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+            <h2 className="font-heading font-black text-2xl md:text-3xl text-slate-900 uppercase tracking-tight text-center mb-10">
+              {t('whyGrowWise.heading')}
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-5">
+              {([0, 1, 2, 3] as const).map((i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl border border-slate-200 bg-white p-5 flex gap-4 items-start border-l-4 border-l-[#1D9E75]"
+                >
+                  <span className="text-2xl leading-none shrink-0 mt-0.5" aria-hidden>
+                    {t(`whyGrowWise.items.${i}.icon`)}
+                  </span>
+                  <div>
+                    <h3 className="font-heading font-bold text-base text-slate-900 mb-1">
+                      {t(`whyGrowWise.items.${i}.title`)}
+                    </h3>
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {t(`whyGrowWise.items.${i}.description`)}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Free spot lottery — email capture; anchor for mobile CTA / accordion link */}
         <section
           id="lottery"
