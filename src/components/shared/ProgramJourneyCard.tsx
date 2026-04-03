@@ -2,7 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/components/ui/utils';
 import { ChevronRight } from 'lucide-react';
 import type {
@@ -15,6 +15,7 @@ import type {
   TierName,
 } from '@/hooks/usePricingConfig';
 import { useEnroll } from '@/contexts/EnrollContext';
+import { publicPath } from '@/lib/publicPath';
 import { DeliveryModeToggle } from '@/components/shared/DeliveryModeToggle';
 import {
   JourneyVisual,
@@ -127,6 +128,7 @@ export function ProgramJourneyCard({
     toggleAddon,
     buildEnrollUrl,
   } = useEnroll();
+  const locale = useLocale();
 
   const [mode, setMode] = useState<DeliveryMode>(program.studio_only ? 'studio' : 'live');
 
@@ -182,8 +184,9 @@ export function ProgramJourneyCard({
 
   const handleEnrollClick = () => {
     if (!enrollEnabled) return;
-    const url = buildEnrollUrl();
-    router.push(url);
+    const relative = buildEnrollUrl();
+    const q = relative.includes('?') ? relative.slice(relative.indexOf('?')) : '';
+    router.push(`${publicPath('/enroll', locale)}${q}`);
   };
 
   const ageLabel = t('pricingUi.enroll.ages', { min: program.age_min, max: program.age_max });
