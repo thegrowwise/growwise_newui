@@ -6,6 +6,10 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FRONTEND_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$FRONTEND_ROOT"
+
 echo "🔄 Updating Stripe Publishable Key for Frontend"
 echo ""
 

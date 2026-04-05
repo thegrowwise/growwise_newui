@@ -1,24 +1,20 @@
 import { NextResponse } from 'next/server';
+import { getBackendBaseUrlForProxy } from '@/lib/config';
 
 export const maxDuration = 30;
-
-function getBackendBaseUrl(): string | null {
-  const raw =
-    process.env.BACKEND_URL?.trim() ||
-    process.env.BACKEND_INTERNAL_URL?.trim() ||
-    process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
-  if (!raw) return null;
-  return raw.replace(/\/$/, '');
-}
 
 /**
  * Proxies to backend POST /api/payment/send-receipt-email (triggers payment receipt emails).
  */
 export async function POST(request: Request) {
-  const base = getBackendBaseUrl();
+  const base = getBackendBaseUrlForProxy();
   if (!base) {
     return NextResponse.json(
-      { error: 'Backend not configured', message: 'Set NEXT_PUBLIC_BACKEND_URL.' },
+      {
+        error: 'Backend not configured',
+        message:
+          'Set BACKEND_URL or NEXT_PUBLIC_BACKEND_URL to your API (e.g. https://api.growwiseschool.org).',
+      },
       { status: 503 }
     );
   }

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { getBackendBaseUrlForProxy } from '@/lib/config';
 
 export const maxDuration = 60;
 
@@ -7,15 +8,6 @@ function getStripe(): Stripe | null {
   const key = process.env.STRIPE_SECRET_KEY?.trim();
   if (!key) return null;
   return new Stripe(key, { apiVersion: '2025-02-24.acacia' });
-}
-
-function getBackendBaseUrl(): string | null {
-  const raw =
-    process.env.BACKEND_URL?.trim() ||
-    process.env.BACKEND_INTERNAL_URL?.trim() ||
-    process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
-  if (!raw) return null;
-  return raw.replace(/\/$/, '');
 }
 
 export async function GET(
@@ -29,7 +21,7 @@ export async function GET(
 
   const stripe = getStripe();
   if (!stripe) {
-    const base = getBackendBaseUrl();
+    const base = getBackendBaseUrlForProxy();
     if (!base) {
       return NextResponse.json(
         { error: 'Stripe is not configured', message: 'Set STRIPE_SECRET_KEY or NEXT_PUBLIC_BACKEND_URL.' },

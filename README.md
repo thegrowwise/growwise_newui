@@ -2,6 +2,8 @@
 
 Next.js 14 App Router frontend for GrowWise School with TypeScript, Tailwind CSS, Redux Toolkit + Redux-Saga, and `next-intl` i18n.
 
+**Documentation:** SEO, analytics QA, phone-validation notes, and other guides live in **[`docs/`](../docs/README.md)** (relative to the workspace root).
+
 ### Features
 - Responsive marketing site and camp pages
 - Enrollment forms (general + academic)
@@ -42,5 +44,7 @@ cd growwise_newui
 npm run build
 npm start          # or deploy via Vercel / AWS Amplify
 ```
+
+Amplify helper scripts live only under [`scripts/`](scripts/README.md) (e.g. `./scripts/DEPLOY_AMPLIFY.sh`).
 
 
