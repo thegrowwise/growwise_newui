@@ -11,6 +11,62 @@ function getStripe(): Stripe | null {
   return new Stripe(key, { apiVersion: '2025-02-24.acacia' });
 }
 
+/** Server-side API base (Stripe + orders live here). Prefer non-public env on Vercel. */
+function getBackendBaseUrl(): string | null {
+  const raw =
+    process.env.BACKEND_URL?.trim() ||
+    process.env.BACKEND_INTERNAL_URL?.trim() ||
+    process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
+  if (!raw) return null;
+  return raw.replace(/\/$/, '');
+}
+
+/**
+ * When STRIPE_SECRET_KEY is not set in Next (e.g. local dev), forward to the Express/Lambda API
+ * so checkout uses the same Stripe key as backend/.env.
+ */
+async function proxyCreateCheckoutToBackend(request: Request): Promise<Response> {
+  const base = getBackendBaseUrl();
+  if (!base) {
+    return NextResponse.json(
+      {
+        error: 'Stripe is not configured',
+        message:
+          'Set STRIPE_SECRET_KEY here, or set NEXT_PUBLIC_BACKEND_URL (or BACKEND_URL) so checkout can use the API server.',
+      },
+      { status: 503 }
+    );
+  }
+
+  const target = `${base}/api/payment/create-checkout-session`;
+  const body = await request.text();
+
+  try {
+    const res = await fetch(target, {
+      method: 'POST',
+      headers: {
+        'Content-Type': request.headers.get('content-type') || 'application/json',
+      },
+      body,
+    });
+    const resBody = await res.text();
+    const contentType = res.headers.get('content-type') || 'application/json';
+    return new NextResponse(resBody, {
+      status: res.status,
+      headers: { 'Content-Type': contentType },
+    });
+  } catch (err) {
+    console.error('[checkout proxy] fetch to backend failed', base, err);
+    return NextResponse.json(
+      {
+        error: 'Backend unreachable',
+        message: 'Could not reach the payment API. Is the backend running and NEXT_PUBLIC_BACKEND_URL correct?',
+      },
+      { status: 503 }
+    );
+  }
+}
+
 function originFromRequest(request: Request): string {
   const env = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '');
   if (env) return env;
@@ -23,13 +79,7 @@ function originFromRequest(request: Request): string {
 export async function POST(request: Request) {
   const stripe = getStripe();
   if (!stripe) {
-    return NextResponse.json(
-      {
-        error: 'Stripe is not configured',
-        message: 'Set STRIPE_SECRET_KEY in the server environment.',
-      },
-      { status: 503 }
-    );
+    return proxyCreateCheckoutToBackend(request);
   }
 
   let body: CheckoutSessionRequest;

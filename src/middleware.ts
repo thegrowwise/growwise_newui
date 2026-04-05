@@ -3,6 +3,22 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { ENABLED_LOCALES, DEFAULT_LOCALE } from '@/i18n/localeConfig';
 
+/**
+ * With `localePrefix: 'never'`, public URLs must not use `/en/`. Older Stripe success_url values
+ * and bookmarks may still use `/en/checkout/...` — rewrite to the same path without `/en`.
+ */
+function rewriteLegacyDefaultLocalePrefix(request: NextRequest): NextResponse | null {
+  if (DEFAULT_LOCALE !== 'en') return null;
+  const pathname = request.nextUrl.pathname;
+  if (pathname === '/en' || pathname.startsWith('/en/')) {
+    const rest = pathname === '/en' ? '/' : pathname.slice('/en'.length) || '/';
+    const url = request.nextUrl.clone();
+    url.pathname = rest === '' ? '/' : rest;
+    return NextResponse.rewrite(url);
+  }
+  return null;
+}
+
 const intlMiddleware = createMiddleware({
   locales: [...ENABLED_LOCALES],
   defaultLocale: DEFAULT_LOCALE,
@@ -37,6 +53,8 @@ function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | n
 export default function middleware(request: NextRequest) {
   const rewritten = rewriteLocalePrefixedNextAssets(request);
   if (rewritten) return rewritten;
+  const legacyEn = rewriteLegacyDefaultLocalePrefix(request);
+  if (legacyEn) return legacyEn;
   return intlMiddleware(request);
 }
 
