@@ -5,7 +5,7 @@ import "./globals.css";
 import GTM from '../components/analytics/GTM';
 import MetaPixel from '../components/analytics/MetaPixel';
 import { CartProvider } from '@/components/gw/CartContext';
-// Optimize font loading with next/font
+
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -48,56 +48,6 @@ export default function RootLayout({
         <a href="#main-content" className="absolute -left-[9999px] focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1F396D] focus:text-white focus:rounded-md focus:no-underline">
           Skip to main content
         </a>
-        <Script
-          id="remove-extension-attributes"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                const removeExtensionAttributes = () => {
-                  const extensionAttributes = [
-                    'bis_skin_checked',
-                    'data-new-gr-c-s-check-loaded',
-                    'data-gr-ext-installed',
-                    'cz-shortcut-listen',
-                  ];
-                  
-                  extensionAttributes.forEach(attr => {
-                    const elements = document.querySelectorAll('[' + attr + ']');
-                    elements.forEach(el => {
-                      el.removeAttribute(attr);
-                    });
-                  });
-                };
-                
-                removeExtensionAttributes();
-                
-                if (document.readyState === 'loading') {
-                  document.addEventListener('DOMContentLoaded', () => {
-                    removeExtensionAttributes();
-                  });
-                } else {
-                  removeExtensionAttributes();
-                }
-                
-                const observer = new MutationObserver(() => {
-                  removeExtensionAttributes();
-                });
-                
-                observer.observe(document.documentElement, {
-                  attributes: true,
-                  childList: true,
-                  subtree: true,
-                  attributeFilter: ['bis_skin_checked', 'data-new-gr-c-s-check-loaded', 'data-gr-ext-installed', 'cz-shortcut-listen'],
-                });
-                
-                setTimeout(() => {
-                  observer.disconnect();
-                }, 10000);
-              })();
-            `,
-          }}
-        />
         {/* If GTM is configured, load GTM (script + noscript) immediately after opening <body> so the noscript iframe is available for no-JS users. */}
         {process.env.NEXT_PUBLIC_GTM_ID ? (
           <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
