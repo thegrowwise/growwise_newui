@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import type { CheckoutSessionRequest } from '@/lib/paymentService';
 import { publicPath } from '@/lib/publicPath';
+import { getBackendBaseUrlForProxy } from '@/lib/config';
 
 export const maxDuration = 60;
 
@@ -11,22 +12,12 @@ function getStripe(): Stripe | null {
   return new Stripe(key, { apiVersion: '2025-02-24.acacia' });
 }
 
-/** Server-side API base (Stripe + orders live here). Prefer non-public env on Vercel. */
-function getBackendBaseUrl(): string | null {
-  const raw =
-    process.env.BACKEND_URL?.trim() ||
-    process.env.BACKEND_INTERNAL_URL?.trim() ||
-    process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
-  if (!raw) return null;
-  return raw.replace(/\/$/, '');
-}
-
 /**
  * When STRIPE_SECRET_KEY is not set in Next (e.g. local dev), forward to the Express/Lambda API
  * so checkout uses the same Stripe key as backend/.env.
  */
 async function proxyCreateCheckoutToBackend(request: Request): Promise<Response> {
-  const base = getBackendBaseUrl();
+  const base = getBackendBaseUrlForProxy();
   if (!base) {
     return NextResponse.json(
       {
