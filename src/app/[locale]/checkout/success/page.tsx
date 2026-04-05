@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useEffect, useState, Suspense } from 'react';
+import React, { useEffect, useState, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { getCheckoutSession } from '@/lib/paymentService';
+import { getCheckoutSession, sendPaymentReceiptEmail } from '@/lib/paymentService';
 import { useCart } from '@/components/gw/CartContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -21,6 +21,7 @@ const CheckoutSuccessContent: React.FC = () => {
   const [session, setSession] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [hasFetched, setHasFetched] = useState(false);
+  const receiptRequestedRef = useRef(false);
 
   const sessionId = searchParams.get('session_id');
   const createLocaleUrl = (path: string) => publicPath(path, locale);
@@ -49,6 +50,13 @@ const CheckoutSuccessContent: React.FC = () => {
         if (data.session.payment_status === 'paid') {
           console.log('Payment successful, clearing cart');
           clearCart();
+
+          if (sessionId && !receiptRequestedRef.current) {
+            receiptRequestedRef.current = true;
+            void sendPaymentReceiptEmail(sessionId).catch(() => {
+              /* logged in paymentService */
+            });
+          }
 
           // GTM / Google Ads — fire once per successful session fetch (effect is guarded by hasFetched)
           const cents = data.session.amount_total;

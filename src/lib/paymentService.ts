@@ -87,12 +87,10 @@ export async function createCheckoutSession(
       const willRetry =
         attempt < CHECKOUT_MAX_ATTEMPTS - 1 && isRetryableHttpStatus(response.status);
 
-      console.error('Checkout session creation failed:', {
-        attempt: attempt + 1,
-        of: CHECKOUT_MAX_ATTEMPTS,
-        willRetry,
-        ...lastFailure,
-      });
+      // Stringify so devtools never shows `{}` when serializing the log payload oddly
+      console.error(
+        `[checkout] session create failed attempt ${attempt + 1}/${CHECKOUT_MAX_ATTEMPTS} status=${response.status} willRetry=${willRetry} body=${lastFailure.serverError}`
+      );
 
       if (willRetry) {
         await sleep(CHECKOUT_RETRY_DELAYS_MS[attempt] ?? CHECKOUT_RETRY_DELAYS_MS[CHECKOUT_RETRY_DELAYS_MS.length - 1]);
@@ -137,9 +135,27 @@ export async function createCheckoutSession(
   }
 
   if (lastFailure) {
-    console.error('Checkout session creation failed after retries:', lastFailure);
+    console.error(
+      `[checkout] session create failed after ${CHECKOUT_MAX_ATTEMPTS} attempts: ${JSON.stringify(lastFailure)}`
+    );
   }
   throw new Error('Something went wrong. Please try again.');
+}
+
+/**
+ * Ask the backend to send payment receipt emails (customer + admin).
+ * Safe to call once after successful checkout; backend dedupes by Stripe session id.
+ */
+export async function sendPaymentReceiptEmail(sessionId: string): Promise<void> {
+  const res = await fetch('/api/payment/send-receipt-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sessionId }),
+  });
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    console.warn('[checkout] send-receipt-email:', res.status, text);
+  }
 }
 
 export async function getCheckoutSession(sessionId: string) {
