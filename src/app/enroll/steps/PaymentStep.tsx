@@ -2,13 +2,14 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { loadStripe } from '@stripe/stripe-js';
+import { useLocale } from 'next-intl';
+import { useCart } from '@/components/gw/CartContext';
 import {
-  CardElement,
-  Elements,
-  useElements,
-  useStripe,
-} from '@stripe/react-stripe-js';
+  buildJourneyEnrollCartItem,
+  type EnrollPreviewData,
+  type EnrollPreviewResponse,
+} from '@/lib/enrollCheckout';
+import { publicPath } from '@/lib/publicPath';
 
 interface PaymentStepProps {
   parentName: string;
@@ -16,29 +17,6 @@ interface PaymentStepProps {
   parentPhone: string;
   childName: string;
   childAge: number | '';
-}
-
-type LineItemType = 'recurring' | 'one_time';
-
-interface LineItem {
-  label: string;
-  amount: number;
-  type: LineItemType;
-}
-
-interface EnrollPreviewData {
-  program_id: string;
-  tier_name: string;
-  delivery_mode: string;
-  line_items: LineItem[];
-  first_purchase_aov: number;
-  recurring_monthly_aov: number;
-  aov_to_asp_ratio: number;
-}
-
-interface EnrollPreviewResponse {
-  success: boolean;
-  data: EnrollPreviewData;
 }
 
 interface EnrollPreviewError {
@@ -51,208 +29,18 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 });
 
-const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? '';
-const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
-
-function PaymentForm(props: {
-  parentName: string;
-  parentEmail: string;
-  parentPhone: string;
-  childName: string;
-  childAge: number | '';
-  preview: EnrollPreviewData | null;
-}) {
-  const { parentName, parentEmail, parentPhone, childName, childAge, preview } = props;
-  const stripe = useStripe();
-  const elements = useElements();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const [processing, setProcessing] = useState(false);
-  const [stripeError, setStripeError] = useState<string | null>(null);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-
-  const requestBody = useMemo(() => {
-    const program_id = searchParams.get('program') || '';
-    const tier_name = searchParams.get('tier') || '';
-    const delivery_mode = searchParams.get('mode') || '';
-    const rawAddons = searchParams.get('addons');
-    const childCountParam = searchParams.get('children');
-
-    if (!program_id || !tier_name || !delivery_mode) {
-      return null;
-    }
-
-    const addon_ids = rawAddons ? rawAddons.split(',').filter(Boolean) : [];
-    const child_count = childCountParam ? Number(childCountParam) || 1 : 1;
-
-    return {
-      program_id,
-      tier_name,
-      delivery_mode,
-      addon_ids,
-      child_count,
-    };
-  }, [searchParams]);
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setStripeError(null);
-    setSubmitError(null);
-
-    if (!stripe || !elements) {
-      setStripeError('Payment system is not ready. Please try again in a moment.');
-      return;
-    }
-
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) {
-      setStripeError('Card input is not available. Please refresh and try again.');
-      return;
-    }
-
-    setProcessing(true);
-
-    try {
-      const result = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-        billing_details: {
-          name: parentName || undefined,
-          email: parentEmail || undefined,
-          phone: parentPhone || undefined,
-        },
-      });
-
-      if (result.error) {
-        setStripeError(result.error.message ?? 'Your card could not be processed.');
-        setProcessing(false);
-        return;
-      }
-
-      if (!result.paymentMethod) {
-        setStripeError('Payment method was not created. Please try again.');
-        setProcessing(false);
-        return;
-      }
-
-      const query = searchParams.toString();
-      const payload: Record<string, unknown> = {
-        payment_method_id: result.paymentMethod.id,
-        parent_name: parentName,
-        parent_email: parentEmail,
-        parent_phone: parentPhone,
-        child_name: childName,
-        child_age: childAge,
-        enrollment_selection: requestBody,
-        pricing_preview: preview,
-      };
-
-      const response = await fetch('/api/enroll', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const raw = await response.text();
-      let json: { success?: boolean; error?: string; message?: string } = {};
-      if (raw.trim()) {
-        try {
-          json = JSON.parse(raw) as typeof json;
-        } catch {
-          // If backend returns non-JSON, treat as generic error
-        }
-      }
-
-      if (!response.ok || json.success === false) {
-        const msg = json.error || json.message || `Payment failed (${response.status}). Please try again.`;
-        setSubmitError(msg);
-        setProcessing(false);
-        return;
-      }
-
-      router.push(query ? `/enroll/confirmation?${query}` : '/enroll/confirmation');
-    } catch (error) {
-      setSubmitError('Network error while processing payment. Please try again.');
-      // eslint-disable-next-line no-console
-      console.error('Payment submit error', error);
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <label
-          htmlFor="enroll-card-element"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Card details
-        </label>
-        <div className="rounded-lg border border-gray-300 bg-white px-3 py-2 shadow-sm">
-          <CardElement
-            id="enroll-card-element"
-            options={{
-              style: {
-                base: {
-                  fontSize: '14px',
-                  color: '#111827',
-                  '::placeholder': {
-                    color: '#9CA3AF',
-                  },
-                },
-                invalid: {
-                  color: '#DC2626',
-                },
-              },
-            }}
-          />
-        </div>
-        {stripeError && (
-          <p className="text-xs text-red-600" role="alert">
-            {stripeError}
-          </p>
-        )}
-      </div>
-
-      {submitError && (
-        <div
-          className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700"
-          role="alert"
-        >
-          {submitError}
-        </div>
-      )}
-
-      <button
-        type="submit"
-        disabled={processing || !stripe || !elements}
-        className="inline-flex w-full items-center justify-center rounded-lg bg-[#F16112] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#d4520c] disabled:cursor-not-allowed disabled:bg-gray-300"
-        data-testid="enroll-payment-submit"
-      >
-        {processing ? (
-          <span className="flex items-center gap-2">
-            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            <span>Processing…</span>
-          </span>
-        ) : (
-          <span>Pay now</span>
-        )}
-      </button>
-    </form>
-  );
-}
-
 export function PaymentStep(props: PaymentStepProps) {
-  const { parentName, parentEmail, parentPhone, childName, childAge } = props;
+  void props;
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const locale = useLocale();
+  const { addItem, removeItem } = useCart();
+
   const [preview, setPreview] = useState<EnrollPreviewResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<EnrollPreviewError | null>(null);
-  const [renderElements, setRenderElements] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const requestBody = useMemo(() => {
     const program_id = searchParams.get('program') || '';
@@ -341,11 +129,6 @@ export function PaymentStep(props: PaymentStepProps) {
     };
   }, [requestBody]);
 
-  useEffect(() => {
-    // Defer Elements render to client to avoid SSR issues
-    setRenderElements(true);
-  }, []);
-
   const programName = useMemo(() => {
     const first = preview?.data.line_items?.[0]?.label;
     if (!first) return preview?.data.program_id ?? '';
@@ -363,12 +146,28 @@ export function PaymentStep(props: PaymentStepProps) {
     return `${tierLabel} · ${modeLabel}`;
   }, [preview]);
 
+  const handleContinueToCheckout = () => {
+    if (!preview?.success || !preview.data || !requestBody) return;
+
+    setCheckoutError(null);
+    setCheckoutLoading(true);
+    try {
+      const cartItem = buildJourneyEnrollCartItem(preview.data, requestBody);
+      removeItem(cartItem.id);
+      addItem(cartItem);
+      router.push(publicPath('/checkout', locale));
+    } catch (e) {
+      setCheckoutError(e instanceof Error ? e.message : 'Something went wrong. Please try again.');
+      setCheckoutLoading(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="space-y-2">
         <h2 className="text-2xl font-semibold text-gray-900">Payment</h2>
         <p className="text-sm text-gray-600">
-          Review your total and enter your card details to complete enrollment.
+          Review your total and continue to our secure checkout (same as other courses).
         </p>
       </div>
 
@@ -441,34 +240,33 @@ export function PaymentStep(props: PaymentStepProps) {
             </div>
           </div>
 
-          {stripePromise ? (
-            renderElements && (
-              <Elements stripe={stripePromise}>
-                <PaymentForm
-                  parentName={parentName}
-                  parentEmail={parentEmail}
-                  parentPhone={parentPhone}
-                  childName={childName}
-                  childAge={childAge}
-                  preview={preview.data}
-                />
-              </Elements>
-            )
-          ) : (
+          {checkoutError && (
             <div
-              className="rounded-md border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-900"
+              className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
               role="alert"
             >
-              Stripe is not configured. Ask an administrator to set
-              {' '}
-              <code className="rounded bg-yellow-100 px-1 py-0.5 text-xs">NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code>
-              {' '}
-              in the environment before collecting payments.
+              {checkoutError}
             </div>
           )}
+
+          <button
+            type="button"
+            data-testid="enroll-payment-submit"
+            disabled={checkoutLoading}
+            onClick={() => handleContinueToCheckout()}
+            className="inline-flex w-full items-center justify-center rounded-lg bg-[#F16112] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#d4520c] disabled:cursor-not-allowed disabled:bg-gray-300"
+          >
+            {checkoutLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                <span>Redirecting…</span>
+              </span>
+            ) : (
+              <span>Continue to secure checkout</span>
+            )}
+          </button>
         </div>
       )}
     </div>
   );
 }
-

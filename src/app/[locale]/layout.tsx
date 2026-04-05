@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import ContentProvider from "@/components/providers/ContentProvider";
-import { CartProvider } from "@/components/gw/CartContext";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
 import { locales } from '@/i18n/config';
 import { PageTrackingWrapper } from '@/components/analytics/PageTrackingWrapper';
@@ -54,20 +53,19 @@ export default async function LocaleLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
-      <CartProvider>
-        <ChatbotProvider>
-          <ContentProvider>
-            <PageTrackingWrapper>
-              <Header />
-              <main id="main-content" suppressHydrationWarning>
-                {children}
-              </main>
-              <Footer />
-              <LazyChatbot />
-            </PageTrackingWrapper>
-          </ContentProvider>
-        </ChatbotProvider>
-      </CartProvider>
+      {/* CartProvider lives in app/layout.tsx so /enroll and [locale] routes share one cart */}
+      <ChatbotProvider>
+        <ContentProvider>
+          <PageTrackingWrapper>
+            <Header />
+            <main id="main-content" suppressHydrationWarning>
+              {children}
+            </main>
+            <Footer />
+            <LazyChatbot />
+          </PageTrackingWrapper>
+        </ContentProvider>
+      </ChatbotProvider>
     </NextIntlClientProvider>
   );
 }

@@ -9,6 +9,15 @@ function getStripe(): Stripe | null {
   return new Stripe(key, { apiVersion: '2025-02-24.acacia' });
 }
 
+function getBackendBaseUrl(): string | null {
+  const raw =
+    process.env.BACKEND_URL?.trim() ||
+    process.env.BACKEND_INTERNAL_URL?.trim() ||
+    process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
+  if (!raw) return null;
+  return raw.replace(/\/$/, '');
+}
+
 export async function GET(
   _request: Request,
   context: { params: Promise<{ sessionId: string }> }
@@ -20,10 +29,30 @@ export async function GET(
 
   const stripe = getStripe();
   if (!stripe) {
-    return NextResponse.json(
-      { error: 'Stripe is not configured', message: 'Set STRIPE_SECRET_KEY on the server.' },
-      { status: 503 }
-    );
+    const base = getBackendBaseUrl();
+    if (!base) {
+      return NextResponse.json(
+        { error: 'Stripe is not configured', message: 'Set STRIPE_SECRET_KEY or NEXT_PUBLIC_BACKEND_URL.' },
+        { status: 503 }
+      );
+    }
+    try {
+      const res = await fetch(
+        `${base}/api/payment/session/${encodeURIComponent(sessionId)}`,
+        { method: 'GET', headers: { Accept: 'application/json' } }
+      );
+      const text = await res.text();
+      return new NextResponse(text, {
+        status: res.status,
+        headers: { 'Content-Type': res.headers.get('content-type') || 'application/json' },
+      });
+    } catch (e) {
+      console.error('[checkout proxy] session GET failed', e);
+      return NextResponse.json(
+        { error: 'Backend unreachable', message: 'Could not reach the payment API.' },
+        { status: 503 }
+      );
+    }
   }
 
   try {
