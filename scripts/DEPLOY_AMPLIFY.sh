@@ -4,6 +4,10 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FRONTEND_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$FRONTEND_ROOT"
+
 echo "🚀 Starting AWS Amplify Deployment..."
 
 # Check if Amplify CLI is installed
