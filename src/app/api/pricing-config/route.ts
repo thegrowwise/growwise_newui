@@ -1,7 +1,55 @@
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import { NextResponse } from 'next/server';
 import { getBackendBaseUrlForProxy } from '@/lib/config';
+import type { PricingConfig } from '@/hooks/usePricingConfig';
+import { applyLadderToPrograms } from '@/lib/pricingConfigLadder';
 
+export const runtime = 'nodejs';
+
+const COMMITTED_CONFIG_PATH = join(
+  process.cwd(),
+  'public',
+  'api',
+  'mock',
+  'en',
+  'pricing-config.json',
+);
+
+/**
+ * Default: serve the committed `public/api/mock/en/pricing-config.json` with the same
+ * journey-level ladder as growwise_backend (committed file = source of truth for the website).
+ *
+ * `PRICING_CONFIG_PROXY_BACKEND=true` proxies to the backend only in non-production (e.g. `next dev`)
+ * for debugging; production/preview builds always use the committed JSON so UI matches repo pricing.
+ */
 export async function GET() {
+  const useBackendProxy =
+    process.env.PRICING_CONFIG_PROXY_BACKEND === 'true' &&
+    process.env.NODE_ENV !== 'production';
+
+  if (useBackendProxy) {
+    return getPricingFromBackendProxy();
+  }
+
+  try {
+    const raw = readFileSync(COMMITTED_CONFIG_PATH, 'utf8');
+    const config = JSON.parse(raw) as PricingConfig;
+    if (!Array.isArray(config.programs)) {
+      throw new Error('Invalid pricing config: missing programs array');
+    }
+    const data: PricingConfig = {
+      ...config,
+      programs: applyLadderToPrograms([...config.programs]),
+    };
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to load pricing config';
+    return NextResponse.json({ success: false, error: message }, { status: 500 });
+  }
+}
+
+async function getPricingFromBackendProxy() {
   try {
     const base = getBackendBaseUrlForProxy();
     if (!base) {
@@ -9,7 +57,8 @@ export async function GET() {
         {
           success: false,
           error: 'Backend is not configured',
-          message: 'Set NEXT_PUBLIC_BACKEND_URL in the Vercel / server environment (e.g. https://api.growwiseschool.org).',
+          message:
+            'PRICING_CONFIG_PROXY_BACKEND is true but NEXT_PUBLIC_BACKEND_URL is not set.',
         },
         { status: 503 },
       );
@@ -21,8 +70,6 @@ export async function GET() {
       | { success?: boolean; data?: unknown; error?: string }
       | { data?: unknown };
 
-    // Express backend serves the JSON file as-is: { programs, last_updated, ... } at root.
-    // Some deployments may wrap { data: { programs } }; keep both shapes.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- backend JSON shape varies
     const b = backendJson as any;
     const data =
@@ -41,9 +88,6 @@ export async function GET() {
     return NextResponse.json({ success: true, data });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to load pricing config';
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 502 },
-    );
+    return NextResponse.json({ success: false, error: message }, { status: 502 });
   }
 }

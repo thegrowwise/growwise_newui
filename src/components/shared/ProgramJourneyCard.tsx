@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { cn } from '@/components/ui/utils';
@@ -164,6 +164,20 @@ export function ProgramJourneyCard({
     () => getActiveFees(program.program_fees),
     [program.program_fees],
   );
+
+  // Default tier to the first option (by sort_order) so the Enroll CTA is enabled without an extra click.
+  useEffect(() => {
+    const sorted = [...program.tiers].sort((a, b) => a.sort_order - b.sort_order);
+    const first = sorted[0];
+    if (!first) return;
+
+    if (programId !== program.id) {
+      setProgram(program.id);
+      setTier(first.name);
+    } else if (tierName == null) {
+      setTier(first.name);
+    }
+  }, [program.id, programId, tierName, program.tiers, setProgram, setTier]);
 
   const handleModeChange = (nextMode: DeliveryMode) => {
     setMode(nextMode);
