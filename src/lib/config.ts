@@ -16,12 +16,16 @@ export function getBackendBaseUrl(): string | null {
 }
 
 /**
- * Base URL for Next Route Handlers that proxy to Express.
- * Preview/Production must set `NEXT_PUBLIC_BACKEND_URL`; local dev falls back to :3001.
+ * Base URL for Next Route Handlers that proxy to Express (server-side only).
+ * Checks private server env first (`BACKEND_URL` on Vercel), then `NEXT_PUBLIC_BACKEND_URL`,
+ * then in **development** defaults to `http://localhost:3001` so local dev works without env.
  */
 export function getBackendBaseUrlForProxy(): string | null {
-  const explicit = getBackendBaseUrl();
-  if (explicit) return explicit;
+  const raw =
+    process.env.BACKEND_URL?.trim() ||
+    process.env.BACKEND_INTERNAL_URL?.trim() ||
+    process.env.NEXT_PUBLIC_BACKEND_URL?.trim();
+  if (raw) return raw.replace(/\/$/, '');
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:3001';
   }

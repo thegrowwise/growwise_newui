@@ -36,6 +36,10 @@ export default function LocaleSwitcher() {
     router.push(publicPath(pathWithoutLocale, newLocale));
   };
 
+  if (ENABLED_LOCALES.length < 2) {
+    return null;
+  }
+
   // Prevent hydration mismatch by not rendering until mounted
   if (!isMounted) {
     // Show the correct locale even during pre-hydration

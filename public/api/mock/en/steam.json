@@ -147,7 +147,7 @@
       "achievement": "Built a web app that tracks homework for his entire school",
       "quote": "GrowWise taught me that coding isn't just about syntax - it's about solving real problems.",
       "program": "Python Programming",
-      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      "image": "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg"
     },
     {
       "name": "Sophia Rodriguez",
@@ -155,7 +155,7 @@
       "achievement": "Published her first game on Roblox with 10,000+ plays",
       "quote": "Creating games taught me creativity, problem-solving, and how to turn ideas into reality.",
       "program": "Game Development",
-      "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face"
+      "image": "/assets/photos/photo-1494790108755-2616b612b786.jpg"
     },
     {
       "name": "Marcus Johnson",
@@ -163,7 +163,7 @@
       "achievement": "Started his own tutoring business helping younger students",
       "quote": "The entrepreneurship program gave me the confidence to turn my passion into a business.",
       "program": "Young Entrepreneurs",
-      "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      "image": "/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg"
     }
   ],
   "programHighlights": [

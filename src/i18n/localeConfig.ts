@@ -1,18 +1,11 @@
 /**
- * Centralized locale configuration
- * 
- * To enable/disable locales, set the NEXT_PUBLIC_ENABLED_LOCALES environment variable.
- * Format: comma-separated list (e.g., "en,es,zh" or "en")
- * 
- * If not set, defaults to English only.
- * 
- * Example in .env.local:
- * NEXT_PUBLIC_ENABLED_LOCALES=en,es,zh
- * NEXT_PUBLIC_DEFAULT_LOCALE=en
+ * Centralized locale configuration (English-only at this time).
+ *
+ * Optional: set NEXT_PUBLIC_ENABLED_LOCALES=en (default) and NEXT_PUBLIC_DEFAULT_LOCALE=en.
  */
 
-// All available locales in the system
-export const AVAILABLE_LOCALES = ['en', 'es', 'zh', 'hi'] as const;
+/** Locales that have message files and are allowed in env validation. */
+export const AVAILABLE_LOCALES = ['en'] as const;
 
 // Type definitions
 export type AvailableLocale = (typeof AVAILABLE_LOCALES)[number];
@@ -92,9 +85,6 @@ export type Locale = EnabledLocale;
 // Locale display names
 export const LOCALE_NAMES: Record<string, string> = {
   en: 'English',
-  es: 'Español',
-  zh: '中文',
-  hi: 'हिन्दी'
 } as const;
 
 

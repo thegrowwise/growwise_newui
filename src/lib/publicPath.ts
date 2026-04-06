@@ -2,8 +2,8 @@ import { DEFAULT_LOCALE, isLocaleEnabled } from '@/i18n/localeConfig';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
 
 /**
- * Strips a leading locale segment from a pathname (e.g. `/es/about` → `/about`).
- * Paths without a locale prefix (default locale with `localePrefix: 'never'`) are unchanged.
+ * Strips a leading locale segment from a pathname when present.
+ * Default-locale URLs have no prefix (`localePrefix: 'never'`).
  */
 export function pathWithoutLocalePrefix(pathname: string): string {
   if (!pathname || pathname === '/') return '/';
@@ -17,10 +17,7 @@ export function pathWithoutLocalePrefix(pathname: string): string {
   return pathname.startsWith('/') ? pathname : `/${pathname}`;
 }
 
-/**
- * User-facing pathname: no locale prefix for the default locale (e.g. English).
- * Other locales keep a prefix (e.g. /es/contact) when enabled.
- */
+/** User-facing pathname (no `/en` prefix for the default locale). */
 export function publicPath(path: string, locale: string): string {
   const trimmed = path.trim();
   if (!trimmed) return '/';

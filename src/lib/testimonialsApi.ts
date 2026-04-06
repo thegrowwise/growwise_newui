@@ -60,14 +60,23 @@ export interface TestimonialsStats {
 }
 
 class TestimonialsApiService {
-  private baseUrl: string;
   private timeout: number;
   private defaultTestimonials: TestimonialVM[];
 
   constructor() {
-    this.baseUrl = BACKEND_URL;
     this.timeout = 10000; // 10 seconds
     this.defaultTestimonials = defaultTestimonials.testimonials;
+  }
+
+  /**
+   * In the browser, use same-origin `/api/*` routes (Next proxies to Express) to avoid CORS and
+   * failed fetches to localhost:3001. On the server, call the backend directly.
+   */
+  private getFetchBase(): string {
+    if (typeof window !== 'undefined') {
+      return '';
+    }
+    return BACKEND_URL;
   }
 
   /**
@@ -95,7 +104,7 @@ class TestimonialsApiService {
     }
 
     try {
-      const response = await fetch(`${this.baseUrl}/api/testimonials?${params}`, {
+      const response = await fetch(`${this.getFetchBase()}/api/testimonials?${params}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -174,7 +183,7 @@ class TestimonialsApiService {
    */
   async refreshTestimonials(): Promise<TestimonialsResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/testimonials/refresh`, {
+      const response = await fetch(`${this.getFetchBase()}/api/testimonials/refresh`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,7 +209,7 @@ class TestimonialsApiService {
    */
   async getCacheStats(): Promise<TestimonialsStats> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/testimonials/stats`, {
+      const response = await fetch(`${this.getFetchBase()}/api/testimonials/stats`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -244,7 +253,7 @@ class TestimonialsApiService {
    */
   async isHealthy(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}/health`, {
+      const response = await fetch(`${this.getFetchBase()}/api/health`, {
         method: 'GET',
         signal: AbortSignal.timeout(5000) // 5 second timeout for health check
       });
