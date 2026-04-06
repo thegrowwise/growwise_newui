@@ -66,11 +66,12 @@ export function PaymentStep(props: PaymentStepProps) {
   }, [searchParams]);
 
   useEffect(() => {
-    let isCancelled = false;
+    const ac = new AbortController();
 
     if (!requestBody) {
+      setLoading(false);
       setError({ message: 'Missing enrollment selection. Please start again.' });
-      return;
+      return () => ac.abort();
     }
 
     const fetchPreview = async () => {
@@ -84,6 +85,7 @@ export function PaymentStep(props: PaymentStepProps) {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(requestBody),
+          signal: ac.signal,
         });
 
         if (!response.ok) {
@@ -101,32 +103,29 @@ export function PaymentStep(props: PaymentStepProps) {
             }
           }
 
-          if (!isCancelled) {
-            setError({ message });
-          }
+          setError({ message });
           return;
         }
 
         const data: EnrollPreviewResponse = await response.json();
-        if (!isCancelled) {
-          setPreview(data);
+        if (!data.success || !data.data) {
+          setError({ message: 'Invalid preview response. Please try again.' });
+          return;
         }
-      } catch {
-        if (!isCancelled) {
-          setError({ message: 'Network error while loading summary. Please try again.' });
+        setPreview(data);
+      } catch (err) {
+        if (err instanceof Error && err.name === 'AbortError') {
+          return;
         }
+        setError({ message: 'Network error while loading summary. Please try again.' });
       } finally {
-        if (!isCancelled) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     };
 
-    fetchPreview();
+    void fetchPreview();
 
-    return () => {
-      isCancelled = true;
-    };
+    return () => ac.abort();
   }, [requestBody]);
 
   const programName = useMemo(() => {

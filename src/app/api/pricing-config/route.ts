@@ -18,13 +18,17 @@ const COMMITTED_CONFIG_PATH = join(
 
 /**
  * Default: serve the committed `public/api/mock/en/pricing-config.json` with the same
- * journey-level ladder as growwise_backend (local = source of truth for the website).
+ * journey-level ladder as growwise_backend (committed file = source of truth for the website).
  *
- * Set `PRICING_CONFIG_PROXY_BACKEND=true` to fetch from `NEXT_PUBLIC_BACKEND_URL` instead
- * (debug / compare only).
+ * `PRICING_CONFIG_PROXY_BACKEND=true` proxies to the backend only in non-production (e.g. `next dev`)
+ * for debugging; production/preview builds always use the committed JSON so UI matches repo pricing.
  */
 export async function GET() {
-  if (process.env.PRICING_CONFIG_PROXY_BACKEND === 'true') {
+  const useBackendProxy =
+    process.env.PRICING_CONFIG_PROXY_BACKEND === 'true' &&
+    process.env.NODE_ENV !== 'production';
+
+  if (useBackendProxy) {
     return getPricingFromBackendProxy();
   }
 
