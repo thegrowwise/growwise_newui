@@ -1,6 +1,7 @@
 /**
  * Real API base (Express backend). Default port 3001 matches `growwise_backend` (`PORT` default).
- * Do not set this to the Next.js dev URL (e.g. :3000) — `/api/pricing-config` would proxy to itself.
+ * Do not set this to the Next.js dev URL (e.g. :3000) — other `/api/*` proxies would call themselves.
+ * Note: `/api/pricing-config` serves the committed JSON by default; only `PRICING_CONFIG_PROXY_BACKEND=true` proxies pricing to this URL.
  */
 export const BACKEND_URL =
   process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
