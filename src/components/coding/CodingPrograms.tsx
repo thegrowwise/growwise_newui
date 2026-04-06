@@ -6,6 +6,7 @@ import { Loader2, AlertCircle } from 'lucide-react';
 import { usePricingConfig, type Program } from '@/hooks/usePricingConfig';
 import { cn } from '@/components/ui/utils';
 import { ProgramJourneyCard } from '@/components/shared/ProgramJourneyCard';
+import { RequestCallbackLink } from '@/components/shared/RequestCallbackLink';
 import {
   getProgramAccentColorClass,
   getProgramAccentHex,
@@ -82,6 +83,7 @@ export function CodingPrograms() {
               colorThemeClass={getProgramAccentColorClass(activeProgram.id)}
               colorThemeHex={getProgramAccentHex(activeProgram.id)}
             />
+            <RequestCallbackLink />
           </div>
         )}
       </div>

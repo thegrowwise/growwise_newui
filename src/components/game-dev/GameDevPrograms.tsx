@@ -6,6 +6,7 @@ import { Loader2, AlertCircle } from 'lucide-react';
 import { usePricingConfig, type Program } from '@/hooks/usePricingConfig';
 import { cn } from '@/components/ui/utils';
 import { ProgramJourneyCard } from '@/components/shared/ProgramJourneyCard';
+import { RequestCallbackLink } from '@/components/shared/RequestCallbackLink';
 import { AgeRecommender } from '@/components/game-dev/AgeRecommender';
 import { ScratchBridgeBanner } from '@/components/game-dev/ScratchBridgeBanner';
 import {
@@ -99,6 +100,7 @@ export function GameDevPrograms() {
               colorThemeHex={getProgramAccentHex(activeProgram.id)}
             />
             {activeProgram.id === 'scratch' && <ScratchBridgeBanner />}
+            <RequestCallbackLink />
           </div>
         )}
       </div>
