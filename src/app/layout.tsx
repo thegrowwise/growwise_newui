@@ -32,6 +32,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Trim so hosting/env typos (trailing space/newline) don't break gtm.js?id= requests.
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim() || "";
+  const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || "";
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || "";
+
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -49,17 +54,14 @@ export default function RootLayout({
           Skip to main content
         </a>
         {/* If GTM is configured, load GTM (script + noscript) immediately after opening <body> so the noscript iframe is available for no-JS users. */}
-        {process.env.NEXT_PUBLIC_GTM_ID ? (
-          <GTM gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-        ) : null}
-        {process.env.NEXT_PUBLIC_META_PIXEL_ID ? (
-          <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID} />
-        ) : null}
+        {/* When gtmId is set, GA4 is expected via the GTM container (GA4 Configuration tag) — not the standalone gtag.js snippet (avoids duplicate hits). */}
+        {gtmId ? <GTM gtmId={gtmId} /> : null}
+        {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
         <CartProvider>
           {children}
         </CartProvider>
         {/* gtag only when GTM is off — lazyOnload avoids competing with LCP (GA third-party default is afterInteractive) */}
-        {!process.env.NEXT_PUBLIC_GTM_ID && process.env.NEXT_PUBLIC_GA_ID ? (
+        {!gtmId && gaId ? (
           <>
             <Script
               id="_next-ga-init"
@@ -69,14 +71,14 @@ export default function RootLayout({
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                  gtag('config', '${gaId}');
                 `,
               }}
             />
             <Script
               id="_next-ga"
               strategy="lazyOnload"
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
             />
           </>
         ) : null}
