@@ -30,8 +30,8 @@ Act as: Principal Engineer + Senior QA Engineer + Senior UX Designer.
 
 ## 2. PERFORMANCE & LIGHTHOUSE PROTECTION
 
-1. Never load third-party scripts synchronously — GTM, Facebook Pixel, GA4, and any future third-party must use `strategy="lazyOnload"` with deferred initialization (post-load timer or interaction trigger). Never use `strategy="afterInteractive"` or inline `<script>` tags.
-2. Never undo the GTM 2-second defer or Pixel interaction-based loading — these are intentional PSI optimizations. Any change to `GTM.tsx` or `MetaPixel.tsx` requires explicit approval with a stated reason.
+1. Never load third-party scripts synchronously — GTM, Facebook Pixel, GA4, and any future third-party must use `strategy="lazyOnload"` (or interaction-based loading for Pixel where applicable). Never use `strategy="afterInteractive"` for GTM/GA. Do not add raw blocking `<script>` tags outside `next/script` for third parties.
+2. Do not add extra artificial delays on top of `lazyOnload` for GTM (e.g. nested `window.load` + long `setTimeout`) unless explicitly approved. Pixel interaction-based loading remains an intentional PSI optimization. Any change to `GTM.tsx` or `MetaPixel.tsx` requires explicit approval with a stated reason.
 3. No new third-party scripts without approval — any new external script (analytics, chat widget, A/B testing, ads) must be proposed with its bundle size and loading strategy before adding.
 4. Tailwind content array must stay scoped to `src/` only — never broaden `tailwind.config.ts` content globs to include `node_modules`, `pages/`, test files, or root-level wildcards.
 5. No synchronous fonts or preconnects that block render — `next/font` self-hosts; never add `<link rel="stylesheet">` for Google Fonts or other external CSS in `<head>`.
