@@ -3,7 +3,12 @@ import { fetchHeaderRequested, fetchHeaderSucceeded, fetchHeaderFailed } from '.
 import { fetchJsonWithLocale } from '@/lib/api';
 
 async function fetchHeaderApi() {
-  return fetchJsonWithLocale<any>('header.json', '/header');
+  try {
+    return await fetchJsonWithLocale<any>('header.json', '/header');
+  } catch {
+    // growwise_backend may not expose GET /header — fall back to committed mock JSON.
+    return fetchJsonWithLocale<any>('header.json', undefined);
+  }
 }
 
 function* handleFetchHeader() {
