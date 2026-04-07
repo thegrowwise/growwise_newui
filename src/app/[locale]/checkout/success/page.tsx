@@ -22,6 +22,7 @@ const CheckoutSuccessContent: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [hasFetched, setHasFetched] = useState(false);
   const receiptRequestedRef = useRef(false);
+  const purchaseFiredRef = useRef(false);
 
   const sessionId = searchParams.get('session_id');
   const createLocaleUrl = (path: string) => publicPath(path, locale);
@@ -42,7 +43,14 @@ const CheckoutSuccessContent: React.FC = () => {
 
     const fetchSession = async () => {
       try {
-        const data = await getCheckoutSession(sessionId);
+        let data: any;
+        try {
+          data = await getCheckoutSession(sessionId);
+        } catch (err) {
+          // Retry once to reduce missed conversions from transient network/backend failures.
+          await new Promise((r) => setTimeout(r, 750));
+          data = await getCheckoutSession(sessionId);
+        }
         console.log('Session data received:', data);
         setSession(data.session);
         
@@ -65,7 +73,8 @@ const CheckoutSuccessContent: React.FC = () => {
               ? parseFloat((cents / 100).toFixed(2))
               : 0;
           const transactionId = data.session.id ?? sessionId;
-          if (transactionId) {
+          if (transactionId && !purchaseFiredRef.current) {
+            purchaseFiredRef.current = true;
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({
               event: 'purchase',
@@ -80,12 +89,8 @@ const CheckoutSuccessContent: React.FC = () => {
         }
       } catch (err) {
         console.error('Error fetching session:', err);
-        // If we have a session ID, assume payment was successful
-        // The session fetch might fail due to network issues, but payment already went through
-        console.log('Assuming payment successful based on session ID presence');
-        clearCart(); // Clear cart anyway since we're on the success page
-        // Don't set error - show success message instead
-        // The session data will be null, but we'll show a generic success message
+        // Do not assume success for conversion tracking unless we can confirm a paid session.
+        setError('Unable to verify payment. Please refresh this page in a moment.');
       } finally {
         setLoading(false);
       }
