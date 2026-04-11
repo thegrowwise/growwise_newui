@@ -549,7 +549,7 @@ export default function SummerCampPage() {
         <section className="relative isolate min-h-[min(70vh,44rem)] w-full overflow-hidden">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/assets/camps/summer-camp-banner.png"
+              src="/assets/camps/summer-camp-banner.webp"
               alt="Students in coding, robotics, and math summer programs at GrowWise, Dublin, California"
               fill
               priority
