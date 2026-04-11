@@ -57,6 +57,9 @@ const nextConfig: NextConfig = {
   
   // Experimental features for better performance
   experimental: {
+    // Dev-only: avoid distDir lockfile acquisition (can ETIMEDOUT on iCloud/synced or slow disks).
+    // Production builds keep the default lock behavior via NODE_ENV.
+    ...(process.env.NODE_ENV === 'development' ? { lockDistDir: false as const } : {}),
     // Smaller dev graphs for Webpack + Turbopack (tree-shake barrel imports)
     optimizePackageImports: [
       'lucide-react',
@@ -94,6 +97,17 @@ const nextConfig: NextConfig = {
   
   // Headers for caching and security
   async headers() {
+    /** Camp guide PDF — inline in browser (avoid attachment download). */
+    const campGuidePdf = [
+      {
+        source: '/assets/camps/SummerCampBrochure.pdf',
+        headers: [
+          { key: 'Content-Type', value: 'application/pdf' },
+          { key: 'Content-Disposition', value: 'inline' },
+        ],
+      },
+    ];
+
     const security = [
       {
         source: '/:path*',
@@ -120,10 +134,11 @@ const nextConfig: NextConfig = {
 
     // Long immutable cache breaks Next dev HMR for /_next/static; apply only in production.
     if (!isProd) {
-      return security;
+      return [...campGuidePdf, ...security];
     }
 
     return [
+      ...campGuidePdf,
       ...security,
       {
         source: '/images/:path*',

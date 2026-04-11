@@ -4,6 +4,12 @@
       "id": "adv-math",
       "title": "Advanced Math (Algebra II + Precalculus)",
       "description": "Accelerated track covering Algebra 2 and Pre-Calculus fundamentals.",
+      "outcome": "Master Algebra II & Precalculus before school starts",
+      "bullets": [
+        "Accelerated 2-week progression",
+        "Concept mastery + problem-solving",
+        "Grades 8–11 · Half-day"
+      ],
       "iconId": "Calculator",
       "category": "Half-Day Camps",
       "hoursPerWeek": "9 hours a week",
@@ -44,6 +50,12 @@
       "id": "math-olympiad",
       "title": "Math Olympiad (AMC8/MOEMS)",
       "description": "Competitive math strategies focusing on AMC8 and MOEMS.",
+      "outcome": "Train like a competitor, not just a student",
+      "bullets": [
+        "Weekly mock competitions",
+        "Speed drills + advanced problem solving",
+        "Grades 4–8 · Half-day"
+      ],
       "iconId": "Brain",
       "category": "Half-Day Camps",
       "hoursPerWeek": "15 hours a week",
@@ -90,6 +102,14 @@
       "id": "ai-entrepreneur",
       "title": "AI Entrepreneur Studio",
       "description": "Learn to build businesses leveraging AI automation tools, founder-led sessions.",
+      "outcome": "Turn ideas into real AI-powered products",
+      "bullets": [
+        "Learn ideation, validation & business thinking",
+        "Use AI tools to build and test concepts",
+        "Pitch your idea in a live demo",
+        "No coding experience required",
+        "Grades 8–12 · Half-day"
+      ],
       "iconId": "Lightbulb",
       "category": "Half-Day Camps",
       "hoursPerWeek": "30 hours a week",
@@ -129,6 +149,12 @@
       "id": "scratch-online",
       "title": "Scratch",
       "description": "Introductory visual programming for young creators.",
+      "outcome": "Go from beginner to real coding projects",
+      "bullets": [
+        "Scratch → Python progression",
+        "Build working programs",
+        "Grades 3–8 · Half-day"
+      ],
       "iconId": "Code2",
       "category": "Half-Day Camps",
       "hoursPerWeek": "9 hours a week",
@@ -169,6 +195,12 @@
       "id": "robotics-camp",
       "title": "Robotics Camp",
       "description": "Full-day engineering immersive with advanced sensor arrays.",
+      "outcome": "Design, build, and race a robot by Friday",
+      "bullets": [
+        "Hands-on from Day 1",
+        "Team-based engineering challenges",
+        "Grades 5–9 · Full-day"
+      ],
       "iconId": "Bot",
       "category": "Full Day Camps",
       "hoursPerWeek": "30 hours per week",
@@ -209,6 +241,12 @@
       "id": "young-authors",
       "title": "Young Authors Camp",
       "description": "Immersive full-day writing studio for aspiring novelists.",
+      "outcome": "Write and publish your own book by Friday",
+      "bullets": [
+        "Full story + illustrations",
+        "Printed, take-home book",
+        "Grades 3–9 · Full-day"
+      ],
       "iconId": "PenTool",
       "category": "Full Day Camps",
       "hoursPerWeek": "30 hours per week",
@@ -249,6 +287,12 @@
       "id": "roblox-in-person",
       "title": "Roblox",
       "description": "Master Lua scripting in a collaborative on-site environment.",
+      "outcome": "Build and publish your own game by Friday",
+      "bullets": [
+        "Learn game design + coding fundamentals",
+        "Create playable projects using real tools",
+        "Grades 3–10 · Half-day"
+      ],
       "iconId": "Gamepad2",
       "category": "Half-Day Camps",
       "hoursPerWeek": "15 hours per week",

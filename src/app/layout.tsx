@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import GTM from '../components/analytics/GTM';
+import { GTMHead, GTMNoScript } from '../components/analytics/GTM';
 import MetaPixel from '../components/analytics/MetaPixel';
 import { CartProvider } from '@/components/gw/CartContext';
 
@@ -48,14 +48,16 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://api.growwiseschool.org" />
+        {/* GTM bootstrap in <head> with beforeInteractive — measurement reliability (Google Tag / advisor guidance). */}
+        {gtmId ? <GTMHead gtmId={gtmId} /> : null}
       </head>
       <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
+        {/* GTM noscript iframe immediately after <body> (Google snippet). Page View + conversions: configure in GTM (e.g. URL contains /checkout/success). */}
+        {gtmId ? <GTMNoScript gtmId={gtmId} /> : null}
         <a href="#main-content" className="absolute -left-[9999px] focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1F396D] focus:text-white focus:rounded-md focus:no-underline">
           Skip to main content
         </a>
-        {/* If GTM is configured, load GTM (script + noscript) immediately after opening <body> so the noscript iframe is available for no-JS users. */}
         {/* When gtmId is set, GA4 is expected via the GTM container (GA4 Configuration tag) — not the standalone gtag.js snippet (avoids duplicate hits). */}
-        {gtmId ? <GTM gtmId={gtmId} /> : null}
         {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
         <CartProvider>
           {children}

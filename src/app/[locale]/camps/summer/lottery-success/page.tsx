@@ -26,7 +26,7 @@ function LotterySuccessContent() {
 
   useEffect(() => {
     if (!valid) {
-      router.replace(`${createLocaleUrl('/camps/summer', locale)}#lottery`);
+      router.replace(`${createLocaleUrl('/camps/summer', locale)}#lead-capture`);
     }
   }, [valid, router, locale]);
 

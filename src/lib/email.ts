@@ -10,6 +10,8 @@ export interface SendEmailOptions {
   subject: string;
   html: string;
   text: string;
+  /** Optional Reply-To header (e.g. connect@thegrowwise.com). */
+  replyTo?: string;
 }
 
 export interface SendEmailResult {
@@ -40,7 +42,7 @@ function getTransporter(): nodemailer.Transporter | null {
 }
 
 export async function sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
-  const { to, subject, html, text } = options;
+  const { to, subject, html, text, replyTo } = options;
   const fromEmail = process.env.FROM_EMAIL;
   const fromName = process.env.FROM_NAME ?? 'GrowWise';
 
@@ -62,6 +64,7 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
       subject,
       text,
       html,
+      ...(replyTo ? { replyTo } : {}),
     });
     return { success: true, messageId: result.messageId };
   } catch (err) {

@@ -1,7 +1,7 @@
 /**
  * Brevo (Sendinblue) REST API v3 — transactional email + contacts/lists.
  * Env: BREVO_API_KEY, BREVO_SENDER_EMAIL, BREVO_SENDER_NAME (optional),
- * BREVO_LIST_LOTTERY (numeric list id — summer lottery list add + Meta Lead Ads upsert).
+ * BREVO_LIST_LOTTERY (numeric list id — summer camp guide leads + Meta Lead Ads upsert; legacy env name).
  */
 
 import type { SendEmailResult } from '@/lib/email';
@@ -105,7 +105,7 @@ export async function sendBrevoTransactionalEmail(
   }
 }
 
-/** POST /v3/contacts — add/update contact and attach to the summer camp lottery list. */
+/** POST /v3/contacts — add/update contact and attach to the summer camp guide / nurture list. */
 export async function addSummerCampLotteryContactToBrevoList(email: string): Promise<SendEmailResult> {
   const sender = getBrevoSender();
   const listIdRaw = process.env.BREVO_LIST_LOTTERY?.trim();

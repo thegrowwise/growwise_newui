@@ -46,3 +46,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 dataconnect-generated/
+
+# local python tooling (PDF analysis, etc.)
+.venv-pdf/
+*.venv/
