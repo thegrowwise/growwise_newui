@@ -433,9 +433,17 @@ export function SlotsPanel({
             <Info className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
-        <p className="text-slate-600 mt-2 text-xs leading-relaxed">
-          {program.description}
+        <p className="text-base font-semibold text-gray-800 mt-2 leading-snug">
+          {program.outcome}
         </p>
+        <ul className="mt-2 space-y-1" aria-label={`${program.title} highlights`}>
+          {program.bullets.map((bullet, i) => (
+            <li key={i} className="flex items-start gap-2 text-xs text-slate-600 leading-relaxed">
+              <span aria-hidden="true" className="mt-[3px] flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#1F396D]" />
+              {bullet}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8">

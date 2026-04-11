@@ -10,9 +10,13 @@ import ImageWithFallback from '@/components/gw/ImageWithFallback';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { publicPath } from '@/lib/publicPath';
+import { TEST_CHECKOUT_1USD_ITEM } from '@/lib/testCheckoutProduct';
+
+const showTestCheckoutProduct =
+  process.env.NEXT_PUBLIC_ENABLE_TEST_CHECKOUT === 'true';
 
 const CartPage: React.FC = () => {
-  const { state, updateQuantity, removeItem, clearCart } = useCart();
+  const { state, updateQuantity, removeItem, clearCart, addItem } = useCart();
   const locale = useLocale();
   const createLocaleUrl = (path: string) => publicPath(path, locale);
 
@@ -62,6 +66,27 @@ const CartPage: React.FC = () => {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {showTestCheckoutProduct ? (
+          <div
+            className="mb-6 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 sm:px-5 sm:py-4"
+            role="region"
+            aria-label="Stripe test checkout"
+          >
+            <p className="text-sm text-amber-950 mb-3">
+              <span className="font-semibold">Test checkout ($1).</span>{' '}
+              Adds a one-dollar Stripe line item for test cards and success-page verification. Remove it from the cart when you are done.
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="border-amber-300 bg-white text-amber-950 hover:bg-amber-100"
+              onClick={() => addItem({ ...TEST_CHECKOUT_1USD_ITEM })}
+            >
+              Add $1 test product
+            </Button>
+          </div>
+        ) : null}
         {state.items.length === 0 ? (
           /* Empty Cart */
           <div className="text-center py-16">

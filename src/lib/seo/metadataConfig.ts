@@ -155,12 +155,22 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/camps/summer': {
-    title: 'Summer Coding & STEAM Camps 2026 | Dublin CA | GrowWise',
+    title: 'Summer STEM Camps Dublin CA | AI, Coding & Math | GrowWise',
     description:
-      'Award-winning summer STEAM camps in Dublin CA for grades K-12. Coding, math, AI, robotics & Young Authors. Small groups, expert instructors. Enroll now.',
+      'This summer your child builds something real — coding, AI, robotics & math camps. Grades K–12, small groups, Dublin & Tri-Valley. Reserve a spot.',
     keywords:
       'summer coding camp Dublin CA, summer STEAM camp Dublin CA 2026, coding camp kids Tri-Valley, summer math camp Dublin CA, AI camp for kids Dublin CA, robotics camp kids Dublin CA, game development camp kids, young authors camp summer 2026, summer camp 2026 Dublin CA, STEM camp Pleasanton, STEM camp San Ramon, coding camp Livermore, kids coding camp Danville, machine learning camp for kids, Python coding camp kids',
     path: '/camps/summer',
+    image: 'https://growwiseschool.org/assets/camps/summer-camp-banner.png',
+  },
+
+  '/camps/summer/guide-success': {
+    title: 'Thank You — Summer Camp Guide | GrowWise',
+    description:
+      'Your GrowWise summer camp guide is on the way. Check your email for details and reserve your child’s spot before seats fill.',
+    keywords:
+      'GrowWise summer camp, camp guide PDF, Dublin CA summer camp, STEM camp Tri-Valley, early bird summer camp',
+    path: '/camps/summer/guide-success',
     image: 'https://growwiseschool.org/assets/camps/summer-camp-banner.png',
   },
 

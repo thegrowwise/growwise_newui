@@ -158,6 +158,22 @@ export async function sendPaymentReceiptEmail(sessionId: string): Promise<void> 
   }
 }
 
+/** Best-effort string for failed session API responses (handles string `error`, Stripe-shaped objects, empty `{}`). */
+function summarizeSessionErrorPayload(parsed: unknown, rawText: string): string {
+  if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+    const o = parsed as Record<string, unknown>;
+    if (typeof o.message === 'string' && o.message.trim()) return o.message;
+    if (typeof o.error === 'string' && o.error.trim()) return o.error;
+    if (o.error && typeof o.error === 'object' && o.error !== null && 'message' in o.error) {
+      const m = (o.error as { message?: unknown }).message;
+      if (typeof m === 'string' && m.trim()) return m;
+    }
+  }
+  const t = rawText.trim();
+  if (t.length === 0) return '(empty body)';
+  return t.length <= 400 ? t : `${t.slice(0, 400)}…`;
+}
+
 export async function getCheckoutSession(sessionId: string) {
   const response = await fetch(
     `/api/payment/session/${encodeURIComponent(sessionId)}`,
@@ -169,15 +185,31 @@ export async function getCheckoutSession(sessionId: string) {
   });
 
   if (!response.ok) {
+    const status = response.status;
+    let detail = response.statusText || '(no status text)';
     try {
-      const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        const error = await response.json();
-        console.error('Session retrieval failed:', { status: response.status, serverError: error.message || error.error });
+      const text = await response.text();
+      if (text) {
+        try {
+          detail = summarizeSessionErrorPayload(JSON.parse(text) as unknown, text);
+        } catch {
+          detail = text;
+        }
       }
     } catch {
-      /* ignore */
+      /* keep detail as statusText */
     }
+
+    // 404 = unknown session id (common with placeholder ids in local dev) — warn, not error
+    if (status === 404) {
+      console.warn(
+        '[checkout] Session not found — use a real Stripe Checkout session id from test mode, or mock the API in e2e.',
+        { status, detail }
+      );
+    } else {
+      console.error('[checkout] Session retrieval failed:', { status, detail });
+    }
+
     const userMessage =
       response.status === 503
         ? "We're having a temporary issue. Please try again in a few minutes."

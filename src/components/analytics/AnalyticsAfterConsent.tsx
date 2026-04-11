@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Script from 'next/script';
-import GTM from '@/components/analytics/GTM';
+import { GTMHead, GTMNoScript } from '@/components/analytics/GTM';
 import MetaPixel from '@/components/analytics/MetaPixel';
 import { getStoredCookieConsent, type CookieConsentState } from '@/lib/consent';
 
@@ -44,7 +44,12 @@ export function AnalyticsAfterConsent() {
 
   return (
     <>
-      {env.gtmId ? <GTM gtmId={env.gtmId} /> : null}
+      {env.gtmId ? (
+        <>
+          <GTMHead gtmId={env.gtmId} strategy="afterInteractive" />
+          <GTMNoScript gtmId={env.gtmId} />
+        </>
+      ) : null}
       {env.pixelId ? <MetaPixel pixelId={env.pixelId} /> : null}
 
       {/* GA fallback only when GTM isn't configured */}

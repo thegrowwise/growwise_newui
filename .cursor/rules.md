@@ -30,8 +30,8 @@ Act as: Principal Engineer + Senior QA Engineer + Senior UX Designer.
 
 ## 2. PERFORMANCE & LIGHTHOUSE PROTECTION
 
-1. Never load third-party scripts synchronously — GTM, Facebook Pixel, GA4, and any future third-party must use `strategy="lazyOnload"` (or interaction-based loading for Pixel where applicable). Never use `strategy="afterInteractive"` for GTM/GA. Do not add raw blocking `<script>` tags outside `next/script` for third parties.
-2. Do not add extra artificial delays on top of `lazyOnload` for GTM (e.g. nested `window.load` + long `setTimeout`) unless explicitly approved. Pixel interaction-based loading remains an intentional PSI optimization. Any change to `GTM.tsx` or `MetaPixel.tsx` requires explicit approval with a stated reason.
+1. Never add raw blocking third-party `<script>` tags outside `next/script`. **GTM:** `GTMHead` in root `app/layout.tsx` `<head>` uses `strategy="beforeInteractive"` (Google Tag / measurement reliability); `GTMNoScript` immediately after `<body>`. Do not move GTM back to `lazyOnload` without explicit approval and reason. **Standalone GA** (when GTM is off): `lazyOnload`. **Meta Pixel:** interaction-based loading per `MetaPixel.tsx` unless explicitly changed. **Consent-only `AnalyticsAfterConsent`:** if enabled, GTM may use `afterInteractive` there (not in root layout).
+2. Do not add extra artificial delays for GTM (e.g. nested `window.load` + long `setTimeout`) unless explicitly approved. Pixel interaction-based loading remains an intentional PSI optimization. Any change to `GTM.tsx` or `MetaPixel.tsx` requires explicit approval with a stated reason.
 3. No new third-party scripts without approval — any new external script (analytics, chat widget, A/B testing, ads) must be proposed with its bundle size and loading strategy before adding.
 4. Tailwind content array must stay scoped to `src/` only — never broaden `tailwind.config.ts` content globs to include `node_modules`, `pages/`, test files, or root-level wildcards.
 5. No synchronous fonts or preconnects that block render — `next/font` self-hosts; never add `<link rel="stylesheet">` for Google Fonts or other external CSS in `<head>`.
@@ -135,6 +135,7 @@ Where hardcoded English strings currently exist in components (e.g., button labe
 1. All new user-visible text should use i18n keys from `en.json` via `useTranslations` — no new readable text hardcoded in components.
 2. After editing `en.json`, confirm all 22 top-level keys are intact — the key count must not decrease unless removal is the explicit task.
 3. Nested key structures must be preserved — never flatten or restructure existing i18n key hierarchies.
+4. **Canonical URL / single-language SEO:** For pages where the canonical strategy is one English experience across locales, add or change copy only in `en.json` and consume it explicitly (e.g. import from `en.json` in the page). Do **not** mirror those strings into `es.json`, `hi.json`, or `zh.json` unless full localization is explicitly requested.
 
 ---
 

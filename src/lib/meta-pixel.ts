@@ -10,8 +10,20 @@ function track(event: string, params?: Record<string, unknown>) {
   }
 }
 
+/** Summer camp “Get guide + 15% off” form — not a lottery. */
+export function trackSummerCampGuideLead(interest: string, grade: string) {
+  track('Lead', {
+    content_name: 'Summer Camp Guide',
+    content_category: interest,
+    content_ids: [grade],
+    value: 0,
+    currency: 'USD',
+  });
+}
+
+/** @deprecated Use trackSummerCampGuideLead */
 export function trackLotteryEntry(interest: string, grade: string) {
-  track('Lead', { content_name: 'Summer Camp Lottery', content_category: interest, content_ids: [grade], value: 0, currency: 'USD' });
+  trackSummerCampGuideLead(interest, grade);
 }
 export function trackEnrollClick(programName: string, price?: number) {
   track('InitiateCheckout', { content_name: programName, content_category: 'Summer Camp', value: price ?? 0, currency: 'USD' });

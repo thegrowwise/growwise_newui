@@ -6,12 +6,29 @@ import { useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import type { Program } from '@/lib/summer-camp-data';
 import { trackCampView } from '@/lib/meta-pixel';
+import {
+  getSummerCampProgramTrack,
+  orderProgramsBySummerCampTrack,
+  type SummerCampProgramTrack,
+} from '@/lib/summer-camp-program-groups';
 
-const DESKTOP_CATEGORY_ORDER: Program['category'][] = ['Half-Day Camps', 'Full Day Camps'];
-
-function orderProgramsForDesktopGrid(list: Program[]): Program[] {
-  return DESKTOP_CATEGORY_ORDER.flatMap((cat) => list.filter((p) => p.category === cat));
+function groupProgramsByTrack(ordered: Program[]): Array<{
+  track: SummerCampProgramTrack | 'unknown';
+  programs: Program[];
+}> {
+  const groups: Array<{ track: SummerCampProgramTrack | 'unknown'; programs: Program[] }> = [];
+  let current: (typeof groups)[number] | null = null;
+  for (const p of ordered) {
+    const tr = getSummerCampProgramTrack(p.id) ?? 'unknown';
+    if (!current || current.track !== tr) {
+      current = { track: tr, programs: [] };
+      groups.push(current);
+    }
+    current.programs.push(p);
+  }
+  return groups;
 }
+
 
 const SummerCampProgramPickCard = memo(function SummerCampProgramPickCard({
   program,
@@ -70,7 +87,7 @@ const SummerCampProgramPickCard = memo(function SummerCampProgramPickCard({
           {program.title}
         </h4>
         <p className="text-xs text-slate-500 mt-1.5 leading-relaxed line-clamp-2">
-          {program.description}
+          {program.outcome}
         </p>
         {isSelected && (
           <div
@@ -96,34 +113,61 @@ export const ProgramList = memo(function ProgramList({
 }) {
   const t = useTranslations('summerCamp');
   const list = programs ?? [];
-  const ordered = useMemo(() => orderProgramsForDesktopGrid(list), [list]);
+  const ordered = useMemo(() => orderProgramsBySummerCampTrack(list), [list]);
+  const groups = useMemo(() => groupProgramsByTrack(ordered), [ordered]);
+  const globalIndexById = useMemo(() => {
+    const m = new Map<string, number>();
+    ordered.forEach((p, i) => m.set(p.id, i));
+    return m;
+  }, [ordered]);
+
+  const sectionHeading = (track: SummerCampProgramTrack | 'unknown') => {
+    switch (track) {
+      case 'academic':
+        return t('filter.trackAcademic');
+      case 'aiGameDev':
+        return t('filter.trackAiGameDev');
+      case 'creativeWriting':
+        return t('filter.trackCreativeWriting');
+      default:
+        return t('filter.trackOther');
+    }
+  };
 
   return (
     <div className="space-y-8" role="group" aria-label={t('page.title')}>
-      <div className="min-[769px]:hidden space-y-4">
-        <ul className="grid grid-cols-1 gap-3 list-none p-0 m-0" aria-label={t('page.title')}>
-          {ordered.map((program, idx) => {
-            const isSelected = selectedProgramId === program.id;
-            return (
-              <li
-                key={program.id}
-                className="[content-visibility:auto] [contain-intrinsic-size:auto_300px]"
-              >
-                <SummerCampProgramPickCard
-                  program={program}
-                  isSelected={isSelected}
-                  onSelect={onSelectProgram}
-                  imageSizes="(max-width:768px) 96vw, 100vw"
-                  imageWrapperClassName="aspect-[650/450]"
-                  imagePriority={idx < 2}
-                />
-              </li>
-            );
-          })}
-        </ul>
+      <div className="min-[769px]:hidden space-y-8">
+        {groups.map((group) => (
+          <section key={group.track} className="space-y-3">
+            <h3 className="font-heading font-black text-base text-slate-800 uppercase tracking-tight">
+              {sectionHeading(group.track)}
+            </h3>
+            <ul className="grid grid-cols-1 gap-3 list-none p-0 m-0" aria-label={sectionHeading(group.track)}>
+              {group.programs.map((program) => {
+                const isSelected = selectedProgramId === program.id;
+                const gIdx = globalIndexById.get(program.id) ?? 0;
+                return (
+                  <li
+                    key={program.id}
+                    className="[content-visibility:auto] [contain-intrinsic-size:auto_300px]"
+                  >
+                    <SummerCampProgramPickCard
+                      program={program}
+                      isSelected={isSelected}
+                      onSelect={onSelectProgram}
+                      imageSizes="(max-width:768px) 96vw, 100vw"
+                      imageWrapperClassName="aspect-[650/450]"
+                      imagePriority={gIdx < 2}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
         <p className="text-center">
           <a
-            href="#lottery"
+            href="#lead-capture"
             className="text-[13px] font-medium"
             style={{ color: '#0F6E56' }}
           >
@@ -132,31 +176,41 @@ export const ProgramList = memo(function ProgramList({
         </p>
       </div>
 
-      <ul
-        className="hidden min-[769px]:grid grid-cols-2 gap-3 list-none p-0 m-0"
-        aria-label={t('page.title')}
-      >
-        {ordered.map((program, idx) => {
-          const isSelected = selectedProgramId === program.id;
-          const hasOddCount = ordered.length % 2 !== 0;
-          const isLastAndAlone = hasOddCount && idx === ordered.length - 1;
-          return (
-            <li
-              key={program.id}
-              className={`[content-visibility:auto] [contain-intrinsic-size:auto_300px] ${isLastAndAlone ? 'col-span-2' : ''}`}
+      <div className="hidden min-[769px]:block space-y-8">
+        {groups.map((group) => (
+          <section key={`d-${group.track}`} className="space-y-3">
+            <h3 className="font-heading font-black text-base text-slate-800 uppercase tracking-tight">
+              {sectionHeading(group.track)}
+            </h3>
+            <ul
+              className="grid grid-cols-2 gap-3 list-none p-0 m-0"
+              aria-label={sectionHeading(group.track)}
             >
-              <SummerCampProgramPickCard
-                program={program}
-                isSelected={isSelected}
-                onSelect={onSelectProgram}
-                imageSizes="(min-width: 1024px) 24vw, (min-width: 769px) 42vw, 100vw"
-                imageWrapperClassName={isLastAndAlone ? 'h-[200px]' : 'aspect-[650/450]'}
-                imagePriority={idx < 2}
-              />
-            </li>
-          );
-        })}
-      </ul>
+              {group.programs.map((program, idx) => {
+                const isSelected = selectedProgramId === program.id;
+                const hasOddCount = group.programs.length % 2 !== 0;
+                const isLastAndAlone = hasOddCount && idx === group.programs.length - 1;
+                const gIdx = globalIndexById.get(program.id) ?? 0;
+                return (
+                  <li
+                    key={program.id}
+                    className={`[content-visibility:auto] [contain-intrinsic-size:auto_300px] ${isLastAndAlone ? 'col-span-2' : ''}`}
+                  >
+                    <SummerCampProgramPickCard
+                      program={program}
+                      isSelected={isSelected}
+                      onSelect={onSelectProgram}
+                      imageSizes="(min-width: 1024px) 24vw, (min-width: 769px) 42vw, 100vw"
+                      imageWrapperClassName={isLastAndAlone ? 'h-[200px]' : 'aspect-[650/450]'}
+                      imagePriority={gIdx < 2}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ))}
+      </div>
     </div>
   );
 });
