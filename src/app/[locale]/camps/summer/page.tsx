@@ -556,7 +556,7 @@ export default function SummerCampPage() {
               fetchPriority="high"
               quality={72}
               sizes="100vw"
-              className="object-cover object-center select-none blur-sm scale-105"
+              className="object-cover object-center select-none"
               draggable={false}
             />
             <div className="absolute inset-0 z-[1] bg-[rgba(0,0,0,0.6)]" aria-hidden />
