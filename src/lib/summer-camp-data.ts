@@ -38,6 +38,10 @@ export type Program = {
   id: string;
   title: string;
   description: string;
+  /** Short outcome statement shown prominently above bullets in the detail panel. */
+  outcome: string;
+  /** 2–5 scannable bullet points shown below the outcome. */
+  bullets: string[];
   icon: LucideIcon;
   category: 'Half-Day Camps' | 'Full Day Camps';
   hoursPerWeek: string;
@@ -130,6 +134,8 @@ type ProgramJson = {
   id: string;
   title: string;
   description: string;
+  outcome: string;
+  bullets: string[];
   iconId: string;
   category: 'Half-Day Camps' | 'Full Day Camps';
   hoursPerWeek: string;
@@ -197,6 +203,8 @@ function hydrateProgram(program: ProgramJson): Program {
     id: program.id,
     title: program.title,
     description: program.description,
+    outcome: program.outcome,
+    bullets: program.bullets,
     icon,
     category: program.category,
     hoursPerWeek: program.hoursPerWeek,

@@ -1,5 +1,18 @@
 import { test, expect } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { localePath, E2E_LOCALE } from '../localePath';
+
+/** Hash deep-link opens the modal in production; `next dev` can miss it (Strict Mode + Radix). Fall back to CTA. */
+async function openSummerCampGuideModal(page: Page): Promise<void> {
+  const dialog = page.getByRole('dialog');
+  await page.goto(`${localePath('/camps/summer')}#lead-capture`);
+  try {
+    await expect(dialog).toBeVisible({ timeout: 4_000 });
+  } catch {
+    await page.getByRole('button', { name: /Get guide|15%/i }).first().click();
+    await expect(dialog).toBeVisible({ timeout: 15_000 });
+  }
+}
 
 test.describe('Summer camp lottery form (UI)', () => {
   test('submits lottery form and navigates to thank-you page with mocked API', async ({ page }) => {
@@ -9,11 +22,13 @@ test.describe('Summer camp lottery form (UI)', () => {
         return;
       }
       const body = route.request().postDataJSON() as {
+        parentName?: string;
         email?: string;
         childGrade?: string;
         campInterest?: string;
         locale?: string;
       };
+      expect(body.parentName).toBe('E2E Parent');
       expect(body.email).toBe('lottery.e2e@example.com');
       expect(body.childGrade).toBe('5');
       expect(body.campInterest).toBe('academic');
@@ -26,15 +41,16 @@ test.describe('Summer camp lottery form (UI)', () => {
       });
     });
 
-    await page.goto(`${localePath('/camps/summer')}#lottery`);
+    await openSummerCampGuideModal(page);
 
+    await page.locator('#summer-lead-parent').fill('E2E Parent');
     await page.locator('#summer-lottery-email').fill('lottery.e2e@example.com');
-    await page.locator('#summer-lottery-interest').selectOption('academic');
     await page.locator('#summer-lottery-grade').selectOption('5');
+    await page.locator('#summer-lottery-interest').selectOption('academic');
 
-    await page.getByRole('button', { name: /Enter lottery/i }).click();
+    await page.getByRole('button', { name: /Get Guide|15%/i }).click();
 
-    const successPath = localePath('/camps/summer/lottery-success').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const successPath = localePath('/camps/summer/guide-success').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     await expect(page).toHaveURL(new RegExp(`${successPath}(\\?|$)`), {
       timeout: 60_000,
     });
@@ -42,7 +58,7 @@ test.describe('Summer camp lottery form (UI)', () => {
     expect(thankYou.searchParams.get('interest')).toBe('academic');
     expect(thankYou.searchParams.get('grade')).toBe('5');
 
-    await expect(page.getByRole('status')).toContainText(/entered/i);
+    await expect(page.getByRole('heading', { name: /camp guide is on the way/i })).toBeVisible();
     await expect(page.getByRole('link', { name: /Back to Summer Camp/i })).toBeVisible();
   });
 
@@ -62,17 +78,18 @@ test.describe('Summer camp lottery form (UI)', () => {
       });
     });
 
-    await page.goto(`${localePath('/camps/summer')}#lottery`);
+    await openSummerCampGuideModal(page);
 
+    await page.locator('#summer-lead-parent').fill('E2E Parent');
     await page.locator('#summer-lottery-email').fill('fail@example.com');
-    await page.locator('#summer-lottery-interest').selectOption('coding');
     await page.locator('#summer-lottery-grade').selectOption('3');
+    await page.locator('#summer-lottery-interest').selectOption('coding');
 
-    await page.getByRole('button', { name: /Enter lottery/i }).click();
+    await page.getByRole('button', { name: /Get Guide|15%/i }).click();
 
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
-      page.locator('#lottery p[role="alert"]'),
+      page.locator('#lead-capture p[role="alert"]'),
     ).toContainText(/E2E mocked failure/i, { timeout: 20_000 });
   });
 });
