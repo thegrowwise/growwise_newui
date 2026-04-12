@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/firstBlog.webp' // or use getS3ImageUrl('images/
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help | GrowWise', 
-    description: 'Understanding the challenges and solutions for improving student performance in core subjects. Learn how regular assessments help parents spot problem areas early and rebuild confidence.' 
+    description: 'Understanding the challenges and solutions for improving student performance in core subjects. Learn how regular assessments help parents spot problem areas early and rebuild confidence.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments', locale, baseUrl)
+    }
   }
 }
 

@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/thirdblog.webp' // or use getS3ImageUrl('i
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'How to Identify Learning Gaps in Your Child\'s Education at Home | GrowWise', 
-    description: 'Learn how to spot and address learning gaps to ensure your child stays on track. Research-backed strategies for parents to assess learning gaps at home in Tri-Valley area.' 
+    description: 'Learn how to spot and address learning gaps to ensure your child stays on track. Research-backed strategies for parents to assess learning gaps at home in Tri-Valley area.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide', locale, baseUrl)
+    }
   }
 }
 

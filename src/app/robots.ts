@@ -12,11 +12,9 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/api/',
           '/checkout/',
-          '/cart/',
-          '/student-login/',
           '/admin/',
           '/*.json$',
-          '/*?*',
+          '/_next/',
         ],
       },
     ],

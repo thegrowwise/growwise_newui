@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/coding-class-for-children.jpg' // or use g
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'The Advantage in Choosing the Right Coding Class for Your Child | GrowWise', 
-    description: 'Learn how selecting the right coding class can set your child up for success in technology and future career opportunities.' 
+    description: 'Learn how selecting the right coding class can set your child up for success in technology and future career opportunities.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child', locale, baseUrl)
+    }
   }
 }
 

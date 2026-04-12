@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/programming-skills-resume.jpg' // or use g
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'How Programming Skills on a Resume Will Open More Career Opportunities | GrowWise', 
-    description: 'Programming skills are increasingly valuable across industries. Learn how they can enhance your resume and career prospects.' 
+    description: 'Programming skills are increasingly valuable across industries. Learn how they can enhance your resume and career prospects.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities', locale, baseUrl)
+    }
   }
 }
 

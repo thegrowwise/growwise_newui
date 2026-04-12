@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/sixthblog.webp' // or use getS3ImageUrl('i
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Unlocking Confidence, Independence, and Fun Through Summer Camp | GrowWise', 
-    description: 'Discover how summer camps can help children develop essential life skills while having fun. Build confidence, independence, and social skills through engaging camp experiences.' 
+    description: 'Discover how summer camps can help children develop essential life skills while having fun. Build confidence, independence, and social skills through engaging camp experiences.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp', locale, baseUrl)
+    }
   }
 }
 

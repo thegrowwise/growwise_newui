@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/harnessingthepower.webp' // or use getS3Im
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Harnessing the Power of Code: A Skill for the Modern Era | GrowWise', 
-    description: 'Explore why coding has become an essential skill in today\'s digital world and how it opens doors to innovation and opportunity.' 
+    description: 'Explore why coding has become an essential skill in today\'s digital world and how it opens doors to innovation and opportunity.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era', locale, baseUrl)
+    }
   }
 }
 
