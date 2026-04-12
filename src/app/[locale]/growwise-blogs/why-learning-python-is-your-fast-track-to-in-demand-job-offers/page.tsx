@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/coding-in-python.jpg.webp'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Why Learning Python is Your Fast Track to In-Demand Job Offers | GrowWise', 
-    description: 'Python is one of the most sought-after programming languages. Discover why it\'s the key to unlocking career opportunities and in-demand job offers.' 
+    description: 'Python is one of the most sought-after programming languages. Discover why it\'s the key to unlocking career opportunities and in-demand job offers.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers', locale, baseUrl)
+    }
   }
 }
 

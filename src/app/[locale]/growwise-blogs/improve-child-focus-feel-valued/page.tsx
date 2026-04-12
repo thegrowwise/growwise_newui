@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/secondblog.webp' // or use getS3ImageUrl('
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: '12 Smart & Simple Ways to Improve Your Child\'s Focus | GrowWise', 
-    description: 'Practical strategies to help your child develop better concentration and attention skills. Learn how to support focus through connection, understanding, and simple techniques.' 
+    description: 'Practical strategies to help your child develop better concentration and attention skills. Learn how to support focus through connection, understanding, and simple techniques.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl)
+    }
   }
 }
 

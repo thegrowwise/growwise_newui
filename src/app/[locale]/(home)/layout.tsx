@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
+import { generateMetadataFromPath } from '@/lib/seo/metadata';
+import { getValidLocale } from '@/i18n/localeConfig';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale: rawLocale } = await params;
+  const locale = getValidLocale(rawLocale);
+  const metadata = generateMetadataFromPath('/', locale);
+  return metadata || { title: 'GrowWise - K-12 Education & STEAM Programs | Dublin, CA' };
+}
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
   const baseUrl = getCanonicalSiteUrl();

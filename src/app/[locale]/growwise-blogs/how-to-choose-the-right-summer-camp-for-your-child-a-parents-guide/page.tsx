@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/fourthblog.webp' // or use getS3ImageUrl('
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'How to Choose the Right Summer Camp for Your Child: A Parent\'s Guide | GrowWise', 
-    description: 'A comprehensive guide to selecting the perfect summer camp experience for your child. Find camps that match interests, learning goals, and personality.' 
+    description: 'A comprehensive guide to selecting the perfect summer camp experience for your child. Find camps that match interests, learning goals, and personality.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide', locale, baseUrl)
+    }
   }
 }
 

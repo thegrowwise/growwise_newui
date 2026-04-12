@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/technical-schools.jpg.webp' // or use getS
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Technical Schools in 2025: A Smart Investment for Your Career | GrowWise', 
-    description: 'Explore why technical education and coding skills are becoming essential investments for career success in 2025.' 
+    description: 'Explore why technical education and coding skills are becoming essential investments for career success in 2025.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career', locale, baseUrl)
+    }
   }
 }
 

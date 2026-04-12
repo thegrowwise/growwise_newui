@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/importanceofcoding.png.webp' // or use get
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'The Importance of Coding for Kids: Building Future-Ready Skills | GrowWise', 
-    description: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.' 
+    description: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills', locale, baseUrl)
+    }
   }
 }
 

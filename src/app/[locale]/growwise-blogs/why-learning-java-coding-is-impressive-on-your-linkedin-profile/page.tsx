@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/learning-java-is-good-for-linkedin.jpg'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Why Learning Java Coding is Impressive on Your LinkedIn Profile | GrowWise', 
-    description: 'Java remains a powerful and widely-used programming language. See how Java skills can make your LinkedIn profile stand out.' 
+    description: 'Java remains a powerful and widely-used programming language. See how Java skills can make your LinkedIn profile stand out.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile', locale, baseUrl)
+    }
   }
 }
 

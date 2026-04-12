@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/codingempowerment.webp' // or use getS3Ima
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'How Coding Skills Empower You to Shape Tomorrow\'s AI Innovations | GrowWise', 
-    description: 'Learn how mastering coding today positions you to be at the forefront of tomorrow\'s AI-driven innovations. Discover the connection between coding and AI development.' 
+    description: 'Learn how mastering coding today positions you to be at the forefront of tomorrow\'s AI-driven innovations. Discover the connection between coding and AI development.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations', locale, baseUrl)
+    }
   }
 }
 
