@@ -174,6 +174,13 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     image: 'https://growwiseschool.org/assets/camps/summer-camp-banner.png',
   },
 
+  '/growwise-blogs': {
+    title: 'GrowWise Blogs | Tips on Math, English, Coding & STEAM Programs',
+    description: 'Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.',
+    keywords: 'math tutoring tips, English tutoring advice, coding for kids, STEAM education, K-12 education blog, Dublin CA education, parenting tips, learning resources',
+    path: '/growwise-blogs',
+  },
+
   '/workshop-calendar': {
     title: "Workshop Calendar - Free Saturday Skill Workshops | GrowWise",
     description: "View and register for free Saturday workshops: Reading, Math Olympiad, Scratch Coding, AI Studio, and parent webinars. GrowWise Dublin, CA.",

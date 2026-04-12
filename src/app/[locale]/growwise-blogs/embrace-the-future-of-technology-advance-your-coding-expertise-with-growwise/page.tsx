@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/embracethefuture.png.webp'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise | GrowWise', 
-    description: 'Discover how coding skills can transform your future and open doors to exciting career opportunities in technology. AI-powered learning platform for personalized coding education.' 
+    description: 'Discover how coding skills can transform your future and open doors to exciting career opportunities in technology. AI-powered learning platform for personalized coding education.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise', locale, baseUrl)
+    }
   }
 }
 

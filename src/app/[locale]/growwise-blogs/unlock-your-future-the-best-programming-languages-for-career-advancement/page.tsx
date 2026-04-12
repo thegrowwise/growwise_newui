@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/best-programming-language-1024x569.jpg.web
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'Unlock Your Future: The Best Programming Languages for Career Advancement | GrowWise', 
-    description: 'Discover which programming languages offer the best career opportunities and how to choose the right one for your goals.' 
+    description: 'Discover which programming languages offer the best career opportunities and how to choose the right one for your goals.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement', locale, baseUrl)
+    }
   }
 }
 

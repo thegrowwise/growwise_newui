@@ -16,9 +16,13 @@ const BLOG_IMAGE_URL = '/images/blogs/fifthBlog.webp' // or use getS3ImageUrl('i
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
+  const baseUrl = getCanonicalSiteUrl()
   return { 
     title: 'How to Go from Roblox Player to Game Developer and Earn Real Robux | GrowWise', 
-    description: 'Transform your child\'s gaming passion into valuable coding and development skills. Learn Roblox game development and turn screen time into productive skill time.' 
+    description: 'Transform your child\'s gaming passion into valuable coding and development skills. Learn Roblox game development and turn screen time into productive skill time.',
+    alternates: {
+      canonical: absoluteSiteUrl('/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux', locale, baseUrl)
+    }
   }
 }
 

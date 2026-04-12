@@ -1,7 +1,8 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
-import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
+import { X, Send, Bot, User } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
 import { useChatbot } from '../../contexts/ChatbotContext';
@@ -433,10 +434,17 @@ export default function Chatbot() {
           <Button
             onClick={handleStartChat}
             aria-label={t('chatbot.openChat')}
-            className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110 border-2 border-white/20 backdrop-blur-sm flex items-center justify-center p-0 [&_svg]:!size-7"
+            className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-0 bg-transparent p-0 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-3xl focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2"
             size="lg"
           >
-            <MessageCircle className="size-7" style={{ width: '28px', height: '28px' }} aria-hidden />
+            <Image
+              src="/assets/chat-float-icon.png"
+              alt=""
+              width={64}
+              height={64}
+              className="h-full w-full object-cover"
+              priority
+            />
           </Button>
         </div>
       )}
