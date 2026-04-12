@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, FileText, Briefcase, TrendingUp, Target } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -91,6 +91,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
               <p className="text-gray-700 mb-8">
                 Learn how programming skills can transform your career prospects and make you stand out to employers.
+              </p>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                Students can build portfolio projects during 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  summer enrichment programs
+                </Link> between academic years.
               </p>
 
               {/* Featured Image */}

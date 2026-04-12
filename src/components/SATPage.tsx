@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
@@ -7,6 +8,7 @@ import { useCart } from './gw/CartContext';
 import FreeAssessmentModal from './FreeAssessmentModal';
 import { RelatedContent } from './seo/RelatedContent';
 import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 
 const SATPage: React.FC = () => {
   const locale = useLocale();
@@ -224,8 +226,15 @@ const SATPage: React.FC = () => {
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
               Comprehensive SAT/PSAT preparation programs for high school students in Dublin, CA. From foundational skills to test-day strategies, achieve your target scores with expert instruction and proven methods.
+            </p>
+            <p className="text-base text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Between school years, consider{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                summer enrichment programs
+              </Link>{' '}
+              to keep skills sharp.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

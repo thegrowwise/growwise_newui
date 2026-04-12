@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
@@ -17,6 +18,7 @@ import FreeAssessmentModal from './FreeAssessmentModal';
 import { getIconComponent } from '@/lib/iconMap';
 import { RelatedContent } from './seo/RelatedContent';
 import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 
 const HighSchoolMathPage: React.FC = () => {
   const router = useRouter();
@@ -295,8 +297,15 @@ const HighSchoolMathPage: React.FC = () => {
               </span>
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
               Comprehensive Math Courses in Dublin, CA for Grades 9-12. Aligned with California Common Core Standards for academic success and future STEM opportunities.
+            </p>
+            <p className="text-base text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              For a focused summer boost, see{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                summer math camps in Dublin
+              </Link>
+              .
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

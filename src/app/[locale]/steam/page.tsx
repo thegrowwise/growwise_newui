@@ -372,6 +372,13 @@ export default function SteamPage() {
               Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, 
               our programs combine creativity with cutting-edge technology.
             </p>
+            <p className="text-base text-gray-600 max-w-4xl mx-auto leading-relaxed mt-4">
+              During school break, many families choose our{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                summer STEAM camps in Dublin CA
+              </Link>
+              .
+            </p>
           </div>
 
           {/* Hero Visual */}

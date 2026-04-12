@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import {
   Dialog,
@@ -69,6 +72,7 @@ function getEventTypeForApi(program: Program): 'webinar' | 'workshop' {
 }
 
 export default function WorkshopCalendar(): React.ReactElement {
+  const locale = useLocale();
   const [currentMonth, setCurrentMonth] = useState(2);
   const [currentYear, setCurrentYear] = useState(2026);
   const [modalOpen, setModalOpen] = useState(false);
@@ -253,6 +257,13 @@ export default function WorkshopCalendar(): React.ReactElement {
           Workshop Calendar
         </h1>
         <p className="text-gray-600 mt-1">Free Saturday Skill Workshops for Kids · GrowWise</p>
+        <p className="text-gray-600 mt-3 max-w-xl mx-auto text-sm">
+          Want full-week summer options?{' '}
+          <Link href={publicPath('/camps/summer', locale)} className="text-[#F16112] font-semibold underline hover:text-[#1F396D]">
+            Browse our summer camps in Dublin CA
+          </Link>
+          .
+        </p>
       </header>
 
       <section aria-label="Month navigation" className="flex items-center justify-center gap-6 py-6 bg-white border-b border-gray-200">
