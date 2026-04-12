@@ -44,7 +44,13 @@ export default function ProgramsPage() {
     <main className="section-base section-white">
       <div className="max-w-7xl mx-auto">
         <h1 className="title-section mb-6">{t('programs')}</h1>
-        <p className="subtitle-sm mb-8">Explore our academic and STEAM offerings.</p>
+        <p className="subtitle-sm mb-8">
+          Explore our academic and STEAM offerings — and{' '}
+          <Link href={createLocaleUrl('/camps/summer')} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+            see summer camp programs
+          </Link>{' '}
+          for seasonal intensives in Dublin.
+        </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           <Link href={createLocaleUrl('/academic')} className="card-base card-padding hover:shadow-xl rounded-xl border border-gray-100">
             <div className="text-strong text-lg mb-2">Academic</div>

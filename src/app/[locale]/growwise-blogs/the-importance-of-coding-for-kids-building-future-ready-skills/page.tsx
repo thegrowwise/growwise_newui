@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, Code, Target, Brain, Rocket, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -91,6 +91,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
               <p className="text-gray-700 mb-8">
                 Coding isn't just about writing code – it's about developing problem-solving skills, logical thinking, and creativity that will serve children throughout their lives.
+              </p>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                Hands-on weeks matter too — see 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  kids summer camps in Dublin
+                </Link> with coding and robotics tracks.
               </p>
 
               {/* Featured Image */}

@@ -193,6 +193,13 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
             <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
               Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.
             </p>
+            <p className="text-base md:text-lg text-gray-200/95 max-w-2xl mx-auto mt-4">
+              Looking ahead to summer?{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="font-semibold text-white underline decoration-white/60 hover:decoration-white">
+                Explore summer camps
+              </Link>{' '}
+              in Dublin and the Tri-Valley.
+            </p>
           </div>
         </section>
 
