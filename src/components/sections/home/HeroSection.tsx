@@ -1,6 +1,8 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { Button } from '../../ui/button';
 import { SectionError } from '../../ui/SectionError';
 import { ChevronLeft, ChevronRight, CalendarCheck } from 'lucide-react';
@@ -44,6 +46,7 @@ export function HeroSection({
   /** When true, first slide image is already in DOM (server-rendered for LCP); skip duplicate image. */
   lcpImageInDocument?: boolean;
 }) {
+  const locale = useLocale();
   if (error) return <SectionError title="Hero unavailable" message={error} onRetry={onRetry} />;
   if (!slides || slides.length === 0) return <SectionError title="No hero slides" message="Please check back later." onRetry={onRetry} />;
   return (
@@ -94,6 +97,15 @@ export function HeroSection({
                             <ChevronRight className="ml-2 w-5 h-5" />
                           </Button>
                         </div>
+                        <p className="mt-4 text-sm text-white/85 leading-relaxed max-w-md">
+                          <Link href={publicPath('/camps/summer', locale)} className="underline decoration-white/60 hover:text-white">
+                            Summer camps in Dublin CA
+                          </Link>
+                          {' · '}
+                          <Link href={publicPath('/camps/summer', locale)} className="underline decoration-white/60 hover:text-white">
+                            Explore summer camps
+                          </Link>
+                        </p>
                       </div>
                     </div>
                     <div className="flex-1 flex justify-center lg:justify-end items-center p-10 lg:p-16 relative z-10">

@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, BookOpen, CheckCircle, AlertCircle, TrendingUp, Target, BarChart3 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -108,6 +108,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                   <strong>Regular, low-stress assessments</strong> help parents spot problem areas early, track progress, and rebuild confidence — before it's too late. Because knowing where your child stands today is the first step toward helping them thrive tomorrow.
                 </p>
               </div>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                A focused summer block can stabilize skills — see 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  summer boost programs
+                </Link> we offer in Dublin.
+              </p>
 
               {/* Featured Image */}
               <div className="my-8 rounded-xl overflow-hidden shadow-lg bg-gray-50">

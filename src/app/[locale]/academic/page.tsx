@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
@@ -250,6 +251,13 @@ const AcademicPage: React.FC = () => {
                 <div className="max-w-4xl mx-auto mb-10">
                   <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">GrowWise School: Dublin's Learning Hub for K-12 Excellence</h2>
                   <p className="text-gray-700 text-xl leading-relaxed mb-6">Welcome to <span className="font-semibold text-[#1F396D]">GrowWise School</span>, your local destination for <span className="font-semibold">personalized academic programs</span>. Serving students from grades 1-12 in Dublin, Pleasanton, and the entire Tri-Valley area, we are committed to nurturing success.</p>
+                  <p className="text-gray-700 text-xl leading-relaxed mb-6">
+                    Families also explore{' '}
+                    <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                      summer camp programs
+                    </Link>{' '}
+                    for intensive seasonal enrichment.
+                  </p>
                   <p className="text-gray-700 text-xl leading-relaxed mb-8">Our curriculum is <span className="font-semibold text-[#F16112]">100% aligned with California Common Core, DUSD, and PUSD standards</span>, ensuring your child's learning directly supports their classroom progress.</p>
                   <p className="text-gray-600 text-lg mb-12">Enroll now!</p>
                 </div>

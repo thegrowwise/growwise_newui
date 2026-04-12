@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, Code, Brain, TrendingUp, Target, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -94,6 +94,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
               <p className="text-gray-700 mb-8">
                 It seems every headline screams about artificial intelligence replacing jobs. AI's future isn't just influenced by coding skills – it's actually being written by them, and this sea change is quietly gaining momentum.
+              </p>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                Structured programs help bridge school years — explore 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  STEM summer camps in Dublin CA
+                </Link> at GrowWise.
               </p>
 
               {/* Featured Image */}
