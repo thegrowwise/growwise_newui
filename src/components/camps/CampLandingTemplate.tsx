@@ -19,15 +19,8 @@ export function CampLandingTemplate({ page }: CampLandingTemplateProps) {
 
   return (
     <>
-      {jsonLd.map((schema, i) => (
-        <script
-          key={`camp-jsonld-${i}`}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-
-      <article>
+      {/* Visible content first — JSON-LD was previously first in <main>, which can break React hydration (blank / flicker). */}
+      <article className="relative z-10">
         <CampHero page={page} />
         <TrustBar page={page} />
         <ProgramCardsSection page={page} />
@@ -38,6 +31,14 @@ export function CampLandingTemplate({ page }: CampLandingTemplateProps) {
       </article>
 
       <StickyCTA page={page} />
+
+      {jsonLd.map((schema, i) => (
+        <script
+          key={`camp-jsonld-${page.slug}-${i}`}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
     </>
   );
 }

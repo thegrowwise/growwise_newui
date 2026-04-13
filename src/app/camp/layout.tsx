@@ -7,9 +7,10 @@ import { PageTrackingWrapper } from "@/components/analytics/PageTrackingWrapper"
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
 import { DEFAULT_LOCALE } from "@/i18n/localeConfig";
 import { organizationSchema, localBusinessSchema, websiteSchema } from "@/lib/seo/structuredData";
+import Footer from "@/components/layout/Footer/Footer";
+import Header from "@/components/layout/Header/Header";
 
-const Header = dynamic(() => import("@/components/layout/Header/Header"));
-const Footer = dynamic(() => import("@/components/layout/Footer/Footer"));
+/** Keep chatbot deferred; header/footer are static imports to avoid Suspense/chunk flash on camp landings. */
 const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"));
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default async function CampSectionLayout({ children }: { children: React.
         <ContentProvider>
           <PageTrackingWrapper>
             <Header />
-            <main id="main-content" suppressHydrationWarning>
+            <main id="main-content" className="relative z-10 w-full min-h-[40vh]" suppressHydrationWarning>
               {children}
             </main>
             <Footer />

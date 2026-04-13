@@ -17,7 +17,7 @@ export function StickyCTA({ page }: StickyCTAProps) {
         <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left">{page.stickyCtaText}</p>
         <a
           href={page.stickyCtaButton.href}
-          className="inline-flex justify-center rounded-md bg-[#1F396D] px-5 py-2.5 text-sm sm:text-base font-semibold text-white hover:bg-[#162d54] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#1F396D]"
+          className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md bg-[#F16112] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#d54f0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2 sm:text-base"
         >
           {page.stickyCtaButton.label}
         </a>

@@ -247,7 +247,7 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
 
           {submitted ? (
             <p className="text-sm text-slate-700" role="status">
-              Form captured locally for preview. Enrollment is not processed until you contact GrowWise using the phone or email above.
+              Nothing was transmitted to GrowWise servers. To enroll or get a timely response, call or email using the contact details in the notice above.
             </p>
           ) : null}
         </form>

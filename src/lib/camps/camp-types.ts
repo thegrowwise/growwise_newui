@@ -103,4 +103,6 @@ export type CampLandingPage = {
     title: string;
     bullets: readonly string[];
   };
+  /** Optional short notes for future section scaffolding (not rendered unless wired). */
+  notes?: readonly string[];
 };

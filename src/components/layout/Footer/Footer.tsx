@@ -26,9 +26,22 @@ export default function Footer({ data }: FooterProps) {
   
   const createLocaleUrlHelper = (path: string) => createLocaleUrl(path, locale);
 
-  // Don't render if no data is available yet
+  // Reserve the same visual shell while Redux/API loads — returning null caused the footer to
+  // pop in after fetch and shifted the whole page (felt like flicker on long pages like /camp/*).
   if (!footer) {
-    return null;
+    return (
+      <footer
+        className="bg-gradient-to-br from-[#1F396D]/20 via-[#29335C]/15 to-[#1F396D]/20 py-16 px-4 lg:px-8 relative overflow-hidden text-gray-800 min-h-[280px] md:min-h-[320px]"
+        aria-busy="true"
+        aria-label="Site footer loading"
+      >
+        <div className="absolute top-10 right-20 w-32 h-32 bg-[#F16112]/10 rounded-full blur-3xl" aria-hidden />
+        <div className="absolute bottom-20 left-10 w-40 h-40 bg-[#F1894F]/10 rounded-full blur-3xl" aria-hidden />
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="h-36 rounded-xl bg-white/25 animate-pulse" />
+        </div>
+      </footer>
+    );
   }
 
   return (
