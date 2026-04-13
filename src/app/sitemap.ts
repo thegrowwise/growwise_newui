@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next'
 import { locales } from '@/i18n/config'
+import { DEFAULT_LOCALE } from '@/i18n/localeConfig'
+import { getCampSlugs } from '@/lib/camps/get-camp-page'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -60,6 +62,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/camps/winter/calendar', priority: 0.6, changefreq: 'weekly' as const },
   ]
 
+  /** SEO camp landings: `/camp/[slug]` (single Dublin campus; data-driven list). */
+  const campLandingPages = getCampSlugs().map((slug) => ({
+    path: `/camp/${slug}`,
+    priority: 0.9,
+    changefreq: 'weekly' as const,
+  }))
+
   const blogPages = blogPostPaths.map((path) => ({
     path,
     priority: 0.75,
@@ -82,6 +91,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     coursePages.forEach(push)
     steamPages.forEach(push)
     campPages.forEach(push)
+    // `/camp/*` routes live outside `[locale]`; only emit non-prefixed canonical URLs for the default locale.
+    if (locale === DEFAULT_LOCALE) {
+      campLandingPages.forEach(push)
+    }
     blogPages.forEach(push)
   })
 
