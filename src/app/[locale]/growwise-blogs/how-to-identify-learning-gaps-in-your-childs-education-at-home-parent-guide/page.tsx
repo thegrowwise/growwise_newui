@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, BookOpen, CheckCircle, AlertCircle, TrendingUp, Target, BarChart3, Search, MessageSquare, FileText, Lightbulb } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -90,6 +90,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
               
               <p className="lead text-xl text-gray-700 mb-8">
                 Spotting learning gaps early can set your child up for success in Dublin, Pleasanton, San Ramon, or anywhere in the Tri-Valley area. Whether your child struggles with math homework or reading comprehension, these research-backed strategies make it easy for parents to assess learning gaps at home, before seeking professional tutoring in Tri-Valley. Start today to boost your child's confidence and academic performance!
+              </p>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                A short summer intensive can reset momentum — browse 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  summer learning programs
+                </Link> in Dublin.
               </p>
 
               {/* Featured Image */}

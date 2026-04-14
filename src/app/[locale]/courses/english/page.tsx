@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import Link from 'next/link';
 import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -15,7 +16,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { RelatedContent } from '@/components/seo/RelatedContent';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
-import { absoluteSiteUrl } from '@/lib/publicPath';
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath';
 import { CourseFAQ } from '@/components/seo/CourseFAQ';
 import { fetchEnglishCoursesRequested } from '@/store/slices/englishCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
@@ -371,8 +372,15 @@ function EnglishCoursesContent() {
               {englishCoursesData?.hero?.title || t('hero.title')}
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
               {englishCoursesData?.hero?.subtitle || t('hero.subtitle')}
+            </p>
+            <p className="text-base text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Summer weeks are ideal for reading and writing intensives — see{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                summer enrichment programs
+              </Link>
+              .
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

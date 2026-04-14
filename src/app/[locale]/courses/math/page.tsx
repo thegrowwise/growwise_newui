@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,7 +19,7 @@ import { fetchMathCoursesRequested } from '@/store/slices/mathCoursesSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { CourseCardSkeleton, CardSkeleton } from '@/components/ui/loading-skeletons';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
-import { absoluteSiteUrl } from '@/lib/publicPath';
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath';
 import type { MathCourse } from '@/data/mathCourses';
 
 // Dynamically load heavier, below-the-fold components to reduce initial JS and improve LCP
@@ -103,6 +104,7 @@ const MathCoursesPage: React.FC = () => {
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const t = useTranslations('mathCourses');
+  const locale = useLocale();
   const dispatch = useAppDispatch();
   const mathCoursesData = useAppSelector((s) => s.mathCourses.data);
   const mathCoursesLoading = useAppSelector((s) => s.mathCourses.loading);
@@ -348,8 +350,6 @@ const MathCoursesPage: React.FC = () => {
     );
   }
 
-  const locale = useLocale()
-
   return (
     <HydrationBoundary>
       <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -394,8 +394,15 @@ const MathCoursesPage: React.FC = () => {
               {mathCoursesData?.hero?.title || t('hero.title')}
             </h1>
             
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
               {mathCoursesData?.hero?.subtitle || t('hero.subtitle')}
+            </p>
+            <p className="text-base text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+              Looking for a seasonal boost? Explore{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                summer math camps in Dublin
+              </Link>
+              .
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

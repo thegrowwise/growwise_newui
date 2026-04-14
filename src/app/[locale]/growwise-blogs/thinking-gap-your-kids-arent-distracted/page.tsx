@@ -4,7 +4,7 @@ import { ArrowLeft, Download, MessageSquare } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { BlogImage } from '@/components/blogs/BlogImage'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 const PDF_PATH = '/downloads/ThinkingGap_Playbook_for_parents.pdf'
@@ -144,6 +144,14 @@ export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
                 <p>
                   A few weeks ago, I spent the day at Fallon Middle School as a career speaker. Instead of a standard lecture, I ran a &quot;Problem-to-App&quot; workshop — a live
                   exercise where students had to think through a real-world problem and design a solution from scratch. No instructions. No template. Just a problem and forty minutes.
+                </p>
+
+                <p className="text-base text-slate-700 not-prose mb-4">
+                  When school is out, many families look for the same structured stretch — explore our{' '}
+                  <Link href={publicPath('/camps/summer', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                    summer academic camps in Dublin
+                  </Link>
+                  .
                 </p>
 
                 <p>

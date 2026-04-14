@@ -848,6 +848,21 @@ export default function SummerCampPage() {
               {SC.programGroupsHeading}
             </h2>
             <p className="mt-2 max-w-2xl text-slate-600">{SC.programGroupsSub}</p>
+            <p className="mt-3 max-w-2xl text-sm text-slate-600">
+              For year-round options, browse our{' '}
+              <Link href={createLocaleUrl('/programs', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                programs overview
+              </Link>
+              ,{' '}
+              <Link href={createLocaleUrl('/steam', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                STEAM courses
+              </Link>
+              , or{' '}
+              <Link href={createLocaleUrl('/courses/math', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                math tutoring
+              </Link>
+              .
+            </p>
             <div className="mt-10 grid gap-5 md:grid-cols-3">
               {SC.programGroups.map((card, i) => (
                 <div
