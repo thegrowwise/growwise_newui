@@ -3,6 +3,12 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import type { CampLandingPage } from "@/lib/camps/camp-types";
+import CountryCodeSelector from "@/components/CountryCodeSelector";
+import {
+  DIAL_CODE_TO_ISO2,
+  getPhonePlaceholder,
+  validatePhoneWithCountryCode,
+} from "@/lib/phoneValidation";
 
 import { SectionContainer } from "./SectionContainer";
 
@@ -13,6 +19,7 @@ type CampInquiryFormProps = {
 export type CampInquiryPayload = {
   parentName: string;
   email: string;
+  countryCode: string;
   phone: string;
   childGrade: string;
   city: string;
@@ -46,12 +53,15 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
     register,
     handleSubmit,
     reset,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<CampInquiryPayload>({
     defaultValues: {
       campInterest: page.formConfig.defaultCampInterest,
       parentName: "",
       email: "",
+      countryCode: "+1",
       phone: "",
       childGrade: "",
       city: "",
@@ -60,10 +70,17 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
     mode: "onBlur",
   });
 
+  const countryCode = watch("countryCode");
+  const phonePlaceholder = getPhonePlaceholder(DIAL_CODE_TO_ISO2[countryCode]);
+
   const onSubmit = (data: CampInquiryPayload) => {
+    const phoneValidation = validatePhoneWithCountryCode(data.countryCode, data.phone);
     // Placeholder: structured payload for a future API route — no network call yet.
     if (process.env.NODE_ENV === "development") {
-      console.info("[camp-inquiry] payload (not sent)", data);
+      console.info("[camp-inquiry] payload (not sent)", {
+        ...data,
+        phone: phoneValidation.e164 ?? data.phone,
+      });
     }
     setSubmitted(true);
     reset({ ...data, message: "" });
@@ -90,7 +107,11 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
               className={`${inputClass} mt-1.5`}
               aria-invalid={errors.parentName ? "true" : "false"}
               aria-describedby={errors.parentName ? "parentName-error" : undefined}
-              {...register("parentName", { required: "Please enter a name.", minLength: { value: 2, message: "Enter at least 2 characters." } })}
+              {...register("parentName", {
+                required: "Please enter a name.",
+                setValueAs: (v: string) => v.trim(),
+                minLength: { value: 2, message: "Enter at least 2 characters." },
+              })}
             />
             {errors.parentName ? (
               <p id="parentName-error" className="mt-1 text-sm text-red-600" role="alert">
@@ -129,22 +150,37 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
               <label htmlFor="phone" className="block text-sm font-semibold text-slate-800">
                 Phone
               </label>
-              <input
-                id="phone"
-                type="tel"
-                autoComplete="tel"
-                inputMode="tel"
-                className={`${inputClass} mt-1.5`}
-                aria-invalid={errors.phone ? "true" : "false"}
-                aria-describedby={errors.phone ? "phone-error" : undefined}
-                {...register("phone", {
-                  required: "Please enter a phone number.",
-                  validate: (v) => {
-                    const digits = v.replace(/\D/g, "");
-                    return digits.length >= 10 || "Enter at least 10 digits (numbers only count toward this check).";
-                  },
-                })}
-              />
+              <div
+                className={[
+                  "mt-1.5 flex items-center gap-0 overflow-hidden rounded-lg border bg-white shadow-sm",
+                  errors.phone ? "border-red-500" : "border-slate-300",
+                  "focus-within:border-[#1F396D] focus-within:ring-2 focus-within:ring-[#1F396D]/25",
+                ].join(" ")}
+              >
+                <CountryCodeSelector
+                  value={countryCode}
+                  onChange={(v) => setValue("countryCode", v, { shouldDirty: true, shouldValidate: true })}
+                  className="flex-shrink-0"
+                />
+                <div className="w-px h-10 bg-slate-300 flex-shrink-0" aria-hidden />
+                <input
+                  id="phone"
+                  type="tel"
+                  autoComplete="tel"
+                  inputMode="tel"
+                  className="w-full bg-transparent px-3 py-2.5 text-sm sm:text-base text-slate-900 placeholder:text-slate-400 focus:outline-none"
+                  placeholder={phonePlaceholder}
+                  aria-invalid={errors.phone ? "true" : "false"}
+                  aria-describedby={errors.phone ? "phone-error" : undefined}
+                  {...register("phone", {
+                    required: "Please enter a phone number.",
+                    validate: (v) => {
+                      const res = validatePhoneWithCountryCode(countryCode, v);
+                      return res.isValid || res.errorMessage || "Please enter a valid phone number.";
+                    },
+                  })}
+                />
+              </div>
               {errors.phone ? (
                 <p id="phone-error" className="mt-1 text-sm text-red-600" role="alert">
                   {errors.phone.message}
@@ -190,7 +226,7 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
                 placeholder="e.g., Dublin, San Ramon"
                 aria-invalid={errors.city ? "true" : "false"}
                 aria-describedby={errors.city ? "city-error" : undefined}
-                {...register("city", { required: "Please enter your city." })}
+                {...register("city", { required: "Please enter your city.", setValueAs: (v: string) => v.trim() })}
               />
               {errors.city ? (
                 <p id="city-error" className="mt-1 text-sm text-red-600" role="alert">
