@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
@@ -26,6 +29,7 @@ import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
 import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 
 export default function About() {
+  const locale = useLocale();
   const { openChatbot } = useChatbot();
   const t = useTranslations('about');
   const dispatch = useAppDispatch();
@@ -61,6 +65,13 @@ export default function About() {
           <div className="center-text mb-12">
             <h1 className="title-hero mb-6">{about?.hero?.title || t('hero.title')}</h1>
             <p className="subtitle max-w-4xl mx-auto mb-8">{about?.hero?.subtitle || t('hero.subtitle')}</p>
+            <p className="text-muted max-w-4xl mx-auto mb-8 text-center">
+              See{' '}
+              <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                our summer camps in Dublin CA
+              </Link>{' '}
+              for seasonal STEM and academic programs.
+            </p>
           </div>
 
           {/* Quick Stats */}

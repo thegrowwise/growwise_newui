@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, BookOpen, CheckCircle, AlertCircle, TrendingUp, Target, BarChart3, Lightbulb, Heart, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -103,6 +103,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
               <p className="text-gray-700 mb-8">
                 Before we start looking for productivity hacks or discipline strategies, let's look deeper.
+              </p>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                Structured camp weeks can help — explore 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  summer programs for kids
+                </Link> at GrowWise.
               </p>
 
               {/* Featured Image */}

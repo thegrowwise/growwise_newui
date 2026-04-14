@@ -6,7 +6,7 @@ import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
 import { ArrowLeft, Calendar, User, GraduationCap, TrendingUp, Target, Briefcase } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { absoluteSiteUrl } from '@/lib/publicPath'
+import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
 // Image path - update this to your actual image location
@@ -91,6 +91,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
               <p className="text-gray-700 mb-8">
                 Explore why technical education and coding skills are becoming essential investments for career success in 2025.
+              </p>
+
+              <p className="text-gray-700 mb-6 text-sm">
+                K–12 students can preview similar skills in our 
+                <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
+                  summer skill-building programs
+                </Link> before college.
               </p>
 
               {/* Featured Image */}
