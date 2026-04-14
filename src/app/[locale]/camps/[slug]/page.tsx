@@ -1,18 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CampLandingTemplate } from "@/components/camps/CampLandingTemplate";
-import { getCampPage, getCampSlugs } from "@/lib/camps/get-camp-page";
+import { getCampLandingStaticParams } from "@/lib/camps/camp-routes";
+import { getCampPage } from "@/lib/camps/get-camp-page";
 import { buildCampMetadata } from "@/lib/seo/camp-metadata";
 
-type CampPageProps = {
-  params: Promise<{ slug: string }>;
+type CampSlugPageProps = {
+  params: Promise<{ locale: string; slug: string }>;
 };
 
 export function generateStaticParams() {
-  return getCampSlugs().map((slug) => ({ slug }));
+  return getCampLandingStaticParams();
 }
 
-export async function generateMetadata({ params }: CampPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: CampSlugPageProps): Promise<Metadata> {
   const { slug } = await params;
   const page = getCampPage(slug);
   if (!page) {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: CampPageProps): Promise<Metad
   return buildCampMetadata(page);
 }
 
-export default async function CampLandingPageRoute({ params }: CampPageProps) {
+export default async function CampsSlugLandingRoute({ params }: CampSlugPageProps) {
   const { slug } = await params;
   const page = getCampPage(slug);
   if (!page) {

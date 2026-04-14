@@ -27,14 +27,15 @@ export function CampLandingTemplate({ page }: CampLandingTemplateProps) {
         />
       ))}
 
-      <article>
+      <article className="pb-32 sm:pb-36">
         <CampHero page={page} />
         <TrustBar page={page} />
         <ProgramCardsSection page={page} />
         <ScheduleSection page={page} />
         <LocationSection page={page} />
         <FAQSection page={page} />
-        <CampInquiryForm page={page} />
+        {/* key: fresh form state + defaultValues per slug (all CAMP_LANDING_PAGES). */}
+        <CampInquiryForm key={page.slug} page={page} />
       </article>
 
       <StickyCTA page={page} />

@@ -36,13 +36,14 @@ test.describe('Contact form', () => {
     // Radix Checkbox: use role + check() so state updates (label click alone can leave submit disabled)
     await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
 
-    // Submit
-    await page.getByRole('button', { name: /Send|submit/i }).click();
+    // Submit (prefer explicit label; avoids matching non-submit buttons)
+    await page.getByRole('button', { name: /Send Message/i }).click();
 
-    // Success view shows "Send Another Message" button
-    await expect(
-      page.getByRole('button', { name: /Send Another Message/i }),
-    ).toBeVisible({ timeout: 10000 });
+    // Success: heading then secondary action (recaptcha + backend mock can be slower on Firefox)
+    await expect(page.getByRole('heading', { name: /Thank You/i })).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByRole('button', { name: /Send Another Message/i })).toBeVisible({
+      timeout: 15_000,
+    });
   });
 });
 

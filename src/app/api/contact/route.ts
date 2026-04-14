@@ -1,6 +1,69 @@
 import { NextResponse } from 'next/server';
 import { ContactFormData } from '@/components/chatbot/ContactForm';
+import { CONTACT_INFO } from '@/lib/constants';
+import { isBrevoTransactionalReady, sendBrevoTransactionalEmail } from '@/lib/brevo';
+import { sendEmail, type SendEmailResult } from '@/lib/email';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
+
+const BREVO_RETRY_DELAY_MS = 450;
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Brevo transactional `/smtp/email` only — does not attach contacts to marketing lists.
+ * List id 11 is never used for automation list assignment (`src/lib/brevo.ts`).
+ */
+async function deliverContactNotification(opts: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  text: string;
+}): Promise<SendEmailResult> {
+  const replyTo = { email: CONTACT_INFO.email, name: 'GrowWise' } as const;
+
+  if (isBrevoTransactionalReady()) {
+    let lastErr: string | undefined;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      if (attempt > 0) {
+        await new Promise((r) => setTimeout(r, BREVO_RETRY_DELAY_MS));
+      }
+      const brevo = await sendBrevoTransactionalEmail({
+        ...opts,
+        replyTo,
+      });
+      if (brevo.success) return brevo;
+      lastErr = brevo.error;
+      console.error(`[contact] Brevo transactional attempt ${attempt + 1}/2 failed:`, brevo.error);
+    }
+    console.error('[contact] Brevo failed after retry; SMTP fallback.', lastErr);
+  } else {
+    console.warn(
+      '[contact] Brevo not configured (set BREVO_API_KEY + BREVO_SENDER_EMAIL); using SMTP only if configured.'
+    );
+  }
+
+  return sendEmail({
+    ...opts,
+    replyTo: CONTACT_INFO.email,
+  });
+}
+
+type ContactPayload = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  source: string;
+  timestamp: string;
+  ip: string;
+};
 
 export async function POST(request: Request) {
   try {
@@ -45,8 +108,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Prepare contact data
-    const contactData = {
+    const contactData: ContactPayload = {
       name: name.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim(),
@@ -56,32 +118,23 @@ export async function POST(request: Request) {
       ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
     };
 
-    // Here you would typically:
-    // 1. Save to database
-    // 2. Send email notification
-    // 3. Add to CRM system
-    // 4. Send confirmation email to user
-
-    // For now, we'll simulate the email sending process
     const emailResult = await sendContactEmail(contactData);
 
     if (emailResult.success) {
-      // Log the contact submission (in production, save to database)
       console.log('Contact form submission:', {
         ...contactData,
         emailSent: true,
-        emailId: emailResult.emailId
+        messageId: emailResult.messageId
       });
 
       return NextResponse.json({
         success: true,
         message: 'Contact information received successfully. We will contact you within 24 hours.',
-        emailId: emailResult.emailId
+        emailId: emailResult.messageId
       });
-    } else {
-      throw new Error(emailResult.error || 'Failed to send email');
     }
 
+    throw new Error(emailResult.error || 'Failed to send email');
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json(
@@ -95,37 +148,36 @@ export async function POST(request: Request) {
   }
 }
 
-// Email service function
-async function sendContactEmail(contactData: any) {
+async function sendContactEmail(contactData: ContactPayload): Promise<SendEmailResult> {
   try {
-    // In a real application, you would integrate with:
-    // - SendGrid, Mailgun, AWS SES, or similar email service
-    // - Your backend email service
-    // - CRM system like HubSpot, Salesforce, etc.
+    const to = CONTACT_INFO.email;
+    const safeName = escapeHtml(contactData.name);
+    const safeEmail = escapeHtml(contactData.email);
+    const safePhone = escapeHtml(contactData.phone);
+    const safeSource = escapeHtml(contactData.source);
+    const safeMessage = contactData.message ? escapeHtml(contactData.message) : '';
+    const safeIp = escapeHtml(contactData.ip);
+    const submitted = escapeHtml(new Date(contactData.timestamp).toLocaleString());
 
-    // For demonstration, we'll simulate the email sending
-    const emailContent = {
-      to: [
-        'connect@thegrowwise.com', // Your business email
-      ],
-      subject: `New Contact Form Submission from ${contactData.name}`,
-      html: `
+    const subject = `New Contact Form Submission from ${contactData.name}`.slice(0, 998);
+
+    const html = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #1F396D;">New Contact Form Submission</h2>
           
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="color: #F16112; margin-top: 0;">Contact Information</h3>
-            <p><strong>Name:</strong> ${contactData.name}</p>
-            <p><strong>Email:</strong> ${contactData.email}</p>
-            <p><strong>Phone:</strong> ${contactData.phone}</p>
-            <p><strong>Source:</strong> ${contactData.source}</p>
-            <p><strong>Submitted:</strong> ${new Date(contactData.timestamp).toLocaleString()}</p>
+            <p><strong>Name:</strong> ${safeName}</p>
+            <p><strong>Email:</strong> ${safeEmail}</p>
+            <p><strong>Phone:</strong> ${safePhone}</p>
+            <p><strong>Source:</strong> ${safeSource}</p>
+            <p><strong>Submitted:</strong> ${submitted}</p>
           </div>
 
           ${contactData.message ? `
             <div style="background-color: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid #F16112;">
               <h3 style="color: #1F396D; margin-top: 0;">Message</h3>
-              <p style="white-space: pre-wrap;">${contactData.message}</p>
+              <p style="white-space: pre-wrap;">${safeMessage}</p>
             </div>
           ` : ''}
 
@@ -142,11 +194,12 @@ async function sendContactEmail(contactData: any) {
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
           <p style="color: #666; font-size: 12px;">
             This email was generated from the GrowWise website contact form.<br>
-            IP Address: ${contactData.ip}
+            IP Address: ${safeIp}
           </p>
         </div>
-      `,
-      text: `
+      `;
+
+    const text = `
         New Contact Form Submission
         
         Contact Information:
@@ -163,47 +216,18 @@ async function sendContactEmail(contactData: any) {
         - Send personalized program information
         - Schedule assessment or consultation if requested
         - Add to CRM system for follow-up
-      `
-    };
+        
+        IP: ${contactData.ip}
+      `;
 
-    // Simulate email sending delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // In production, replace this with actual email service call
-    // Example with SendGrid:
-    /*
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    
-    const msg = {
-      to: emailContent.to,
-      from: process.env.FROM_EMAIL,
-      subject: emailContent.subject,
-      text: emailContent.text,
-      html: emailContent.html,
-    };
-    
-    await sgMail.send(msg);
-    */
-
-    // Simulate successful email sending
-    const emailId = `email_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-    
-    console.log('Email sent successfully:', {
-      emailId,
-      to: emailContent.to,
-      subject: emailContent.subject,
-      contactData
+    return deliverContactNotification({
+      to,
+      subject,
+      html,
+      text,
     });
-
-    return {
-      success: true,
-      emailId,
-      message: 'Email sent successfully'
-    };
-
   } catch (error) {
-    console.error('Email sending error:', error);
+    console.error('Contact email error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send email'

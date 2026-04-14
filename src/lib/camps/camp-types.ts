@@ -1,6 +1,7 @@
 /**
  * Strongly typed model for SEO camp landing pages.
- * One `CampLandingPage` object = one routable `/camp/[slug]` page.
+ * One `CampLandingPage` object = one routable `/camps/[slug]` page.
+ * Routing/static params: see `camp-routes.ts` (collision guard vs `/camps/summer` & `/camps/winter`).
  */
 
 export type CampThemeVariant = "default" | "stem" | "creative";

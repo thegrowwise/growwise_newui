@@ -5,19 +5,15 @@ test.describe('Academic landing page', () => {
   test('shows key academic content and links', async ({ page }) => {
     await page.goto(localePath('/academic'));
 
-    // Hero / main heading (specific academic hero)
+    // Must be exact: /Our Academic Programs/i also matches “Why Choose Our Academic Programs?”
     await expect(
       page.getByRole('heading', { name: 'Our Academic Programs', exact: true }),
     ).toBeVisible();
 
-    // Book assessment CTA
-    await expect(
-      page.getByRole('link', { name: /Book Assessment/i }),
-    ).toBeVisible();
+    // Opens assessment modal — implemented as a button, not a link
+    await expect(page.getByRole('button', { name: /Book.*Assessment/i })).toBeVisible();
 
-    // Main Enroll CTA in the header/banner (not footer or sidebar)
-    await expect(
-      page.getByRole('banner').getByRole('link', { name: /^Enroll$/i }),
-    ).toBeVisible();
+    // Hero primary enrollment CTA
+    await expect(page.getByRole('button', { name: /Enroll Now/i }).first()).toBeVisible();
   });
 });

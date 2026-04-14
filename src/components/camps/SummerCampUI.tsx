@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import {
   LEARNING_MODE_KEYS,
   LEARNING_MODE_FORMAT,
@@ -28,6 +29,12 @@ import {
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { trackEnrollClick } from '@/lib/meta-pixel';
+import { createLocaleUrl } from '@/components/layout/Header/utils';
+import {
+  getRoboticsFullDaySeoLink,
+  getSummerCampProgramSeoLink,
+  summerCampSeoMessagePath,
+} from '@/lib/summer-camp-seo-links';
 
 function InfoModal({
   program,
@@ -248,6 +255,7 @@ export function SlotsPanel({
   olympiadTierConfigs: OlympiadTierConfig[];
 }) {
   const t = useTranslations('summerCamp');
+  const locale = useLocale();
   const { state: cartState, addItem, removeItem } = useCart();
 
   const [advMathMode, setAdvMathMode] = useState<LearningModeKey>('inPerson');
@@ -304,6 +312,16 @@ export function SlotsPanel({
   const isAiEntrepreneur = program.id === 'ai-entrepreneur';
   const isScratch = program.id === 'scratch-online' || program.id === 'scratch';
   const isRoblox = program.id === 'roblox-in-person';
+  const isRoboticsCamp = program.id === 'robotics-camp';
+
+  const programSeoLink = useMemo(
+    () => getSummerCampProgramSeoLink(program.id),
+    [program.id]
+  );
+  const roboticsFullDaySeo = useMemo(
+    () => (isRoboticsCamp ? getRoboticsFullDaySeoLink() : null),
+    [isRoboticsCamp]
+  );
 
   const advMathSlots: Slot[] = useMemo(() => {
     if (!isAdvMath || !program.levels[0]) return [];
@@ -444,6 +462,26 @@ export function SlotsPanel({
             </li>
           ))}
         </ul>
+        {(programSeoLink || roboticsFullDaySeo) && (
+          <div className="mt-4 flex flex-col gap-2 border-t border-slate-100 pt-4">
+            {programSeoLink ? (
+              <Link
+                href={createLocaleUrl(`/camps/${programSeoLink.slug}`, locale)}
+                className="text-[13px] font-semibold text-[#1F396D] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 rounded-sm"
+              >
+                {t(summerCampSeoMessagePath(programSeoLink.labelKey))}
+              </Link>
+            ) : null}
+            {roboticsFullDaySeo ? (
+              <Link
+                href={createLocaleUrl(`/camps/${roboticsFullDaySeo.slug}`, locale)}
+                className="text-[13px] font-semibold text-[#1F396D] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 rounded-sm"
+              >
+                {t(summerCampSeoMessagePath(roboticsFullDaySeo.labelKey))}
+              </Link>
+            ) : null}
+          </div>
+        )}
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 space-y-8">

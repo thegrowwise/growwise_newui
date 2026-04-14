@@ -62,9 +62,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/camps/winter/calendar', priority: 0.6, changefreq: 'weekly' as const },
   ]
 
-  /** SEO camp landings: `/camp/[slug]` (single Dublin campus; data-driven list). */
+  /** SEO camp landings: `/camps/[slug]` (single Dublin campus; data-driven list). */
   const campLandingPages = getCampSlugs().map((slug) => ({
-    path: `/camp/${slug}`,
+    path: `/camps/${slug}`,
     priority: 0.9,
     changefreq: 'weekly' as const,
   }))
@@ -91,7 +91,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     coursePages.forEach(push)
     steamPages.forEach(push)
     campPages.forEach(push)
-    // `/camp/*` routes live outside `[locale]`; only emit non-prefixed canonical URLs for the default locale.
+    // `/camps/*` program landings use the same URL shape as other locale-middleware routes; emit default-locale URLs only.
     if (locale === DEFAULT_LOCALE) {
       campLandingPages.forEach(push)
     }

@@ -22,7 +22,8 @@ test.describe('Cart, checkout, and Stripe test checkout', () => {
     });
 
     // Go directly to cart; CartContext will hydrate from localStorage
-    await page.goto(localePath('/cart'));
+    // `domcontentloaded` avoids occasional net::ERR_ABORTED under parallel load vs `load`
+    await page.goto(localePath('/cart'), { waitUntil: 'domcontentloaded' });
     await expect(page.getByText(/Shopping Cart/i)).toBeVisible();
 
     // Proceed to checkout
