@@ -12,67 +12,7 @@ import {
 
 const BREVO_RETRY_DELAY_MS = 450;
 
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-/**
- * Brevo transactional `/smtp/email` only — does not attach contacts to marketing lists.
- * List id 11 is never used for automation list assignment (`src/lib/brevo.ts`).
- */
-async function deliverContactNotification(opts: {
-  to: string | string[];
-  subject: string;
-  html: string;
-  text: string;
-}): Promise<SendEmailResult> {
-  const replyTo = { email: CONTACT_INFO.email, name: 'GrowWise' } as const;
-
-  if (isBrevoTransactionalReady()) {
-    let lastErr: string | undefined;
-    for (let attempt = 0; attempt < 2; attempt++) {
-      if (attempt > 0) {
-        await new Promise((r) => setTimeout(r, BREVO_RETRY_DELAY_MS));
-      }
-      const brevo = await sendBrevoTransactionalEmail({
-        ...opts,
-        replyTo,
-      });
-      if (brevo.success) return brevo;
-      lastErr = brevo.error;
-      console.error(`[contact] Brevo transactional attempt ${attempt + 1}/2 failed:`, brevo.error);
-    }
-    console.error('[contact] Brevo failed after retry; SMTP fallback.', lastErr);
-  } else {
-    console.warn(
-      '[contact] Brevo not configured (set BREVO_API_KEY + BREVO_SENDER_EMAIL); using SMTP only if configured.'
-    );
-  }
-
-  return sendEmail({
-    ...opts,
-    replyTo: CONTACT_INFO.email,
-  });
-}
-
-type ContactPayload = {
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-  source: string;
-  timestamp: string;
-  ip: string;
-};
-
-const BREVO_RETRY_DELAY_MS = 450;
-
-function escapeHtml(s: string): string {
+function escapeHtmlEmail(s: string): string {
   return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -244,13 +184,13 @@ export async function POST(request: Request) {
 async function sendContactEmail(contactData: ContactPayload): Promise<SendEmailResult> {
   try {
     const to = CONTACT_INFO.email;
-    const safeName = escapeHtml(contactData.name);
-    const safeEmail = escapeHtml(contactData.email);
-    const safePhone = escapeHtml(contactData.phone);
-    const safeSource = escapeHtml(contactData.source);
-    const safeMessage = contactData.message ? escapeHtml(contactData.message) : '';
-    const safeIp = escapeHtml(contactData.ip);
-    const submitted = escapeHtml(new Date(contactData.timestamp).toLocaleString());
+    const safeName = escapeHtmlEmail(contactData.name);
+    const safeEmail = escapeHtmlEmail(contactData.email);
+    const safePhone = escapeHtmlEmail(contactData.phone);
+    const safeSource = escapeHtmlEmail(contactData.source);
+    const safeMessage = contactData.message ? escapeHtmlEmail(contactData.message) : '';
+    const safeIp = escapeHtmlEmail(contactData.ip);
+    const submitted = escapeHtmlEmail(new Date(contactData.timestamp).toLocaleString());
 
     const subject = `New Contact Form Submission from ${contactData.name}`.slice(0, 998);
 
