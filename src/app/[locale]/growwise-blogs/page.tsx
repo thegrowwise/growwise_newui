@@ -6,13 +6,47 @@ import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 import Link from 'next/link'
 import { BookOpen, ArrowRight, ArrowLeft } from 'lucide-react'
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>
+  searchParams?: Promise<{ page?: string }>
+}): Promise<Metadata> {
   const { locale } = await params
+  const { page } = (await searchParams) ?? {}
+  const pageNum = Number.parseInt(page ?? '1', 10)
+
   const metadata = generateMetadataFromPath('/growwise-blogs', locale)
-  return metadata || { 
-    title: 'GrowWise Blogs | Tips on Math, English, Coding & STEAM Programs', 
-    description: 'Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.' 
+  const baseMetadata =
+    metadata || {
+      title: 'GrowWise Blogs | Tips on Math, English, Coding & STEAM Programs',
+      description:
+        'Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.',
+    }
+
+  // Paginated pages are crawlable but should not be indexed; canonical points to page 1.
+  if (Number.isFinite(pageNum) && pageNum > 1) {
+    return {
+      ...baseMetadata,
+      alternates: {
+        canonical: absoluteSiteUrl('/growwise-blogs', locale, getCanonicalSiteUrl()),
+      },
+      robots: {
+        index: false,
+        follow: true,
+        googleBot: {
+          index: false,
+          follow: true,
+          'max-video-preview': -1,
+          'max-image-preview': 'large',
+          'max-snippet': -1,
+        },
+      },
+    }
   }
+
+  return baseMetadata
 }
 
 interface BlogPost {

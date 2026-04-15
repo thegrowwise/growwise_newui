@@ -4,6 +4,71 @@ import { CONTACT_INFO } from '@/lib/constants';
 import { isBrevoTransactionalReady, sendBrevoTransactionalEmail } from '@/lib/brevo';
 import { sendEmail, type SendEmailResult } from '@/lib/email';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
+import {
+  isHubSpotFormsConfigured,
+  splitFullName,
+  submitHubSpotForm,
+} from '@/lib/hubspot/submitForm';
+
+const BREVO_RETRY_DELAY_MS = 450;
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Brevo transactional `/smtp/email` only — does not attach contacts to marketing lists.
+ * List id 11 is never used for automation list assignment (`src/lib/brevo.ts`).
+ */
+async function deliverContactNotification(opts: {
+  to: string | string[];
+  subject: string;
+  html: string;
+  text: string;
+}): Promise<SendEmailResult> {
+  const replyTo = { email: CONTACT_INFO.email, name: 'GrowWise' } as const;
+
+  if (isBrevoTransactionalReady()) {
+    let lastErr: string | undefined;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      if (attempt > 0) {
+        await new Promise((r) => setTimeout(r, BREVO_RETRY_DELAY_MS));
+      }
+      const brevo = await sendBrevoTransactionalEmail({
+        ...opts,
+        replyTo,
+      });
+      if (brevo.success) return brevo;
+      lastErr = brevo.error;
+      console.error(`[contact] Brevo transactional attempt ${attempt + 1}/2 failed:`, brevo.error);
+    }
+    console.error('[contact] Brevo failed after retry; SMTP fallback.', lastErr);
+  } else {
+    console.warn(
+      '[contact] Brevo not configured (set BREVO_API_KEY + BREVO_SENDER_EMAIL); using SMTP only if configured.'
+    );
+  }
+
+  return sendEmail({
+    ...opts,
+    replyTo: CONTACT_INFO.email,
+  });
+}
+
+type ContactPayload = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  source: string;
+  timestamp: string;
+  ip: string;
+};
 
 const BREVO_RETRY_DELAY_MS = 450;
 
@@ -126,6 +191,34 @@ export async function POST(request: Request) {
         emailSent: true,
         messageId: emailResult.messageId
       });
+
+      // HubSpot CRM (server-only Forms API — same env as /api/hubspot-submit; does not load chat widget)
+      if (isHubSpotFormsConfigured()) {
+        const { firstname, lastname } = splitFullName(contactData.name);
+        const messageBlock = [
+          contactData.message?.trim(),
+          `Source: ${contactData.source}`,
+        ]
+          .filter((s) => typeof s === 'string' && s.length > 0)
+          .join('\n\n');
+
+        const hubResult = await submitHubSpotForm(
+          [
+            { name: 'firstname', value: firstname },
+            { name: 'lastname', value: lastname },
+            { name: 'email', value: contactData.email },
+            { name: 'phone', value: contactData.phone },
+            { name: 'message', value: messageBlock },
+          ],
+          {
+            pageUri: request.headers.get('referer') ?? '',
+            pageName: 'Website contact (chatbot)',
+          }
+        );
+        if (!hubResult.ok) {
+          console.error('[contact] HubSpot CRM sync failed:', hubResult.message);
+        }
+      }
 
       return NextResponse.json({
         success: true,
