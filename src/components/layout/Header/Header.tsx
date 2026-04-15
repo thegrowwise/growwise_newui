@@ -87,6 +87,7 @@ export default function Header() {
                 className="header-logo"
                 width={230}
                 height={90}
+                priority
               />
             </Link>
           </div>

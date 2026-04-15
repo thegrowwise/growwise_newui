@@ -37,7 +37,7 @@ export function orderProgramsBySummerCampTrack<T extends { id: string; title: st
   programs: T[]
 ): T[] {
   const flatOrder = SUMMER_CAMP_PROGRAM_GROUP_IDS.flat();
-  const rank = new Map(flatOrder.map((id, i) => [id, i]));
+  const rank = new Map<string, number>(flatOrder.map((id, i) => [id, i]));
   return [...programs].sort((a, b) => {
     const ra = rank.get(a.id) ?? 1_000;
     const rb = rank.get(b.id) ?? 1_000;

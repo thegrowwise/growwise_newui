@@ -126,7 +126,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin'
+            value: 'strict-origin-when-cross-origin'
           },
         ],
       },
@@ -170,9 +170,14 @@ const nextConfig: NextConfig = {
     ];
   },
 
-  // Legacy /en/* URLs → clean URLs (301) for SEO after switching off locale prefix for English.
+  // Legacy `/camp/*` SEO landings → `/camps/*` (canonical namespace aligns with /camps/summer, /camps/winter).
+  // `/en/camp/*` listed before `/en/:path*` so one redirect hop to `/camps/*`.
   async redirects() {
     return [
+      { source: '/camp', destination: '/camps/summer', permanent: true },
+      { source: '/camp/:slug', destination: '/camps/:slug', permanent: true },
+      { source: '/en/camp', destination: '/camps/summer', permanent: true },
+      { source: '/en/camp/:slug', destination: '/camps/:slug', permanent: true },
       { source: '/en', destination: '/', permanent: true },
       { source: '/en/:path*', destination: '/:path*', permanent: true },
     ];

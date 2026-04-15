@@ -3,23 +3,22 @@
  * Helper functions for generating page-specific metadata
  */
 
-import { Metadata } from 'next'
-import { CONTACT_INFO } from '@/lib/constants'
-import { getMetadataConfig, PageMetadataConfig } from './metadataConfig'
-import { getValidLocale } from '@/i18n/localeConfig'
-import { absoluteSiteUrl } from '@/lib/publicPath'
-import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
+import { Metadata } from "next";
+import { getMetadataConfig, PageMetadataConfig } from "./metadataConfig";
+import { getValidLocale } from "@/i18n/localeConfig";
+import { absoluteSiteUrl } from "@/lib/publicPath";
+import { getCanonicalSiteUrl } from "@/lib/seo/siteUrl";
 
 interface PageMetadataOptions {
-  title: string
-  description: string
-  keywords?: string
-  locale: string
-  path?: string
-  image?: string
-  type?: 'website' | 'article'
-  publishedTime?: string
-  modifiedTime?: string
+  title: string;
+  description: string;
+  keywords?: string;
+  locale: string;
+  path?: string;
+  image?: string;
+  type?: "website" | "article";
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
 /**
@@ -29,15 +28,15 @@ interface PageMetadataOptions {
 export function generateMetadataFromPath(
   path: string,
   locale: string,
-  overrides?: Partial<PageMetadataConfig>
+  overrides?: Partial<PageMetadataConfig>,
 ): Metadata | null {
-  const config = getMetadataConfig(path)
+  const config = getMetadataConfig(path);
   if (!config) {
-    console.warn(`No metadata config found for path: ${path}`)
-    return null
+    console.warn(`No metadata config found for path: ${path}`);
+    return null;
   }
 
-  const finalConfig = { ...config, ...overrides }
+  const finalConfig = { ...config, ...overrides };
   return generatePageMetadata({
     title: finalConfig.title,
     description: finalConfig.description,
@@ -46,7 +45,7 @@ export function generateMetadataFromPath(
     path: finalConfig.path,
     image: finalConfig.image,
     type: finalConfig.type,
-  })
+  });
 }
 
 /**
@@ -57,33 +56,33 @@ export function generatePageMetadata({
   description,
   keywords,
   locale,
-  path = '',
+  path = "",
   image = `${getCanonicalSiteUrl()}/og-image.jpg`,
-  type = 'website',
+  type = "website",
   publishedTime,
   modifiedTime,
 }: PageMetadataOptions): Metadata {
-  const baseUrl = getCanonicalSiteUrl()
-  const pathForUrl = path === '' ? '/' : path
+  const baseUrl = getCanonicalSiteUrl();
+  const pathForUrl = path === "" ? "/" : path;
   // Single-language / clean-URL: canonical and OG url must follow publicPath + locale rules only (no hreflang alternates).
-  const effectiveLocale = getValidLocale(locale)
-  const url = absoluteSiteUrl(pathForUrl, effectiveLocale, baseUrl)
+  const effectiveLocale = getValidLocale(locale);
+  const url = absoluteSiteUrl(pathForUrl, effectiveLocale, baseUrl);
 
   // Default keywords if not provided
   const defaultKeywords = [
-    'tutoring Dublin CA',
-    'K-12 education',
-    'STEAM programs',
-    'math tutor',
-    'English tutor',
-    'coding classes',
-    'SAT prep Dublin',
-    'personalized learning',
-  ]
+    "tutoring Dublin CA",
+    "K-12 education",
+    "STEAM programs",
+    "math tutor",
+    "English tutor",
+    "coding classes",
+    "SAT prep Dublin",
+    "personalized learning",
+  ];
 
   const finalKeywords = keywords
-    ? `${keywords}, ${defaultKeywords.join(', ')}`
-    : defaultKeywords.join(', ')
+    ? `${keywords}, ${defaultKeywords.join(", ")}`
+    : defaultKeywords.join(", ");
 
   return {
     title,
@@ -93,20 +92,22 @@ export function generatePageMetadata({
       title,
       description,
       url,
-      siteName: 'GrowWise',
-      images: [{
-        url: image,
-        width: 1200,
-        height: 630,
-        alt: title,
-      }],
+      siteName: "GrowWise",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
       locale: effectiveLocale,
       type: type,
       ...(publishedTime && { publishedTime }),
       ...(modifiedTime && { modifiedTime }),
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
       images: [image],
@@ -120,10 +121,13 @@ export function generatePageMetadata({
       googleBot: {
         index: true,
         follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
-  }
+  };
 }
+
+/** `/camp/*` landing pages — canonical non-locale URLs; see `camp-metadata.ts`. */
+export { buildCampIndexMetadata, buildCampMetadata } from "./camp-metadata";
