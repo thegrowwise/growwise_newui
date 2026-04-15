@@ -2,7 +2,8 @@
 
 import { memo, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import Link from 'next/link';
+import { useLocale, useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import type { Program } from '@/lib/summer-camp-data';
 import { trackCampView } from '@/lib/meta-pixel';
@@ -11,6 +12,11 @@ import {
   orderProgramsBySummerCampTrack,
   type SummerCampProgramTrack,
 } from '@/lib/summer-camp-program-groups';
+import { createLocaleUrl } from '@/components/layout/Header/utils';
+import {
+  getSummerCampProgramSeoLink,
+  summerCampSeoMessagePath,
+} from '@/lib/summer-camp-seo-links';
 
 function groupProgramsByTrack(ordered: Program[]): Array<{
   track: SummerCampProgramTrack | 'unknown';
@@ -112,6 +118,7 @@ export const ProgramList = memo(function ProgramList({
   selectedProgramId: string | null;
 }) {
   const t = useTranslations('summerCamp');
+  const locale = useLocale();
   const list = programs ?? [];
   const ordered = useMemo(() => orderProgramsBySummerCampTrack(list), [list]);
   const groups = useMemo(() => groupProgramsByTrack(ordered), [ordered]);
@@ -146,10 +153,11 @@ export const ProgramList = memo(function ProgramList({
               {group.programs.map((program) => {
                 const isSelected = selectedProgramId === program.id;
                 const gIdx = globalIndexById.get(program.id) ?? 0;
+                const seo = getSummerCampProgramSeoLink(program.id);
                 return (
                   <li
                     key={program.id}
-                    className="[content-visibility:auto] [contain-intrinsic-size:auto_300px]"
+                    className="[content-visibility:auto] [contain-intrinsic-size:auto_300px] flex flex-col gap-2"
                   >
                     <SummerCampProgramPickCard
                       program={program}
@@ -159,6 +167,14 @@ export const ProgramList = memo(function ProgramList({
                       imageWrapperClassName="aspect-[650/450]"
                       imagePriority={gIdx < 2}
                     />
+                    {seo ? (
+                      <Link
+                        href={createLocaleUrl(`/camps/${seo.slug}`, locale)}
+                        className="text-[12px] font-semibold text-[#1F396D] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 rounded-sm px-0.5 -mt-0.5"
+                      >
+                        {t(summerCampSeoMessagePath(seo.labelKey))}
+                      </Link>
+                    ) : null}
                   </li>
                 );
               })}
@@ -191,10 +207,11 @@ export const ProgramList = memo(function ProgramList({
                 const hasOddCount = group.programs.length % 2 !== 0;
                 const isLastAndAlone = hasOddCount && idx === group.programs.length - 1;
                 const gIdx = globalIndexById.get(program.id) ?? 0;
+                const seo = getSummerCampProgramSeoLink(program.id);
                 return (
                   <li
                     key={program.id}
-                    className={`[content-visibility:auto] [contain-intrinsic-size:auto_300px] ${isLastAndAlone ? 'col-span-2' : ''}`}
+                    className={`[content-visibility:auto] [contain-intrinsic-size:auto_300px] flex flex-col gap-2 ${isLastAndAlone ? 'col-span-2' : ''}`}
                   >
                     <SummerCampProgramPickCard
                       program={program}
@@ -204,6 +221,14 @@ export const ProgramList = memo(function ProgramList({
                       imageWrapperClassName={isLastAndAlone ? 'h-[200px]' : 'aspect-[650/450]'}
                       imagePriority={gIdx < 2}
                     />
+                    {seo ? (
+                      <Link
+                        href={createLocaleUrl(`/camps/${seo.slug}`, locale)}
+                        className="text-[12px] font-semibold text-[#1F396D] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 rounded-sm px-0.5 -mt-0.5"
+                      >
+                        {t(summerCampSeoMessagePath(seo.labelKey))}
+                      </Link>
+                    ) : null}
                   </li>
                 );
               })}

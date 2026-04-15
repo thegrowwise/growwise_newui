@@ -36,6 +36,10 @@ import {
   type SummerCampProgramTrack,
 } from '@/lib/summer-camp-program-groups';
 import { SummerCampTrustBlock } from '@/components/camps/SummerCampTrustBlock';
+import {
+  SUMMER_CAMP_PROGRAM_GROUP_SEO_LINKS,
+  summerCampProgramGroupMessagePath,
+} from '@/lib/summer-camp-seo-links';
 
 /** Canonical English hero + conversion copy (en.json). */
 const SUMMER_CAMP_HERO_EN = enMessages.summerCamp.hero;
@@ -421,6 +425,18 @@ export default function SummerCampPage() {
     [programs, scrollToSlots]
   );
 
+  /** AI & Game Development card: jump to booking with the existing `aiGameDev` track filter (grouped list). */
+  const browseAiGameDevTrackAndScroll = useCallback(() => {
+    const inTrack = programs.filter((p) => getSummerCampProgramTrack(p.id) === 'aiGameDev');
+    const ordered = orderProgramsBySummerCampTrack(inTrack);
+    const picked = ordered[0] ?? null;
+    if (picked) setSelectedProgram(picked);
+    setProgramTrackFilter('aiGameDev');
+    guideModalUserDismissedRef.current = true;
+    setGuideModalOpen(false);
+    requestAnimationFrame(() => scrollToSlots());
+  }, [programs, scrollToSlots]);
+
   useEffect(() => {
     if (programsLoading || programs.length === 0) return;
     const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
@@ -596,54 +612,6 @@ export default function SummerCampPage() {
             <p className="mt-4 max-w-2xl text-[15px] font-medium leading-relaxed text-zinc-200 sm:text-base sm:leading-relaxed">
               {SUMMER_CAMP_HERO_EN.trustMicro}
             </p>
-          </div>
-        </section>
-
-        {/* Section 2 — Program grouping (3 cards) */}
-        <section
-          id="program-groups"
-          className="scroll-mt-24 border-b border-slate-200 bg-white py-14 md:py-20"
-          aria-labelledby="program-groups-heading"
-        >
-          <div className="mx-auto max-w-[1100px] px-10 md:px-12">
-            <h2 id="program-groups-heading" className="font-heading text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
-              {SC.programGroupsHeading}
-            </h2>
-            <p className="mt-2 max-w-2xl text-slate-600">{SC.programGroupsSub}</p>
-            <p className="mt-3 max-w-2xl text-sm text-slate-600">
-              For year-round options, browse our{' '}
-              <Link href={createLocaleUrl('/programs', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
-                programs overview
-              </Link>
-              ,{' '}
-              <Link href={createLocaleUrl('/steam', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
-                STEAM courses
-              </Link>
-              , or{' '}
-              <Link href={createLocaleUrl('/courses/math', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
-                math tutoring
-              </Link>
-              .
-            </p>
-            <div className="mt-10 grid gap-5 md:grid-cols-3">
-              {SC.programGroups.map((card, i) => (
-                <div
-                  key={`${card.title}-${i}`}
-                  className="flex flex-col rounded-2xl border border-slate-200 bg-slate-50/80 p-6 shadow-sm transition-shadow hover:shadow-md"
-                >
-                  <h3 className="font-heading text-lg font-bold text-[#1F396D]">{card.title}</h3>
-                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-700">{card.outcome}</p>
-                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">{card.ages}</p>
-                  <button
-                    type="button"
-                    onClick={() => selectGroupAndScrollToBooking(i)}
-                    className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border border-[#1F396D] bg-white px-4 py-3 text-sm font-semibold text-[#1F396D] transition-colors hover:bg-[#1F396D]/5"
-                  >
-                    {SC.exploreProgramCta}
-                  </button>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -865,6 +833,72 @@ export default function SummerCampPage() {
               >
                 {SC.finalGuidePdfCta}
               </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Start with one track — after “Still not sure…” so users see guidance first */}
+        <section
+          id="program-groups"
+          className="scroll-mt-24 border-b border-slate-200 bg-white py-14 md:py-20"
+          aria-labelledby="program-groups-heading"
+        >
+          <div className="mx-auto max-w-[1100px] px-10 md:px-12">
+            <h2 id="program-groups-heading" className="font-heading text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
+              {SC.programGroupsHeading}
+            </h2>
+            <p className="mt-2 max-w-2xl text-slate-600">{SC.programGroupsSub}</p>
+            <p className="mt-3 max-w-2xl text-sm text-slate-600">
+              For year-round options, browse our{' '}
+              <Link href={createLocaleUrl('/programs', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                programs overview
+              </Link>
+              ,{' '}
+              <Link href={createLocaleUrl('/steam', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                STEAM courses
+              </Link>
+              , or{' '}
+              <Link href={createLocaleUrl('/courses/math', locale)} className="font-semibold text-[#1F396D] underline hover:text-[#F16112]">
+                math tutoring
+              </Link>
+              .
+            </p>
+            <div className="mt-10 grid gap-5 md:grid-cols-3">
+              {SC.programGroups.map((card, i) => (
+                <div
+                  key={`${card.title}-${i}`}
+                  className="flex flex-col rounded-2xl border border-slate-200 bg-slate-50/80 p-6 shadow-sm transition-shadow hover:shadow-md"
+                >
+                  <h3 className="font-heading text-lg font-bold text-[#1F396D]">{card.title}</h3>
+                  <p className="mt-2 flex-1 text-sm leading-relaxed text-slate-700">{card.outcome}</p>
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-slate-500">{card.ages}</p>
+                  <div className="mt-4 flex flex-col gap-2">
+                    {SUMMER_CAMP_PROGRAM_GROUP_SEO_LINKS[i]?.map((link) => (
+                      <Link
+                        key={link.slug}
+                        href={createLocaleUrl(`/camps/${link.slug}`, locale)}
+                        className="text-[13px] font-semibold text-[#1F396D] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 rounded-sm"
+                      >
+                        {t(summerCampProgramGroupMessagePath(link.msgKey))}
+                      </Link>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (i === 1) browseAiGameDevTrackAndScroll();
+                      else selectGroupAndScrollToBooking(i);
+                    }}
+                    className="mt-6 inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border border-[#1F396D] bg-white px-4 py-3 text-sm font-semibold text-[#1F396D] transition-colors hover:bg-[#1F396D]/5"
+                  >
+                    {i === 0
+                      ? t('programGroup.ctaViewMathOlympiad')
+                      : i === 1
+                        ? t('programGroup.ctaBrowseAiGameDev')
+                        : t('programGroup.ctaViewYoungAuthors')}
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </section>

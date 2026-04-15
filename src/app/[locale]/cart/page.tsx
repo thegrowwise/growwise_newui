@@ -235,13 +235,15 @@ const CartPage: React.FC = () => {
                     </div>
                   </div>
                   
-                  {/* Checkout Button */}
-                  <Link href={createLocaleUrl('/checkout')} className="block">
-                    <Button className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white py-3 mb-3 sm:mb-4 text-sm sm:text-base">
-                      <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-                      Proceed to Checkout
-                    </Button>
-                  </Link>
+                  {/* Checkout Button — single <a> via asChild so Next Link + Radix Button don’t nest button inside link */}
+                  <Button asChild className="w-full bg-[#F16112] hover:bg-[#d54f0a] text-white py-3 mb-3 sm:mb-4 text-sm sm:text-base">
+                    <Link href={createLocaleUrl('/checkout')}>
+                      <span className="inline-flex items-center justify-center w-full">
+                        <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 mr-2" aria-hidden />
+                        Proceed to Checkout
+                      </span>
+                    </Link>
+                  </Button>
                   
                   {/* Security Badge */}
                   <div className="flex items-center justify-center gap-2 text-xs sm:text-sm text-gray-500 mb-4 sm:mb-0">
