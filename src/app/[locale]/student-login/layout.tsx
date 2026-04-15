@@ -17,10 +17,10 @@ export async function generateMetadata({
     alternates: { canonical: url },
     robots: {
       index: false,
-      follow: false,
+      follow: true,
       googleBot: {
         index: false,
-        follow: false,
+        follow: true,
       },
     },
   };

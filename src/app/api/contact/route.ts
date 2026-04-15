@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import { ContactFormData } from '@/components/chatbot/ContactForm';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
+import {
+  isHubSpotFormsConfigured,
+  splitFullName,
+  submitHubSpotForm,
+} from '@/lib/hubspot/submitForm';
 
 export async function POST(request: Request) {
   try {
@@ -73,6 +78,34 @@ export async function POST(request: Request) {
         emailId: emailResult.emailId
       });
 
+      // HubSpot CRM (server-only Forms API — same env as /api/hubspot-submit; does not load chat widget)
+      if (isHubSpotFormsConfigured()) {
+        const { firstname, lastname } = splitFullName(contactData.name);
+        const messageBlock = [
+          contactData.message?.trim(),
+          `Source: ${contactData.source}`,
+        ]
+          .filter((s) => typeof s === 'string' && s.length > 0)
+          .join('\n\n');
+
+        const hubResult = await submitHubSpotForm(
+          [
+            { name: 'firstname', value: firstname },
+            { name: 'lastname', value: lastname },
+            { name: 'email', value: contactData.email },
+            { name: 'phone', value: contactData.phone },
+            { name: 'message', value: messageBlock },
+          ],
+          {
+            pageUri: request.headers.get('referer') ?? '',
+            pageName: 'Website contact (chatbot)',
+          }
+        );
+        if (!hubResult.ok) {
+          console.error('[contact] HubSpot CRM sync failed:', hubResult.message);
+        }
+      }
+
       return NextResponse.json({
         success: true,
         message: 'Contact information received successfully. We will contact you within 24 hours.',
@@ -95,8 +128,18 @@ export async function POST(request: Request) {
   }
 }
 
+type ContactDataPayload = {
+  name: string;
+  email: string;
+  phone: string;
+  message: string;
+  source: string;
+  timestamp: string;
+  ip: string;
+};
+
 // Email service function
-async function sendContactEmail(contactData: any) {
+async function sendContactEmail(contactData: ContactDataPayload) {
   try {
     // In a real application, you would integrate with:
     // - SendGrid, Mailgun, AWS SES, or similar email service
