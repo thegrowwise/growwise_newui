@@ -5,7 +5,7 @@ import { getCanonicalSiteUrl } from "@/lib/seo/siteUrl";
 const base = getCanonicalSiteUrl();
 
 export function buildCampMetadata(page: CampLandingPage): Metadata {
-  const url = `${base}/camp/${page.slug}`;
+  const url = `${base}/camps/${page.slug}`;
   const title = page.seoTitle;
   const description = page.metaDescription;
   const ogTitle = page.ogTitle ?? title;

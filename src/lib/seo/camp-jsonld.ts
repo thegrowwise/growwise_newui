@@ -19,7 +19,7 @@ function faqSchema(items: readonly CampFaqItem[]) {
 }
 
 function webPageSchema(page: CampLandingPage) {
-  const url = `${base}/camp/${page.slug}`;
+  const url = `${base}/camps/${page.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "WebPage",

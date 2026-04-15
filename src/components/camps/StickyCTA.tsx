@@ -9,11 +9,11 @@ type StickyCTAProps = {
 export function StickyCTA({ page }: StickyCTAProps) {
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3"
       role="region"
       aria-label="Call to action"
     >
-      <div className="container-7xl flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="container-7xl pointer-events-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm sm:text-base font-medium text-slate-800 text-center sm:text-left">{page.stickyCtaText}</p>
         <a
           href={page.stickyCtaButton.href}

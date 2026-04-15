@@ -590,6 +590,24 @@
     "card": {
       "active": "Active"
     },
+    "seo": {
+      "mathOlympiad": "Math Olympiad summer camp program (Dublin, CA)",
+      "aiStudio": "AI Studio summer camp in Dublin, CA",
+      "gameDevelopment": "Game development summer camp program",
+      "robotics": "Robotics summer camp (Dublin, CA)",
+      "roboticsFullDay": "Full-day robotics summer camp option",
+      "youngAuthors": "Young Authors summer camp writing program"
+    },
+    "programGroup": {
+      "linkMathOlympiad": "Math Olympiad Camp Details",
+      "linkAiStudio": "AI Studio Camp Details",
+      "linkGameDevelopment": "Game Development Camp Details",
+      "linkRobotics": "Robotics Camp Details",
+      "linkYoungAuthors": "Young Authors Camp Details",
+      "ctaViewMathOlympiad": "View Math Olympiad Camp",
+      "ctaBrowseAiGameDev": "Browse AI & Game Development Camps",
+      "ctaViewYoungAuthors": "View Young Authors Camp"
+    },
     "slots": {
       "learningMode": "Learning mode",
       "program": "Program",

@@ -49,13 +49,16 @@ const inputClass =
 
 export function CampInquiryForm({ page }: CampInquiryFormProps) {
   const [submitted, setSubmitted] = useState(false);
+
   const {
     register,
     handleSubmit,
     reset,
     setValue,
     watch,
-    formState: { errors },
+    setError,
+    clearErrors,
+    formState: { errors, isSubmitting },
   } = useForm<CampInquiryPayload>({
     defaultValues: {
       campInterest: page.formConfig.defaultCampInterest,
@@ -73,21 +76,61 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
   const countryCode = watch("countryCode");
   const phonePlaceholder = getPhonePlaceholder(DIAL_CODE_TO_ISO2[countryCode]);
 
-  const onSubmit = (data: CampInquiryPayload) => {
+  const onSubmit = async (data: CampInquiryPayload) => {
     const phoneValidation = validatePhoneWithCountryCode(data.countryCode, data.phone);
-    // Placeholder: structured payload for a future API route — no network call yet.
-    if (process.env.NODE_ENV === "development") {
-      console.info("[camp-inquiry] payload (not sent)", {
-        ...data,
-        phone: phoneValidation.e164 ?? data.phone,
+    clearErrors("root");
+
+    const messageBody = [
+      `Camp program page: ${page.slug}`,
+      `Camp interest: ${data.campInterest}`,
+      `Child grade: ${data.childGrade}`,
+      `City: ${data.city}`,
+      data.message.trim() ? `Optional message:\n${data.message.trim()}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n\n");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.parentName,
+          email: data.email,
+          phone: phoneValidation.e164 ?? data.phone,
+          message: messageBody,
+          source: `camp-landing:${page.slug}`,
+        }),
+      });
+
+      const json = (await res.json()) as { success?: boolean; message?: string };
+
+      if (!res.ok || json.success === false) {
+        setError("root", {
+          message:
+            json.message ??
+            "We could not send your inquiry. Please try again or call (925) 456-4606.",
+        });
+        return;
+      }
+
+      setSubmitted(true);
+      reset({ ...data, message: "" });
+    } catch {
+      setError("root", {
+        message: "Network error. Please check your connection and try again.",
       });
     }
-    setSubmitted(true);
-    reset({ ...data, message: "" });
   };
 
+  /** Slug-suffixed ids so field/label pairs stay unique if the tree ever reuses without remount (parent passes key={slug}). */
+  const fid = (field: string) => `${field}-${page.slug}`;
+
   return (
-    <SectionContainer id="inquiry" className="bg-white border-t border-slate-100 pb-28 sm:pb-32">
+    <SectionContainer
+      id="inquiry"
+      className="bg-white border-t border-slate-100 pb-44 sm:pb-52 scroll-mt-4"
+    >
       <div className="max-w-2xl">
         <p className="text-sm font-semibold uppercase tracking-wide text-[#1F396D]">{page.formConfig.sectionEyebrow}</p>
         <h2 className="mt-2 text-2xl sm:text-3xl font-semibold text-slate-900">{page.formConfig.sectionTitle}</h2>
@@ -95,13 +138,18 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
           <p className="mt-3 text-slate-600">{page.formConfig.sectionSubtext}</p>
         ) : null}
 
-        <form className="mt-10 space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form
+          className="mt-10 space-y-5"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          suppressHydrationWarning
+        >
           <div>
-            <label htmlFor="parentName" className="block text-sm font-semibold text-slate-800">
+            <label htmlFor={fid("parentName")} className="block text-sm font-semibold text-slate-800">
               Parent / guardian name
             </label>
             <input
-              id="parentName"
+              id={fid("parentName")}
               type="text"
               autoComplete="name"
               className={`${inputClass} mt-1.5`}
@@ -122,11 +170,11 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-800">
+              <label htmlFor={fid("email")} className="block text-sm font-semibold text-slate-800">
                 Email
               </label>
               <input
-                id="email"
+                id={fid("email")}
                 type="email"
                 autoComplete="email"
                 className={`${inputClass} mt-1.5`}
@@ -147,7 +195,7 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
               ) : null}
             </div>
             <div>
-              <label htmlFor="phone" className="block text-sm font-semibold text-slate-800">
+              <label htmlFor={fid("phone")} className="block text-sm font-semibold text-slate-800">
                 Phone
               </label>
               <div
@@ -164,7 +212,7 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
                 />
                 <div className="w-px h-10 bg-slate-300 flex-shrink-0" aria-hidden />
                 <input
-                  id="phone"
+                  id={fid("phone")}
                   type="tel"
                   autoComplete="tel"
                   inputMode="tel"
@@ -191,11 +239,11 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
 
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <label htmlFor="childGrade" className="block text-sm font-semibold text-slate-800">
+              <label htmlFor={fid("childGrade")} className="block text-sm font-semibold text-slate-800">
                 Child&apos;s grade (upcoming school year)
               </label>
               <select
-                id="childGrade"
+                id={fid("childGrade")}
                 className={`${inputClass} mt-1.5`}
                 aria-invalid={errors.childGrade ? "true" : "false"}
                 aria-describedby={errors.childGrade ? "childGrade-error" : undefined}
@@ -215,11 +263,11 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
               ) : null}
             </div>
             <div>
-              <label htmlFor="city" className="block text-sm font-semibold text-slate-800">
+              <label htmlFor={fid("city")} className="block text-sm font-semibold text-slate-800">
                 City you commute from
               </label>
               <input
-                id="city"
+                id={fid("city")}
                 type="text"
                 autoComplete="address-level2"
                 className={`${inputClass} mt-1.5`}
@@ -237,11 +285,11 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
           </div>
 
           <div>
-            <label htmlFor="campInterest" className="block text-sm font-semibold text-slate-800">
+            <label htmlFor={fid("campInterest")} className="block text-sm font-semibold text-slate-800">
               Camp interest
             </label>
             <input
-              id="campInterest"
+              id={fid("campInterest")}
               type="text"
               className={`${inputClass} mt-1.5`}
               aria-invalid={errors.campInterest ? "true" : "false"}
@@ -257,11 +305,11 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
           </div>
 
           <div>
-            <label htmlFor="message" className="block text-sm font-semibold text-slate-800">
+            <label htmlFor={fid("message")} className="block text-sm font-semibold text-slate-800">
               Message <span className="font-normal text-slate-500">(optional)</span>
             </label>
             <textarea
-              id="message"
+              id={fid("message")}
               rows={4}
               className={`${inputClass} mt-1.5 resize-y min-h-[120px]`}
               placeholder="Goals, scheduling constraints, prior experience—anything that helps us respond quickly."
@@ -274,16 +322,23 @@ export function CampInquiryForm({ page }: CampInquiryFormProps) {
             <p className="mt-1 leading-relaxed">{page.formConfig.notConnectedNotice}</p>
           </div>
 
+          {errors.root ? (
+            <p className="text-sm text-red-600" role="alert">
+              {errors.root.message}
+            </p>
+          ) : null}
+
           <button
             type="submit"
-            className="w-full sm:w-auto inline-flex justify-center rounded-md bg-[#F16112] px-6 py-3 text-base font-semibold text-white hover:bg-[#d54f0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#F16112]"
+            disabled={isSubmitting}
+            className="w-full sm:w-auto inline-flex justify-center rounded-md bg-[#F16112] px-6 py-3 text-base font-semibold text-white hover:bg-[#d54f0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#F16112] disabled:cursor-not-allowed disabled:opacity-70"
           >
-            {page.formConfig.submitLabel}
+            {isSubmitting ? "Sending…" : page.formConfig.submitLabel}
           </button>
 
           {submitted ? (
             <p className="text-sm text-slate-700" role="status">
-              Nothing was transmitted to GrowWise servers. To enroll or get a timely response, call or email using the contact details in the notice above.
+              Thanks — we received your inquiry. Our team will follow up using the contact information you provided.
             </p>
           ) : null}
         </form>

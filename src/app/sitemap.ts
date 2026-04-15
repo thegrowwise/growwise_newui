@@ -96,7 +96,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     coursePages.forEach(push)
     steamPages.forEach(push)
     campPages.forEach(push)
-    // `/camp/*` routes live outside `[locale]`; only emit non-prefixed canonical URLs for the default locale.
+    // `/camps/*` program landings use the same URL shape as other locale-middleware routes; emit default-locale URLs only.
     if (locale === DEFAULT_LOCALE) {
       push(campLandingHub)
       campLandingPages.forEach(push)

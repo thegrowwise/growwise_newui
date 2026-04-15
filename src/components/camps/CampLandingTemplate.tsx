@@ -27,7 +27,8 @@ export function CampLandingTemplate({ page }: CampLandingTemplateProps) {
         <ScheduleSection page={page} />
         <LocationSection page={page} />
         <FAQSection page={page} />
-        <CampInquiryForm page={page} />
+        {/* key: fresh form state + defaultValues per slug (all CAMP_LANDING_PAGES). */}
+        <CampInquiryForm key={page.slug} page={page} />
       </article>
 
       <StickyCTA page={page} />
