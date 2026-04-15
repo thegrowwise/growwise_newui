@@ -1,22 +1,37 @@
-import { notFound, redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { CampLandingTemplate } from "@/components/camps/CampLandingTemplate";
 import { getCampPage, getCampSlugs } from "@/lib/camps/get-camp-page";
+import { buildCampMetadata } from "@/lib/seo/camp-metadata";
 
 /**
- * Plural `/camps/:slug` is a common mistake for SEO camp landings, which live at `/camp/:slug`.
- * Redirect only when the slug matches a defined camp page so `/camps/summer` etc. stay untouched.
+ * SEO camp landing pages live at `/camps/:slug` (canonical).
+ * Slugs are data-driven from `CAMP_LANDING_PAGES`.
  */
 export function generateStaticParams() {
   return getCampSlugs().map((slug) => ({ slug }));
 }
 
-export default async function CampsSlugRedirect({
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const page = getCampPage(slug);
+  if (!page) return {};
+  return buildCampMetadata(page);
+}
+
+export default async function CampsSlugPage({
   params,
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { slug } = await params;
-  if (!getCampPage(slug)) {
+  const page = getCampPage(slug);
+  if (!page) {
     notFound();
   }
-  redirect(`/camp/${slug}`);
+  return <CampLandingTemplate page={page} />;
 }

@@ -36,9 +36,9 @@ export function buildCampMetadata(page: CampLandingPage): Metadata {
   };
 }
 
-/** Hub page at `/camp` — lists all data-driven SEO camp landings. */
+/** Hub page at `/camps` — lists all data-driven SEO camp landings. */
 export function buildCampIndexMetadata(): Metadata {
-  const url = `${base}/camp`;
+  const url = `${base}/camps`;
   const title = "Summer camp tracks in Dublin, CA | GrowWise School";
   const description =
     "Structured summer programs at GrowWise in Dublin, CA—one campus; Tri-Valley families welcome. Browse AI Studio, robotics, game development, math, and writing tracks.";

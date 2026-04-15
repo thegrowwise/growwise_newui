@@ -32,7 +32,7 @@ export default function CampLandingIndexPage() {
           {pages.map((p) => (
             <li key={p.slug}>
               <Link
-                href={`/camp/${p.slug}`}
+                href={`/camps/${p.slug}`}
                 className="block rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-[#1F396D]/25 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2"
               >
                 <span className="font-semibold text-slate-900">{p.h1}</span>

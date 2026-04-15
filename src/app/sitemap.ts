@@ -62,14 +62,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/camps/winter/calendar', priority: 0.6, changefreq: 'weekly' as const },
   ]
 
-  /** SEO camp hub + landings: `/camp`, `/camp/[slug]` (single Dublin campus; data-driven). */
+  /** SEO camp hub + landings: `/camps`, `/camps/[slug]` (single Dublin campus; data-driven). */
   const campLandingHub = {
-    path: '/camp',
+    path: '/camps',
     priority: 0.85,
     changefreq: 'weekly' as const,
   }
   const campLandingPages = getCampSlugs().map((slug) => ({
-    path: `/camp/${slug}`,
+    path: `/camps/${slug}`,
     priority: 0.9,
     changefreq: 'weekly' as const,
   }))
