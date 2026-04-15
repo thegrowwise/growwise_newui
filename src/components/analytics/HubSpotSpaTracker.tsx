@@ -6,8 +6,9 @@ import { Suspense, useEffect, useRef } from 'react';
 
 const HUB_ID_PATTERN = /^\d{5,12}$/;
 
+/** HubSpot command queue — commands are string tuples consumed by the tracking script. */
 type HubSpotWindow = Window & {
-  _hsq?: Array<[string, ...string[]] | [string]>;
+  _hsq?: unknown[][];
 };
 
 function HubSpotSpaRouteSync() {
@@ -25,11 +26,9 @@ function HubSpotSpaRouteSync() {
     }
 
     const w = window as HubSpotWindow;
-    const hsq = w._hsq;
-    if (!hsq || typeof hsq.push !== 'function') return;
-
-    hsq.push(['setPath', fullPath]);
-    hsq.push(['trackPageView']);
+    w._hsq = w._hsq || [];
+    w._hsq.push(['setPath', fullPath]);
+    w._hsq.push(['trackPageView']);
   }, [pathname, search]);
 
   return null;
@@ -46,10 +45,9 @@ export default function HubSpotSpaTracker({ hubId }: HubSpotSpaTrackerProps) {
 
   return (
     <>
-      {/* lazyOnload — same tier as MetaPixel / gtag fallback: defer third-party until after load so LCP/INP are not contended. */}
       <Script
         id="hs-script-loader"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
         src={`https://js.hs-scripts.com/${id}.js`}
       />
       <Suspense fallback={null}>
