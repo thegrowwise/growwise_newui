@@ -12,7 +12,7 @@ import {
 
 const BREVO_RETRY_DELAY_MS = 450;
 
-function escapeHtml(s: string): string {
+function escapeHtmlEmail(s: string): string {
   return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -184,13 +184,13 @@ export async function POST(request: Request) {
 async function sendContactEmail(contactData: ContactPayload): Promise<SendEmailResult> {
   try {
     const to = CONTACT_INFO.email;
-    const safeName = escapeHtml(contactData.name);
-    const safeEmail = escapeHtml(contactData.email);
-    const safePhone = escapeHtml(contactData.phone);
-    const safeSource = escapeHtml(contactData.source);
-    const safeMessage = contactData.message ? escapeHtml(contactData.message) : '';
-    const safeIp = escapeHtml(contactData.ip);
-    const submitted = escapeHtml(new Date(contactData.timestamp).toLocaleString());
+    const safeName = escapeHtmlEmail(contactData.name);
+    const safeEmail = escapeHtmlEmail(contactData.email);
+    const safePhone = escapeHtmlEmail(contactData.phone);
+    const safeSource = escapeHtmlEmail(contactData.source);
+    const safeMessage = contactData.message ? escapeHtmlEmail(contactData.message) : '';
+    const safeIp = escapeHtmlEmail(contactData.ip);
+    const submitted = escapeHtmlEmail(new Date(contactData.timestamp).toLocaleString());
 
     const subject = `New Contact Form Submission from ${contactData.name}`.slice(0, 998);
 
