@@ -1,5 +1,7 @@
 import { MetadataRoute } from 'next'
 import { locales } from '@/i18n/config'
+import { DEFAULT_LOCALE } from '@/i18n/localeConfig'
+import { getCampSlugs } from '@/lib/camps/get-camp-page'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -60,6 +62,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/camps/winter/calendar', priority: 0.6, changefreq: 'weekly' as const },
   ]
 
+  /** SEO camp hub + landings: `/camps`, `/camps/[slug]` (single Dublin campus; data-driven). */
+  const campLandingHub = {
+    path: '/camps',
+    priority: 0.85,
+    changefreq: 'weekly' as const,
+  }
+  const campLandingPages = getCampSlugs().map((slug) => ({
+    path: `/camps/${slug}`,
+    priority: 0.9,
+    changefreq: 'weekly' as const,
+  }))
+
   const blogPages = blogPostPaths.map((path) => ({
     path,
     priority: 0.75,
@@ -82,6 +96,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     coursePages.forEach(push)
     steamPages.forEach(push)
     campPages.forEach(push)
+    // `/camps/*` program landings use the same URL shape as other locale-middleware routes; emit default-locale URLs only.
+    if (locale === DEFAULT_LOCALE) {
+      push(campLandingHub)
+      campLandingPages.forEach(push)
+    }
     blogPages.forEach(push)
   })
 

@@ -51,6 +51,13 @@ function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | n
  * because there is no root `app/page.tsx` (only `app/[locale]/...`).
  */
 export default function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  // Non-localized App Router segments (`app/camp/...` at repo root). Running next-intl on these
+  // can fight with `[locale]/camp/[slug]` and caused redirect loops to the same URL.
+  if (pathname === '/camp' || pathname.startsWith('/camp/')) {
+    return NextResponse.next();
+  }
+
   const rewritten = rewriteLocalePrefixedNextAssets(request);
   if (rewritten) return rewritten;
   const legacyEn = rewriteLegacyDefaultLocalePrefix(request);

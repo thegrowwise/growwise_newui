@@ -9,6 +9,17 @@ import type { NormalizedMetaLead } from '@/lib/meta-lead';
 
 const BREVO_API_BASE = 'https://api.brevo.com/v3';
 
+/**
+ * Brevo list IDs that must never receive automated `listIds` on POST /contacts.
+ * Transactional email (`/smtp/email`) is unaffected.
+ */
+export const BREVO_LIST_IDS_EXCLUDED_FROM_AUTOMATION = new Set([11]);
+
+function filterAutomationListIds(ids: number[]): number[] | undefined {
+  const out = ids.filter((id) => !BREVO_LIST_IDS_EXCLUDED_FROM_AUTOMATION.has(id));
+  return out.length > 0 ? out : undefined;
+}
+
 /** Fetch with timeout — works on Node 16+; avoids AbortSignal.timeout (Node 17.3+ only). */
 async function fetchWithTimeout(
   url: string,
@@ -124,6 +135,14 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
     return { success: false, error: 'Invalid BREVO_LIST_LOTTERY' };
   }
 
+  const listIds = filterAutomationListIds([listId]);
+  if (!listIds) {
+    console.warn(
+      '[brevo] BREVO_LIST_LOTTERY is excluded from automation; upserting contact without list attachment.',
+      { listId }
+    );
+  }
+
   try {
     const res = await fetchWithTimeout(`${BREVO_API_BASE}/contacts`, {
       method: 'POST',
@@ -134,7 +153,7 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
       },
       body: JSON.stringify({
         email: email.toLowerCase(),
-        listIds: [listId],
+        ...(listIds ? { listIds } : {}),
         updateEnabled: true,
       }),
     });
@@ -194,7 +213,13 @@ export async function upsertMetaLeadContactInBrevo(lead: NormalizedMetaLead): Pr
   if (listIdRaw) {
     const n = Number.parseInt(listIdRaw, 10);
     if (Number.isFinite(n)) {
-      listIds = [n];
+      listIds = filterAutomationListIds([n]);
+      if (!listIds) {
+        console.warn(
+          '[brevo] BREVO_LIST_LOTTERY is excluded from automation; Meta upsert without listIds.',
+          { listId: n }
+        );
+      }
     } else {
       console.warn('[brevo] BREVO_LIST_LOTTERY must be numeric; omitting listIds for Meta upsert.');
     }
