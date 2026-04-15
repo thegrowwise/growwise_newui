@@ -3,7 +3,6 @@ import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { GTMHead, GTMNoScript } from '../components/analytics/GTM';
-import HubSpotSpaTracker from '../components/analytics/HubSpotSpaTracker';
 import MetaPixel from '../components/analytics/MetaPixel';
 import { CartProvider } from '@/components/gw/CartContext';
 
@@ -37,7 +36,6 @@ export default function RootLayout({
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim() || "";
   const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || "";
   const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || "";
-  const hubSpotHubId = process.env.NEXT_PUBLIC_HUBSPOT_HUB_ID?.trim() || "";
 
   return (
     <html suppressHydrationWarning lang="en">
@@ -61,7 +59,6 @@ export default function RootLayout({
         </a>
         {/* When gtmId is set, GA4 is expected via the GTM container (GA4 Configuration tag) — not the standalone gtag.js snippet (avoids duplicate hits). */}
         {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
-        {hubSpotHubId ? <HubSpotSpaTracker hubId={hubSpotHubId} /> : null}
         <CartProvider>
           {children}
         </CartProvider>

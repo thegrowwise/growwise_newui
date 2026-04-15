@@ -4,10 +4,15 @@ import { CONTACT_INFO } from '@/lib/constants';
 import { isBrevoTransactionalReady, sendBrevoTransactionalEmail } from '@/lib/brevo';
 import { sendEmail, type SendEmailResult } from '@/lib/email';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
+import {
+  isHubSpotFormsConfigured,
+  splitFullName,
+  submitHubSpotForm,
+} from '@/lib/hubspot/submitForm';
 
 const BREVO_RETRY_DELAY_MS = 450;
 
-function escapeHtml(s: string): string {
+function escapeHtmlEmail(s: string): string {
   return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -127,6 +132,34 @@ export async function POST(request: Request) {
         messageId: emailResult.messageId
       });
 
+      // HubSpot CRM (server-only Forms API — same env as /api/hubspot-submit; does not load chat widget)
+      if (isHubSpotFormsConfigured()) {
+        const { firstname, lastname } = splitFullName(contactData.name);
+        const messageBlock = [
+          contactData.message?.trim(),
+          `Source: ${contactData.source}`,
+        ]
+          .filter((s) => typeof s === 'string' && s.length > 0)
+          .join('\n\n');
+
+        const hubResult = await submitHubSpotForm(
+          [
+            { name: 'firstname', value: firstname },
+            { name: 'lastname', value: lastname },
+            { name: 'email', value: contactData.email },
+            { name: 'phone', value: contactData.phone },
+            { name: 'message', value: messageBlock },
+          ],
+          {
+            pageUri: request.headers.get('referer') ?? '',
+            pageName: 'Website contact (chatbot)',
+          }
+        );
+        if (!hubResult.ok) {
+          console.error('[contact] HubSpot CRM sync failed:', hubResult.message);
+        }
+      }
+
       return NextResponse.json({
         success: true,
         message: 'Contact information received successfully. We will contact you within 24 hours.',
@@ -151,13 +184,13 @@ export async function POST(request: Request) {
 async function sendContactEmail(contactData: ContactPayload): Promise<SendEmailResult> {
   try {
     const to = CONTACT_INFO.email;
-    const safeName = escapeHtml(contactData.name);
-    const safeEmail = escapeHtml(contactData.email);
-    const safePhone = escapeHtml(contactData.phone);
-    const safeSource = escapeHtml(contactData.source);
-    const safeMessage = contactData.message ? escapeHtml(contactData.message) : '';
-    const safeIp = escapeHtml(contactData.ip);
-    const submitted = escapeHtml(new Date(contactData.timestamp).toLocaleString());
+    const safeName = escapeHtmlEmail(contactData.name);
+    const safeEmail = escapeHtmlEmail(contactData.email);
+    const safePhone = escapeHtmlEmail(contactData.phone);
+    const safeSource = escapeHtmlEmail(contactData.source);
+    const safeMessage = contactData.message ? escapeHtmlEmail(contactData.message) : '';
+    const safeIp = escapeHtmlEmail(contactData.ip);
+    const submitted = escapeHtmlEmail(new Date(contactData.timestamp).toLocaleString());
 
     const subject = `New Contact Form Submission from ${contactData.name}`.slice(0, 998);
 
