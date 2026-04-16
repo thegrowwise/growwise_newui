@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchFooterRequested } from '@/store/slices/footerSlice';
@@ -16,6 +17,7 @@ interface FooterProps {
 
 export default function Footer({ data }: FooterProps) {
   const locale = useLocale();
+  const pathname = usePathname();
   const dispatch = useAppDispatch();
   const footer = useAppSelector((s) => s.footer.data);
   
@@ -25,6 +27,7 @@ export default function Footer({ data }: FooterProps) {
   }, [dispatch, footer]);
   
   const createLocaleUrlHelper = (path: string) => createLocaleUrl(path, locale);
+  const isCampsRoute = pathname === '/camps' || pathname.startsWith('/camps/');
 
   // Reserve the same visual shell while Redux/API loads — returning null caused the footer to
   // pop in after fetch and shifted the whole page (felt like flicker on long pages like /camp/*).
@@ -45,7 +48,14 @@ export default function Footer({ data }: FooterProps) {
   }
 
   return (
-    <footer className="bg-gradient-to-br from-[#1F396D]/20 via-[#29335C]/15 to-[#1F396D]/20 py-16 px-4 lg:px-8 relative overflow-hidden text-gray-800">
+    <footer
+      className={[
+        'bg-gradient-to-br from-[#1F396D]/20 via-[#29335C]/15 to-[#1F396D]/20',
+        'pt-16 pb-16 px-4 lg:px-8 relative overflow-hidden text-gray-800',
+        // Camp landings use a fixed bottom CTA; reserve space so the footer can scroll above it.
+        isCampsRoute ? 'pb-44 sm:pb-52' : '',
+      ].join(' ')}
+    >
       {/* Background decorative elements */}
       <div className="absolute top-10 right-20 w-32 h-32 bg-[#F16112]/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 left-10 w-40 h-40 bg-[#F1894F]/10 rounded-full blur-3xl"></div>
