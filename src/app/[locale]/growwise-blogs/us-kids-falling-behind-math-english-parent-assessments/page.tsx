@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help | GrowWise', 
-    description: 'Understanding the challenges and solutions for improving student performance in core subjects. Learn how regular assessments help parents spot problem areas early and rebuild confidence.',
+    title: 'US Kids & Core Skills | Parent Guide | GrowWise', 
+    description:
+      'Why math and English gaps widen—and how Tri-Valley families use assessments and routines to rebuild skills and confidence.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>11:10 am</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help
-            </h1>
+          
           </div>
         </section>
 

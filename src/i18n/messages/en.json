@@ -68,8 +68,8 @@
     "cta": {
       "title": "Ready to Transform Your Child's Learning?",
       "subtitle": "Book a free assessment and discover personalized learning opportunities",
-      "primaryCta": "Get Started",
-      "secondaryCta": "Contact Us"
+      "primaryCta": "Choose Enrollment Type",
+      "secondaryCta": "Talk to GrowWise"
     }
   },
   "assessment": {
@@ -85,6 +85,8 @@
       "subjects": "Subjects of Interest",
       "mode": "Preferred Learning Mode",
       "schedule": "Preferred Schedule",
+      "preferredDays": "Preferred Days",
+      "preferredTime": "Preferred Time",
       "notes": "Additional Notes",
       "submit": "Submit Assessment",
       "submitting": "Submitting...",
@@ -109,6 +111,20 @@
       "math": "Math",
       "english": "English",
       "sat": "SAT/ACT"
+    },
+    "days": {
+      "mon": "Monday",
+      "tue": "Tuesday",
+      "wed": "Wednesday",
+      "thu": "Thursday",
+      "fri": "Friday",
+      "sunday": "Sunday"
+    },
+    "timeSlots": {
+      "weekday34": "3:00 PM - 4:00 PM",
+      "weekday45": "4:00 PM - 5:00 PM",
+      "weekday56": "5:00 PM - 6:00 PM",
+      "sunday1112": "11:00 AM - 12:00 PM"
     },
     "trial": {
       "subjects": {
@@ -230,7 +246,7 @@
           "machineLearning": "Machine Learning Algorithms",
           "dataScience": "Data Science & Analytics"
         },
-        "cta": "Learn More"
+        "cta": "Book Free Assessment"
       },
       "gameDev": {
         "title": "Game Development",
@@ -256,8 +272,8 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join hundreds of students who are already building the future with our innovative programs",
-      "primaryCta": "Get Started",
-      "secondaryCta": "Contact Us"
+      "primaryCta": "Book Free Assessment",
+      "secondaryCta": "Join Free Saturday Workshop"
     },
     "mlAi": {
       "title": "ML/AI Coding",
@@ -317,7 +333,7 @@
       "cta": {
         "title": "Ready to Build the Future with AI?",
         "subtitle": "Start your journey into artificial intelligence and machine learning today",
-        "primaryCta": "Start Learning",
+        "primaryCta": "Book Free Assessment",
         "secondaryCta": "View Curriculum"
       }
     },
@@ -581,12 +597,12 @@
       "titleHighlight": "Arts & Mathematics",
       "subtitle": "Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, our programs combine creativity with cutting-edge technology.",
       "explorePrograms": "Explore Programs",
-      "bookFreeTrial": "Book Free Trial"
+      "bookFreeTrial": "Book Free Assessment"
     },
     "programs": {
       "title": "Our STEAM Programs",
       "subtitle": "Comprehensive programs designed to prepare students for the digital future",
-      "startLearning": "Start Learning"
+      "startLearning": "Book Free Assessment"
     },
     "gameDevelopment": {
       "title": "Game Development",
@@ -621,8 +637,8 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join thousands of students learning cutting-edge technology skills",
-      "primaryCta": "Get Started Today",
-      "secondaryCta": "Schedule a Call"
+      "primaryCta": "Book Free Assessment",
+      "secondaryCta": "Join Free Saturday Workshop"
     }
   },
   "trial": {

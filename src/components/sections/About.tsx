@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { CONTACT_INFO } from '@/lib/constants';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
 import { publicPath } from '@/lib/publicPath';
@@ -22,7 +23,6 @@ import { useTranslations } from 'next-intl';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { fetchAboutRequested } from '@/store/slices/aboutSlice';
 import TestimonialsWithBackend from './TestimonialsWithBackend';
-import { CONTACT_INFO } from '@/lib/constants';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { HelpCircle } from "lucide-react";
 import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
@@ -392,7 +392,7 @@ export default function About() {
             },
             {
               question: "How do I enroll my child?",
-              answer: "You can enroll online through our enrollment page, or contact us directly at connect@thegrowwise.com or (925) 456-4606. We also offer free assessments to help determine the best program for your child."
+              answer: `You can enroll online through our enrollment page, or contact us directly at ${CONTACT_INFO.email} or ${CONTACT_INFO.phone}. We also offer free assessments to help determine the best program for your child.`
             },
             {
               question: "What subjects do you offer?",

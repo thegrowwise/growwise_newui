@@ -148,7 +148,7 @@ function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }:
     >
       {/* Header */}
       <div className="px-4 py-3 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
-        <h4 className="font-semibold text-gray-900 text-sm">Courses</h4>
+        <div className="font-semibold text-gray-900 text-sm">Courses</div>
         <p className="text-xs text-gray-600 mt-0.5">Select your subject</p>
       </div>
       

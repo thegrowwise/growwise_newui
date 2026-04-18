@@ -6,6 +6,9 @@ export interface HomeHeroSlide {
   subtitle: string;
   description: string;
   cta: string;
+  /** Optional second action (e.g. Explore programs) — path without locale prefix */
+  secondaryCta?: string;
+  secondaryCtaUrl?: string;
   icon: string; // lucide icon name
   bgGradient: string;
   iconColor: string;
@@ -36,6 +39,8 @@ export interface PopularCourseCard {
   iconColor: string;
   borderColor: string;
   cta: string;
+  /** Internal path without locale prefix (e.g. `/courses/english`) */
+  href?: string;
 }
 
 export interface StatisticCard {

@@ -1,29 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import { parseMockApiPath } from '../parseMockApiPath';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> },
 ) {
   try {
-    const { path } = await params;
-    
-    if (path.length === 0) {
+    const { path } = await context.params;
+    const parsed = parseMockApiPath(path);
+    if (!parsed.ok) {
       return NextResponse.json({ error: 'No file specified' }, { status: 400 });
     }
-    
-    // /api/mock/en/<file> or /api/mock/<file> (defaults to en mock under public/api/mock/en/)
-    
-    let locale = 'en'; // default
-    let fileName = path[path.length - 1]; // last segment is always the file
-    
-    // If we have 2 segments, first is locale, second is file
-    if (path.length === 2) {
-      locale = path[0];
-      fileName = path[1];
-    }
-    
+    const { locale, fileName } = parsed;
+
     // Handle both with and without .json extension
     const finalFileName = fileName.endsWith('.json') ? fileName : `${fileName}.json`;
     const filePath = join(process.cwd(), 'public', 'api', 'mock', locale, finalFileName);

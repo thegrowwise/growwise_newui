@@ -483,16 +483,6 @@ export default function WinterCampPage() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          {/* Elegant Badge */}
-          <div className={`inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg mb-8 border border-slate-200 transition-all duration-1000 ${
-            isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
-          }`}>
-            <Snowflake className="w-4 h-4 text-sky-500 animate-spin-slow" />
-            <span className="text-slate-700 font-semibold text-sm uppercase tracking-wide">Winter Camp 2025-26</span>
-            <span className="text-slate-400">•</span>
-            <span className="text-slate-600 text-sm">Dec 22 - Jan 2</span>
-          </div>
-          
           {/* Main Title */}
           <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 transition-all duration-1000 delay-200 ${
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
@@ -508,6 +498,16 @@ export default function WinterCampPage() {
               <Sparkles className="absolute -top-1 right-4 w-5 h-5 text-blue-400 sparkle" style={{ animationDelay: '1s' }} />
             </span>
           </h1>
+
+          {/* Elegant Badge */}
+          <div className={`inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg mb-8 border border-slate-200 transition-all duration-1000 ${
+            isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
+          }`}>
+            <Snowflake className="w-4 h-4 text-sky-500 animate-spin-slow" />
+            <span className="text-slate-700 font-semibold text-sm uppercase tracking-wide">Winter Camp 2025-26</span>
+            <span className="text-slate-400">•</span>
+            <span className="text-slate-600 text-sm">Dec 22 - Jan 2</span>
+          </div>
           
           <p className={`text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto mb-10 leading-relaxed transition-all duration-1000 delay-300 ${
             isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'

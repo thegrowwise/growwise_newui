@@ -117,7 +117,7 @@ const CheckoutSuccessContent: React.FC = () => {
         <Card className="max-w-md w-full">
           <CardContent className="p-6 text-center">
             <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Error</h2>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Error</h1>
             <p className="text-gray-600 mb-6">{error}</p>
             <Link href={createLocaleUrl('/cart')}>
               <Button variant="outline">Back to Cart</Button>

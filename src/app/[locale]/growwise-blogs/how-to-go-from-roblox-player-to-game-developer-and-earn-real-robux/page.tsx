@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'How to Go from Roblox Player to Game Developer and Earn Real Robux | GrowWise', 
+    title: 'Roblox to Game Developer | GrowWise', 
     description: 'Transform your child\'s gaming passion into valuable coding and development skills. Learn Roblox game development and turn screen time into productive skill time.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              How to Go from Roblox Player to Game Developer and Earn Real Robux
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>12:12 am</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              How to Go from Roblox Player to Game Developer and Earn Real Robux
-            </h1>
+          
           </div>
         </section>
 

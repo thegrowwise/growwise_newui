@@ -1,6 +1,8 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
+import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { Card, CardContent } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { SectionError } from '../../ui/SectionError';
@@ -20,6 +22,7 @@ export interface PopularCourseVM {
 }
 
 export function PopularCoursesSection({ courses, error, onRetry }: { courses: PopularCourseVM[] | null; error?: string | null; onRetry?: () => void }) {
+  const locale = useLocale();
   if (error) return <SectionError title="Popular Courses unavailable" message={error} onRetry={onRetry} />;
   if (!courses || courses.length === 0) return <SectionError title="No popular courses" message="Please check back later." onRetry={onRetry} />;
   return (
@@ -42,10 +45,19 @@ export function PopularCoursesSection({ courses, error, onRetry }: { courses: Po
                 }
                 const Icon = course.IconComponent as any;
                 const isBlue = course.iconColor.includes('#1F396D');
-                return (
-                  <Card key={course.id} className={`bg-white/40 backdrop-blur-2xl border-2 ${course.borderColor} rounded-2xl shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40`} onClick={course.onClick}>
-                    <div className={`absolute inset-0 ${course.bgColor} opacity-60`}></div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
+                const resolvedHref = course.href ? publicPath(course.href, locale) : undefined;
+                const cardClass = `relative bg-white/40 backdrop-blur-2xl border-2 ${course.borderColor} rounded-2xl shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden ring-1 ring-white/40`;
+                const ctaClass = `w-full inline-flex items-center justify-center ${isBlue ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`;
+                const cardInner = (
+                  <>
+                    <div
+                      className={`pointer-events-none absolute inset-0 ${course.bgColor} opacity-60`}
+                      aria-hidden
+                    />
+                    <div
+                      className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"
+                      aria-hidden
+                    />
                     <CardContent className="p-6 text-center flex flex-col items-center relative z-10">
                       <div className={`${course.iconColor} mb-4 flex justify-center`}> 
                         <div className="w-14 h-14 bg-white/50 backdrop-blur-xl rounded-xl flex items-center justify-center shadow-[0px_10px_30px_rgba(255,255,255,0.4)] border-2 border-white/60 group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/30">
@@ -54,21 +66,33 @@ export function PopularCoursesSection({ courses, error, onRetry }: { courses: Po
                       </div>
                       <h4 className="font-bold text-sm text-gray-900 mb-2 leading-tight text-center group-hover:text-gray-800 transition-colors">{course.name}</h4>
                       <p className="text-xs text-gray-600 mb-4 group-hover:text-gray-700 transition-colors">{course.benefit}</p>
-                      {course.href ? (
-                        <Link href={course.href}>
-                          <Button className={`w-full ${isBlue ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`}>
-                            {course.cta}
-                          </Button>
-                        </Link>
+                      {resolvedHref ? (
+                        <span className={ctaClass}>{course.cta}</span>
                       ) : (
                         <Button 
                           onClick={course.onClick}
-                          className={`w-full ${isBlue ? 'bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D]' : 'bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112]'} text-white rounded-xl py-2.5 px-4 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 text-xs backdrop-blur-sm border border-white/20`}
+                          className={ctaClass}
                         >
                           {course.cta}
                         </Button>
                       )}
                     </CardContent>
+                  </>
+                );
+                return resolvedHref ? (
+                  <Link
+                    key={course.id}
+                    href={resolvedHref}
+                    prefetch={false}
+                    className="relative z-10 block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2"
+                  >
+                    <Card className={cardClass}>
+                      {cardInner}
+                    </Card>
+                  </Link>
+                ) : (
+                  <Card key={course.id} className={cardClass} onClick={course.onClick}>
+                    {cardInner}
                   </Card>
                 );
               })}

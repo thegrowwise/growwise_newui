@@ -10,12 +10,12 @@ export default function NotFound() {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 py-16 bg-[#f9fafb]">
       <div className="max-w-xl text-center space-y-6">
-        <div className="text-sm font-semibold text-[#F16112] tracking-widest uppercase">
-          404
-        </div>
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
           {t('title')}
         </h1>
+        <div className="text-sm font-semibold text-[#F16112] tracking-widest uppercase">
+          404
+        </div>
         <p className="text-gray-600 text-base md:text-lg">
           {t('description')}
         </p>

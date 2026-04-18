@@ -1,20 +1,15 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
 import { ImageWithFallback } from '@/components/gw/ImageWithFallback';
+import { siteGoogleTrustReviewCards } from '@/lib/siteGoogleTrustReviews';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogDescription,
-} from '@/components/ui/alert-dialog';
 import {
   BookOpen,
   Calculator,
@@ -52,6 +47,15 @@ const AcademicPage: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isLearnMoreModalOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsLearnMoreModalOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isLearnMoreModalOpen]);
 
   useEffect(() => {
     const fetchAcademicData = async () => {
@@ -225,11 +229,35 @@ const AcademicPage: React.FC = () => {
     { icon: TrendingUp, title: 'Proven Results', description: 'Our students consistently show measurable improvement in their academic performance and confidence.', color: 'text-[#1F396D]', bgColor: 'bg-[#1F396D]/10' }
   ];
 
-  const successStories = [
-    { name: 'Emma Rodriguez', grade: '7th Grade', subject: 'Math', improvement: 'From C to A+ in Algebra', quote: 'GrowWise helped me understand math concepts I never thought I could master!', image: '/assets/photos/photo-1544717297-fa95b6ee9643.jpg' },
-    { name: 'Michael Chen', grade: '5th Grade', subject: 'English', improvement: 'Reading level increased by 2 grades', quote: 'My writing has improved so much. I actually enjoy writing essays now!', image: '/assets/photos/photo-1507003211169-0a1dd7228f2d.jpg' },
-    { name: 'Sarah Johnson', grade: '9th Grade', subject: 'Integrated Math', improvement: 'Passed to Honors Math', quote: 'The personalized attention helped me catch up and even get ahead in math.', image: '/assets/photos/photo-1494790108755-2616b612b786.jpg' }
-  ];
+  const successStories = useMemo(() => {
+    const t = siteGoogleTrustReviewCards();
+    return [
+      {
+        name: t[0].name,
+        grade: 'K–12 family',
+        subject: 'Tutoring & enrichment',
+        improvement: t[0].role,
+        quote: t[0].content,
+        image: null as string | null,
+      },
+      {
+        name: t[1].name,
+        grade: 'Summer camp',
+        subject: 'Python programming',
+        improvement: t[1].role,
+        quote: t[1].content,
+        image: null as string | null,
+      },
+      {
+        name: t[2].name,
+        grade: 'K–12 family',
+        subject: 'Coding (Roblox)',
+        improvement: t[2].role,
+        quote: t[2].content,
+        image: null as string | null,
+      },
+    ];
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
@@ -245,8 +273,8 @@ const AcademicPage: React.FC = () => {
           <Card className="bg-white/80 backdrop-blur-xl rounded-[40px] shadow-[0px_30px_80px_0px_rgba(31,57,109,0.15)] border border-white/30 overflow-hidden">
             <CardContent className="p-12 lg:p-16">
               <div className="text-center">
-                <Badge className="bg-[#F16112] text-white mb-6 px-6 py-3 rounded-full text-lg">ACADEMIC PROGRAMS</Badge>
                 <h1 className="text-4xl lg:text-6xl font-bold text-[#1F396D] mb-8 leading-tight">Math & English Programs Aligned with DUSD & PUSD</h1>
+                <Badge className="bg-[#F16112] text-white mb-6 px-6 py-3 rounded-full text-lg">ACADEMIC PROGRAMS</Badge>
 
                 <div className="max-w-4xl mx-auto mb-10">
                   <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">GrowWise School: Dublin's Learning Hub for K-12 Excellence</h2>
@@ -263,8 +291,8 @@ const AcademicPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                  <Button onClick={() => setIsLearnMoreModalOpen(true)} className="bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Learn more →</Button>
-                  <Button onClick={() => router.push('/enroll')} className="bg-[#F16112] hover:bg-[#F1894F] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Enroll Now</Button>
+                  <Button onClick={() => setIsLearnMoreModalOpen(true)} className="bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Book Free Assessment →</Button>
+                  <Button onClick={() => router.push(publicPath('/enroll', locale))} className="bg-[#F16112] hover:bg-[#F1894F] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Enroll Now</Button>
                 </div>
               </div>
             </CardContent>
@@ -337,7 +365,7 @@ const AcademicPage: React.FC = () => {
                     </div>
 
                     <Button 
-                      onClick={() => router.push(program.ctaUrl || '/enroll')}
+                      onClick={() => router.push(program.ctaUrl ? publicPath(program.ctaUrl, locale) : publicPath('/enroll', locale))}
                       className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
                         isHovered ? 'scale-105 shadow-xl' : ''
                       }`}
@@ -503,7 +531,7 @@ const AcademicPage: React.FC = () => {
                     </div>
                     <p className="text-gray-600 text-lg mb-6">Helps build speed, accuracy, and confidence under pressure.</p>
                     <Button 
-                      onClick={() => router.push('/enroll')}
+                      onClick={() => router.push(publicPath('/enroll', locale))}
                       className="bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:from-[#29335C] hover:to-[#F1894F] text-white px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
                     >
                       Register for Practice Sessions
@@ -629,14 +657,28 @@ const AcademicPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Student Success Stories</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Real results from our academic programs</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Feedback from GrowWise families (Google reviews)</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {successStories.map((story, idx) => (
               <Card key={idx} className="bg-white/80 backdrop-blur-lg rounded-[28px] shadow-[0px_20px_40px_0px_rgba(31,57,109,0.12)] border border-white/40 hover:shadow-[0px_30px_60px_0px_rgba(31,57,109,0.18)] transition-all duration-500 hover:-translate-y-2">
                 <CardContent className="p-8">
                   <div className="text-center mb-6">
-                    <ImageWithFallback src={story.image} alt={story.name} className="w-16 h-16 rounded-full object-cover mx-auto mb-4 border-2 border-[#F16112]" />
+                    {story.image ? (
+                      <ImageWithFallback src={story.image} alt={story.name} className="w-16 h-16 rounded-full object-cover mx-auto mb-4 border-2 border-[#F16112]" />
+                    ) : (
+                      <div
+                        className="w-16 h-16 rounded-full bg-[#1F396D] flex items-center justify-center mx-auto mb-4 border-2 border-[#F16112] text-white font-bold text-sm"
+                        aria-hidden
+                      >
+                        {story.name
+                          .split(/\s+/)
+                          .map((w) => w.charAt(0))
+                          .join('')
+                          .toUpperCase()
+                          .slice(0, 2) || 'G'}
+                      </div>
+                    )}
                     <h3 className="text-xl font-bold text-gray-900">{story.name}</h3>
                     <p className="text-gray-600">{story.grade} • {story.subject}</p>
                   </div>
@@ -672,38 +714,56 @@ const AcademicPage: React.FC = () => {
               className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105" 
               size="lg"
             >
-              Learn More
+              Explore Academic Paths
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Learn More Modal */}
-      <AlertDialog open={isLearnMoreModalOpen} onOpenChange={setIsLearnMoreModalOpen}>
-        <AlertDialogContent className="bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl p-0 overflow-hidden ring-1 ring-white/30">
-          {/* Enhanced Background gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8"></div>
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5"></div>
-          
-          {/* Custom Close Button */}
-          <button
-            onClick={() => setIsLearnMoreModalOpen(false)}
-            className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/60 group"
-          >
-            <X className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
-          </button>
-          
-          <div className="relative z-10 p-8">
-            <AlertDialogHeader className="text-center mb-8">
-              <AlertDialogTitle className="text-3xl font-bold text-gray-900 mb-4">
-                Choose Your <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">Academic Path</span>
-              </AlertDialogTitle>
-              <AlertDialogDescription className="text-lg text-gray-600 leading-relaxed">
-                Select the subject that matches your learning goals and start your academic journey
-              </AlertDialogDescription>
-            </AlertDialogHeader>
+      {/* Learn More / Explore Academic Paths — portal overlay (avoids Radix AlertDialog + dev EBADF quirks) */}
+      {isLearnMoreModalOpen && typeof document !== 'undefined'
+        ? createPortal(
+            <div
+              className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              role="presentation"
+              onClick={() => setIsLearnMoreModalOpen(false)}
+            >
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="academic-paths-modal-title"
+                className="relative bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl w-full max-h-[90vh] overflow-y-auto p-0 ring-1 ring-white/30"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8 pointer-events-none rounded-[32px]" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5 pointer-events-none rounded-[32px]" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <button
+                  type="button"
+                  onClick={() => setIsLearnMoreModalOpen(false)}
+                  className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/60 group"
+                  aria-label="Close"
+                >
+                  <X className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
+                </button>
+
+                <div className="relative z-10 p-8">
+                  <div className="text-center mb-8">
+                    <h2
+                      id="academic-paths-modal-title"
+                      className="text-3xl font-bold text-gray-900 mb-4"
+                    >
+                      Choose Your{' '}
+                      <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
+                        Academic Path
+                      </span>
+                    </h2>
+                    <p className="text-lg text-gray-600 leading-relaxed">
+                      Select the subject that matches your learning goals and start your academic journey
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card onClick={() => { router.push(publicPath('/courses/math', locale)); setIsLearnMoreModalOpen(false); }} className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/15 opacity-60"></div>
                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
@@ -763,9 +823,12 @@ const AcademicPage: React.FC = () => {
             <div className="text-center mt-8">
               <p className="text-sm text-gray-500">Not sure which path to choose? <Button variant="ghost" className="text-[#1F396D] font-medium hover:underline p-0 h-auto" onClick={() => setIsLearnMoreModalOpen(false)}>Contact us for guidance</Button></p>
             </div>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
+                </div>
+              </div>
+            </div>,
+            document.body
+          )
+        : null}
 
       {/* Free Assessment Modal */}
       <FreeAssessmentModal 

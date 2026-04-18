@@ -21,10 +21,8 @@ test.describe('About and blogs pages', () => {
       page.getByRole('heading', { name: /Blogs|Articles|Resources/i }),
     ).toBeVisible();
 
-    // At least one blog card/link should be visible
-    await expect(
-      page.getByRole('link').filter({ hasText: /Read More|Learn More|View/i }).first(),
-    ).toBeVisible();
+    // Card CTA is "Read article »" (growwise-blogs `readMore`); not "Read More" / "Learn More"
+    await expect(page.getByRole('link', { name: /Read article/i }).first()).toBeVisible();
   });
 });
 

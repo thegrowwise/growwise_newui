@@ -17,24 +17,13 @@ export async function generateMetadata({
   const baseMetadata =
     metadata || ({ title: 'Winter Camp Calendar | GrowWise', description: 'Winter camp calendar' } satisfies Metadata)
 
-  // Filter/state URLs should not be indexed; canonical points to the main winter camp page.
+  // Filtered calendar URLs canonical to /camps/winter; indexable with same metadata as unfiltered view.
   if (workshop) {
     const baseUrl = getCanonicalSiteUrl()
     return {
       ...baseMetadata,
       alternates: {
         canonical: absoluteSiteUrl('/camps/winter', locale, baseUrl),
-      },
-      robots: {
-        index: false,
-        follow: true,
-        googleBot: {
-          index: false,
-          follow: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-        },
       },
     }
   }

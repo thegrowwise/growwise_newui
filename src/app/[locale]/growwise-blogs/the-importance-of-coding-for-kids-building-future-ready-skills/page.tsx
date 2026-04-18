@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'The Importance of Coding for Kids: Building Future-Ready Skills | GrowWise', 
+    title: 'Coding for Kids | Future Skills | GrowWise', 
     description: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              The Importance of Coding for Kids: Building Future-Ready Skills
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -74,9 +78,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>September 25, 2024</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              The Importance of Coding for Kids: Building Future-Ready Skills
-            </h1>
+          
           </div>
         </section>
 

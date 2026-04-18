@@ -38,10 +38,10 @@
     }
   ],
   "popularCourses": [
-    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "Explorar Curso", "href": "/steam/ml-ai-coding" },
-    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "Explorar Curso", "href": "/courses/math" },
-    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "Explorar Curso", "href": "/steam/ml-ai-coding" },
-    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "Explorar Curso", "href": "/courses/english" }
+    { "id": 1, "name": "Python Coding", "benefit": "Project-based", "icon": "Code", "bgColor": "bg-gradient-to-br from-[#1F396D]/10 to-[#29335C]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#1F396D]/30", "cta": "Ver cursos ML/IA", "href": "/steam/ml-ai-coding" },
+    { "id": 2, "name": "Math Mastery", "benefit": "1:1 attention", "icon": "Calculator", "bgColor": "bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#F16112]/30", "cta": "Ver programas de matemáticas", "href": "/courses/math" },
+    { "id": 3, "name": "AI Explorer", "benefit": "Future-ready", "icon": "Bot", "bgColor": "bg-gradient-to-br from-[#F1894F]/10 to-[#F16112]/20", "iconColor": "text-[#1F396D]", "borderColor": "border-[#F1894F]/30", "cta": "Ver cursos ML/IA", "href": "/steam/ml-ai-coding" },
+    { "id": 4, "name": "Reading Mastery", "benefit": "Accelerated growth", "icon": "Book", "bgColor": "bg-gradient-to-br from-[#29335C]/10 to-[#1F396D]/20", "iconColor": "text-[#F16112]", "borderColor": "border-[#29335C]/30", "cta": "Ver programas ELA", "href": "/courses/english" }
   ],
   "statisticsData": [
     { "id": 1, "value": "325+", "label": "Students Enrolled", "icon": "Users", "color": "text-[#1F396D]", "bgColor": "bg-[#1F396D]/10" },
@@ -49,55 +49,55 @@
     { "id": 3, "value": "98%", "label": "Students Satisfaction", "icon": "ThumbsUp", "color": "text-[#F1894F]", "bgColor": "bg-[#F1894F]/10" }
   ],
   "k12Programs": [
-    { "id": 1, "title": "Math Courses", "description": "Build strong mathematical foundations from elementary to advanced levels", "icon": "Calculator", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "href": "/courses/math", "subItems": [
+    { "id": 1, "title": "Math Courses", "description": "Build strong mathematical foundations from elementary to advanced levels", "icon": "Calculator", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "href": "/courses/math", "ctaText": "Start Learning", "ctaUrl": "/courses/math", "subItems": [
       { "name": "Elementary Math", "icon": "🔢", "description": "Basic arithmetic and number sense" },
       { "name": "Middle School Math", "icon": "📊", "description": "Algebra and geometry foundations" },
       { "name": "DUSD Accelerated Math", "icon": "🚀", "description": "Advanced placement preparation" },
       { "name": "High School Math", "icon": "🎯", "description": "Calculus and advanced topics" }
     ] },
-    { "id": 2, "title": "ELA Courses", "description": "Develop comprehensive English language arts skills", "icon": "BookOpen", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "href": "/courses/english", "subItems": [
+    { "id": 2, "title": "ELA Courses", "description": "Develop comprehensive English language arts skills", "icon": "BookOpen", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "href": "/courses/english", "ctaText": "Start Learning", "ctaUrl": "/courses/english", "subItems": [
       { "name": "English Mastery: K-12", "icon": "📚", "description": "Complete language arts curriculum" },
       { "name": "Reading Enrichment", "icon": "📖", "description": "Improve reading comprehension" },
       { "name": "Grammar Boost", "icon": "✏️", "description": "Master grammar and mechanics" }
     ] },
-    { "id": 3, "title": "Writing Lab", "description": "Master the art of effective written communication", "icon": "PenTool", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+    { "id": 3, "title": "Writing Lab", "description": "Master the art of effective written communication", "icon": "PenTool", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "ctaText": "Start Learning", "ctaUrl": "/courses/english", "subItems": [
       { "name": "Creative Writing", "icon": "✨", "description": "Unleash your creative potential" },
       { "name": "Essay Writing", "icon": "📝", "description": "Academic and persuasive writing" },
       { "name": "Foundations of Writing", "icon": "🤔", "description": "Develop critical thinking skills" }
     ] },
-    { "id": 4, "title": "SAT/ACT", "description": "Achieve your best scores with comprehensive test preparation", "icon": "Award", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-gray-50 to-gray-100", "iconColor": "text-[#1F396D]", "subItems": [
+    { "id": 4, "title": "SAT/ACT", "description": "Achieve your best scores with comprehensive test preparation", "icon": "Award", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-gray-50 to-gray-100", "iconColor": "text-[#1F396D]", "ctaText": "Start Learning", "ctaUrl": "/courses/sat-prep", "subItems": [
       { "name": "Math Test Prep", "icon": "🧮", "description": "Master SAT/ACT math sections" },
       { "name": "Online SAT Test Prep", "icon": "💻", "description": "Comprehensive SAT preparation" },
       { "name": "Online ACT Test Prep", "icon": "🎯", "description": "Complete ACT test strategy" }
     ] }
   ],
   "steamPrograms": [
-    { "id": 1, "title": "Game Development", "description": "Create immersive games and interactive experiences", "icon": "Gamepad2", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "subItems": [
+    { "id": 1, "title": "Game Development", "description": "Create immersive games and interactive experiences", "icon": "Gamepad2", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "ctaText": "Book Free Trial", "ctaUrl": "/workshop-calendar", "subItems": [
       { "name": "Roblox Studio", "icon": "🎮", "description": "Create games in Roblox platform" },
       { "name": "Scratch", "icon": "🐱", "description": "Visual programming for beginners" },
       { "name": "Minecraft", "icon": "⛏️", "description": "Build and code in Minecraft" },
       { "name": "Robotics", "icon": "🤖", "description": "Build and program robots" }
     ] },
-    { "id": 2, "title": "Python Programming", "description": "Master the world's most popular programming language", "icon": "Code", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "subItems": [
+    { "id": 2, "title": "Python Programming", "description": "Master the world's most popular programming language", "icon": "Code", "gradient": "from-[#1F396D] to-[#29335C]", "bgGradient": "bg-gradient-to-br from-[#1F396D]/5 to-[#29335C]/10", "iconColor": "text-[#1F396D]", "ctaText": "Book Free Trial", "ctaUrl": "/workshop-calendar", "subItems": [
       { "name": "Python Kickstart", "icon": "🚀", "description": "Begin your Python journey" },
       { "name": "Python Power Up", "icon": "⚡", "description": "Intermediate Python skills" },
       { "name": "Python Pro", "icon": "🏆", "description": "Advanced Python mastery" }
     ] },
-    { "id": 3, "title": "App Development", "description": "Design, build, and publish apps for web and mobile", "icon": "Smartphone", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "subItems": [
+    { "id": 3, "title": "App Development", "description": "Design, build, and publish apps for web and mobile", "icon": "Smartphone", "gradient": "from-[#F1894F] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#F1894F]/5 to-[#F16112]/10", "iconColor": "text-[#F1894F]", "ctaText": "Book Free Trial", "ctaUrl": "/workshop-calendar", "subItems": [
       { "name": "Web App Development", "icon": "🌐", "description": "Build modern web applications" },
       { "name": "Mobile App Development", "icon": "📱", "description": "Create iOS and Android apps" },
       { "name": "Young App Creators", "icon": "🧒", "description": "Start building apps early" }
     ] },
-    { "id": 4, "title": "ML/Gen AI", "description": "Explore artificial intelligence and machine learning", "icon": "Brain", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10", "iconColor": "text-[#1F396D]", "subItems": [
+    { "id": 4, "title": "ML/Gen AI", "description": "Explore artificial intelligence and machine learning", "icon": "Brain", "gradient": "from-[#1F396D] to-[#F16112]", "bgGradient": "bg-gradient-to-br from-[#29335C]/5 to-[#1F396D]/10", "iconColor": "text-[#1F396D]", "ctaText": "Book Free Trial", "ctaUrl": "/workshop-calendar", "subItems": [
       { "name": "Build AI Agent", "icon": "🤖", "description": "Create autonomous AI agents" },
       { "name": "AI for Everyone", "icon": "🧠", "description": "AI fundamentals for all ages" },
       { "name": "ML/AI for Highschoolers", "icon": "🎓", "description": "Advanced AI concepts" }
     ] }
   ],
   "testimonials": [
-    { "name": "Sarah Johnson", "role": "Parent", "content": "GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.", "rating": 5, "image": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face" },
-    { "name": "Michael Chen", "role": "Student", "content": "The STEAM programs at GrowWise opened up a whole new world of possibilities. I'm now pursuing computer science in college!", "rating": 5, "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" },
-    { "name": "Lisa Rodriguez", "role": "Parent", "content": "The personalized attention and innovative teaching methods make GrowWise stand out from other programs.", "rating": 5, "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face" }
+    { "name": "Parent", "role": "5★ Google review", "content": "GrowWise has been such a wonderful experience for my daughter. Her tutor has been incredibly patient, encouraging, and attentive to her individual learning needs. Since starting with GrowWise, I’ve noticed a big improvement in her confidence, focus, and overall understanding of subjects that used to be challenging for her. The lessons are engaging and tailored to her pace, which has made learning enjoyable instead of stressful. I’m truly grateful for the positive impact GrowWise has had on her academic growth and motivation.", "rating": 5, "image": "" },
+    { "name": "Roger Jiang", "role": "Google review", "content": "My son and I had a very positive experience with Growwise recently. My son attended the half-day python coding camp (Level 1 & 2), which was his first formal exposure to programming. Thanks to the small class size and the teacher's personalized approach, he was able to grasp the fundamentals of python and enjoyed working on the assignments and demo projects such as the Hangman game. The teacher provided prompt feedback after each session and offered helpful suggestions for future learning opportunities. I strongly recommend this program!", "rating": 5, "image": "" },
+    { "name": "Parent", "role": "Google review", "content": "My daughter joined Growwise to begin learning the basics of coding, starting with Roblox development. She had a fantastic experience throughout the program! The classes were engaging, and the teacher did a great job keeping the students interested and motivated. It was wonderful to see her enjoying herself while learning something so valuable.", "rating": 5, "image": "" }
   ],
   "whyChooseUs": [
     { "icon": "UserCheck", "title": "1️⃣ Ruta Personalizada", "description": "Construimos un plan de aprendizaje único para cada niño — alineado con el currículo escolar, nivel de grado y objetivos personales. Sin lecciones genéricas — cada sesión está personalizada para sus necesidades.", "subtitle": "Aprendizaje Adaptado para Cada Estudiante" },
@@ -109,8 +109,8 @@
   "cta": {
     "title": "Ready to Start Your Learning Journey?",
     "subtitle": "Join thousands of students who have transformed their academic future with GrowWise.",
-    "primaryCta": "Get Started",
-    "secondaryCta": "Contact Us"
+    "primaryCta": "Choose Enrollment Type",
+    "secondaryCta": "Talk to GrowWise"
   }
 }
 

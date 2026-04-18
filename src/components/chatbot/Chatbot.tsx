@@ -385,7 +385,7 @@ export default function Chatbot() {
     
     // Testimonials
     if (input.includes('testimonial') || input.includes('review') || input.includes('feedback') || input.includes('parent') || input.includes('student')) {
-      return { text: "Here's what our families say:\n\n👩‍👧 **Sarah Johnson (Parent)**: 'GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses.'\n\n👨‍🎓 **Michael Chen (Student)**: 'The STEAM programs opened up a whole new world. I'm now pursuing computer science in college!'\n\n👩‍👦 **Lisa Rodriguez (Parent)**: 'The personalized attention and innovative teaching methods make GrowWise stand out.'\n\nAll our families give us 5-star ratings!" };
+      return { text: "Here's what families have shared on Google (5★):\n\n**Parent**: tutoring experience — patience, confidence, and tailored pacing.\n\n**Roger Jiang**: positive half-day Python camp (Levels 1–2), small classes, Hangman project, helpful feedback.\n\n**Parent**: Roblox/coding intro — engaging classes and motivated students.\n\nWe’re grateful for this feedback!" };
     }
     
     // Age/Grade Information

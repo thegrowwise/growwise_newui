@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'The Advantage in Choosing the Right Coding Class for Your Child | GrowWise', 
+    title: 'Right Coding Class for Your Child | GrowWise', 
     description: 'Learn how selecting the right coding class can set your child up for success in technology and future career opportunities.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              The Advantage in Choosing the Right Coding Class for Your Child
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>4:21 pm</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              The Advantage in Choosing the Right Coding Class for Your Child
-            </h1>
+          
           </div>
         </section>
 

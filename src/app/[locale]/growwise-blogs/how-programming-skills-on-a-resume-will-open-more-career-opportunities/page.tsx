@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'How Programming Skills on a Resume Will Open More Career Opportunities | GrowWise', 
+    title: 'Programming Skills on a Resume | GrowWise', 
     description: 'Programming skills are increasingly valuable across industries. Learn how they can enhance your resume and career prospects.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              How Programming Skills on a Resume Will Open More Career Opportunities
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -74,9 +78,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>December 5, 2024</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              How Programming Skills on a Resume Will Open More Career Opportunities
-            </h1>
+          
           </div>
         </section>
 

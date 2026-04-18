@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
+
+/** Reduces dev static-path worker churn; mitigates `spawn EBADF` with Turbopack on some macOS setups. */
+export const dynamic = 'force-dynamic'
 import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
@@ -22,7 +25,8 @@ export default async function HighSchoolMathLayout({
   
   const courseSchema = generateCourseSchema({
     name: "High School Math Courses - Algebra, Geometry, Pre-Calculus",
-    description: "High school math courses: Algebra, Geometry, Pre-Calculus, and more. Expert instruction for high school students. DUSD & PUSD aligned. Math tutoring in Dublin, CA.",
+    description:
+      "High school math in Dublin, CA: algebra through calculus. DUSD aligned, small groups. Book a free assessment.",
     provider: "GrowWise",
     educationalLevel: "High School",
     teaches: [

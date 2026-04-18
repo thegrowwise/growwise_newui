@@ -113,7 +113,7 @@ export default function MobileNavigation({
           <div className="absolute inset-0 bg-black/40" onClick={onCloseMobileMenu} />
           <div className="absolute inset-0 bg-white flex flex-col shadow-2xl w-screen h-screen">
             <div className="px-4 py-4 flex items-center justify-between border-b border-gray-200 shadow-sm">
-              <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
+              <p className="text-lg font-semibold text-gray-900 m-0">Menu</p>
               <button
                 type="button"
                 className="text-gray-700 hover:text-[#F16112] transition-colors p-2 rounded-lg hover:bg-gray-100"
