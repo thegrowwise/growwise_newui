@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'Technical Schools in 2025: A Smart Investment for Your Career', url: absoluteSiteUrl('/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'Technical Schools in 2025: A Smart Investment for Your Career',
+    description: 'Explore why technical education and coding skills are becoming essential investments for career success in 2025.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

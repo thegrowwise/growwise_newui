@@ -36,7 +36,7 @@ export function OptimizedImage({
   fill,
   sizes,
   priority = false,
-  quality = 85,
+  quality = 75,
   objectFit = 'cover',
   objectPosition = 'center',
   ...rest

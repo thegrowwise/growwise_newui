@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -33,11 +33,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
-    { name: 'How Coding Skills Empower You to Shape Tomorrow\'s AI Innovations', url: absoluteSiteUrl('/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations', locale, baseUrl) },
+    { name: "How Coding Skills Empower You to Shape Tomorrow's AI Innovations", url: absoluteSiteUrl('/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations', locale, baseUrl) },
   ])
+
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: "How Coding Skills Empower You to Shape Tomorrow's AI Innovations",
+    description: "Learn how mastering coding today positions you to be at the forefront of tomorrow's AI-driven innovations. Discover the connection between coding and AI development.",
+    url: pageUrl,
+  })
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

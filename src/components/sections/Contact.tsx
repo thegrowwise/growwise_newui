@@ -9,8 +9,6 @@ import { Textarea } from "../ui/textarea";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
-import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 import { 
   Phone, 
   Mail, 
@@ -148,7 +146,16 @@ export default function Contact() {
 
   const officeHours = contact?.officeHours ?? [];
 
-  const faqs = contact?.faqs ?? [];
+  const faqs = [
+    {
+      question: "How do I know which GrowWise program is right for my child before committing to anything?",
+      answer: "The free assessment is the right starting point. GrowWise evaluates your child's current level and recommends the most appropriate program and format — small group or one-on-one, in-person or online. There is no commitment required to complete the assessment.",
+    },
+    {
+      question: "What happens after I submit the contact form?",
+      answer: "A GrowWise team member will reach out to schedule your child's free assessment. The assessment identifies your child's current level and which program fits — Math or English academic support, a STEAM program, or a summer camp.",
+    },
+  ];
 
   const socialLinks = contact?.socialLinks ?? [];
 
@@ -704,12 +711,6 @@ export default function Contact() {
 
       {/* FAQ Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        {faqs.length > 0 && (
-          <StructuredDataScript 
-            data={generateFAQPageSchema(faqs)} 
-            id="contact-faq-structured-data" 
-          />
-        )}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">

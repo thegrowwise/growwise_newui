@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -37,8 +37,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'Why Learning Python is Your Fast Track to In-Demand Job Offers', url: absoluteSiteUrl('/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'Why Learning Python is Your Fast Track to In-Demand Job Offers',
+    description: 'Why Python opens doors: versatile skills, strong hiring demand, and a clear path from first scripts to real projects.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

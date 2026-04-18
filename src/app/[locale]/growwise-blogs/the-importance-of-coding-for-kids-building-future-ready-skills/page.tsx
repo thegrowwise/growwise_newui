@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'The Importance of Coding for Kids: Building Future-Ready Skills', url: absoluteSiteUrl('/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'The Importance of Coding for Kids: Building Future-Ready Skills',
+    description: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

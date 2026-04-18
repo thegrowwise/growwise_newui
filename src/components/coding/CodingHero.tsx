@@ -38,7 +38,7 @@ export function CodingHero({ className }: CodingHeroProps) {
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 1024px"
               priority
-              quality={80}
+              quality={75}
             />
           </div>
         </div>

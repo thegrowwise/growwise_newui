@@ -32,6 +32,36 @@ import {
 } from 'lucide-react';
 import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 import { publicPath } from '@/lib/publicPath';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { generateFAQPageSchema } from '@/lib/seo/structuredData';
+
+const ACADEMIC_FAQS = [
+  {
+    question: "I can no longer help my child with their math homework — what should I do?",
+    answer: "When a parent can no longer explain the concept — not just the answer — it is time for structured support. GrowWise math programs cover grade-level math, accelerated tracks, and Integrated Math 1 and 2 for Grades 1 through 12. The free assessment identifies whether the issue is a current-grade gap or a missing skill from earlier years.",
+  },
+  {
+    question: "How much time should a parent spend helping their child with homework each night?",
+    answer: "If a single homework session regularly runs longer than 20 to 30 minutes with parental help, the child is likely missing an underlying concept — not just effort. GrowWise small-group sessions with a maximum of 8 students and one-on-one formats are designed to close that gap so homework becomes something the student can manage independently.",
+  },
+  {
+    question: "My daughter is in first grade and struggling with reading — can GrowWise help?",
+    answer: "Yes. GrowWise English programs start from Grade 1. For early readers, the program focuses on reading comprehension fundamentals — identifying the main idea, understanding what they have read, drawing inferences, and building vocabulary through literary and informational texts. In-person, online, and hybrid options are available.",
+  },
+  {
+    question: "My child struggles with writing assignments at school — is that something tutoring addresses?",
+    answer: "Yes. Essay writing is a structured part of the GrowWise English program. Students work on planning, drafting, and revising all three essay types — narrative, argumentative, and informational. They receive rubric-based feedback on actual written pieces every week, not grammar worksheets alone.",
+  },
+  {
+    question: "Does GrowWise align with what my child is learning in school?",
+    answer: "Yes. GrowWise academic programs are aligned with Dublin Unified School District (DUSD) and Pleasanton Unified School District (PUSD) standards, as well as California Common Core. Math tracks follow the same CACCS sequence students work through in school. English covers the same literary and informational text types assessed in classroom and standardised testing.",
+  },
+];
 
 const AcademicPage: React.FC = () => {
   const router = useRouter();
@@ -717,6 +747,37 @@ const AcademicPage: React.FC = () => {
               Explore Academic Paths
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4 lg:px-8 bg-gray-50" aria-labelledby="academic-faq-heading">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQPageSchema(ACADEMIC_FAQS)) }} />
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 id="academic-faq-heading" className="text-3xl font-bold text-gray-900 mb-4">
+              Frequently Asked <span className="text-[#F16112]">Questions</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Common questions from families about GrowWise academic programs.
+            </p>
+          </div>
+          <Accordion type="single" collapsible className="space-y-4">
+            {ACADEMIC_FAQS.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
+                  <span className="font-semibold text-gray-900">{faq.question}</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 

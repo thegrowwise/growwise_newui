@@ -70,23 +70,23 @@ export function StatisticsSkeleton() {
 }
 
 // Popular Courses Skeleton
+// Outer classes must match PopularCoursesSection exactly (-mt-24 pb-20) to prevent CLS
 export function PopularCoursesSkeleton() {
   return (
-    <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
-      <div className="max-w-6xl mx-auto relative z-10">
-        <div className="text-center mb-16">
-          <Skeleton className="h-12 lg:h-16 w-96 mx-auto mb-6 bg-gray-200" />
-          <Skeleton className="h-6 w-80 mx-auto bg-gray-200" />
+    <section className="relative -mt-24 px-4 lg:px-8 pb-20">
+      <div className="max-w-5xl mx-auto relative z-20">
+        <div className="mb-10 text-center">
+          <Skeleton className="h-8 lg:h-9 w-56 mx-auto mb-3 bg-gray-200" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[...Array(6)].map((_, index) => (
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(4)].map((_, index) => (
             <Card key={index} className="bg-white shadow-xl border-0 rounded-2xl animate-pulse">
-              <CardContent className="p-6">
+              <CardContent className="p-5">
                 <div className="text-center">
-                  <Skeleton className="w-16 h-16 rounded-full mx-auto mb-4 bg-gray-200" />
-                  <Skeleton className="h-6 w-32 mx-auto mb-2 bg-gray-200" />
-                  <Skeleton className="h-4 w-24 mx-auto mb-4 bg-gray-200" />
-                  <Skeleton className="h-10 w-full bg-gray-200 rounded-full" />
+                  <Skeleton className="w-14 h-14 rounded-full mx-auto mb-3 bg-gray-200" />
+                  <Skeleton className="h-5 w-28 mx-auto mb-2 bg-gray-200" />
+                  <Skeleton className="h-3 w-20 mx-auto mb-4 bg-gray-200" />
+                  <Skeleton className="h-9 w-full bg-gray-200 rounded-full" />
                 </div>
               </CardContent>
             </Card>
@@ -98,6 +98,7 @@ export function PopularCoursesSkeleton() {
 }
 
 // Testimonials Skeleton
+// Cards use min-h-[400px] to match real TestimonialsSection card height and prevent CLS
 export function TestimonialsSkeleton() {
   return (
     <section className="py-16 lg:py-24 bg-gray-50">
@@ -108,21 +109,22 @@ export function TestimonialsSkeleton() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-8">
           {[...Array(3)].map((_, index) => (
-            <Card key={index} className="bg-white shadow-xl border-0 rounded-2xl animate-pulse">
-              <CardContent className="p-6 lg:p-8">
-                <div className="text-center">
+            <Card key={index} className="bg-white shadow-xl border-0 rounded-2xl animate-pulse min-h-[400px] flex flex-col">
+              <CardContent className="p-6 lg:p-8 flex flex-col flex-grow">
+                <div className="text-center flex flex-col flex-grow">
                   <Skeleton className="w-12 h-12 rounded-full mx-auto mb-4 bg-gray-200" />
                   <div className="flex justify-center mb-4">
                     {[...Array(5)].map((_, i) => (
                       <Skeleton key={i} className="w-4 h-4 rounded mr-1 bg-gray-200" />
                     ))}
                   </div>
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-2 mb-6 flex-grow">
+                    <Skeleton className="h-4 w-full bg-gray-200 rounded" />
                     <Skeleton className="h-4 w-full bg-gray-200 rounded" />
                     <Skeleton className="h-4 w-3/4 mx-auto bg-gray-200 rounded" />
                   </div>
-                  <div className="flex items-center justify-center gap-3">
-                    <Skeleton className="w-12 h-12 rounded-full bg-gray-200" />
+                  <div className="flex items-center justify-center gap-3 mt-auto">
+                    <Skeleton className="w-12 h-12 rounded-full bg-gray-200 shrink-0" />
                     <div className="text-left">
                       <Skeleton className="h-4 w-24 mb-1 bg-gray-200 rounded" />
                       <Skeleton className="h-3 w-16 bg-gray-200 rounded" />

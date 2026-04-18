@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'Unlock Your Future: The Best Programming Languages for Career Advancement', url: absoluteSiteUrl('/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'Unlock Your Future: The Best Programming Languages for Career Advancement',
+    description: 'Discover which programming languages offer the best career opportunities and how to choose the right one for your goals.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
