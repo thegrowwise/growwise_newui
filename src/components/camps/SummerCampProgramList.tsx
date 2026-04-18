@@ -76,7 +76,7 @@ const SummerCampProgramPickCard = memo(function SummerCampProgramPickCard({
           alt={`${program.title}: ${program.description}`}
           fill
           sizes={imageSizes}
-          quality={65}
+          quality={75}
           priority={imagePriority}
           className="object-cover transition-transform duration-500 min-[769px]:group-hover:scale-105"
           draggable={false}
