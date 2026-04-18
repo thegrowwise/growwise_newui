@@ -4,6 +4,7 @@ import React from 'react';
 import { Code2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { cn } from '@/components/ui/utils';
+import { OptimizedImage } from '@/components/gw/OptimizedImage';
 
 interface CodingHeroProps {
   className?: string;
@@ -29,11 +30,15 @@ export function CodingHero({ className }: CodingHeroProps) {
             {t('codingPage.hero.subtext')}
           </p>
 
-          <div className="aspect-[21/9] w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-[0_24px_60px_-12px_rgba(31,57,109,0.28)] ring-2 ring-[#1F396D]/15 ring-offset-2 ring-offset-[#F8FAFC] mb-16">
-            <img
+          <div className="relative aspect-[21/9] w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-[0_24px_60px_-12px_rgba(31,57,109,0.28)] ring-2 ring-[#1F396D]/15 ring-offset-2 ring-offset-[#F8FAFC] mb-16">
+            <OptimizedImage
               src="/images/hero-coding.png"
               alt="Teenager coding"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 1024px"
+              priority
+              quality={80}
             />
           </div>
         </div>
