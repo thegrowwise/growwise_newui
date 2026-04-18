@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'Why Learning Java Coding is Impressive on Your LinkedIn Profile', url: absoluteSiteUrl('/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'Why Learning Java Coding is Impressive on Your LinkedIn Profile',
+    description: 'Java remains a powerful and widely-used programming language. See how Java skills can make your LinkedIn profile stand out.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

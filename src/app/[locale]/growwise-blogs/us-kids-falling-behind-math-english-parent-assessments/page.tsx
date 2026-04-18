@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -31,14 +31,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments', locale, baseUrl)
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
-    { name: 'Why U.S. Kids Are Falling Behind in Math and English', url: absoluteSiteUrl('/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments', locale, baseUrl) },
+    { name: 'US Kids & Core Skills — How Parents Can Help', url: pageUrl },
   ])
+
+  const articleSchema = generateArticleSchema({
+    headline: 'US Kids & Core Skills — How Parents Can Help',
+    description: 'Why math and English gaps widen—and how Tri-Valley families use assessments and routines to rebuild skills and confidence.',
+    url: pageUrl,
+  })
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

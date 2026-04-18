@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'How Programming Skills on a Resume Will Open More Career Opportunities', url: absoluteSiteUrl('/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'How Programming Skills on a Resume Will Open More Career Opportunities',
+    description: 'Programming skills are increasingly valuable across industries. Learn how they can enhance your resume and career prospects.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

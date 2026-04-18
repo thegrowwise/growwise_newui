@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'Harnessing the Power of Code: A Skill for the Modern Era', url: absoluteSiteUrl('/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'Harnessing the Power of Code: A Skill for the Modern Era',
+    description: "Explore why coding has become an essential skill in today's digital world and how it opens doors to innovation and opportunity.",
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

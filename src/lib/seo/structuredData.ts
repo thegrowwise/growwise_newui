@@ -456,3 +456,49 @@ export function generateBreadcrumbSchema(items: Array<{
   }
 }
 
+/**
+ * Generate Article structured data (for blog posts)
+ * Only include verified fields — never invent dates, images, or author names not visible on the page.
+ */
+export function generateArticleSchema({
+  headline,
+  description,
+  url,
+  image,
+  author,
+  datePublished,
+  dateModified,
+}: {
+  headline: string
+  description: string
+  url: string
+  image?: string
+  author?: {
+    name: string
+    type?: string
+  }
+  datePublished?: string
+  dateModified?: string
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": headline,
+    "description": description,
+    "url": url,
+    "mainEntityOfPage": url,
+    "publisher": {
+      "@type": "Organization",
+      "name": "GrowWise",
+      "url": CANONICAL_BASE,
+    },
+    "author": {
+      "@type": author?.type || "Organization",
+      "name": author?.name || "GrowWise",
+    },
+    ...(image && { "image": image }),
+    ...(datePublished && { "datePublished": datePublished }),
+    ...(dateModified && { "dateModified": dateModified }),
+  }
+}
+

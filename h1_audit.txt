@@ -1,0 +1,838 @@
+src/components/game-dev/GameDevHero.tsx-  className?: string;
+src/components/game-dev/GameDevHero.tsx-}
+src/components/game-dev/GameDevHero.tsx-
+src/components/game-dev/GameDevHero.tsx-export function GameDevHero({ className }: GameDevHeroProps) {
+src/components/game-dev/GameDevHero.tsx-  const t = useTranslations();
+src/components/game-dev/GameDevHero.tsx-
+src/components/game-dev/GameDevHero.tsx-  return (
+src/components/game-dev/GameDevHero.tsx-    <div className={cn('bg-transparent', className)}>
+src/components/game-dev/GameDevHero.tsx-      <section className="pt-20 pb-12 px-4">
+src/components/game-dev/GameDevHero.tsx-        <div className="max-w-4xl mx-auto text-center">
+src/components/game-dev/GameDevHero.tsx:          <h1 className="text-4xl md:text-6xl font-bold text-[#1F396D] mb-6">
+src/components/game-dev/GameDevHero.tsx-            {t('gameDevPage.hero.headlineLine1')}
+src/components/game-dev/GameDevHero.tsx-            <br />
+--
+src/components/workshop/WorkshopCalendar.tsx-    setFormErrors((prev) => {
+src/components/workshop/WorkshopCalendar.tsx-      const next = { ...prev };
+src/components/workshop/WorkshopCalendar.tsx-      delete next[field];
+src/components/workshop/WorkshopCalendar.tsx-      return next;
+src/components/workshop/WorkshopCalendar.tsx-    });
+src/components/workshop/WorkshopCalendar.tsx-  }, []);
+src/components/workshop/WorkshopCalendar.tsx-
+src/components/workshop/WorkshopCalendar.tsx-  return (
+src/components/workshop/WorkshopCalendar.tsx-    <div className="min-h-screen bg-gray-50">
+src/components/workshop/WorkshopCalendar.tsx-      <header className="bg-white border-b border-gray-200 py-6 text-center">
+src/components/workshop/WorkshopCalendar.tsx:        <h1 className="text-3xl font-bold text-[#F16112]">
+src/components/workshop/WorkshopCalendar.tsx-          Workshop Calendar
+src/components/workshop/WorkshopCalendar.tsx-        </h1>
+--
+src/app/api/enroll/route.ts-  const e = escapeHtml(data.email);
+src/app/api/enroll/route.ts-  const m = escapeHtml(data.mobile);
+src/app/api/enroll/route.ts-  const city = escapeHtml(data.city);
+src/app/api/enroll/route.ts-  const postal = escapeHtml(data.postal);
+src/app/api/enroll/route.ts-  const lvl = escapeHtml(data.level);
+src/app/api/enroll/route.ts-  const boot = escapeHtml(data.bootcamp);
+src/app/api/enroll/route.ts-  const crs = escapeHtml(data.course);
+src/app/api/enroll/route.ts-  return `
+src/app/api/enroll/route.ts-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+src/app/api/enroll/route.ts-      <div style="text-align: center; margin-bottom: 30px;">
+src/app/api/enroll/route.ts:        <h1 style="color: #1F396D; margin: 0;">Welcome to GrowWise!</h1>
+src/app/api/enroll/route.ts-        <p style="color: #F16112; font-size: 18px; margin: 10px 0;">Thank you for enrolling with us</p>
+src/app/api/enroll/route.ts-      </div>
+--
+src/app/[locale]/not-found.tsx-import Link from 'next/link';
+src/app/[locale]/not-found.tsx-import { useTranslations } from 'next-intl';
+src/app/[locale]/not-found.tsx-import { Button } from '@/components/ui/button';
+src/app/[locale]/not-found.tsx-
+src/app/[locale]/not-found.tsx-export default function NotFound() {
+src/app/[locale]/not-found.tsx-  const t = useTranslations('notFound');
+src/app/[locale]/not-found.tsx-
+src/app/[locale]/not-found.tsx-  return (
+src/app/[locale]/not-found.tsx-    <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 py-16 bg-[#f9fafb]">
+src/app/[locale]/not-found.tsx-      <div className="max-w-xl text-center space-y-6">
+src/app/[locale]/not-found.tsx:        <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+src/app/[locale]/not-found.tsx-          {t('title')}
+src/app/[locale]/not-found.tsx-        </h1>
+--
+src/app/[locale]/growwise-blogs/page.tsx-  return (
+src/app/[locale]/growwise-blogs/page.tsx-    <>
+src/app/[locale]/growwise-blogs/page.tsx-      <script
+src/app/[locale]/growwise-blogs/page.tsx-        type="application/ld+json"
+src/app/[locale]/growwise-blogs/page.tsx-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+src/app/[locale]/growwise-blogs/page.tsx-      />
+src/app/[locale]/growwise-blogs/page.tsx-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
+src/app/[locale]/growwise-blogs/page.tsx-        {/* Hero Section */}
+src/app/[locale]/growwise-blogs/page.tsx-        <section className="bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+src/app/[locale]/growwise-blogs/page.tsx-          <div className="max-w-7xl mx-auto text-center">
+src/app/[locale]/growwise-blogs/page.tsx:            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+src/app/[locale]/growwise-blogs/page.tsx-              GrowWise Blogs
+src/app/[locale]/growwise-blogs/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              alt="Harnessing the Power of Code: A Skill for the Modern Era"
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              fill
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              priority
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-            />
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-              Harnessing the Power of Code: A Skill for the Modern Era
+src/app/[locale]/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              alt="Unlocking Confidence, Independence, and Fun Through Summer Camp"
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              fill
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              priority
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-            />
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-              Unlocking Confidence, Independence, and Fun Through Summer Camp
+src/app/[locale]/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              alt="Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise"
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              fill
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              priority
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-            />
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-              Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise
+src/app/[locale]/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise/page.tsx-            </h1>
+--
+src/app/api/assessment/route.ts-- Send assessment preparation materials
+src/app/api/assessment/route.ts-- Add to calendar and student management system
+src/app/api/assessment/route.ts-- Send reminder email 24 hours before assessment
+src/app/api/assessment/route.ts-  `;
+src/app/api/assessment/route.ts-}
+src/app/api/assessment/route.ts-
+src/app/api/assessment/route.ts-function generateUserAssessmentConfirmationEmailHTML(data: AssessmentPayload) {
+src/app/api/assessment/route.ts-  return `
+src/app/api/assessment/route.ts-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+src/app/api/assessment/route.ts-      <div style="text-align: center; margin-bottom: 30px;">
+src/app/api/assessment/route.ts:        <h1 style="color: #1F396D; margin: 0;">Thank You for Booking!</h1>
+src/app/api/assessment/route.ts-        <p style="color: #F16112; font-size: 18px; margin: 10px 0;">Your assessment request has been received</p>
+src/app/api/assessment/route.ts-      </div>
+--
+src/components/sections/About.tsx-  const communityImpact = about?.communityImpact ?? [];
+src/components/sections/About.tsx-
+src/components/sections/About.tsx-  const testimonials = about?.testimonials ?? [];
+src/components/sections/About.tsx-
+src/components/sections/About.tsx-  return (
+src/components/sections/About.tsx-    <div className="min-h-screen section-gray">
+src/components/sections/About.tsx-      {/* Hero Section */}
+src/components/sections/About.tsx-      <section className="section-base section-white">
+src/components/sections/About.tsx-        <div className="max-w-7xl mx-auto">
+src/components/sections/About.tsx-          <div className="center-text mb-12">
+src/components/sections/About.tsx:            <h1 className="title-hero mb-6">{about?.hero?.title || t('hero.title')}</h1>
+src/components/sections/About.tsx-            <p className="subtitle max-w-4xl mx-auto mb-8">{about?.hero?.subtitle || t('hero.subtitle')}</p>
+src/components/sections/About.tsx-            <p className="text-muted max-w-4xl mx-auto mb-8 text-center">
+--
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              alt="NAEP Achievement Scores showing declining trends in Math and Reading"
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              fill
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              priority
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-            />
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-              Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help
+src/app/[locale]/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              alt="12 Smart & Simple Ways to Improve Your Child's Focus"
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              fill
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              priority
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-            />
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-              12 Smart & Simple Ways to Improve Your Child's Focus
+src/app/[locale]/growwise-blogs/improve-child-focus-feel-valued/page.tsx-            </h1>
+--
+src/components/sections/Contact.tsx-  };
+src/components/sections/Contact.tsx-
+src/components/sections/Contact.tsx-  if (isSubmitted) {
+src/components/sections/Contact.tsx-    return (
+src/components/sections/Contact.tsx-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+src/components/sections/Contact.tsx-        <Card className="max-w-md w-full bg-white shadow-xl">
+src/components/sections/Contact.tsx-          <CardContent className="p-8 text-center">
+src/components/sections/Contact.tsx-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+src/components/sections/Contact.tsx-              <CheckCircle className="w-8 h-8 text-green-600" />
+src/components/sections/Contact.tsx-            </div>
+src/components/sections/Contact.tsx:            <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('success.title')}</h1>
+src/components/sections/Contact.tsx-            <p className="text-gray-600 mb-6">
+src/components/sections/Contact.tsx-              {t('success.description')}
+--
+src/components/sections/Contact.tsx-        </Card>
+src/components/sections/Contact.tsx-      </div>
+src/components/sections/Contact.tsx-    );
+src/components/sections/Contact.tsx-  }
+src/components/sections/Contact.tsx-
+src/components/sections/Contact.tsx-  return (
+src/components/sections/Contact.tsx-    <div className="min-h-screen bg-gray-50">
+src/components/sections/Contact.tsx-      {/* Hero Section */}
+src/components/sections/Contact.tsx-      <section className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+src/components/sections/Contact.tsx-        <div className="max-w-7xl mx-auto text-center">
+src/components/sections/Contact.tsx:          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+src/components/sections/Contact.tsx-            {contact?.hero?.title || t('title')}
+src/components/sections/Contact.tsx-          </h1>
+--
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              alt="The Advantage in Choosing the Right Coding Class for Your Child"
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              fill
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              priority
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-            />
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-              The Advantage in Choosing the Right Coding Class for Your Child
+src/app/[locale]/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child/page.tsx-            </h1>
+--
+src/components/camps/CampHero 2.tsx-  page: CampLandingPage;
+src/components/camps/CampHero 2.tsx-};
+src/components/camps/CampHero 2.tsx-
+src/components/camps/CampHero 2.tsx-export function CampHero({ page }: CampHeroProps) {
+src/components/camps/CampHero 2.tsx-  const t = getCampThemeClasses(page.themeVariant);
+src/components/camps/CampHero 2.tsx-
+src/components/camps/CampHero 2.tsx-  return (
+src/components/camps/CampHero 2.tsx-    <header className={cn("border-b border-slate-200/80", t.heroBg)}>
+src/components/camps/CampHero 2.tsx-      <div className="container-7xl py-12 sm:py-16 lg:py-20">
+src/components/camps/CampHero 2.tsx-        <div className="max-w-3xl">
+src/components/camps/CampHero 2.tsx:          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
+src/components/camps/CampHero 2.tsx-            {page.h1}
+src/components/camps/CampHero 2.tsx-          </h1>
+--
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              alt="Unlock Your Future: The Best Programming Languages for Career Advancement"
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              fill
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              priority
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-            />
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-              Unlock Your Future: The Best Programming Languages for Career Advancement
+src/app/[locale]/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement/page.tsx-            </h1>
+--
+src/components/SATPage.tsx-          </div>
+src/components/SATPage.tsx-          
+src/components/SATPage.tsx-          {/* Gradient overlay circles - SAT theme colors */}
+src/components/SATPage.tsx-          <div className="absolute top-20 left-10 w-64 h-64 bg-[#1F396D]/10 rounded-full blur-3xl animate-pulse"></div>
+src/components/SATPage.tsx-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#F16112]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+src/components/SATPage.tsx-        </div>
+src/components/SATPage.tsx-
+src/components/SATPage.tsx-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+src/components/SATPage.tsx-          {/* Main Header Content */}
+src/components/SATPage.tsx-          <div className="text-center mb-16">
+src/components/SATPage.tsx:            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+src/components/SATPage.tsx-              SAT Tutoring
+src/components/SATPage.tsx-              <span className="block bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
+--
+src/components/sections/home/HeroSection.tsx-                          priority={index === 0}
+src/components/sections/home/HeroSection.tsx-                        />
+src/components/sections/home/HeroSection.tsx-                      )}
+src/components/sections/home/HeroSection.tsx-                      <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
+src/components/sections/home/HeroSection.tsx-                      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
+src/components/sections/home/HeroSection.tsx-                      <div className="absolute inset-0 backdrop-blur-[0.5px]"></div>
+src/components/sections/home/HeroSection.tsx-                    </div>
+src/components/sections/home/HeroSection.tsx-                    <div className="flex-1 text-center lg:text-left p-10 lg:p-16 relative z-10 lg:max-w-lg">
+src/components/sections/home/HeroSection.tsx-                      <div className={`transform transition-all duration-1000 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+src/components/sections/home/HeroSection.tsx-                        {isActive ? (
+src/components/sections/home/HeroSection.tsx:                          <h1 className="text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight">{slide.title}</h1>
+src/components/sections/home/HeroSection.tsx-                        ) : (
+src/components/sections/home/HeroSection.tsx-                          <p className="text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight m-0" aria-hidden>
+--
+src/components/HighSchoolMathPage.tsx-          </div>
+src/components/HighSchoolMathPage.tsx-          
+src/components/HighSchoolMathPage.tsx-          {/* Gradient overlay circles - High School Math theme colors */}
+src/components/HighSchoolMathPage.tsx-          <div className="absolute top-20 left-10 w-64 h-64 bg-[#1F396D]/10 rounded-full blur-3xl animate-pulse"></div>
+src/components/HighSchoolMathPage.tsx-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-[#F16112]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+src/components/HighSchoolMathPage.tsx-        </div>
+src/components/HighSchoolMathPage.tsx-
+src/components/HighSchoolMathPage.tsx-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+src/components/HighSchoolMathPage.tsx-          {/* Main Header Content */}
+src/components/HighSchoolMathPage.tsx-          <div className="text-center mb-16">
+src/components/HighSchoolMathPage.tsx:            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+src/components/HighSchoolMathPage.tsx-              High School Math Tutoring
+src/components/HighSchoolMathPage.tsx-              <span className="block bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
+--
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              alt="Technical Schools in 2025: A Smart Investment for Your Career"
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              fill
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              priority
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-            />
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-              Technical Schools in 2025: A Smart Investment for Your Career
+src/app/[locale]/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career/page.tsx-            </h1>
+--
+src/components/camps/CampHero.tsx-  page: CampLandingPage;
+src/components/camps/CampHero.tsx-};
+src/components/camps/CampHero.tsx-
+src/components/camps/CampHero.tsx-export function CampHero({ page }: CampHeroProps) {
+src/components/camps/CampHero.tsx-  const t = getCampThemeClasses(page.themeVariant);
+src/components/camps/CampHero.tsx-
+src/components/camps/CampHero.tsx-  return (
+src/components/camps/CampHero.tsx-    <header className={cn("border-b border-slate-200/80", t.heroBg)}>
+src/components/camps/CampHero.tsx-      <div className="container-7xl py-12 sm:py-16 lg:py-20">
+src/components/camps/CampHero.tsx-        <div className="max-w-3xl">
+src/components/camps/CampHero.tsx:          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
+src/components/camps/CampHero.tsx-            {page.h1}
+src/components/camps/CampHero.tsx-          </h1>
+--
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              alt="How Programming Skills on a Resume Will Open More Career Opportunities"
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              fill
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              priority
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-            />
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-              How Programming Skills on a Resume Will Open More Career Opportunities
+src/app/[locale]/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities/page.tsx-            </h1>
+--
+src/components/sections/Hero.tsx-                    fetchPriority={index === 0 ? 'high' : 'low'}
+src/components/sections/Hero.tsx-                  />
+src/components/sections/Hero.tsx-                </div>
+src/components/sections/Hero.tsx-                <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
+src/components/sections/Hero.tsx-              </div>
+src/components/sections/Hero.tsx-
+src/components/sections/Hero.tsx-              {/* Content Side - Optimized for Sleeker Layout */}
+src/components/sections/Hero.tsx-              <div className="flex-1 text-center lg:text-left p-8 lg:p-12 relative z-10 lg:max-w-md">
+src/components/sections/Hero.tsx-                <div className={`transform transition-all duration-700 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+src/components/sections/Hero.tsx-                  {isActive ? (
+src/components/sections/Hero.tsx:                    <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-white leading-tight">{slide.title}</h1>
+src/components/sections/Hero.tsx-                  ) : (
+src/components/sections/Hero.tsx-                    <p className="text-3xl lg:text-4xl font-bold mb-4 text-white leading-tight m-0" aria-hidden>
+--
+src/components/sections/Hero.tsx-                style={{ objectFit: 'cover' }}
+src/components/sections/Hero.tsx-                priority
+src/components/sections/Hero.tsx-                sizes="100vw"
+src/components/sections/Hero.tsx-                fetchPriority="high"
+src/components/sections/Hero.tsx-              />
+src/components/sections/Hero.tsx-            </div>
+src/components/sections/Hero.tsx-            <div className={`absolute inset-0 ${slide.bgGradient} opacity-85`}></div>
+src/components/sections/Hero.tsx-          </div>
+src/components/sections/Hero.tsx-          <div className="flex-1 text-center lg:text-left p-8 lg:p-12 relative z-10 lg:max-w-md">
+src/components/sections/Hero.tsx-            <div className="translate-y-0 opacity-100">
+src/components/sections/Hero.tsx:              <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-white leading-tight">
+src/components/sections/Hero.tsx-                {slide.title}
+src/components/sections/Hero.tsx-              </h1>
+--
+src/components/coding/CodingHero.tsx-  className?: string;
+src/components/coding/CodingHero.tsx-}
+src/components/coding/CodingHero.tsx-
+src/components/coding/CodingHero.tsx-export function CodingHero({ className }: CodingHeroProps) {
+src/components/coding/CodingHero.tsx-  const t = useTranslations();
+src/components/coding/CodingHero.tsx-
+src/components/coding/CodingHero.tsx-  return (
+src/components/coding/CodingHero.tsx-    <div className={cn('bg-transparent', className)}>
+src/components/coding/CodingHero.tsx-      <section className="pt-20 pb-16 px-4">
+src/components/coding/CodingHero.tsx-        <div className="max-w-4xl mx-auto text-center">
+src/components/coding/CodingHero.tsx:          <h1 className="text-4xl md:text-6xl font-bold text-[#1F396D] mb-6">
+src/components/coding/CodingHero.tsx-            {t('codingPage.hero.headlineLine1')}
+src/components/coding/CodingHero.tsx-            <br />
+--
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              alt="How Coding Skills Empower You to Shape Tomorrow's AI Innovations"
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              fill
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              priority
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-            />
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-              How Coding Skills Empower You to Shape Tomorrow's AI Innovations
+src/app/[locale]/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              alt="How to Choose the Right Summer Camp for Your Child"
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              fill
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              priority
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-            />
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-              How to Choose the Right Summer Camp for Your Child: A Parent's Guide
+src/app/[locale]/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide/page.tsx-            </h1>
+--
+src/app/[locale]/steam/page.tsx-      <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
+src/app/[locale]/steam/page.tsx-        {/* Background decorative elements */}
+src/app/[locale]/steam/page.tsx-        <div className="absolute inset-0 overflow-hidden">
+src/app/[locale]/steam/page.tsx-          <div className="absolute top-20 left-20 w-32 h-32 bg-[#F16112]/15 rounded-full blur-3xl animate-pulse"></div>
+src/app/[locale]/steam/page.tsx-          <div className="absolute top-40 right-32 w-48 h-48 bg-[#1F396D]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+src/app/[locale]/steam/page.tsx-          <div className="absolute bottom-32 left-1/3 w-40 h-40 bg-[#F1894F]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+src/app/[locale]/steam/page.tsx-        </div>
+src/app/[locale]/steam/page.tsx-
+src/app/[locale]/steam/page.tsx-        <div className="max-w-7xl mx-auto relative z-10">
+src/app/[locale]/steam/page.tsx-          <div className="text-center mb-16">
+src/app/[locale]/steam/page.tsx:            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+src/app/[locale]/steam/page.tsx-              Science, Technology, Engineering, 
+src/app/[locale]/steam/page.tsx-              <span className="block bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">
+--
+src/app/[locale]/testimonials-test/page.tsx-'use client';
+src/app/[locale]/testimonials-test/page.tsx-
+src/app/[locale]/testimonials-test/page.tsx-import TestimonialsWithBackend from '@/components/sections/TestimonialsWithBackend';
+src/app/[locale]/testimonials-test/page.tsx-import TestimonialsDebug from '@/components/TestimonialsDebug';
+src/app/[locale]/testimonials-test/page.tsx-
+src/app/[locale]/testimonials-test/page.tsx-export default function TestimonialsTestPage() {
+src/app/[locale]/testimonials-test/page.tsx-  return (
+src/app/[locale]/testimonials-test/page.tsx-    <div className="min-h-screen bg-gray-50">
+src/app/[locale]/testimonials-test/page.tsx-      <div className="container mx-auto py-8 px-4">
+src/app/[locale]/testimonials-test/page.tsx:        <h1 className="text-3xl font-bold text-center mb-8">
+src/app/[locale]/testimonials-test/page.tsx-          Testimonials API Test Page
+src/app/[locale]/testimonials-test/page.tsx-        </h1>
+--
+src/app/[locale]/enroll-academic/page.tsx-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+src/app/[locale]/enroll-academic/page.tsx-      <section className="relative py-32 overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
+src/app/[locale]/enroll-academic/page.tsx-        {/* Static glowing gradient orbs (no JS animations) */}
+src/app/[locale]/enroll-academic/page.tsx-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+src/app/[locale]/enroll-academic/page.tsx-          <div className="absolute top-20 left-10 w-[520px] h-[520px] bg-gradient-to-br from-white to-[#F16112] rounded-full blur-3xl opacity-15" />
+src/app/[locale]/enroll-academic/page.tsx-          <div className="absolute bottom-20 right-10 w-[620px] h-[620px] bg-gradient-to-br from-[#F16112] to-white rounded-full blur-3xl opacity-15" />
+src/app/[locale]/enroll-academic/page.tsx-        </div>
+src/app/[locale]/enroll-academic/page.tsx-
+src/app/[locale]/enroll-academic/page.tsx-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+src/app/[locale]/enroll-academic/page.tsx-          <div className="text-center mb-12">
+src/app/[locale]/enroll-academic/page.tsx:            <h1 className="text-white mb-6 text-4xl lg:text-6xl">
+src/app/[locale]/enroll-academic/page.tsx-              Enroll Now – <br />
+src/app/[locale]/enroll-academic/page.tsx-              <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Excellence Awaits</span>
+--
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              alt="How to Identify Learning Gaps in Your Child's Education at Home"
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              fill
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              priority
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-            />
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-              How to Identify Learning Gaps in Your Child's Education at Home
+src/app/[locale]/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide/page.tsx-            </h1>
+--
+src/app/[locale]/steam/game-development/page.tsx-          </div>
+src/app/[locale]/steam/game-development/page.tsx-          
+src/app/[locale]/steam/game-development/page.tsx-          {/* Gradient overlay circles - Game theme colors */}
+src/app/[locale]/steam/game-development/page.tsx-          <div className="absolute top-20 left-10 w-64 h-64 bg-green-100/30 rounded-full blur-3xl animate-pulse"></div>
+src/app/[locale]/steam/game-development/page.tsx-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+src/app/[locale]/steam/game-development/page.tsx-        </div>
+src/app/[locale]/steam/game-development/page.tsx-
+src/app/[locale]/steam/game-development/page.tsx-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+src/app/[locale]/steam/game-development/page.tsx-          {/* Main Header Content */}
+src/app/[locale]/steam/game-development/page.tsx-          <div className="text-center mb-16">
+src/app/[locale]/steam/game-development/page.tsx:            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+src/app/[locale]/steam/game-development/page.tsx-              Master <br />
+src/app/[locale]/steam/game-development/page.tsx-              Game Development <br />
+--
+src/app/[locale]/privacy-policy/page.tsx-
+src/app/[locale]/privacy-policy/page.tsx-  return (
+src/app/[locale]/privacy-policy/page.tsx-    <>
+src/app/[locale]/privacy-policy/page.tsx-      <script
+src/app/[locale]/privacy-policy/page.tsx-        type="application/ld+json"
+src/app/[locale]/privacy-policy/page.tsx-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+src/app/[locale]/privacy-policy/page.tsx-      />
+src/app/[locale]/privacy-policy/page.tsx-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+src/app/[locale]/privacy-policy/page.tsx-        <div className="max-w-4xl mx-auto">
+src/app/[locale]/privacy-policy/page.tsx-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+src/app/[locale]/privacy-policy/page.tsx:            <h1 className="text-4xl md:text-5xl font-bold text-[#1F396D] mb-4">Privacy Policy</h1>
+src/app/[locale]/privacy-policy/page.tsx-            <p className="text-gray-600 mb-8">
+src/app/[locale]/privacy-policy/page.tsx-              <strong>Effective Date: 16-July-2024</strong>
+--
+src/app/enroll/confirmation/page.tsx-        ? delivery_mode.charAt(0).toUpperCase() + delivery_mode.slice(1)
+src/app/enroll/confirmation/page.tsx-        : delivery_mode;
+src/app/enroll/confirmation/page.tsx-    return `${tierLabel} · ${modeLabel}`;
+src/app/enroll/confirmation/page.tsx-  }, [preview]);
+src/app/enroll/confirmation/page.tsx-
+src/app/enroll/confirmation/page.tsx-  return (
+src/app/enroll/confirmation/page.tsx-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+src/app/enroll/confirmation/page.tsx-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+src/app/enroll/confirmation/page.tsx-        <div className="rounded-2xl border bg-white/80 p-6 sm:p-8 shadow-sm">
+src/app/enroll/confirmation/page.tsx-          <div className="mb-6">
+src/app/enroll/confirmation/page.tsx:            <h1 className="text-3xl font-semibold text-gray-900">You&apos;re enrolled!</h1>
+src/app/enroll/confirmation/page.tsx-            <p className="mt-2 text-sm text-gray-600">
+src/app/enroll/confirmation/page.tsx-              Thank you for completing your enrollment. Here are your program details and what happens next.
+--
+src/app/[locale]/student-login/page.tsx-    window.location.href = STUDENT_REGISTRATION_URL;
+src/app/[locale]/student-login/page.tsx-  };
+src/app/[locale]/student-login/page.tsx-
+src/app/[locale]/student-login/page.tsx-  return (
+src/app/[locale]/student-login/page.tsx-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+src/app/[locale]/student-login/page.tsx-      <div className="max-w-2xl w-full space-y-8">
+src/app/[locale]/student-login/page.tsx-        <Card className="shadow-xl">
+src/app/[locale]/student-login/page.tsx-          <CardContent className="p-0">
+src/app/[locale]/student-login/page.tsx-            <div className="p-8 pb-4 border-b border-gray-200">
+src/app/[locale]/student-login/page.tsx-              <div className="text-center">
+src/app/[locale]/student-login/page.tsx:                <h1 className="text-3xl font-bold text-gray-900 mb-2">Hi, Welcome back!</h1>
+src/app/[locale]/student-login/page.tsx-                <p className="text-gray-600">Sign in to access your courses</p>
+src/app/[locale]/student-login/page.tsx-              </div>
+--
+src/app/[locale]/enroll/page.tsx-  if (shouldUsePhase3) {
+src/app/[locale]/enroll/page.tsx-    return <Phase3EnrollPage />;
+src/app/[locale]/enroll/page.tsx-  }
+src/app/[locale]/enroll/page.tsx-
+src/app/[locale]/enroll/page.tsx-  return (
+src/app/[locale]/enroll/page.tsx-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50">
+src/app/[locale]/enroll/page.tsx-      {/* Simple hero header to match other pages */}
+src/app/[locale]/enroll/page.tsx-      <section className="relative overflow-hidden bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D]">
+src/app/[locale]/enroll/page.tsx-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+src/app/[locale]/enroll/page.tsx-          <div className="text-center">
+src/app/[locale]/enroll/page.tsx:            <h1 className="text-white text-4xl md:text-5xl font-bold mb-3">{t('h1')}</h1>
+src/app/[locale]/enroll/page.tsx-            <p className="text-white/90 max-w-2xl mx-auto">Choose from academic and STEM programs. Fill out the form and our advisors will guide you within 24 hours.</p>
+src/app/[locale]/enroll/page.tsx-          </div>
+--
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              src={HERO_IMAGE}
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              alt="Middle school students in a classroom learning how to think instead of just avoiding distraction."
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              fill
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              priority
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-            />
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-          <div className="relative max-w-4xl mx-auto">
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              Your Kids Aren&apos;t Distracted.
+src/app/[locale]/growwise-blogs/thinking-gap-your-kids-arent-distracted/page.tsx-              <br />
+--
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          </div>
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          {/* Gradient overlay circles - AI theme colors */}
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          <div className="absolute top-20 left-10 w-64 h-64 bg-purple-100/30 rounded-full blur-3xl animate-pulse"></div>
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-teal-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+src/app/[locale]/steam/ml-ai-coding/page.tsx-        </div>
+src/app/[locale]/steam/ml-ai-coding/page.tsx-
+src/app/[locale]/steam/ml-ai-coding/page.tsx-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          {/* Main Header Content */}
+src/app/[locale]/steam/ml-ai-coding/page.tsx-          <div className="text-center mb-16">
+src/app/[locale]/steam/ml-ai-coding/page.tsx:            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+src/app/[locale]/steam/ml-ai-coding/page.tsx-              Master <br />
+src/app/[locale]/steam/ml-ai-coding/page.tsx-              Python Programming <br />
+--
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              alt="The Importance of Coding for Kids: Building Future-Ready Skills"
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              fill
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              priority
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-            />
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-              The Importance of Coding for Kids: Building Future-Ready Skills
+src/app/[locale]/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              alt="How to Go from Roblox Player to Game Developer and Earn Real Robux"
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              fill
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              priority
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-            />
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-              How to Go from Roblox Player to Game Developer and Earn Real Robux
+src/app/[locale]/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux/page.tsx-            </h1>
+--
+src/app/[locale]/cart/page.tsx-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+src/app/[locale]/cart/page.tsx-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+src/app/[locale]/cart/page.tsx-            <div className="flex items-center gap-2 sm:gap-4 flex-wrap w-full sm:w-auto">
+src/app/[locale]/cart/page.tsx-              <Link href={createLocaleUrl('/')}>
+src/app/[locale]/cart/page.tsx-                <Button variant="outline" size="sm" className="flex items-center gap-2 text-xs sm:text-sm">
+src/app/[locale]/cart/page.tsx-                  <ArrowLeft className="w-4 h-4" />
+src/app/[locale]/cart/page.tsx-                  <span className="hidden sm:inline">Continue Shopping</span>
+src/app/[locale]/cart/page.tsx-                  <span className="sm:hidden">Back</span>
+src/app/[locale]/cart/page.tsx-                </Button>
+src/app/[locale]/cart/page.tsx-              </Link>
+src/app/[locale]/cart/page.tsx:              <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Shopping Cart</h1>
+src/app/[locale]/cart/page.tsx-            </div>
+src/app/[locale]/cart/page.tsx-            <div className="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end">
+--
+src/app/[locale]/camps/page.tsx-export const metadata: Metadata = buildCampIndexMetadata();
+src/app/[locale]/camps/page.tsx-
+src/app/[locale]/camps/page.tsx-export default function CampLandingIndexPage() {
+src/app/[locale]/camps/page.tsx-  const pages = getAllCampPages();
+src/app/[locale]/camps/page.tsx-
+src/app/[locale]/camps/page.tsx-  return (
+src/app/[locale]/camps/page.tsx-    <article className="bg-white pb-24">
+src/app/[locale]/camps/page.tsx-      <header className="border-b border-slate-200/80 bg-slate-50/50">
+src/app/[locale]/camps/page.tsx-        <div className="container-7xl py-12 sm:py-16">
+src/app/[locale]/camps/page.tsx-          <p className="text-sm font-semibold uppercase tracking-wide text-[#1F396D]">GrowWise School · Summer · Dublin campus</p>
+src/app/[locale]/camps/page.tsx:          <h1 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Summer camp tracks (Dublin, CA)</h1>
+src/app/[locale]/camps/page.tsx-          <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600">
+src/app/[locale]/camps/page.tsx-            GrowWise operates one physical campus in Dublin, California. Families from San Ramon, Pleasanton, Livermore, Danville, and nearby Tri-Valley cities enroll here—those are served areas families travel from, not additional GrowWise locations.
+--
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              alt="Why Learning Python is Your Fast Track to In-Demand Job Offers"
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              fill
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              priority
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-            />
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-              Why Learning Python is Your Fast Track to In-Demand Job Offers
+src/app/[locale]/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers/page.tsx-            </h1>
+--
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-            <BlogImage
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              src={BLOG_IMAGE_URL}
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              alt="Why Learning Java Coding is Impressive on Your LinkedIn Profile"
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              fill
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              className="object-cover"
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              priority
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              sizes="100vw"
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-            />
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-          </div>
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-          <div className="relative max-w-4xl mx-auto z-10">
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx:            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-              Why Learning Java Coding is Impressive on Your LinkedIn Profile
+src/app/[locale]/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile/page.tsx-            </h1>
+--
+src/app/[locale]/book-assessment/page.tsx-  //   { icon: Award, text: 'Expert evaluators' }
+src/app/[locale]/book-assessment/page.tsx-  // ];
+src/app/[locale]/book-assessment/page.tsx-
+src/app/[locale]/book-assessment/page.tsx-  const scrollToForm = () => {
+src/app/[locale]/book-assessment/page.tsx-    const formSection = document.getElementById('assessment-form');
+src/app/[locale]/book-assessment/page.tsx-    if (formSection) formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+src/app/[locale]/book-assessment/page.tsx-  };
+src/app/[locale]/book-assessment/page.tsx-
+src/app/[locale]/book-assessment/page.tsx-  return (
+src/app/[locale]/book-assessment/page.tsx-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50" suppressHydrationWarning>
+src/app/[locale]/book-assessment/page.tsx:      <h1 className="sr-only">Book Free K-12 Assessment | GrowWise Dublin, CA</h1>
+src/app/[locale]/book-assessment/page.tsx-
+src/app/[locale]/book-assessment/page.tsx-
+--
+src/app/[locale]/terms-conditions/page.tsx-
+src/app/[locale]/terms-conditions/page.tsx-  return (
+src/app/[locale]/terms-conditions/page.tsx-    <>
+src/app/[locale]/terms-conditions/page.tsx-      <script
+src/app/[locale]/terms-conditions/page.tsx-        type="application/ld+json"
+src/app/[locale]/terms-conditions/page.tsx-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+src/app/[locale]/terms-conditions/page.tsx-      />
+src/app/[locale]/terms-conditions/page.tsx-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+src/app/[locale]/terms-conditions/page.tsx-        <div className="max-w-4xl mx-auto">
+src/app/[locale]/terms-conditions/page.tsx-          <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+src/app/[locale]/terms-conditions/page.tsx:            <h1 className="text-4xl md:text-5xl font-bold text-[#1F396D] mb-4">Terms & Conditions</h1>
+src/app/[locale]/terms-conditions/page.tsx-            <p className="text-gray-600 mb-8">
+src/app/[locale]/terms-conditions/page.tsx-              <strong>Effective Date: 16-July-2024</strong>
+--
+src/app/[locale]/checkout/page.tsx-    <div className="min-h-screen bg-[#ebebeb]" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+src/app/[locale]/checkout/page.tsx-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+src/app/[locale]/checkout/page.tsx-        {/* Header */}
+src/app/[locale]/checkout/page.tsx-        <div className="mb-8">
+src/app/[locale]/checkout/page.tsx-          <Link href={createLocaleUrl('/cart')}>
+src/app/[locale]/checkout/page.tsx-            <Button variant="outline" className="mb-4">
+src/app/[locale]/checkout/page.tsx-              <ArrowLeft className="w-4 h-4 mr-2" />
+src/app/[locale]/checkout/page.tsx-              Back to Cart
+src/app/[locale]/checkout/page.tsx-            </Button>
+src/app/[locale]/checkout/page.tsx-          </Link>
+src/app/[locale]/checkout/page.tsx:          <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
+src/app/[locale]/checkout/page.tsx-          <p className="text-gray-600 mt-2">Review your order and proceed to secure payment</p>
+src/app/[locale]/checkout/page.tsx-        </div>
+--
+src/app/[locale]/camps/winter/page.tsx-          <div className={`inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-md rounded-full shadow-lg mb-8 border border-slate-200 transition-all duration-1000 ${
+src/app/[locale]/camps/winter/page.tsx-            isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'
+src/app/[locale]/camps/winter/page.tsx-          }`}>
+src/app/[locale]/camps/winter/page.tsx-            <Snowflake className="w-4 h-4 text-sky-500 animate-spin-slow" />
+src/app/[locale]/camps/winter/page.tsx-            <span className="text-slate-700 font-semibold text-sm uppercase tracking-wide">Winter Camp 2025-26</span>
+src/app/[locale]/camps/winter/page.tsx-            <span className="text-slate-400">•</span>
+src/app/[locale]/camps/winter/page.tsx-            <span className="text-slate-600 text-sm">Dec 22 - Jan 2</span>
+src/app/[locale]/camps/winter/page.tsx-          </div>
+src/app/[locale]/camps/winter/page.tsx-          
+src/app/[locale]/camps/winter/page.tsx-          {/* Main Title */}
+src/app/[locale]/camps/winter/page.tsx:          <h1 className={`text-5xl md:text-6xl lg:text-7xl font-bold mb-6 text-slate-900 transition-all duration-1000 delay-200 ${
+src/app/[locale]/camps/winter/page.tsx-            isVisible.hero ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+src/app/[locale]/camps/winter/page.tsx-          }`}>
+--
+src/app/[locale]/checkout/success/page.tsx-      </div>
+src/app/[locale]/checkout/success/page.tsx-    );
+src/app/[locale]/checkout/success/page.tsx-  }
+src/app/[locale]/checkout/success/page.tsx-
+src/app/[locale]/checkout/success/page.tsx-  if (error) {
+src/app/[locale]/checkout/success/page.tsx-    return (
+src/app/[locale]/checkout/success/page.tsx-      <div className="min-h-screen bg-[#ebebeb] flex items-center justify-center px-4" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+src/app/[locale]/checkout/success/page.tsx-        <Card className="max-w-md w-full">
+src/app/[locale]/checkout/success/page.tsx-          <CardContent className="p-6 text-center">
+src/app/[locale]/checkout/success/page.tsx-            <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+src/app/[locale]/checkout/success/page.tsx:            <h1 className="text-2xl font-bold text-gray-900 mb-2">Error</h1>
+src/app/[locale]/checkout/success/page.tsx-            <p className="text-gray-600 mb-6">{error}</p>
+src/app/[locale]/checkout/success/page.tsx-            <Link href={createLocaleUrl('/cart')}>
+--
+src/app/[locale]/checkout/success/page.tsx-  return (
+src/app/[locale]/checkout/success/page.tsx-    <div className="min-h-screen bg-[#ebebeb] py-12 px-4" style={{ fontFamily: '"Nunito", "Inter", system-ui, sans-serif' }}>
+src/app/[locale]/checkout/success/page.tsx-      <div className="max-w-2xl mx-auto">
+src/app/[locale]/checkout/success/page.tsx-        <Card>
+src/app/[locale]/checkout/success/page.tsx-          <CardContent className="p-8 text-center">
+src/app/[locale]/checkout/success/page.tsx-            {isPaid ? (
+src/app/[locale]/checkout/success/page.tsx-              <>
+src/app/[locale]/checkout/success/page.tsx-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+src/app/[locale]/checkout/success/page.tsx-                  <CheckCircle className="w-12 h-12 text-green-600" />
+src/app/[locale]/checkout/success/page.tsx-                </div>
+src/app/[locale]/checkout/success/page.tsx:                <h1 className="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
+src/app/[locale]/checkout/success/page.tsx-                <p className="text-lg text-gray-600 mb-8">
+src/app/[locale]/checkout/success/page.tsx-                  Thank you for your purchase. Your payment has been processed successfully.
+--
+src/app/[locale]/checkout/success/page.tsx-                      Browse More Courses
+src/app/[locale]/checkout/success/page.tsx-                    </Button>
+src/app/[locale]/checkout/success/page.tsx-                  </Link>
+src/app/[locale]/checkout/success/page.tsx-                </div>
+src/app/[locale]/checkout/success/page.tsx-              </>
+src/app/[locale]/checkout/success/page.tsx-            ) : (
+src/app/[locale]/checkout/success/page.tsx-              <>
+src/app/[locale]/checkout/success/page.tsx-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+src/app/[locale]/checkout/success/page.tsx-                  <CheckCircle className="w-12 h-12 text-green-600" />
+src/app/[locale]/checkout/success/page.tsx-                </div>
+src/app/[locale]/checkout/success/page.tsx:                <h1 className="text-3xl font-bold text-gray-900 mb-4">Payment Successful!</h1>
+src/app/[locale]/checkout/success/page.tsx-                <p className="text-lg text-gray-600 mb-8">
+src/app/[locale]/checkout/success/page.tsx-                  Thank you for your purchase. Your payment has been processed successfully.
+--
+src/app/[locale]/camps/winter/calendar/page.tsx-          <Link href={createLocaleUrl('/camps/winter')}>
+src/app/[locale]/camps/winter/calendar/page.tsx-            <Button
+src/app/[locale]/camps/winter/calendar/page.tsx-              variant="ghost"
+src/app/[locale]/camps/winter/calendar/page.tsx-              size="sm"
+src/app/[locale]/camps/winter/calendar/page.tsx-              className="text-white hover:bg-white/10 p-2 sm:p-2.5"
+src/app/[locale]/camps/winter/calendar/page.tsx-              aria-label="Back to Winter Camps"
+src/app/[locale]/camps/winter/calendar/page.tsx-            >
+src/app/[locale]/camps/winter/calendar/page.tsx-              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+src/app/[locale]/camps/winter/calendar/page.tsx-            </Button>
+src/app/[locale]/camps/winter/calendar/page.tsx-          </Link>
+src/app/[locale]/camps/winter/calendar/page.tsx:          <h1 className="text-lg sm:text-xl md:text-2xl font-bold truncate ml-2 sm:ml-4">Calendar Week</h1>
+src/app/[locale]/camps/winter/calendar/page.tsx-        </div>
+src/app/[locale]/camps/winter/calendar/page.tsx-      </div>
+--
+src/app/[locale]/courses/math/page.tsx-          <MathSymbolsBackground scrollY={scrollY} seed={12345} />
+src/app/[locale]/courses/math/page.tsx-          
+src/app/[locale]/courses/math/page.tsx-          {/* Gradient overlay circles - Much softer */}
+src/app/[locale]/courses/math/page.tsx-          <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100/30 rounded-full blur-3xl animate-pulse"></div>
+src/app/[locale]/courses/math/page.tsx-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-orange-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+src/app/[locale]/courses/math/page.tsx-        </div>
+src/app/[locale]/courses/math/page.tsx-
+src/app/[locale]/courses/math/page.tsx-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+src/app/[locale]/courses/math/page.tsx-          {/* Main Header Content */}
+src/app/[locale]/courses/math/page.tsx-          <div className="text-center mb-16">
+src/app/[locale]/courses/math/page.tsx:            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+src/app/[locale]/courses/math/page.tsx-              {mathCoursesData?.hero?.title || t('hero.title')}
+src/app/[locale]/courses/math/page.tsx-            </h1>
+--
+src/app/[locale]/programs/page.tsx-    },
+src/app/[locale]/programs/page.tsx-    {
+src/app/[locale]/programs/page.tsx-      question: "Do you offer trial classes or assessments?",
+src/app/[locale]/programs/page.tsx-      answer: "Yes, we offer free academic assessments to help determine the best program fit. Contact us at connect@thegrowwise.com or (925) 456-4606 to schedule your free assessment."
+src/app/[locale]/programs/page.tsx-    }
+src/app/[locale]/programs/page.tsx-  ];
+src/app/[locale]/programs/page.tsx-
+src/app/[locale]/programs/page.tsx-  return (
+src/app/[locale]/programs/page.tsx-    <main className="section-base section-white">
+src/app/[locale]/programs/page.tsx-      <div className="max-w-7xl mx-auto">
+src/app/[locale]/programs/page.tsx:        <h1 className="title-section mb-6">{t('programs')}</h1>
+src/app/[locale]/programs/page.tsx-        <p className="subtitle-sm mb-8">
+src/app/[locale]/programs/page.tsx-          Explore our academic and STEAM offerings — and{' '}
+--
+src/app/[locale]/camps/summer/lottery-success/page.tsx-      </div>
+src/app/[locale]/camps/summer/lottery-success/page.tsx-    );
+src/app/[locale]/camps/summer/lottery-success/page.tsx-  }
+src/app/[locale]/camps/summer/lottery-success/page.tsx-
+src/app/[locale]/camps/summer/lottery-success/page.tsx-  const interestLabel = t(`lottery.interests.${interestRaw}`);
+src/app/[locale]/camps/summer/lottery-success/page.tsx-  const gradeLabel = t(`lottery.grades.${gradeRaw}`);
+src/app/[locale]/camps/summer/lottery-success/page.tsx-
+src/app/[locale]/camps/summer/lottery-success/page.tsx-  return (
+src/app/[locale]/camps/summer/lottery-success/page.tsx-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white font-sans">
+src/app/[locale]/camps/summer/lottery-success/page.tsx-      <div className="container mx-auto px-4 md:px-6 py-14 md:py-20 max-w-xl">
+src/app/[locale]/camps/summer/lottery-success/page.tsx:        <h1 className="font-heading font-black text-2xl md:text-3xl text-slate-900 uppercase tracking-tight text-center mb-2">
+src/app/[locale]/camps/summer/lottery-success/page.tsx-          {t('lottery.title')}
+src/app/[locale]/camps/summer/lottery-success/page.tsx-        </h1>
+--
+src/app/[locale]/courses/english/page.tsx-          {/* <EnglishSymbolsBackground scrollY={scrollY} seed={123456} /> */}
+src/app/[locale]/courses/english/page.tsx-          
+src/app/[locale]/courses/english/page.tsx-          {/* Gradient overlay circles - English theme colors */}
+src/app/[locale]/courses/english/page.tsx-          <div className="absolute top-20 left-10 w-64 h-64 bg-emerald-100/30 rounded-full blur-3xl animate-pulse"></div>
+src/app/[locale]/courses/english/page.tsx-          <div className="absolute bottom-20 right-10 w-80 h-80 bg-indigo-100/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+src/app/[locale]/courses/english/page.tsx-        </div>
+src/app/[locale]/courses/english/page.tsx-
+src/app/[locale]/courses/english/page.tsx-        <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
+src/app/[locale]/courses/english/page.tsx-          {/* Main Header Content */}
+src/app/[locale]/courses/english/page.tsx-          <div className="text-center mb-16">
+src/app/[locale]/courses/english/page.tsx:            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+src/app/[locale]/courses/english/page.tsx-              {englishCoursesData?.hero?.title || t('hero.title')}
+src/app/[locale]/courses/english/page.tsx-            </h1>
+--
+src/app/[locale]/camps/summer/guide-success/page.tsx-  const t = useTranslations('summerCamp.guideSuccess');
+src/app/[locale]/camps/summer/guide-success/page.tsx-  const locale = useLocale();
+src/app/[locale]/camps/summer/guide-success/page.tsx-  const summerBase = createLocaleUrl('/camps/summer', locale);
+src/app/[locale]/camps/summer/guide-success/page.tsx-  const utm = 'utm_source=web&utm_medium=guide_success&utm_campaign=summer_camp';
+src/app/[locale]/camps/summer/guide-success/page.tsx-  const reserveWithUtm = `${summerBase}?${utm}&utm_content=reserve_cta#slots-section`;
+src/app/[locale]/camps/summer/guide-success/page.tsx-  const programsWithUtm = `${summerBase}?${utm}&utm_content=view_programs#program-groups`;
+src/app/[locale]/camps/summer/guide-success/page.tsx-
+src/app/[locale]/camps/summer/guide-success/page.tsx-  return (
+src/app/[locale]/camps/summer/guide-success/page.tsx-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white font-sans">
+src/app/[locale]/camps/summer/guide-success/page.tsx-      <div className="container mx-auto max-w-xl px-4 py-14 md:px-6 md:py-20">
+src/app/[locale]/camps/summer/guide-success/page.tsx:        <h1 className="font-heading text-center text-2xl font-bold tracking-tight text-slate-900 md:text-3xl">
+src/app/[locale]/camps/summer/guide-success/page.tsx-          {t('title')}
+src/app/[locale]/camps/summer/guide-success/page.tsx-        </h1>
+--
+src/app/[locale]/camps/summer/page.tsx-              draggable={false}
+src/app/[locale]/camps/summer/page.tsx-            />
+src/app/[locale]/camps/summer/page.tsx-            <div className="absolute inset-0 z-[1] bg-[rgba(0,0,0,0.6)]" aria-hidden />
+src/app/[locale]/camps/summer/page.tsx-          </div>
+src/app/[locale]/camps/summer/page.tsx-          <div
+src/app/[locale]/camps/summer/page.tsx-            className={cn(
+src/app/[locale]/camps/summer/page.tsx-              'relative z-10 mx-auto flex w-full max-w-[1100px] flex-col justify-center text-left',
+src/app/[locale]/camps/summer/page.tsx-              'px-10 py-10 md:py-[120px] md:pl-20 md:pr-12'
+src/app/[locale]/camps/summer/page.tsx-            )}
+src/app/[locale]/camps/summer/page.tsx-          >
+src/app/[locale]/camps/summer/page.tsx:            <h1 className="font-heading max-w-[700px] text-[1.625rem] font-bold leading-[1.2] text-white sm:text-[1.875rem] md:text-[2.75rem] lg:text-[3rem]">
+src/app/[locale]/camps/summer/page.tsx-              {SUMMER_CAMP_HERO_EN.h1}
+src/app/[locale]/camps/summer/page.tsx-            </h1>
+--
+src/app/[locale]/academic/page.tsx-        <div className="absolute inset-0 overflow-hidden">
+src/app/[locale]/academic/page.tsx-          <div className="absolute top-20 left-20 w-32 h-32 bg-[#1F396D]/10 rounded-full blur-3xl"></div>
+src/app/[locale]/academic/page.tsx-          <div className="absolute top-40 right-32 w-48 h-48 bg-[#F16112]/10 rounded-full blur-3xl"></div>
+src/app/[locale]/academic/page.tsx-          <div className="absolute bottom-32 left-1/3 w-40 h-40 bg-[#F1894F]/10 rounded-full blur-3xl"></div>
+src/app/[locale]/academic/page.tsx-        </div>
+src/app/[locale]/academic/page.tsx-
+src/app/[locale]/academic/page.tsx-        <div className="max-w-7xl mx-auto relative z-10">
+src/app/[locale]/academic/page.tsx-          <Card className="bg-white/80 backdrop-blur-xl rounded-[40px] shadow-[0px_30px_80px_0px_rgba(31,57,109,0.15)] border border-white/30 overflow-hidden">
+src/app/[locale]/academic/page.tsx-            <CardContent className="p-12 lg:p-16">
+src/app/[locale]/academic/page.tsx-              <div className="text-center">
+src/app/[locale]/academic/page.tsx:                <h1 className="text-4xl lg:text-6xl font-bold text-[#1F396D] mb-8 leading-tight">Math & English Programs Aligned with DUSD & PUSD</h1>
+src/app/[locale]/academic/page.tsx-                <Badge className="bg-[#F16112] text-white mb-6 px-6 py-3 rounded-full text-lg">ACADEMIC PROGRAMS</Badge>
+src/app/[locale]/academic/page.tsx-

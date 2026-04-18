@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateEventSchema } from '@/lib/seo/structuredData'
-import { CONTACT_INFO } from '@/lib/constants'
+import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -20,44 +19,20 @@ export default async function WinterCampLayout({
 }) {
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
-  
-  // Generate Event structured data for Winter Camp 2025
-  const eventSchema = generateEventSchema({
-    name: "Winter Camp 2025 - Academic & STEAM Programs",
-    description:
-      "Winter break workshops in Dublin, CA—Dec 22–30. Academic and STEAM tracks. Reserve a spot before sessions fill.",
-    startDate: "2025-12-22T09:00:00-08:00",
-    endDate: "2025-12-30T17:00:00-08:00",
-    location: {
-      name: "GrowWise School",
-      address: {
-        streetAddress: CONTACT_INFO.street,
-        addressLocality: "Dublin",
-        addressRegion: "CA",
-        postalCode: CONTACT_INFO.zipCode || "94568",
-        addressCountry: "US"
-      }
-    },
-    organizer: {
-      name: "GrowWise",
-      url: baseUrl
-    },
-    image: `${baseUrl}/assets/growwise-logo.png`,
-    offers: {
-      price: "75",
-      priceCurrency: "USD",
-      availability: "https://schema.org/InStock",
-      url: absoluteSiteUrl('/camps/winter', locale, baseUrl),
-    },
-    eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode"
-  })
+
+  // Event schema removed: Winter Camp 2025 dates (Dec 22-30, 2025) are in the past.
+  // Re-add Event schema when verified future dates are available on the page.
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+    { name: 'Camps', url: absoluteSiteUrl('/camps', locale, baseUrl) },
+    { name: 'Winter Camp', url: absoluteSiteUrl('/camps/winter', locale, baseUrl) },
+  ])
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {children}
     </>

@@ -6,7 +6,6 @@ import ContentProvider from "@/components/providers/ContentProvider";
 import { PageTrackingWrapper } from "@/components/analytics/PageTrackingWrapper";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
 import { DEFAULT_LOCALE } from "@/i18n/localeConfig";
-import { organizationSchema, localBusinessSchema, websiteSchema } from "@/lib/seo/structuredData";
 import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
 
@@ -25,9 +24,6 @@ export default async function CampSectionLayout({ children }: { children: React.
 
   return (
     <NextIntlClientProvider locale={DEFAULT_LOCALE} messages={messages}>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
       <ChatbotProvider>
         <ContentProvider>
           <PageTrackingWrapper>

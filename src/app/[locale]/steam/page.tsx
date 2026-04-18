@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -40,6 +41,13 @@ import {
   Linkedin
 } from 'lucide-react';
 import { publicPath } from '@/lib/publicPath';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
+import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 
 // ImageWithFallback component
 const ImageWithFallback: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = (props) => {
@@ -64,6 +72,25 @@ const ImageWithFallback: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = (
     <img src={src} alt={alt} className={className} style={style} {...rest} onError={handleError} />
   );
 };
+
+const STEAM_FAQS = [
+  {
+    question: "My child wants to get into coding or robotics — where should they start if they have no experience?",
+    answer: "Scratch is the recommended starting point for students with no prior coding experience. It teaches core logic and sequencing through visual block-based programming. Students who have some block coding exposure can move into Roblox Studio, which uses Lua scripting to build and publish games. Students ready for text-based programming start with Python. GrowWise offers all three as year-round programs.",
+  },
+  {
+    question: "What is the difference between a coding program and an AI program at GrowWise?",
+    answer: "Coding programs teach programming languages and how to build software. GrowWise coding tracks include Scratch, Roblox Studio, Python, and Unity. AI programs teach how artificial intelligence systems work — how they learn from data, how to communicate with them effectively, and how to build simple AI-powered projects. GrowWise AI programs cover AI Fundamentals, Machine Learning Basics, and Prompt Engineering. Students can take coding and AI programs concurrently.",
+  },
+  {
+    question: "What does my child actually build in a GrowWise STEAM program?",
+    answer: "It depends on the program. Scratch students complete an animated interactive project. Roblox students script and publish a playable game. Python students build a working application. Unity students complete a 2D or 3D game. AI Fundamentals students finish a hands-on AI project. Machine Learning students train and evaluate a model. Prompt Engineering students complete a practical AI communication challenge. Every program ends with a real output, not just completed exercises.",
+  },
+  {
+    question: "Do students need any prior coding experience to join a GrowWise STEAM program?",
+    answer: "No prior experience is required to start. Scratch and AI Fundamentals are both designed for complete beginners. Students with some coding exposure can enter at Roblox Studio or Python level. The program entry point is matched to the student — not to a fixed class schedule.",
+  },
+];
 
 export default function SteamPage() {
   const locale = useLocale();
@@ -379,11 +406,16 @@ export default function SteamPage() {
           <div className="relative">
             <Card className="bg-white/30 backdrop-blur-3xl rounded-[40px] shadow-[0px_40px_120px_0px_rgba(31,57,109,0.25)] border-2 border-white/60 overflow-hidden ring-1 ring-white/30">
               <CardContent className="p-0">
-                <ImageWithFallback
-                  src="/assets/photos/photo-1581091226825-a6a2a5aee158.jpg"
-                  alt="Students coding and learning STEAM subjects"
-                  className="w-full h-[400px] object-cover"
-                />
+                <div className="relative w-full h-[400px]">
+                  <Image
+                    src="/assets/photos/photo-1581091226825-a6a2a5aee158.jpg"
+                    alt="Students coding and learning STEAM subjects"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="flex flex-col sm:flex-row gap-4">
@@ -737,10 +769,12 @@ export default function SteamPage() {
                   <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent rounded-[28px]"></div>
                   <div className="relative z-10">
                     <div className="flex items-center gap-4 mb-6">
-                      <ImageWithFallback
+                      <Image
                         src={story.image}
                         alt={story.name}
-                        className="w-16 h-16 rounded-full object-cover shadow-[0px_8px_20px_rgba(255,255,255,0.4)] border-2 border-white/70 ring-1 ring-white/50"
+                        width={64}
+                        height={64}
+                        className="rounded-full object-cover shadow-[0px_8px_20px_rgba(255,255,255,0.4)] border-2 border-white/70 ring-1 ring-white/50"
                       />
                       <div>
                         <p className="font-bold text-gray-900 drop-shadow-sm">{story.name}</p>
@@ -801,6 +835,37 @@ export default function SteamPage() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4 lg:px-8 bg-gray-50" aria-labelledby="steam-faq-heading">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQPageSchema(STEAM_FAQS)) }} />
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 id="steam-faq-heading" className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
+              Frequently Asked <span className="text-[#F16112]">Questions</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Common questions from families about GrowWise STEAM programs.
+            </p>
+          </div>
+          <Accordion type="single" collapsible className="space-y-4">
+            {STEAM_FAQS.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
+                  <span className="font-semibold text-gray-900">{faq.question}</span>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 

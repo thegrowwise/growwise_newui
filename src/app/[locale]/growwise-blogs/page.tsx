@@ -3,6 +3,7 @@ import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
+
 import Link from 'next/link'
 import { BookOpen, ArrowRight, ArrowLeft } from 'lucide-react'
 
@@ -70,6 +71,14 @@ const blogPosts: BlogPost[] = [
     title: 'Spot Learning Gaps at Home',
     excerpt: 'Learn how to spot and address learning gaps to ensure your child stays on track.',
     href: '/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide',
+    readMore: 'Read article »'
+  },
+  {
+    id: '17',
+    category: 'academic',
+    title: "Your Kids Aren't Distracted — They Were Never Taught How to Think",
+    excerpt: "Fallon Middle School showed a thinking gap—not just screen time. Practical steps for Tri-Valley parents, plus a free Parent Playbook.",
+    href: '/growwise-blogs/thinking-gap-your-kids-arent-distracted',
     readMore: 'Read article »'
   },
   {
@@ -200,8 +209,25 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
     { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
   ])
 
+  const collectionPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "GrowWise Blog — Math, Coding & STEAM for K-12 Families",
+    "description": "Practical articles on tutoring, English, coding, and STEAM for Dublin and Tri-Valley families.",
+    "url": absoluteSiteUrl('/growwise-blogs', locale, baseUrl),
+    "publisher": {
+      "@type": "Organization",
+      "name": "GrowWise",
+      "url": baseUrl,
+    },
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -31,14 +31,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl)
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
-    { name: '12 Smart & Simple Ways to Improve Your Child\'s Focus', url: absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl) },
+    { name: '12 Smart & Simple Ways to Improve Your Child\'s Focus', url: pageUrl },
   ])
+
+  const articleSchema = generateArticleSchema({
+    headline: "12 Smart & Simple Ways to Improve Your Child's Focus",
+    description: 'Twelve practical ways to build focus: routines, connection, and small wins—without fighting your child every night.',
+    url: pageUrl,
+  })
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

@@ -15,30 +15,36 @@ export default function SteamLayout({
 }) {
   const baseUrl = getCanonicalSiteUrl()
 
-  const collectionPageSchema = {
+  const serviceSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "STEAM Programs Dublin CA — Coding, AI & Game Development | GrowWise",
-    "description": "Innovative STEAM programs for K-12 students in Dublin, CA: ML/AI coding, game development, robotics, and more. Hands-on project-based learning with expert instructors.",
+    "@type": "Service",
+    "name": "STEAM Programs — Coding, AI & Game Development | GrowWise Dublin CA",
+    "description": "STEAM programs for K-12 students in Dublin, CA: ML/AI coding, game development, and more. Hands-on project-based learning with expert instructors.",
     "url": `${baseUrl}/steam`,
+    "serviceType": "STEAM Education",
     "provider": {
       "@type": "EducationalOrganization",
       "name": "GrowWise",
       "url": baseUrl,
     },
-    "hasPart": [
-      { "@type": "Course", "name": "ML/AI Coding", "url": `${baseUrl}/steam/ml-ai-coding` },
-      { "@type": "Course", "name": "Game Development", "url": `${baseUrl}/steam/game-development` },
-      { "@type": "Course", "name": "Coding Programs", "url": `${baseUrl}/coding` },
-      { "@type": "Course", "name": "Game Dev", "url": `${baseUrl}/game-dev` },
-    ],
+    "areaServed": ["Dublin, CA", "Pleasanton, CA", "San Ramon, CA", "Tri-Valley, CA"],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "STEAM Programs",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "ML/AI Coding", "url": `${baseUrl}/steam/ml-ai-coding` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Game Development", "url": `${baseUrl}/steam/game-development` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Coding Programs", "url": `${baseUrl}/coding` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Game Dev", "url": `${baseUrl}/game-dev` } },
+      ],
+    },
   }
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       {children}
     </>

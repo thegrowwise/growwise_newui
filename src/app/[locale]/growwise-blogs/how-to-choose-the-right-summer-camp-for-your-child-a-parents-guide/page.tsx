@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -31,14 +31,26 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide', locale, baseUrl)
+
+  const articleSchema = generateArticleSchema({
+    headline: 'How to Choose the Right Summer Camp for Your Child',
+    description: 'Pick a summer camp that fits your child: interests, schedule, safety, and learning outcomes—before you pay a deposit.',
+    url: pageUrl,
+  })
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
     { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
-    { name: 'How to Choose the Right Summer Camp for Your Child', url: absoluteSiteUrl('/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide', locale, baseUrl) },
+    { name: 'How to Choose the Right Summer Camp for Your Child', url: pageUrl },
   ])
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
