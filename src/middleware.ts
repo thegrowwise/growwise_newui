@@ -4,17 +4,19 @@ import { NextResponse } from 'next/server';
 import { ENABLED_LOCALES, DEFAULT_LOCALE } from '@/i18n/localeConfig';
 
 /**
- * With `localePrefix: 'never'`, public URLs must not use `/en/`. Older Stripe success_url values
- * and bookmarks may still use `/en/checkout/...` — rewrite to the same path without `/en`.
+ * With `localePrefix: 'never'`, public URLs must not use `/en/`. Legacy `/en/*` HTML routes
+ * (old Stripe success_url values, bookmarks, inbound links) are 301-redirected to the canonical
+ * URL so link equity consolidates on the prefix-free path. `/_next/*` static assets nested under
+ * `/en/` are handled separately by `rewriteLocalePrefixedNextAssets` (rewrite, not redirect).
  */
-function rewriteLegacyDefaultLocalePrefix(request: NextRequest): NextResponse | null {
+function redirectLegacyDefaultLocalePrefix(request: NextRequest): NextResponse | null {
   if (DEFAULT_LOCALE !== 'en') return null;
   const pathname = request.nextUrl.pathname;
   if (pathname === '/en' || pathname.startsWith('/en/')) {
     const rest = pathname === '/en' ? '/' : pathname.slice('/en'.length) || '/';
     const url = request.nextUrl.clone();
     url.pathname = rest === '' ? '/' : rest;
-    return NextResponse.rewrite(url);
+    return NextResponse.redirect(url, 301);
   }
   return null;
 }
@@ -60,7 +62,7 @@ export default function middleware(request: NextRequest) {
 
   const rewritten = rewriteLocalePrefixedNextAssets(request);
   if (rewritten) return rewritten;
-  const legacyEn = rewriteLegacyDefaultLocalePrefix(request);
+  const legacyEn = redirectLegacyDefaultLocalePrefix(request);
   if (legacyEn) return legacyEn;
   return intlMiddleware(request);
 }

@@ -28,7 +28,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/about': {
     title: 'About GrowWise | Dublin CA | K-12 & STEAM',
     description:
-      "GrowWise offers K-12 tutoring and STEAM in Dublin, CA. Expert instructors, personalized learning, and proven results since 2019.",
+      "GrowWise offers K-12 tutoring and STEAM in Dublin, CA. Expert instructors, personalized learning, and proven results.",
     keywords:
       'about GrowWise, tutoring center Dublin CA, K-12 education Dublin, STEAM programs, educational excellence',
     path: '/about',
