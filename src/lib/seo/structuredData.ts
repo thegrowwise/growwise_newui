@@ -8,6 +8,15 @@ import { getCanonicalSiteUrl } from './siteUrl'
 
 const CANONICAL_BASE = getCanonicalSiteUrl()
 
+export const TRI_VALLEY_AREA_SERVED = [
+  "Dublin, CA",
+  "Pleasanton, CA",
+  "San Ramon, CA",
+  "Danville, CA",
+  "Livermore, CA",
+  "Tri-Valley, CA",
+] as const
+
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "EducationalOrganization",
@@ -16,6 +25,7 @@ export const organizationSchema = {
   "url": CANONICAL_BASE,
   "logo": `${CANONICAL_BASE}/logo.png`,
   "description": "Empowering students through personalized K-12 education and innovative STEAM programs in Dublin, CA. Expert instruction, proven results, and flexible scheduling.",
+  "areaServed": [...TRI_VALLEY_AREA_SERVED],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": CONTACT_INFO.street,
@@ -84,33 +94,7 @@ export const localBusinessSchema = {
   "priceRange": "$$",
   "currenciesAccepted": "USD",
   "paymentAccepted": "Credit Card, Cash, Check",
-  "areaServed": [
-    {
-      "@type": "City",
-      "name": "Dublin",
-      "addressRegion": "CA"
-    },
-    {
-      "@type": "City",
-      "name": "Pleasanton",
-      "addressRegion": "CA"
-    },
-    {
-      "@type": "City",
-      "name": "San Ramon",
-      "addressRegion": "CA"
-    },
-    {
-      "@type": "City",
-      "name": "Livermore",
-      "addressRegion": "CA"
-    },
-    {
-      "@type": "City",
-      "name": "Fremont",
-      "addressRegion": "CA"
-    }
-  ],
+  "areaServed": [...TRI_VALLEY_AREA_SERVED],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Educational Services",
@@ -246,6 +230,7 @@ export function generateCourseSchema({
     ...(image && { "image": image }),
     "inLanguage": "en-US",
     "isAccessibleForFree": false,
+    "areaServed": [...TRI_VALLEY_AREA_SERVED],
     ...(offers && {
       "offers": {
         "@type": "Offer",

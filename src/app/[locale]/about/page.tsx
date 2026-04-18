@@ -1,7 +1,7 @@
 import About from '@/components/sections/About'
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, TRI_VALLEY_AREA_SERVED } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -31,6 +31,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       "url": baseUrl,
       "foundingDate": "2024",
       "description": "Empowering K-12 students through personalized education and innovative STEAM programs in Dublin, CA.",
+      "areaServed": [...TRI_VALLEY_AREA_SERVED],
+      "founder": {
+        "@type": "Person",
+        "name": "Anshika Verma",
+        "jobTitle": "Founder & Director",
+      },
     },
   }
 

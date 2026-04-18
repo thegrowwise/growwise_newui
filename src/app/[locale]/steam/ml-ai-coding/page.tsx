@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import Link from 'next/link';
+import { CONTACT_INFO } from '@/lib/constants';
+import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +12,6 @@ import { Brain, Code, Bot, Clock, Users, Star, Filter, ShoppingCart, CheckCircle
 import { useCart } from '@/components/gw/CartContext';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import CourseCustomizationModal from '@/components/gw/CourseCustomizationModal';
-import STEAMTrialModal from '@/components/ui/STEAMTrialModal';
 import { useSearchParams } from 'next/navigation';
 
 // ML/AI Programming Course Data
@@ -150,6 +153,7 @@ function SearchParamsHandler({
 }
 
 const MLAICoursesPage: React.FC = () => {
+  const locale = useLocale();
   const { addItem } = useCart();
   const { openChatbot } = useChatbot();
   const [selectedGradeLevels, setSelectedGradeLevels] = useState<string[]>([]);
@@ -161,7 +165,6 @@ const MLAICoursesPage: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
-  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
 
   // Handlers for search params
   const handleGradeFound = useCallback((grade: string) => {
@@ -394,12 +397,6 @@ const MLAICoursesPage: React.FC = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
           {/* Main Header Content */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
-              <Brain className="w-5 h-5 text-[#F1894F]" />
-              <span className="text-gray-700 font-medium">GET READY FOR FUTURE WITH GROWWISE</span>
-              <Sparkles className="w-5 h-5 text-[#F1894F]" />
-            </div>
-            
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
               Master <br />
               Python Programming <br />
@@ -407,19 +404,28 @@ const MLAICoursesPage: React.FC = () => {
                 From Beginner to Advanced
               </span>
             </h1>
+            <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
+              <Brain className="w-5 h-5 text-[#F1894F]" />
+              <span className="text-gray-700 font-medium">GET READY FOR FUTURE WITH GROWWISE</span>
+              <Sparkles className="w-5 h-5 text-[#F1894F]" />
+            </div>
             
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Learn Python programming through hands-on projects and comprehensive curriculum designed for students grades 5-12. Build real applications, master programming fundamentals, and prepare for future tech careers.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button onClick={() => setIsTrialModalOpen(true)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-                <Zap className="w-5 h-5 mr-2" />
-                Start Free Trial
+              <Button asChild className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+                <Link href={publicPath('/book-assessment', locale)} className="inline-flex items-center justify-center">
+                  <Zap className="w-5 h-5 mr-2" />
+                  Book Free Assessment
+                </Link>
               </Button>
-              <Button variant="outline" className="border-2 border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                <Calendar className="w-5 h-5 mr-2" />
-                Schedule Demo
+              <Button asChild variant="outline" className="border-2 border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                <Link href={publicPath('/workshop-calendar', locale)} className="inline-flex items-center justify-center">
+                  <Calendar className="w-5 h-5 mr-2" />
+                  Join Free Saturday Workshop
+                </Link>
               </Button>
             </div>
           </div>
@@ -860,7 +866,7 @@ const MLAICoursesPage: React.FC = () => {
                 <Mail className="w-8 h-8 text-white" />
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Email Us</h3>
-              <p className="text-gray-600">connect@thegrowwise.com</p>
+              <p className="text-gray-600">{CONTACT_INFO.email}</p>
             </div>
             
             <div className="flex flex-col items-center">
@@ -898,7 +904,6 @@ const MLAICoursesPage: React.FC = () => {
         />
       )}
 
-      <STEAMTrialModal isOpen={isTrialModalOpen} onClose={() => setIsTrialModalOpen(false)} />
     </div>
   );
 };

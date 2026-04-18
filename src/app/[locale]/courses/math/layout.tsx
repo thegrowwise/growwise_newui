@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
+
+/** Reduces dev static-path worker churn; mitigates `spawn EBADF` with Turbopack on some macOS setups. */
+export const dynamic = 'force-dynamic'
 import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
@@ -23,7 +26,8 @@ export default async function MathCoursesLayout({
   // Generate Course structured data with enhanced details
   const courseSchema = generateCourseSchema({
     name: "K-12 Math Courses - Grade-Level, Accelerated & Integrated Math | Math Tutoring Dublin CA",
-    description: "Comprehensive math courses from elementary to high school. Grade-level math (California Common Core Standards), accelerated math programs, and integrated math 1 & 2. DUSD & PUSD aligned curriculum. Expert math tutors in Dublin, CA. Algebra, Geometry, Pre-Calculus, and more. Small class sizes, personalized instruction, proven results.",
+    description:
+      "Math tutoring for grades 1–12 in Dublin, CA. Common Core aligned, small groups, placement support. Book a free assessment.",
     provider: "GrowWise",
     courseCode: "MATH-K12",
     educationalLevel: "K-12",

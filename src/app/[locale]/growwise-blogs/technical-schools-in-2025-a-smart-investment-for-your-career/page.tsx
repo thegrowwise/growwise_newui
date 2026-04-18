@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Technical Schools in 2025: A Smart Investment for Your Career | GrowWise', 
+    title: 'Technical Schools 2025 | Career | GrowWise', 
     description: 'Explore why technical education and coding skills are becoming essential investments for career success in 2025.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Technical Schools in 2025: A Smart Investment for Your Career
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -74,9 +78,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>January 15, 2025</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Technical Schools in 2025: A Smart Investment for Your Career
-            </h1>
+          
           </div>
         </section>
 

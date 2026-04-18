@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import Link from 'next/link';
+import { CONTACT_INFO } from '@/lib/constants';
 import FreeAssessmentModal from '@/components/FreeAssessmentModal';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -81,7 +82,7 @@ function EnglishCoursesContent() {
   // Compact contact options for modal
   const contactInfo = [
     { icon: 'Phone', title: 'Call Us', primary: '(925) 456-4606', bgColor: 'bg-[#1F396D]' },
-    { icon: 'Mail', title: 'Email Us', primary: 'connect@thegrowwise.com', bgColor: 'bg-[#F16112]' },
+    { icon: 'Mail', title: 'Email Us', primary: CONTACT_INFO.email, bgColor: 'bg-[#F16112]' },
     { icon: 'MapPin', title: 'Visit Us', primary: '4564 Dublin Blvd, CA', bgColor: 'bg-[#F1894F]' },
     { icon: 'MessageCircle', title: 'Live Chat', primary: 'Instant Support', bgColor: 'bg-[#29335C]' }
   ];
@@ -362,15 +363,14 @@ function EnglishCoursesContent() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
           {/* Main Header Content */}
           <div className="text-center mb-16">
+            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+              {englishCoursesData?.hero?.title || t('hero.title')}
+            </h1>
             <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
               <BookOpen className="w-5 h-5 text-[#F1894F]" />
               <span className="text-gray-700 font-medium">{englishCoursesData?.hero?.badge || t('hero.badge')}</span>
               <Sparkles className="w-5 h-5 text-[#F1894F]" />
             </div>
-            
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              {englishCoursesData?.hero?.title || t('hero.title')}
-            </h1>
             
             <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
               {englishCoursesData?.hero?.subtitle || t('hero.subtitle')}
@@ -1049,7 +1049,7 @@ function EnglishCoursesContent() {
           },
           {
             question: "How much does English tutoring cost at GrowWise?",
-            answer: "Our English courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at (925) 456-4606 or connect@thegrowwise.com for detailed pricing information."
+            answer: `Our English courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at ${CONTACT_INFO.phone} or ${CONTACT_INFO.email} for detailed pricing information.`
           },
           {
             question: "Do you help with college application essays?",

@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Unlock Your Future: The Best Programming Languages for Career Advancement | GrowWise', 
+    title: 'Best Languages for Your Career | GrowWise', 
     description: 'Discover which programming languages offer the best career opportunities and how to choose the right one for your goals.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Unlock Your Future: The Best Programming Languages for Career Advancement
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>4:30 pm</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Unlock Your Future: The Best Programming Languages for Career Advancement
-            </h1>
+          
           </div>
         </section>
 

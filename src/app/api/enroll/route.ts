@@ -395,7 +395,7 @@ function generateUserConfirmationEmailHTML(data: EnrollmentPayload) {
       </div>
 
       <div style="text-align: center; margin: 30px 0;">
-        <a href="https://growwise.com" style="background-color: #1F396D; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
+        <a href="https://growwiseschool.org" style="background-color: #1F396D; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block;">
           Visit Our Website
         </a>
       </div>
@@ -403,7 +403,7 @@ function generateUserConfirmationEmailHTML(data: EnrollmentPayload) {
       <hr style="margin: 30px 0; border: none; border-top: 1px solid #ddd;">
       <p style="color: #666; font-size: 12px; text-align: center;">
         This email was sent from GrowWise Educational Services<br>
-        If you have any questions, please contact us at connect@thegrowwise.com
+        If you have any questions, please contact us at ${CONTACT_INFO.email}
       </p>
     </div>
   `;
@@ -434,8 +434,8 @@ What Happens Next?
 - You'll receive your welcome package
 - We'll set up your learning account
 
-Visit our website: https://growwise.com
+Visit our website: https://growwiseschool.org
 
-If you have any questions, please contact us at connect@thegrowwise.com
+If you have any questions, please contact us at ${CONTACT_INFO.email}
   `;
 }

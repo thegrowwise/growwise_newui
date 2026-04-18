@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { CONTACT_INFO } from '@/lib/constants';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -384,15 +385,14 @@ const MathCoursesPage: React.FC = () => {
         <div className="relative z-10 max-w-7xl mx-auto px-4 lg:px-8 py-16">
           {/* Main Header Content */}
           <div className="text-center mb-16">
+            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
+              {mathCoursesData?.hero?.title || t('hero.title')}
+            </h1>
             <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
               <Calculator className="w-5 h-5 text-[#F1894F]" />
               <span className="text-gray-700 font-medium">{mathCoursesData?.hero?.badge || t('hero.badge')}</span>
               <Sparkles className="w-5 h-5 text-[#F1894F]" />
             </div>
-            
-            <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              {mathCoursesData?.hero?.title || t('hero.title')}
-            </h1>
             
             <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
               {mathCoursesData?.hero?.subtitle || t('hero.subtitle')}
@@ -721,7 +721,7 @@ const MathCoursesPage: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <Mail className="w-4 h-4" />
-                    <span>connect@thegrowwise.com</span>
+                    <span>{CONTACT_INFO.email}</span>
                   </div>
                 </div>
               </div>
@@ -787,7 +787,7 @@ const MathCoursesPage: React.FC = () => {
           },
           {
             question: "How much does math tutoring cost at GrowWise?",
-            answer: "Our math courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at (925) 456-4606 or connect@thegrowwise.com for detailed pricing information."
+            answer: `Our math courses start at $35 per session. Pricing may vary based on the specific program, class size, and duration. We offer flexible scheduling options and packages. Contact us at ${CONTACT_INFO.phone} or ${CONTACT_INFO.email} for detailed pricing information.`
           },
           {
             question: "Do you offer online or in-person math tutoring?",

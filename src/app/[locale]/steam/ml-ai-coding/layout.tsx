@@ -22,7 +22,8 @@ export default async function MLAICodingLayout({
   
   const courseSchema = generateCourseSchema({
     name: "ML/AI Coding Course Dublin CA | Machine Learning & AI for Kids | GrowWise",
-    description: "Learn Machine Learning and Artificial Intelligence coding in Dublin, CA. Hands-on ML/AI projects for K-12 students. Build real AI applications, understand machine learning concepts. Expert instructors, project-based learning. Start your AI journey today!",
+    description:
+      "ML and AI coding in Dublin, CA. Hands-on projects for students. Small classes. Book a free STEAM trial.",
     provider: "GrowWise",
     courseCode: "ML-AI-K12",
     educationalLevel: "K-12",

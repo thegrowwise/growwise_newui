@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'How Coding Skills Empower You to Shape Tomorrow\'s AI Innovations | GrowWise', 
+    title: 'Coding Skills & AI Innovation | GrowWise', 
     description: 'Learn how mastering coding today positions you to be at the forefront of tomorrow\'s AI-driven innovations. Discover the connection between coding and AI development.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              How Coding Skills Empower You to Shape Tomorrow's AI Innovations
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +81,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>4:41 pm</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              How Coding Skills Empower You to Shape Tomorrow's AI Innovations
-            </h1>
+          
           </div>
         </section>
 

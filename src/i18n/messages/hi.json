@@ -72,8 +72,8 @@
     "cta": {
       "title": "Ready to Transform Your Child's Learning?",
       "subtitle": "Book a free assessment and discover personalized learning opportunities",
-      "primaryCta": "Get Started",
-      "secondaryCta": "Contact Us"
+      "primaryCta": "Choose Enrollment Type",
+      "secondaryCta": "Talk to GrowWise"
     }
   },
   "assessment": {
@@ -89,6 +89,8 @@
       "subjects": "Subjects of Interest",
       "mode": "Preferred Learning Mode",
       "schedule": "Preferred Schedule",
+      "preferredDays": "पसंदीदा दिन",
+      "preferredTime": "पसंदीदा समय",
       "notes": "Additional Notes",
       "submit": "Submit Assessment",
       "submitting": "Submitting...",
@@ -113,6 +115,20 @@
       "math": "Math",
       "english": "English",
       "sat": "SAT/ACT"
+    },
+    "days": {
+      "mon": "सोमवार",
+      "tue": "मंगलवार",
+      "wed": "बुधवार",
+      "thu": "गुरुवार",
+      "fri": "शुक्रवार",
+      "sunday": "रविवार"
+    },
+    "timeSlots": {
+      "weekday34": "3:00 PM - 4:00 PM",
+      "weekday45": "4:00 PM - 5:00 PM",
+      "weekday56": "5:00 PM - 6:00 PM",
+      "sunday1112": "11:00 AM - 12:00 PM"
     },
     "trial": {
       "subjects": {
@@ -237,7 +253,7 @@
           "machineLearning": "Machine Learning Algorithms",
           "dataScience": "Data Science & Analytics"
         },
-        "cta": "Learn More"
+        "cta": "मुफ़्त मूल्यांकन बुक करें"
       },
       "gameDev": {
         "title": "Game Development",
@@ -263,8 +279,8 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join hundreds of students who are already building the future with our innovative programs",
-      "primaryCta": "Get Started",
-      "secondaryCta": "Contact Us"
+      "primaryCta": "मुफ़्त मूल्यांकन बुक करें",
+      "secondaryCta": "मुफ़्त शनिवार कार्यशाला में शामिल हों"
     },
     "mlAi": {
       "title": "ML/AI Coding",
@@ -324,7 +340,7 @@
       "cta": {
         "title": "Ready to Build the Future with AI?",
         "subtitle": "Start your journey into artificial intelligence and machine learning today",
-        "primaryCta": "Start Learning",
+        "primaryCta": "मुफ़्त मूल्यांकन बुक करें",
         "secondaryCta": "View Curriculum"
       }
     },

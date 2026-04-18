@@ -45,7 +45,9 @@ const saveCartToStorage = (cartState: CartState) => {
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartState));
     } catch (error) {
-      console.error('Failed to save cart to localStorage:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to save cart to localStorage:', error);
+      }
     }
   }
 };
@@ -58,7 +60,9 @@ const loadCartFromStorage = (): CartState | null => {
         return JSON.parse(savedCart);
       }
     } catch (error) {
-      console.error('Failed to load cart from localStorage:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to load cart from localStorage:', error);
+      }
     }
   }
   return null;
@@ -69,7 +73,9 @@ const clearCartFromStorage = () => {
     try {
       localStorage.removeItem(CART_STORAGE_KEY);
     } catch (error) {
-      console.error('Failed to clear cart from localStorage:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to clear cart from localStorage:', error);
+      }
     }
   }
 };

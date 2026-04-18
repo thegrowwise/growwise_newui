@@ -1,7 +1,8 @@
 import type { CampLandingPage } from "./camp-types";
+import { CONTACT_INFO } from "@/lib/constants";
 
 const FORM_NOTICE =
-  "Submitting this form sends your inquiry to our team (same intake as our site contact form). Final enrollment is confirmed after we reach you. For urgent needs, call (925) 456-4606 or email connect@thegrowwise.com.";
+  `Submitting this form sends your inquiry to our team (same intake as our site contact form). Final enrollment is confirmed after we reach you. For urgent needs, call ${CONTACT_INFO.phone} or email ${CONTACT_INFO.email}.`;
 
 const SHARED_SERVED = [
   { name: "San Ramon", note: "Common commute for camp families" },

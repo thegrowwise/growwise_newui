@@ -1,6 +1,7 @@
 "use client";
 
 import Link from 'next/link';
+import { CONTACT_INFO } from '@/lib/constants';
 import { useTranslations, useLocale } from 'next-intl';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { HelpCircle } from "lucide-react";
@@ -36,7 +37,7 @@ export default function ProgramsPage() {
     },
     {
       question: "Do you offer trial classes or assessments?",
-      answer: "Yes, we offer free academic assessments to help determine the best program fit. Contact us at connect@thegrowwise.com or (925) 456-4606 to schedule your free assessment."
+      answer: `Yes, we offer free academic assessments to help determine the best program fit. Contact us at ${CONTACT_INFO.email} or ${CONTACT_INFO.phone} to schedule your free assessment.`
     }
   ];
 

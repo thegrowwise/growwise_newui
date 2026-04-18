@@ -286,9 +286,9 @@ export default function SearchBar() {
                             {getCategoryIcon(result.category)}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-gray-900 mb-1">
+                            <div className="font-medium text-gray-900 mb-1">
                               {highlightText(result.title, query)}
-                            </h4>
+                            </div>
                             <p className="text-sm text-gray-600 line-clamp-2">
                               {highlightText(result.content, query)}
                             </p>

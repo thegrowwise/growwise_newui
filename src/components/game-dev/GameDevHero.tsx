@@ -16,15 +16,15 @@ export function GameDevHero({ className }: GameDevHeroProps) {
     <div className={cn('bg-transparent', className)}>
       <section className="pt-20 pb-12 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#F16112]/10 text-[#1F396D] ring-1 ring-[#1F396D]/25 text-sm font-bold uppercase tracking-wider mb-6">
-            <Gamepad2 className="w-4 h-4 mr-2 text-[#F16112]" aria-hidden />
-            {t('gameDevPage.hero.badge')}
-          </div>
           <h1 className="text-4xl md:text-6xl font-bold text-[#1F396D] mb-6">
             {t('gameDevPage.hero.headlineLine1')}
             <br />
             <span className="text-gradient-gamedev">{t('gameDevPage.hero.headlineLine2')}</span>
           </h1>
+          <div className="inline-flex items-center justify-center px-4 py-1.5 rounded-full bg-[#F16112]/10 text-[#1F396D] ring-1 ring-[#1F396D]/25 text-sm font-bold uppercase tracking-wider mb-6">
+            <Gamepad2 className="w-4 h-4 mr-2 text-[#F16112]" aria-hidden />
+            {t('gameDevPage.hero.badge')}
+          </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10">
             {t('gameDevPage.hero.subtext')}
           </p>

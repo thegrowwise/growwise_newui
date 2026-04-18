@@ -14,6 +14,8 @@ export interface HeroSlideVM {
   subtitle: string;
   description: string;
   cta: string;
+  secondaryCta?: string;
+  secondaryCtaUrl?: string;
   IconComponent: React.ComponentType<any>;
   bgGradient: string;
   iconColor: string;
@@ -51,7 +53,8 @@ export function HeroSection({
   if (!slides || slides.length === 0) return <SectionError title="No hero slides" message="Please check back later." onRetry={onRetry} />;
   return (
     <section className="relative py-16 px-4 lg:px-8 overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Mobile: skip animated blur orbs — fewer compositing layers / main-thread paint */}
+      <div className="absolute inset-0 overflow-hidden max-md:hidden" aria-hidden>
         <div className="absolute top-20 left-20 w-32 h-32 bg-[#1F396D]/15 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-32 w-48 h-48 bg-[#F16112]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute bottom-32 left-1/3 w-40 h-40 bg-[#F1894F]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
@@ -74,7 +77,7 @@ export function HeroSection({
                       {!(lcpImageInDocument && index === 0) && (
                         <OptimizedImage 
                           src={slide.bgImage} 
-                          alt={slide.title} 
+                          alt={slide.title.replace(/\n/g, ' ')} 
                           fill
                           className="object-cover"
                           style={{ objectFit: 'cover' }}
@@ -86,16 +89,56 @@ export function HeroSection({
                       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
                       <div className="absolute inset-0 backdrop-blur-[0.5px]"></div>
                     </div>
-                    <div className="flex-1 text-center lg:text-left p-10 lg:p-16 relative z-10 lg:max-w-lg">
+                    <div className="flex-1 text-center lg:text-left p-10 lg:p-16 relative z-10 lg:max-w-2xl">
                       <div className={`transform transition-all duration-1000 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-                        <h1 className="text-4xl lg:text-5xl font-bold mb-6 text-white leading-tight">{slide.title}</h1>
-                        <h2 className="text-xl lg:text-2xl mb-6 text-white/95 font-semibold">{slide.subtitle}</h2>
-                        <p className="text-base lg:text-lg mb-8 text-white/85 leading-relaxed">{slide.description}</p>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                          <Button onClick={slide.onClick} className={`${slide.ctaColor} rounded-full px-8 py-4 font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 text-base lg:text-lg backdrop-blur-sm border border-white/20`}>
+                        {isActive ? (
+                          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 text-white leading-[1.15] whitespace-pre-line">
+                            {slide.title}
+                          </h1>
+                        ) : (
+                          <p
+                            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 text-white leading-[1.15] m-0 whitespace-pre-line"
+                            aria-hidden
+                          >
+                            {slide.title}
+                          </p>
+                        )}
+                        {slide.subtitle?.trim() ? (
+                          isActive ? (
+                            <h2 className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 text-white/90 font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                              {slide.subtitle}
+                            </h2>
+                          ) : (
+                            <p
+                              className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 text-white/90 font-medium leading-relaxed max-w-2xl mx-auto lg:mx-0 m-0"
+                              aria-hidden
+                            >
+                              {slide.subtitle}
+                            </p>
+                          )
+                        ) : null}
+                        {slide.description?.trim() ? (
+                          <p className="text-base lg:text-lg mb-8 text-white/85 leading-relaxed">{slide.description}</p>
+                        ) : null}
+                        <div className="flex flex-col sm:flex-row gap-4 flex-wrap justify-center lg:justify-start">
+                          <Button
+                            onClick={slide.onClick}
+                            className={`${slide.ctaColor} rounded-full px-8 py-4 font-bold shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:scale-105 text-base lg:text-lg backdrop-blur-sm border border-white/20`}
+                          >
                             {slide.cta}
                             <ChevronRight className="ml-2 w-5 h-5" />
                           </Button>
+                          {slide.secondaryCta?.trim() && slide.secondaryCtaUrl?.trim() ? (
+                            <Button
+                              asChild
+                              variant="outline"
+                              className="rounded-full px-8 py-4 font-bold text-base lg:text-lg border-2 border-white/80 bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm shadow-lg"
+                            >
+                              <Link href={publicPath(slide.secondaryCtaUrl, locale)} prefetch={false}>
+                                {slide.secondaryCta}
+                              </Link>
+                            </Button>
+                          ) : null}
                         </div>
                         <p className="mt-4 text-sm text-white/85 leading-relaxed max-w-md">
                           <Link href={publicPath('/camps/summer', locale)} className="underline decoration-white/60 hover:text-white">

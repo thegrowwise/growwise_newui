@@ -24,7 +24,8 @@ export default async function WinterCampLayout({
   // Generate Event structured data for Winter Camp 2025
   const eventSchema = generateEventSchema({
     name: "Winter Camp 2025 - Academic & STEAM Programs",
-    description: "Join GrowWise Winter Camp 2025! Academic workshops, STEAM activities, and fun learning experiences. December 22-30, 2025. Enroll now for winter break programs in Dublin, CA.",
+    description:
+      "Winter break workshops in Dublin, CA—Dec 22–30. Academic and STEAM tracks. Reserve a spot before sessions fill.",
     startDate: "2025-12-22T09:00:00-08:00",
     endDate: "2025-12-30T17:00:00-08:00",
     location: {
