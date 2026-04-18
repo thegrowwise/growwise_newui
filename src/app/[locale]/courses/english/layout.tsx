@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
+
+/** Reduces dev static-path worker churn; mitigates `spawn EBADF` with Turbopack on some macOS setups (see `[locale]/[...catchAll]/page.tsx`). */
+export const dynamic = 'force-dynamic'
 import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
@@ -22,7 +25,8 @@ export default async function EnglishCoursesLayout({
   
   const courseSchema = generateCourseSchema({
     name: "English Language Arts Courses - Reading, Writing & Grammar | English Tutoring Dublin CA",
-    description: "Comprehensive English Language Arts courses: reading comprehension, vocabulary development, grammar, mechanics, and essay writing. California Common Core aligned. Expert English tutors in Dublin, CA. K-12 ELA programs with proven results. Small classes, personalized instruction, flexible scheduling.",
+    description:
+      "English and ELA tutoring for grades 1–12 in Dublin, CA. Reading, writing, and grammar in small groups. Book a free assessment.",
     provider: "GrowWise",
     courseCode: "ELA-K12",
     educationalLevel: "K-12",

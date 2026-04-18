@@ -35,9 +35,9 @@ export function ProgramsSection({
         const Icon = program.IconComponent as any;
         return (
           <Card key={program.id} className={`bg-white/35 backdrop-blur-3xl rounded-[32px] shadow-[0px_25px_60px_0px_rgba(31,57,109,0.18)] border-2 border-white/50 transition-all duration-700 cursor-pointer group overflow-hidden relative ring-1 ring-white/30`}>
-            <div className={`absolute inset-0 ${program.bgGradient} opacity-40`}></div>
-            <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/5"></div>
-            <CardContent className="p-8 relative z-10 flex flex-col h-full">
+            <div className={`pointer-events-none absolute inset-0 z-0 ${program.bgGradient} opacity-40`}></div>
+            <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-br from-white/20 via-transparent to-white/5"></div>
+            <CardContent className="p-8 relative z-10 flex flex-col h-full min-h-0">
               <div className="flex items-center gap-4 mb-6">
                 <div className={`p-4 rounded-2xl bg-gradient-to-br ${program.gradient} shadow-[0px_15px_40px_rgba(31,57,109,0.4)] ring-2 ring-white/50 backdrop-blur-sm`}>
                   <Icon className="w-7 h-7 text-white drop-shadow-sm" />
@@ -140,26 +140,35 @@ export function ProgramsSection({
                   );
                 })}
               </div>
-              <div className="mt-8 pt-6">
+              <div className="relative z-[100] mt-auto shrink-0 pt-6">
                 {program.ctaUrl ? (
-                  <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
-                    <Link href={program.ctaUrl}>{program.ctaText || 'Enroll Now'}</Link>
-                  </Button>
+                  <Link
+                    href={publicPath(program.ctaUrl, locale)}
+                    prefetch={false}
+                    className={`relative z-[100] inline-flex min-h-[48px] w-full cursor-pointer touch-manipulation items-center justify-center bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 backdrop-blur-sm border border-white/20 font-medium text-sm`}
+                  >
+                    {program.ctaText || 'Enroll Now'}
+                  </Link>
                 ) : program.href ? (
-                  <Button asChild className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}>
-                    <Link href={program.href}>{program.ctaText || 'Enroll Now'}</Link>
-                  </Button>
+                  <Link
+                    href={publicPath(program.href, locale)}
+                    prefetch={false}
+                    className={`relative z-[100] inline-flex min-h-[48px] w-full cursor-pointer touch-manipulation items-center justify-center bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 backdrop-blur-sm border border-white/20 font-medium text-sm`}
+                  >
+                    {program.ctaText || 'Enroll Now'}
+                  </Link>
                 ) : (
                   <Button 
-                    onClick={() => window.location.href = '/enroll'}
+                    onClick={() => { window.location.href = publicPath('/enroll', locale); }}
                     className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform backdrop-blur-sm border border-white/20`}
                   >
                     {program.ctaText || 'Enroll Now'}
                   </Button>
                 )}
               </div>
-              <div className={`absolute -top-12 -right-12 w-24 h-24 bg-gradient-to-br ${program.gradient} rounded-full opacity-10`} />
-              <div className={`absolute -bottom-8 -left-8 w-20 h-20 bg-gradient-to-br ${program.gradient} rounded-full opacity-5`} />
+              {/* pointer-events-none: decorative orbs were stacking above the CTA and eating clicks */}
+              <div className={`pointer-events-none absolute -top-12 -right-12 z-0 w-24 h-24 bg-gradient-to-br ${program.gradient} rounded-full opacity-10`} />
+              <div className={`pointer-events-none absolute -bottom-8 -left-8 z-0 w-20 h-20 bg-gradient-to-br ${program.gradient} rounded-full opacity-5`} />
             </CardContent>
           </Card>
         );
@@ -169,7 +178,7 @@ export function ProgramsSection({
 
   return (
     <section className="py-20 px-4 lg:px-8 relative overflow-hidden">
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden max-md:hidden" aria-hidden>
         <div className="absolute top-20 left-20 w-32 h-32 bg-[#1F396D]/10 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-40 right-32 w-48 h-48 bg-[#F16112]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute bottom-32 left-1/3 w-40 h-40 bg-[#F1894F]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>

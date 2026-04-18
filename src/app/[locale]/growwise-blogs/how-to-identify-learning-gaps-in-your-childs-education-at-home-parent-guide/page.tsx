@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'How to Identify Learning Gaps in Your Child\'s Education at Home | GrowWise', 
-    description: 'Learn how to spot and address learning gaps to ensure your child stays on track. Research-backed strategies for parents to assess learning gaps at home in Tri-Valley area.',
+    title: 'Spot Learning Gaps at Home | GrowWise', 
+    description:
+      'Spot learning gaps early with simple checks at home—then align support with school expectations in the Tri-Valley.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              How to Identify Learning Gaps in Your Child's Education at Home
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>12:10 am</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              How to Identify Learning Gaps in Your Child's Education at Home
-            </h1>
+          
           </div>
         </section>
 

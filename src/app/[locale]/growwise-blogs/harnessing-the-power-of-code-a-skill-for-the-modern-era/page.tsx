@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Harnessing the Power of Code: A Skill for the Modern Era | GrowWise', 
+    title: 'Code as a Modern Skill | GrowWise', 
     description: 'Explore why coding has become an essential skill in today\'s digital world and how it opens doors to innovation and opportunity.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era', locale, baseUrl)
@@ -57,6 +57,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Harnessing the Power of Code: A Skill for the Modern Era
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -74,9 +78,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>October 15, 2024</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Harnessing the Power of Code: A Skill for the Modern Era
-            </h1>
+          
           </div>
         </section>
 

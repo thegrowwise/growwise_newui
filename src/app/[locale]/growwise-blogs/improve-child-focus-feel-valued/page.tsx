@@ -19,7 +19,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const baseUrl = getCanonicalSiteUrl()
   return { 
     title: '12 Smart & Simple Ways to Improve Your Child\'s Focus | GrowWise', 
-    description: 'Practical strategies to help your child develop better concentration and attention skills. Learn how to support focus through connection, understanding, and simple techniques.',
+    description:
+      'Twelve practical ways to build focus: routines, connection, and small wins—without fighting your child every night.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              12 Smart & Simple Ways to Improve Your Child's Focus
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>11:40 pm</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              12 Smart & Simple Ways to Improve Your Child's Focus
-            </h1>
+          
           </div>
         </section>
 

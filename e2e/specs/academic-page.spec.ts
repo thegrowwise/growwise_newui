@@ -10,8 +10,8 @@ test.describe('Academic landing page', () => {
       page.getByRole('heading', { name: 'Our Academic Programs', exact: true }),
     ).toBeVisible();
 
-    // Opens assessment modal — implemented as a button, not a link
-    await expect(page.getByRole('button', { name: /Book.*Assessment/i })).toBeVisible();
+    // Two CTAs match (hero + bottom); assert at least one is visible
+    await expect(page.getByRole('button', { name: /Book.*Assessment/i }).first()).toBeVisible();
 
     // Hero primary enrollment CTA
     await expect(page.getByRole('button', { name: /Enroll Now/i }).first()).toBeVisible();

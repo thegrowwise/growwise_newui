@@ -2,8 +2,8 @@
  * Testimonials API service for fetching Google Reviews with fallback to default testimonials
  */
 
-import defaultTestimonials from '@/data/defaultTestimonials.json';
 import { BACKEND_URL } from './config';
+import { siteGoogleTrustReviewsAsTestimonialVMs } from './siteGoogleTrustReviews';
 
 export interface TestimonialVM {
   name: string;
@@ -65,7 +65,7 @@ class TestimonialsApiService {
 
   constructor() {
     this.timeout = 10000; // 10 seconds
-    this.defaultTestimonials = defaultTestimonials.testimonials;
+    this.defaultTestimonials = siteGoogleTrustReviewsAsTestimonialVMs();
   }
 
   /**

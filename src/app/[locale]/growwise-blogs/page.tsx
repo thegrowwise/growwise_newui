@@ -20,28 +20,17 @@ export async function generateMetadata({
   const metadata = generateMetadataFromPath('/growwise-blogs', locale)
   const baseMetadata =
     metadata || {
-      title: 'GrowWise Blogs | Tips on Math, English, Coding & STEAM Programs',
+      title: 'GrowWise Blog | Math, English & Coding Tips',
       description:
-        'Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.',
+        'Practical articles on tutoring, English, coding, and STEAM for Dublin and Tri-Valley families.',
     }
 
-  // Paginated pages are crawlable but should not be indexed; canonical points to page 1.
+  // Paginated URLs consolidate to page 1 via canonical; indexable so crawlers align with default metadata.
   if (Number.isFinite(pageNum) && pageNum > 1) {
     return {
       ...baseMetadata,
       alternates: {
         canonical: absoluteSiteUrl('/growwise-blogs', locale, getCanonicalSiteUrl()),
-      },
-      robots: {
-        index: false,
-        follow: true,
-        googleBot: {
-          index: false,
-          follow: true,
-          'max-video-preview': -1,
-          'max-image-preview': 'large',
-          'max-snippet': -1,
-        },
       },
     }
   }
@@ -62,10 +51,10 @@ const blogPosts: BlogPost[] = [
   {
     id: '1',
     category: 'academic',
-    title: 'Why U.S. Kids Are Falling Behind in Math and English — and How Parents Can Help',
+    title: 'US Kids & Core Skills — How Parents Can Help',
     excerpt: 'Understanding the challenges and solutions for improving student performance in core subjects.',
     href: '/growwise-blogs/us-kids-falling-behind-math-english-parent-assessments',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '2',
@@ -73,119 +62,119 @@ const blogPosts: BlogPost[] = [
     title: '12 Smart & Simple Ways to Improve Your Child\'s Focus',
     excerpt: 'Practical strategies to help your child develop better concentration and attention skills.',
     href: '/growwise-blogs/improve-child-focus-feel-valued',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '3',
     category: 'academic',
-    title: 'How to Identify Learning Gaps in Your Child\'s Education at Home',
+    title: 'Spot Learning Gaps at Home',
     excerpt: 'Learn how to spot and address learning gaps to ensure your child stays on track.',
     href: '/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '4',
     category: 'Coding',
-    title: 'How to Choose the Right Summer Camp for Your Child: A Parent\'s Guide',
+    title: 'Choosing the Right Summer Camp (Parents)',
     excerpt: 'A comprehensive guide to selecting the perfect summer camp experience for your child.',
     href: '/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '5',
     category: 'Coding',
-    title: 'How to Go from Roblox Player to Game Developer and Earn Real Robux',
+    title: 'From Roblox Player to Game Developer',
     excerpt: 'Transform your child\'s gaming passion into valuable coding and development skills.',
     href: '/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '6',
     category: 'Coding',
-    title: 'Unlocking Confidence, Independence, and Fun Through Summer Camp',
+    title: 'Summer Camp: Confidence & Fun',
     excerpt: 'Discover how summer camps can help children develop essential life skills while having fun.',
     href: '/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '7',
     category: 'Coding',
-    title: 'Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise',
+    title: 'Coding & Tech Skills',
     excerpt: 'Discover how coding skills can transform your future and open doors to exciting career opportunities in technology.',
     href: '/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '8',
     category: 'Coding',
-    title: 'How Coding Skills Empower You to Shape Tomorrow\'s AI Innovations',
+    title: 'Coding Skills & Tomorrow’s AI',
     excerpt: 'Learn how mastering coding today positions you to be at the forefront of tomorrow\'s AI-driven innovations.',
     href: '/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '9',
     category: 'Coding',
-    title: 'Why Learning Python is Your Fast Track to In-Demand Job Offers',
+    title: 'Python for In-Demand Careers',
     excerpt: 'Python is one of the most sought-after programming languages. Discover why it\'s the key to unlocking career opportunities.',
     href: '/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '10',
     category: 'Coding',
-    title: 'Technical Schools in 2025: A Smart Investment for Your Career',
+    title: 'Technical Schools in 2025',
     excerpt: 'Explore why technical education and coding skills are becoming essential investments for career success in 2025.',
     href: '/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '11',
     category: 'Coding',
-    title: 'How Programming Skills on a Resume Will Open More Career Opportunities',
+    title: 'Programming Skills on a Resume',
     excerpt: 'Programming skills are increasingly valuable across industries. Learn how they can enhance your resume and career prospects.',
     href: '/growwise-blogs/how-programming-skills-on-a-resume-will-open-more-career-opportunities',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '12',
     category: 'Coding',
-    title: 'Why Learning Java Coding is Impressive on Your LinkedIn Profile',
+    title: 'Java Skills on LinkedIn',
     excerpt: 'Java remains a powerful and widely-used programming language. See how Java skills can make your LinkedIn profile stand out.',
     href: '/growwise-blogs/why-learning-java-coding-is-impressive-on-your-linkedin-profile',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '13',
     category: 'Coding',
-    title: 'Unlock Your Future: The Best Programming Languages for Career Advancement',
+    title: 'Best Programming Languages for Careers',
     excerpt: 'Discover which programming languages offer the best career opportunities and how to choose the right one for your goals.',
     href: '/growwise-blogs/unlock-your-future-the-best-programming-languages-for-career-advancement',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '14',
     category: 'Coding',
-    title: 'The Advantage in Choosing the Right Coding Class for Your Child',
+    title: 'Choosing the Right Coding Class',
     excerpt: 'Learn how selecting the right coding class can set your child up for success in technology and future career opportunities.',
     href: '/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '15',
     category: 'Coding',
-    title: 'Harnessing the Power of Code: A Skill for the Modern Era',
+    title: 'Code as a Modern Skill',
     excerpt: 'Explore why coding has become an essential skill in today\'s digital world and how it opens doors to innovation and opportunity.',
     href: '/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   },
   {
     id: '16',
     category: 'Coding',
-    title: 'The Importance of Coding for Kids: Building Future-Ready Skills',
+    title: 'Coding for Kids — Future-Ready Skills',
     excerpt: 'Understand why coding education for children is crucial for developing problem-solving skills and preparing them for the future.',
     href: '/growwise-blogs/the-importance-of-coding-for-kids-building-future-ready-skills',
-    readMore: 'Read More »'
+    readMore: 'Read article »'
   }
 ];
 

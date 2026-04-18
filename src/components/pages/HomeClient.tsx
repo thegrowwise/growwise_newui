@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { RootState } from '@/store';
 import { fetchHomeStart, fetchHomeSuccess } from '@/store/slices/homeSlice';
 import { getIconComponent } from '@/lib/iconMap';
 import { useChatbot } from '@/contexts/ChatbotContext';
 import { HeroSection } from '../sections/home/HeroSection';
 import { useRouter } from 'next/navigation';
+import { publicPath } from '@/lib/publicPath';
 import {
   HeroSkeleton,
   StatisticsSkeleton,
@@ -20,37 +21,37 @@ import {
 } from '../ui/loading-skeletons';
 import type { HomeContentData } from '@/store/slices/homeSlice';
 
+// SSR enabled (default): below-the-fold HTML ships in first response — better mobile parse/paint than client-only chunks.
 const PopularCoursesSection = dynamic(
   () =>
     import('../sections/home/PopularCoursesSection').then((m) => ({
       default: m.PopularCoursesSection,
     })),
-  { ssr: false, loading: () => <PopularCoursesSkeleton /> }
+  { loading: () => <PopularCoursesSkeleton /> }
 );
 
 const StatisticsSection = dynamic(
   () => import('../sections/home/StatisticsSection').then((m) => ({ default: m.StatisticsSection })),
-  { ssr: false, loading: () => <StatisticsSkeleton /> }
+  { loading: () => <StatisticsSkeleton /> }
 );
 
 const ProgramsSection = dynamic(
   () => import('../sections/home/ProgramsSection').then((m) => ({ default: m.ProgramsSection })),
-  { ssr: false, loading: () => <ProgramsSkeleton /> }
+  { loading: () => <ProgramsSkeleton /> }
 );
 
 const WhyChooseSection = dynamic(
   () => import('../sections/home/WhyChooseSection').then((m) => ({ default: m.WhyChooseSection })),
-  { ssr: false, loading: () => <WhyChooseSkeleton /> }
+  { loading: () => <WhyChooseSkeleton /> }
 );
 
 const TestimonialsSection = dynamic(
   () => import('../sections/home/TestimonialsSection').then((m) => ({ default: m.TestimonialsSection })),
-  { ssr: false, loading: () => <TestimonialsSkeleton /> }
+  { loading: () => <TestimonialsSkeleton /> }
 );
 
-const CtaSection = dynamic(
-  () => import('../sections/home/CtaSection').then((m) => ({ default: m.CtaSection })),
-  { ssr: false }
+const CtaSection = dynamic(() =>
+  import('../sections/home/CtaSection').then((m) => ({ default: m.CtaSection })),
 );
 
 const FreeAssessmentModal = dynamic(
@@ -71,6 +72,7 @@ export default function HomeClient({ initialData }: HomeClientProps) {
   const t = useTranslations();
   const dispatch = useDispatch();
   const router = useRouter();
+  const locale = useLocale();
   const storeState = useSelector((s: RootState) => s.home);
   const { data: storeData, loading: storeLoading, error } = storeState;
 
@@ -80,11 +82,14 @@ export default function HomeClient({ initialData }: HomeClientProps) {
 
   const [isAssessmentModalOpen, setIsAssessmentModalOpen] = useState(false);
   const [isSTEAMTrialModalOpen, setIsSTEAMTrialModalOpen] = useState(false);
-  const openAssessmentModal = () => setIsAssessmentModalOpen(true);
-  const closeAssessmentModal = () => setIsAssessmentModalOpen(false);
-  const openSTEAMTrialModal = () => setIsSTEAMTrialModalOpen(true);
-  const closeSTEAMTrialModal = () => setIsSTEAMTrialModalOpen(false);
-  const navigateToEnrollForm = () => router.push('/enroll-academic#enrollment-form');
+  const openAssessmentModal = useCallback(() => setIsAssessmentModalOpen(true), []);
+  const closeAssessmentModal = useCallback(() => setIsAssessmentModalOpen(false), []);
+  const openSTEAMTrialModal = useCallback(() => setIsSTEAMTrialModalOpen(true), []);
+  const closeSTEAMTrialModal = useCallback(() => setIsSTEAMTrialModalOpen(false), []);
+  const navigateToEnrollForm = useCallback(
+    () => router.push(publicPath('/enroll-academic', locale) + '#enrollment-form'),
+    [router, locale],
+  );
   const { openChatbot } = useChatbot();
 
   const heroSlides = useMemo(
@@ -95,6 +100,8 @@ export default function HomeClient({ initialData }: HomeClientProps) {
         subtitle: s.subtitle,
         description: s.description,
         cta: s.cta,
+        secondaryCta: s.secondaryCta,
+        secondaryCtaUrl: s.secondaryCtaUrl,
         IconComponent: getIconComponent(s.icon),
         bgGradient: s.bgGradient,
         iconColor: s.iconColor,
@@ -109,15 +116,23 @@ export default function HomeClient({ initialData }: HomeClientProps) {
                 ? navigateToEnrollForm
                 : openAssessmentModal,
       })),
-    [data]
+    [data, openAssessmentModal, openSTEAMTrialModal, navigateToEnrollForm]
   );
 
   const popularCourses = useMemo(
     () =>
-      (data?.popularCourses || []).map((c) => ({
-        ...c,
-        IconComponent: getIconComponent(c.icon),
-      })),
+      (data?.popularCourses || []).map((c) => {
+        const raw = typeof c.href === 'string' ? c.href.trim() : '';
+        // ELA / English card is id 4 in mocks; some API payloads omit `href` — keep navigation working.
+        const href =
+          raw ||
+          (c.id === 4 ? '/courses/english' : undefined);
+        return {
+          ...c,
+          href,
+          IconComponent: getIconComponent(c.icon),
+        };
+      }),
     [data]
   );
 

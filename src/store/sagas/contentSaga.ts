@@ -2,12 +2,15 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { fetchContentStart, fetchContentSuccess, fetchContentFailure } from '../slices/contentSlice';
 import { ContentData } from '../slices/contentSlice';
 import { CONTACT_INFO } from '@/lib/constants';
+import { siteGoogleTrustReviewCards } from '@/lib/siteGoogleTrustReviews';
 
 // Mock API function - this can be easily replaced with a real API call
 async function fetchContentAPI(): Promise<ContentData> {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 1000));
-  
+
+  const googleReviews = siteGoogleTrustReviewCards();
+
   // For now, return mock data
   // In production, this would be: return fetch('/api/content').then(res => res.json());
   return {
@@ -46,31 +49,32 @@ async function fetchContentAPI(): Promise<ContentData> {
     ],
     about: {
       title: "About GrowWise",
-      description: "Founded with a vision to revolutionize education, GrowWise School has been at the forefront of innovative learning for over a decade. Our commitment to excellence and personalized attention sets us apart.",
+      description:
+        "GrowWise School offers personalized K-12 and STEAM learning in Dublin, CA—with expert instructors and programs aligned to local schools.",
       imageUrl: "/images/about-school.jpg"
     },
     testimonials: [
       {
-        id: "1",
-        name: "Sarah Johnson",
-        role: "Parent",
-        content: "GrowWise has transformed my child's learning experience. The teachers are amazing and the personalized approach really works!",
-        avatar: "/images/testimonials/sarah.jpg"
+        id: '1',
+        name: googleReviews[0].name,
+        role: googleReviews[0].role,
+        content: googleReviews[0].content,
+        avatar: '',
       },
       {
-        id: "2",
-        name: "Michael Chen",
-        role: "Parent",
-        content: "The modern facilities and dedicated staff make GrowWise the perfect choice for our family. Highly recommended!",
-        avatar: "/images/testimonials/michael.jpg"
+        id: '2',
+        name: googleReviews[1].name,
+        role: googleReviews[1].role,
+        content: googleReviews[1].content,
+        avatar: '',
       },
       {
-        id: "3",
-        name: "Emily Rodriguez",
-        role: "Alumni",
-        content: "My time at GrowWise prepared me for success in college and beyond. The foundation I received here was invaluable.",
-        avatar: "/images/testimonials/emily.jpg"
-      }
+        id: '3',
+        name: googleReviews[2].name,
+        role: googleReviews[2].role,
+        content: googleReviews[2].content,
+        avatar: '',
+      },
     ],
     contact: {
       title: "Get in Touch",

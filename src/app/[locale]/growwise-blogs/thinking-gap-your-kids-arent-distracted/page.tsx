@@ -18,9 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     locale,
     path: SLUG,
     type: 'article',
-    title: "Your Kids Aren't Distracted. They Were Never Taught How to Think. | GrowWise",
+    title: 'Teaching Kids How to Think | GrowWise',
     description:
-      "A classroom experiment at Fallon Middle School revealed something more troubling than screen addiction — and far more fixable than most parents realize. Learn how to identify a 'thinking gap' and download the free Parent Playbook.",
+      'Spot a “thinking gap” vs. screen time. Practical steps for Tri-Valley parents—plus a free Parent Playbook PDF.',
     keywords:
       'critical thinking for kids, thinking gap, parenting, middle school learning, Dublin CA, analytical thinking, education, screen time, problem solving',
   })
@@ -47,7 +47,7 @@ export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
     '@type': 'BlogPosting',
     headline: "Your Kids Aren't Distracted. They Were Never Taught How to Think.",
     description:
-      "A classroom experiment at Fallon Middle School revealed something more troubling than screen addiction — and far more fixable than most parents realize.",
+      "Fallon Middle School showed a thinking gap—not just screen time. Practical steps for Tri-Valley parents.",
     inLanguage: 'en-US',
     isAccessibleForFree: true,
     mainEntityOfPage: pageUrl,
@@ -86,7 +86,13 @@ export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
           </div>
 
           <div className="relative max-w-4xl mx-auto">
-            <Link href="/growwise-blogs" className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
+              Your Kids Aren&apos;t Distracted.
+              <br />
+              <span className="italic text-[#7EE7E7]">They Were Never Taught How to Think.</span>
+            </h1>
+
+            <Link href="/growwise-blogs" className="inline-flex items-center text-white/80 hover:text-white mb-6 mt-6 transition-colors">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Blogs
             </Link>
@@ -96,12 +102,6 @@ export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
               <span>Opinion &amp; Insight</span>
               <span className="w-9 h-0.5 bg-[#F16112] rounded" />
             </div>
-
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-tight">
-              Your Kids Aren&apos;t Distracted.
-              <br />
-              <span className="italic text-[#7EE7E7]">They Were Never Taught How to Think.</span>
-            </h1>
 
             <p className="mt-6 text-base md:text-lg text-white/80 italic max-w-3xl">
               A classroom experiment at Fallon Middle School revealed something more troubling than screen addiction — and far more fixable than most parents realize.

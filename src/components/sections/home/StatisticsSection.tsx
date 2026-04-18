@@ -19,11 +19,11 @@ export function StatisticsSection({ title, subtitle, stats, error, onRetry }: { 
     <section id="stats-section" className="py-20 px-4 lg:px-8 relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/3 backdrop-blur-[0.5px]"></div>
-        <div className="absolute top-20 left-10 w-40 h-40 bg-[#1F396D]/15 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-56 h-56 bg-[#F16112]/18 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-1/3 w-48 h-48 bg-[#F1894F]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute bottom-40 right-1/4 w-32 h-32 bg-[#1F396D]/12 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '6s' }}></div>
-        <div className="absolute top-1/2 left-1/2 w-20 h-20 bg-[#F1894F]/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: '8s' }}></div>
+        <div className="max-md:hidden absolute top-20 left-10 w-40 h-40 bg-[#1F396D]/15 rounded-full blur-3xl animate-pulse" aria-hidden></div>
+        <div className="max-md:hidden absolute top-40 right-20 w-56 h-56 bg-[#F16112]/18 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} aria-hidden></div>
+        <div className="max-md:hidden absolute bottom-20 left-1/3 w-48 h-48 bg-[#F1894F]/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} aria-hidden></div>
+        <div className="max-md:hidden absolute bottom-40 right-1/4 w-32 h-32 bg-[#1F396D]/12 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '6s' }} aria-hidden></div>
+        <div className="max-md:hidden absolute top-1/2 left-1/2 w-20 h-20 bg-[#F1894F]/10 rounded-full blur-xl animate-pulse" style={{ animationDelay: '8s' }} aria-hidden></div>
       </div>
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="text-center mb-16">

@@ -1,13 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useTranslations, useLocale } from 'next-intl';
+import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import STEAMTrialModal from '@/components/ui/STEAMTrialModal';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
   ChevronRight, 
   Code, 
@@ -39,8 +37,7 @@ import {
   Facebook,
   Twitter,
   Instagram,
-  Linkedin,
-  X
+  Linkedin
 } from 'lucide-react';
 import { publicPath } from '@/lib/publicPath';
 
@@ -69,11 +66,8 @@ const ImageWithFallback: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = (
 };
 
 export default function SteamPage() {
-  const t = useTranslations('steam');
   const locale = useLocale();
   const [hoveredProgram, setHoveredProgram] = useState<string | null>(null);
-  const [isExploreModalOpen, setIsExploreModalOpen] = useState(false);
-  const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
 
   const createLocaleUrl = (path: string) => publicPath(path, locale);
 
@@ -359,15 +353,15 @@ export default function SteamPage() {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <Badge className="bg-[#F16112] text-white mb-6 px-6 py-2 rounded-full">
-              STEAM PROGRAMS
-            </Badge>
             <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
               Science, Technology, Engineering, 
               <span className="block bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">
                 Arts & Mathematics
               </span>
             </h1>
+            <Badge className="bg-[#F16112] text-white mb-6 px-6 py-2 rounded-full">
+              STEAM PROGRAMS
+            </Badge>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, 
               our programs combine creativity with cutting-edge technology.
@@ -393,15 +387,22 @@ export default function SteamPage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 <div className="absolute bottom-8 left-8 right-8">
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button 
-                      onClick={() => setIsExploreModalOpen(true)}
+                    <Button
+                      asChild
                       className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                     >
-                      Explore Programs
-                      <ChevronRight className="ml-2 w-5 h-5" />
+                      <Link href={createLocaleUrl('/book-assessment')}>
+                        Book Free Assessment
+                        <ChevronRight className="ml-2 w-5 h-5" />
+                      </Link>
                     </Button>
-                    <Button onClick={() => setIsTrialModalOpen(true)} className="bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-4 rounded-full transition-all duration-300">
-                      Book Free Trial
+                    <Button
+                      asChild
+                      className="bg-white/20 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-8 py-4 rounded-full transition-all duration-300"
+                    >
+                      <Link href={createLocaleUrl('/workshop-calendar')}>
+                        Join Free Saturday Workshop
+                      </Link>
                     </Button>
                   </div>
                 </div>
@@ -469,7 +470,7 @@ export default function SteamPage() {
                       <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
                         isHovered ? 'scale-105 shadow-xl' : ''
                       }`}>
-                        Start Learning
+                        Book Free Assessment
                         <ChevronRight className="ml-2 w-5 h-5" />
                       </Button>
                     </Link>
@@ -554,7 +555,7 @@ export default function SteamPage() {
                       <Button className={`w-full bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
                         isHovered ? 'scale-105 shadow-xl' : ''
                       }`}>
-                        Start Learning
+                        Book Free Assessment
                         <ChevronRight className="ml-2 w-5 h-5" />
                       </Button>
                     </Link>
@@ -816,175 +817,25 @@ export default function SteamPage() {
             Join our STEAM programs and develop the skills that will shape tomorrow's world.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-              Start Your Journey
-              <ChevronRight className="ml-2 w-5 h-5" />
+            <Button
+              asChild
+              className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            >
+              <Link href={createLocaleUrl('/book-assessment')}>
+                Book Free Assessment
+                <ChevronRight className="ml-2 w-5 h-5" />
+              </Link>
             </Button>
-            <Button onClick={() => setIsTrialModalOpen(true)} className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105">
-              Book Free Trial
+            <Button
+              asChild
+              className="bg-white/10 backdrop-blur-sm border-2 border-white text-white hover:bg-white hover:text-[#1F396D] px-10 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105"
+            >
+              <Link href={createLocaleUrl('/workshop-calendar')}>Join Free Saturday Workshop</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Explore Programs Modal */}
-      <Dialog open={isExploreModalOpen} onOpenChange={setIsExploreModalOpen}>
-        <DialogContent className="bg-white/90 backdrop-blur-3xl border-2 border-white/60 shadow-[0px_40px_120px_rgba(31,57,109,0.3)] rounded-[32px] max-w-2xl p-0 overflow-hidden ring-1 ring-white/30">
-          {/* Enhanced Background gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/8 via-transparent to-[#F16112]/8"></div>
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 via-transparent to-white/5"></div>
-          
-          {/* Custom Close Button */}
-          <button
-            onClick={() => setIsExploreModalOpen(false)}
-            className="absolute top-4 right-4 z-20 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/60 group"
-          >
-            <X className="w-4 h-4 text-gray-600 group-hover:text-gray-800" />
-          </button>
-          
-          <div className="relative z-10 p-8">
-            <DialogHeader className="text-center mb-8">
-              <DialogTitle className="text-3xl font-bold text-gray-900 mb-4">
-                Choose Your <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">STEAM Path</span>
-              </DialogTitle>
-              <DialogDescription className="text-lg text-gray-600 leading-relaxed">
-                Select the program that matches your interests and start your journey into the future of technology
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* ML/AI Coding Option */}
-              <Card 
-                className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full"
-              >
-                {/* Enhanced Background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1F396D]/10 to-[#F16112]/15 opacity-60"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
-                
-                <CardContent className="p-8 text-center flex flex-col items-center justify-between relative z-10 h-full">
-                  <div className="flex flex-col items-center">
-                    {/* Ultra Glass Icon */}
-                    <div className="mb-6 flex justify-center">
-                      <div className="w-20 h-20 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-[0px_15px_40px_rgba(255,255,255,0.4)] border-2 border-white/60 group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/30">
-                        <Brain className="w-10 h-10 text-[#1F396D] drop-shadow-sm" />
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#1F396D] transition-colors">
-                      ML/AI Coding
-                    </h3>
-                    
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      Explore artificial intelligence and machine learning concepts for the future
-                    </p>
-                    
-                    {/* Features */}
-                    <div className="space-y-2 mb-6 text-left w-full">
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-[#1F396D] flex-shrink-0" />
-                        <span className="text-sm text-gray-700">AI Fundamentals</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-[#1F396D] flex-shrink-0" />
-                        <span className="text-sm text-gray-700">Prompt Engineering</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-[#1F396D] flex-shrink-0" />
-                        <span className="text-sm text-gray-700">Machine Learning</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Enhanced CTA Button */}
-                  <Link 
-                    href={createLocaleUrl('/steam/ml-ai-coding')} 
-                    className="w-full mt-auto"
-                    onClick={() => setIsExploreModalOpen(false)}
-                  >
-                    <Button className="w-full bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:from-[#F16112] hover:to-[#1F396D] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20">
-                      View Courses
-                      <ChevronRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-
-              {/* Game Development Option */}
-              <Card 
-                className="bg-white/40 backdrop-blur-2xl border-2 border-white/50 rounded-[24px] shadow-[0px_20px_50px_rgba(255,255,255,0.3)] hover:shadow-[0px_30px_80px_rgba(255,255,255,0.4)] transition-all duration-500 cursor-pointer group hover:scale-105 transform overflow-hidden relative ring-1 ring-white/40 h-full"
-              >
-                {/* Enhanced Background gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#F16112]/10 to-[#F1894F]/15 opacity-60"></div>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-white/10"></div>
-                
-                <CardContent className="p-8 text-center flex flex-col items-center justify-between relative z-10 h-full">
-                  <div className="flex flex-col items-center">
-                    {/* Ultra Glass Icon */}
-                    <div className="mb-6 flex justify-center">
-                      <div className="w-20 h-20 bg-white/50 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-[0px_15px_40px_rgba(255,255,255,0.4)] border-2 border-white/60 group-hover:scale-110 transition-transform duration-300 ring-1 ring-white/30">
-                        <Gamepad2 className="w-10 h-10 text-[#F16112] drop-shadow-sm" />
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#F16112] transition-colors">
-                      Game Development
-                    </h3>
-                    
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      Create games with Roblox, Scratch, and Unity using industry-standard tools
-                    </p>
-                    
-                    {/* Features */}
-                    <div className="space-y-2 mb-6 text-left w-full">
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-[#F16112] flex-shrink-0" />
-                        <span className="text-sm text-gray-700">Roblox Studio</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-[#F16112] flex-shrink-0" />
-                        <span className="text-sm text-gray-700">Scratch Programming</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <CheckCircle className="w-4 h-4 text-[#F16112] flex-shrink-0" />
-                        <span className="text-sm text-gray-700">Unity Engine</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Enhanced CTA Button */}
-                  <Link 
-                    href={createLocaleUrl('/steam/game-development')} 
-                    className="w-full mt-auto"
-                    onClick={() => setIsExploreModalOpen(false)}
-                  >
-                    <Button className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm border border-white/20">
-                      View Courses
-                      <ChevronRight className="ml-2 w-4 h-4" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="text-center mt-8">
-              <p className="text-sm text-gray-500">
-                Not sure which path to choose? <Button 
-                  variant="ghost" 
-                  className="text-[#F16112] font-medium hover:underline p-0 h-auto"
-                  onClick={() => setIsExploreModalOpen(false)}
-                >
-                  Contact us for guidance
-                </Button>
-              </p>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <STEAMTrialModal isOpen={isTrialModalOpen} onClose={() => setIsTrialModalOpen(false)} />
     </div>
   );
 }

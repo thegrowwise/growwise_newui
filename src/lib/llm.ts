@@ -51,10 +51,10 @@ Services:
 - Competitive pricing (contact for details)
 - Expert instructors and proven results
 
-Testimonials:
-- Sarah Johnson (Parent): "GrowWise transformed my daughter's approach to learning. She went from struggling with math to excelling in advanced courses."
-- Michael Chen (Student): "The STEAM programs opened up a whole new world. I'm now pursuing computer science in college!"
-- Lisa Rodriguez (Parent): "The personalized attention and innovative teaching methods make GrowWise stand out."
+Testimonials (Google reviews, also shown on the summer camp page):
+- Parent (5★): praises patient tutoring, improved confidence/focus, and tailored lessons.
+- Roger Jiang: positive half-day Python camp (Levels 1–2), small classes, Hangman project, prompt feedback.
+- Parent: positive Roblox/coding intro — engaging classes and motivated students.
 
 IMPORTANT: When asked about contact information, ALWAYS provide the exact phone number: ${CONTACT_INFO.phone}, email: ${CONTACT_INFO.email}, and address: ${CONTACT_INFO.address}. Never make up or guess contact information.
 

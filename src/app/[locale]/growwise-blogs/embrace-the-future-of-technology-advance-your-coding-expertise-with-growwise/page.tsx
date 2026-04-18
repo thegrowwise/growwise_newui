@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise | GrowWise', 
-    description: 'Discover how coding skills can transform your future and open doors to exciting career opportunities in technology. AI-powered learning platform for personalized coding education.',
+    title: 'Coding & Tech Skills | GrowWise', 
+    description:
+      'Level up coding with structured paths in Dublin—projects, mentorship, and skills that map to real tech roles.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>9:10 am</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Embrace the Future of Technology: Elevate Your Coding Skills with GrowWise
-            </h1>
+          
           </div>
         </section>
 

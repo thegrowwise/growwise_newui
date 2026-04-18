@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslations } from 'next-intl';
 import { X, CheckCircle, User, GraduationCap, BookOpen, Users, MessageSquare } from 'lucide-react';
@@ -15,11 +15,19 @@ import { Card, CardContent } from "./ui/card";
 import CountryCodeSelector from "./CountryCodeSelector";
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
+import { validatePhoneWithCountryCode } from '@/lib/phoneValidation';
+
+/** Matches `assessmentTypes` value on `src/app/[locale]/book-assessment/page.tsx` for general K–12 intake. */
+const DEFAULT_ASSESSMENT_TYPE = 'Complete Academic Assessment' as const;
 
 interface FreeAssessmentModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+type GradeKey = 'k' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | '11' | '12';
+type WeekdayKey = 'mon' | 'tue' | 'wed' | 'thu' | 'fri';
+type PreferredDay = WeekdayKey | 'sunday' | '';
 
 interface FormData {
   parentName: string;
@@ -27,11 +35,12 @@ interface FormData {
   countryCode: string;
   phone: string;
   studentName: string;
-  grade: string;
+  grade: GradeKey | '';
   schoolDistrict: string;
   subjects: string[];
   mode: string;
-  schedule: string;
+  preferredDay: PreferredDay;
+  preferredTime: string;
   notes: string;
 }
 
@@ -47,20 +56,72 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
     schoolDistrict: '',
     subjects: [],
     mode: '',
-    schedule: '',
+    preferredDay: '',
+    preferredTime: '',
     notes: ''
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [agreeToCommunications, setAgreeToCommunications] = useState(false);
 
-  const grades = [
-    t('assessment.grades.grade1'), t('assessment.grades.grade2'), 
-    t('assessment.grades.grade3'), t('assessment.grades.grade4'), t('assessment.grades.grade5'),
-    t('assessment.grades.grade6'), t('assessment.grades.grade7'), t('assessment.grades.grade8'), 
-    t('assessment.grades.grade9'), t('assessment.grades.grade10'), t('assessment.grades.grade11'), t('assessment.grades.grade12')
-  ];
+  useEffect(() => {
+    if (isOpen) {
+      setSubmitError('');
+    }
+  }, [isOpen]);
+
+  const gradeOptions = useMemo(
+    () =>
+      (
+        [
+          ['k', 'assessment.grades.kindergarten'],
+          ['1', 'assessment.grades.grade1'],
+          ['2', 'assessment.grades.grade2'],
+          ['3', 'assessment.grades.grade3'],
+          ['4', 'assessment.grades.grade4'],
+          ['5', 'assessment.grades.grade5'],
+          ['6', 'assessment.grades.grade6'],
+          ['7', 'assessment.grades.grade7'],
+          ['8', 'assessment.grades.grade8'],
+          ['9', 'assessment.grades.grade9'],
+          ['10', 'assessment.grades.grade10'],
+          ['11', 'assessment.grades.grade11'],
+          ['12', 'assessment.grades.grade12'],
+        ] as const
+      ).map(([key, msg]) => ({ key: key as GradeKey, label: t(msg) })),
+    [t]
+  );
+
+  const weekdayTimeSlots = useMemo(
+    () =>
+      [t('assessment.timeSlots.weekday34'), t('assessment.timeSlots.weekday45'), t('assessment.timeSlots.weekday56')],
+    [t]
+  );
+
+  const sundayAssessmentSlot = useMemo(() => t('assessment.timeSlots.sunday1112'), [t]);
+
+  const dayOptions = useMemo(
+    () =>
+      (
+        [
+          ['mon', 'assessment.days.mon'],
+          ['tue', 'assessment.days.tue'],
+          ['wed', 'assessment.days.wed'],
+          ['thu', 'assessment.days.thu'],
+          ['fri', 'assessment.days.fri'],
+          ['sunday', 'assessment.days.sunday'],
+        ] as const
+      ).map(([value, msg]) => ({ value: value as PreferredDay, label: t(msg) })),
+    [t]
+  );
+
+  const isWeekday = (d: PreferredDay): d is WeekdayKey =>
+    d === 'mon' || d === 'tue' || d === 'wed' || d === 'thu' || d === 'fri';
+
+  const timeSlotsForDay =
+    formData.preferredDay === 'sunday' ? [sundayAssessmentSlot] : isWeekday(formData.preferredDay) ? weekdayTimeSlots : [];
 
   const availableSubjects = [
     t('assessment.subjects.math'), t('assessment.subjects.english'), t('assessment.subjects.sat')
@@ -68,7 +129,16 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
 
   const handleInputChange = (field: keyof FormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value } as FormData));
+  };
+
+  const handlePreferredDayChange = (value: string) => {
+    const day = value as PreferredDay;
+    setFormData((prev) => ({
+      ...prev,
+      preferredDay: day,
+      preferredTime: day === 'sunday' ? sundayAssessmentSlot : '',
+    }));
   };
 
   const handleSubjectChange = (subject: string, checked: boolean) => {
@@ -82,13 +152,70 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.grade || !formData.preferredDay || !formData.preferredTime || !formData.mode.trim()) {
+      return;
+    }
+    setSubmitError('');
+
+    const phoneValidation = validatePhoneWithCountryCode(formData.countryCode, formData.phone);
+    if (!phoneValidation.isValid) {
+      setSubmitError(phoneValidation.errorMessage || 'Please enter a valid phone number.');
+      return;
+    }
+
+    const dayLabel =
+      dayOptions.find((d) => d.value === formData.preferredDay)?.label ?? String(formData.preferredDay);
+    const schedule = `${dayLabel} — ${formData.preferredTime}`;
+    const gradeLabel =
+      gradeOptions.find((o) => o.key === formData.grade)?.label ?? String(formData.grade);
+
+    const notesParts: string[] = [];
+    if (formData.schoolDistrict.trim()) {
+      notesParts.push(`School district: ${formData.schoolDistrict.trim()}`);
+    }
+    if (formData.notes.trim()) {
+      notesParts.push(formData.notes.trim());
+    }
+    const notesCombined = notesParts.join('\n\n');
+
+    const payload = {
+      parentName: formData.parentName.trim(),
+      email: formData.email.trim(),
+      countryCode: formData.countryCode.trim(),
+      phone: phoneValidation.e164 ?? formData.phone.trim(),
+      studentName: formData.studentName.trim(),
+      grade: gradeLabel,
+      subjects: formData.subjects,
+      assessmentType: DEFAULT_ASSESSMENT_TYPE,
+      mode: formData.mode.trim(),
+      schedule,
+      notes: notesCombined,
+    };
+
     setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/assessment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result: { success?: boolean; error?: string; message?: string } = await response.json();
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+      if (!response.ok) {
+        setSubmitError(result.error || result.message || `Request failed (${response.status})`);
+        return;
+      }
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      if (result.success) {
+        setIsSubmitted(true);
+      } else {
+        setSubmitError(result.error || 'Failed to submit assessment booking.');
+      }
+    } catch {
+      setSubmitError('Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetAndClose = () => {
@@ -102,11 +229,13 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
       schoolDistrict: '',
       subjects: [],
       mode: '',
-      schedule: '',
+      preferredDay: '',
+      preferredTime: '',
       notes: ''
     });
     setIsSubmitted(false);
     setIsSubmitting(false);
+    setSubmitError('');
     setAgreeToCommunications(false);
     onClose();
   };
@@ -217,14 +346,20 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
                         <div className="space-y-2">
                           <Label htmlFor="grade">{t('assessment.form.grade')} *</Label>
-                          <Select onValueChange={(value) => handleInputChange('grade', value)} required>
-                            <SelectTrigger className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors">
+                          <Select
+                            value={formData.grade || undefined}
+                            onValueChange={(value) => handleInputChange('grade', value)}
+                          >
+                            <SelectTrigger
+                              id="grade"
+                              className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors"
+                            >
                               <SelectValue placeholder={t('assessment.form.grade')} />
                             </SelectTrigger>
                             <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl">
-                              {grades.map((grade) => (
-                                <SelectItem key={grade} value={grade} className="hover:bg-[#F16112]/10">
-                                  {grade}
+                              {gradeOptions.map(({ key, label }) => (
+                                <SelectItem key={key} value={key} className="hover:bg-[#F16112]/10">
+                                  {label}
                                 </SelectItem>
                               ))}
                             </SelectContent>
@@ -297,49 +432,50 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                           </RadioGroup>
                         </div>
 
-                        <div className="space-y-3">
-                          <Label className="text-base font-medium">Preferred Days/Time *</Label>
-                          <RadioGroup
-                            value={formData.schedule}
-                            onValueChange={(value) => handleInputChange('schedule', value)}
-                            className="space-y-3"
-                          >
-                            {[
-                              {
-                                key: 'weekdaysAfterSchool',
-                                label: 'Weekdays After School',
-                                timeSlots: ['3:00 PM - 4:00 PM', '4:00 PM - 5:00 PM', '5:00 PM - 6:00 PM']
-                              },
-                              {
-                                key: 'weekendsMorning',
-                                label: 'Weekend Morning',
-                                timeSlots: ['10:00 AM - 11:00 AM', '11:00 AM - 12:00 PM']
-                              },
-                              {
-                                key: 'weekendsAfternoon',
-                                label: 'Weekend Afternoon',
-                                timeSlots: ['2:00 PM - 3:00 PM', '3:00 PM - 4:00 PM']
-                              }
-                            ].map((dayGroup) => (
-                              <div key={dayGroup.key} className="space-y-2">
-                                <h4 className="font-medium text-gray-700 text-sm">{dayGroup.label}</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                                  {dayGroup.timeSlots.map((timeSlot) => (
-                                    <div key={timeSlot} className="flex items-center space-x-2">
-                                      <RadioGroupItem
-                                        value={`${dayGroup.key}-${timeSlot}`}
-                                        id={`${dayGroup.key}-${timeSlot}`}
-                                        className="border-2 border-gray-300 text-[#F16112]"
-                                      />
-                                      <Label htmlFor={`${dayGroup.key}-${timeSlot}`} className="cursor-pointer text-sm">
-                                        {timeSlot}
-                                      </Label>
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                          </RadioGroup>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="preferred-day">{t('assessment.form.preferredDays')} *</Label>
+                            <Select
+                              value={formData.preferredDay || undefined}
+                              onValueChange={handlePreferredDayChange}
+                            >
+                              <SelectTrigger
+                                id="preferred-day"
+                                className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors"
+                              >
+                                <SelectValue placeholder={t('assessment.form.preferredDays')} />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl">
+                                {dayOptions.map(({ value, label }) => (
+                                  <SelectItem key={value} value={value}>
+                                    {label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="preferred-time">{t('assessment.form.preferredTime')} *</Label>
+                            <Select
+                              value={formData.preferredTime || undefined}
+                              onValueChange={(value) => handleInputChange('preferredTime', value)}
+                              disabled={!formData.preferredDay || formData.preferredDay === 'sunday'}
+                            >
+                              <SelectTrigger
+                                id="preferred-time"
+                                className="bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-xl focus:border-[#F16112] transition-colors disabled:opacity-60"
+                              >
+                                <SelectValue placeholder={t('assessment.form.preferredTime')} />
+                              </SelectTrigger>
+                              <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-xl">
+                                {timeSlotsForDay.map((slot) => (
+                                  <SelectItem key={slot} value={slot} className="hover:bg-[#F16112]/10">
+                                    {slot}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -371,10 +507,24 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                       variant="compact"
                     />
 
+                    {submitError ? (
+                      <p className="text-sm text-red-600" role="alert">
+                        {submitError}
+                      </p>
+                    ) : null}
+
                     <div className="pt-6">
                       <Button
                         type="submit"
-                        disabled={isSubmitting || !agreeToCommunications}
+                        disabled={
+                          isSubmitting ||
+                          !agreeToCommunications ||
+                          !formData.grade ||
+                          !formData.preferredDay ||
+                          !formData.preferredTime ||
+                          !formData.mode.trim() ||
+                          !formData.schoolDistrict.trim()
+                        }
                         className="w-full bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white rounded-xl py-4 font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-[1.02] text-lg"
                       >
                         {isSubmitting ? (

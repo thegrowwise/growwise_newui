@@ -29,6 +29,7 @@ import { cn } from '@/lib/utils';
 import { validatePhoneWithCountryCode, getPhonePlaceholder, getCallingCode, DIAL_CODE_TO_ISO2 } from '@/lib/phoneValidation';
 import { getRecaptchaToken } from '@/lib/recaptcha';
 import { publicPath } from '@/lib/publicPath';
+import { siteGoogleTrustReviewCards } from '@/lib/siteGoogleTrustReviews';
 
 interface FormData {
   parentName: string;
@@ -340,11 +341,7 @@ export default function BookAssessmentPage() {
   //   { number: '4', title: 'Plan Your Path', description: 'Schedule a consultation to discuss next steps', icon: Lightbulb, color: 'from-[#F1894F] to-[#1F396D]' }
   // ];
 
-  const testimonials = [
-    { name: 'Sarah Johnson', role: 'Parent of 5th Grader', content: 'The assessment was incredibly thorough and helped us identify exactly where our daughter needed support. Highly recommend!', rating: 5 },
-    { name: 'Michael Chen', role: 'Parent of 8th Grader', content: "Outstanding service! The detailed report gave us a clear roadmap for our son's academic improvement.", rating: 5 },
-    { name: 'Emily Rodriguez', role: 'Parent of 3rd Grader', content: 'The evaluators were professional and made my child feel comfortable. The insights were invaluable.', rating: 5 }
-  ];
+  const testimonials = useMemo(() => siteGoogleTrustReviewCards(), []);
 
   // const benefits = [
   //   { icon: Clock, text: 'Flexible scheduling' },
@@ -832,7 +829,7 @@ export default function BookAssessmentPage() {
           <div className="text-center mb-16">
             <Badge className="mb-4 bg-gradient-to-r from-[#1F396D] to-[#F16112] text-white border-0 px-6 py-2">Parent Reviews</Badge>
             <h2 className="text-gray-900 mb-4">What Parents Are Saying</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">Hear from families who have benefited from our assessment services</p>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">Real feedback from GrowWise families (Google reviews)</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (

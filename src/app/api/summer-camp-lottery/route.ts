@@ -272,7 +272,7 @@ export async function POST(request: Request) {
         {
           success: false,
           error:
-            'We could not send your confirmation email. Please try again in a few minutes or contact connect@thegrowwise.com.',
+            `We could not send your confirmation email. Please try again in a few minutes or contact ${CONTACT_INFO.email}.`,
         },
         { status: 503 }
       );

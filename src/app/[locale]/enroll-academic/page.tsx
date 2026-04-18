@@ -165,13 +165,13 @@ export default function EnrollAcademicPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
-            <Badge className="mb-6 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-6 py-2">
-              Start Your Academic Journey Today
-            </Badge>
             <h1 className="text-white mb-6 text-4xl lg:text-6xl">
               Enroll Now – <br />
               <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Excellence Awaits</span>
             </h1>
+            <Badge className="mb-6 bg-white/20 backdrop-blur-xl text-white border-2 border-white/30 px-6 py-2">
+              Start Your Academic Journey Today
+            </Badge>
             <p className="text-white/90 max-w-3xl mx-auto text-lg">
               Join thousands of successful students. Register today for our comprehensive academic programs and unlock your child's full potential.
             </p>

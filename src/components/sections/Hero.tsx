@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
 import { ChevronLeft, ChevronRight, BookOpen, Code, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { publicPath } from '@/lib/publicPath';
 import ClientOnly from '@/components/providers/ClientOnly';
 import BookTrialModal from '@/components/ui/BookTrialModal';
 import STEAMTrialModal from '@/components/ui/STEAMTrialModal';
@@ -51,6 +53,7 @@ const heroSlides = [
 
 function HeroCarousel() {
   const router = useRouter();
+  const locale = useLocale();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
   const [isSTEAMTrialModalOpen, setIsSTEAMTrialModalOpen] = useState(false);
@@ -93,7 +96,7 @@ function HeroCarousel() {
   };
 
   const navigateToEnrollForm = () => {
-    router.push('/enroll-academic#enrollment-form');
+    router.push(publicPath('/enroll-academic', locale) + '#enrollment-form');
   };
 
   return (
@@ -131,12 +134,20 @@ function HeroCarousel() {
               {/* Content Side - Optimized for Sleeker Layout */}
               <div className="flex-1 text-center lg:text-left p-8 lg:p-12 relative z-10 lg:max-w-md">
                 <div className={`transform transition-all duration-700 ${isActive ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
-                  <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-white leading-tight">
-                    {slide.title}
-                  </h1>
-                  <h2 className="text-lg lg:text-xl mb-4 text-white/90 font-semibold">
-                    {slide.subtitle}
-                  </h2>
+                  {isActive ? (
+                    <h1 className="text-3xl lg:text-4xl font-bold mb-4 text-white leading-tight">{slide.title}</h1>
+                  ) : (
+                    <p className="text-3xl lg:text-4xl font-bold mb-4 text-white leading-tight m-0" aria-hidden>
+                      {slide.title}
+                    </p>
+                  )}
+                  {isActive ? (
+                    <h2 className="text-lg lg:text-xl mb-4 text-white/90 font-semibold">{slide.subtitle}</h2>
+                  ) : (
+                    <p className="text-lg lg:text-xl mb-4 text-white/90 font-semibold m-0" aria-hidden>
+                      {slide.subtitle}
+                    </p>
+                  )}
                   <p className="text-sm lg:text-base mb-6 text-white/80 leading-relaxed">
                     {slide.description}
                   </p>

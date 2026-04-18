@@ -1,5 +1,8 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
+
+/** Reduces dev static-path worker churn; mitigates `spawn EBADF` with Turbopack on some macOS setups. */
+export const dynamic = 'force-dynamic'
 import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
@@ -22,7 +25,8 @@ export default async function SATPrepLayout({
   
   const courseSchema = generateCourseSchema({
     name: "SAT Prep Course Dublin CA | SAT Test Preparation & Strategies | SAT Tutoring",
-    description: "Top-rated SAT prep course in Dublin, CA. Comprehensive SAT preparation with practice tests, proven strategies, and personalized instruction. Expert SAT tutors help boost your score. Small classes, flexible scheduling. Book your SAT prep course today!",
+    description:
+      "SAT prep in Dublin, CA with practice tests and strategy. Small classes and expert coaches. Book your SAT readiness check.",
     provider: "GrowWise",
     courseCode: "SAT-PREP",
     educationalLevel: "High School",

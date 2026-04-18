@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Why Learning Python is Your Fast Track to In-Demand Job Offers | GrowWise', 
-    description: 'Python is one of the most sought-after programming languages. Discover why it\'s the key to unlocking career opportunities and in-demand job offers.',
+    title: 'Python for Career Growth | GrowWise', 
+    description:
+      'Why Python opens doors: versatile skills, strong hiring demand, and a clear path from first scripts to real projects.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/why-learning-python-is-your-fast-track-to-in-demand-job-offers', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Why Learning Python is Your Fast Track to In-Demand Job Offers
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -74,9 +79,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>March 10, 2025</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Why Learning Python is Your Fast Track to In-Demand Job Offers
-            </h1>
+          
           </div>
         </section>
 

@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'Unlocking Confidence, Independence, and Fun Through Summer Camp | GrowWise', 
-    description: 'Discover how summer camps can help children develop essential life skills while having fun. Build confidence, independence, and social skills through engaging camp experiences.',
+    title: 'Summer Camp: Confidence & Fun | GrowWise', 
+    description:
+      'How structured summer camps build confidence, independence, and social skills—while kids learn through projects they enjoy.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              Unlocking Confidence, Independence, and Fun Through Summer Camp
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -74,9 +79,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>June 15, 2025</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              Unlocking Confidence, Independence, and Fun Through Summer Camp
-            </h1>
+          
           </div>
         </section>
 

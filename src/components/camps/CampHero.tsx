@@ -14,10 +14,10 @@ export function CampHero({ page }: CampHeroProps) {
     <header className={cn("border-b border-slate-200/80", t.heroBg)}>
       <div className="container-7xl py-12 sm:py-16 lg:py-20">
         <div className="max-w-3xl">
-          <p className={cn("text-sm font-semibold tracking-wide uppercase", t.accentText)}>{page.eyebrow}</p>
-          <h1 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-slate-900">
             {page.h1}
           </h1>
+          <p className={cn("mt-3 text-sm font-semibold tracking-wide uppercase", t.accentText)}>{page.eyebrow}</p>
           <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">{page.heroSubtext}</p>
 
           {page.badges && page.badges.length > 0 ? (

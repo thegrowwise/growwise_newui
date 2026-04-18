@@ -18,8 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: 'How to Choose the Right Summer Camp for Your Child: A Parent\'s Guide | GrowWise', 
-    description: 'A comprehensive guide to selecting the perfect summer camp experience for your child. Find camps that match interests, learning goals, and personality.',
+    title: 'Choosing a Summer Camp | Parents | GrowWise', 
+    description:
+      'Pick a summer camp that fits your child: interests, schedule, safety, and learning outcomes—before you pay a deposit.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/how-to-choose-the-right-summer-camp-for-your-child-a-parents-guide', locale, baseUrl)
     }
@@ -57,6 +58,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
             />
           </div>
           <div className="relative max-w-4xl mx-auto z-10">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+              How to Choose the Right Summer Camp for Your Child: A Parent's Guide
+            </h1>
+
             <Link 
               href="/growwise-blogs" 
               className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -77,9 +82,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 <span>1:00 am</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-              How to Choose the Right Summer Camp for Your Child: A Parent's Guide
-            </h1>
+          
           </div>
         </section>
 
