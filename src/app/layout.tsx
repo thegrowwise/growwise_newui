@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { GTMHead, GTMNoScript } from '../components/analytics/GTM';
-import MetaPixel from '../components/analytics/MetaPixel';
+import { ConsentAndAnalytics } from '@/components/analytics/ConsentAndAnalytics';
 import { CartProvider } from '@/components/gw/CartContext';
 
 const inter = Inter({
@@ -32,11 +30,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Trim so hosting/env typos (trailing space/newline) don't break gtm.js?id= requests.
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID?.trim() || "";
-  const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim() || "";
-  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID?.trim() || "";
-
   return (
     <html suppressHydrationWarning lang="en">
       <head>
@@ -48,42 +41,15 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://api.growwiseschool.org" />
-        {/* GTM bootstrap in <head> with beforeInteractive — measurement reliability (Google Tag / advisor guidance). */}
-        {gtmId ? <GTMHead gtmId={gtmId} /> : null}
       </head>
       <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
-        {/* GTM noscript iframe immediately after <body> (Google snippet). Page View + conversions: configure in GTM (e.g. URL contains /checkout/success). */}
-        {gtmId ? <GTMNoScript gtmId={gtmId} /> : null}
         <a href="#main-content" className="absolute -left-[9999px] focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1F396D] focus:text-white focus:rounded-md focus:no-underline">
           Skip to main content
         </a>
-        {/* When gtmId is set, GA4 is expected via the GTM container (GA4 Configuration tag) — not the standalone gtag.js snippet (avoids duplicate hits). */}
-        {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
+        <ConsentAndAnalytics />
         <CartProvider>
           {children}
         </CartProvider>
-        {/* gtag only when GTM is off — lazyOnload avoids competing with LCP (GA third-party default is afterInteractive) */}
-        {!gtmId && gaId ? (
-          <>
-            <Script
-              id="_next-ga-init"
-              strategy="lazyOnload"
-              dangerouslySetInnerHTML={{
-                __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${gaId}');
-                `,
-              }}
-            />
-            <Script
-              id="_next-ga"
-              strategy="lazyOnload"
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-            />
-          </>
-        ) : null}
       </body>
     </html>
   );
