@@ -14,6 +14,14 @@ export default function robots(): MetadataRoute.Robots {
           '/checkout/',
           '/admin/',
           '/*.json$',
+          // Filter/pagination query param variants — these are correctly canonicalised to
+          // their base pages, but blocking crawl prevents crawl budget waste.
+          '/*?grade=*',
+          '/*?type=*',
+          '/*?level=*',
+          '/*?alignment=*',
+          '/*?workshop=*',
+          '/*?page=*',
         ],
       },
     ],

@@ -225,15 +225,34 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
       'workshop calendar, free workshops, Saturday workshops, reading workshop, math olympiad, scratch coding, AI studio, parent webinar, Dublin CA',
     path: '/workshop-calendar',
   },
+
+  '/privacy-policy': {
+    title: 'Privacy Policy | GrowWise',
+    description:
+      'Read the GrowWise privacy policy. Learn how we collect, use, and protect your personal information.',
+    keywords: 'GrowWise privacy policy, data protection, personal information',
+    path: '/privacy-policy',
+  },
+
+  '/terms-conditions': {
+    title: 'Terms & Conditions | GrowWise',
+    description:
+      'Read the GrowWise terms and conditions governing use of our website, programs, and services.',
+    keywords: 'GrowWise terms conditions, terms of service, website terms',
+    path: '/terms-conditions',
+  },
 }
 
 /**
  * Get metadata configuration for a given path
  */
 export function getMetadataConfig(path: string): PageMetadataConfig | null {
-  const normalizedPath = path === '' || path === '/' ? '/' : path.replace(/^\/+|\/+$/g, '')
-  const lookupPath = normalizedPath === '' ? '/' : `/${normalizedPath}`
-
+  // Normalize: empty string or "/" → lookup "/"; other paths strip leading/trailing slashes then prepend one
+  if (path === '' || path === '/') {
+    return metadataConfig['/'] || null
+  }
+  const stripped = path.replace(/^\/+|\/+$/g, '')
+  const lookupPath = stripped === '' ? '/' : `/${stripped}`
   return metadataConfig[lookupPath] || null
 }
 

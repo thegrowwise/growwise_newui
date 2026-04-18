@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'How to Go from Roblox Player to Game Developer', url: absoluteSiteUrl('/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/how-to-go-from-roblox-player-to-game-developer-and-earn-real-robux', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'How to Go from Roblox Player to Game Developer',
+    description: "Transform your child's gaming passion into valuable coding and development skills. Learn Roblox game development and turn screen time into productive skill time.",
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

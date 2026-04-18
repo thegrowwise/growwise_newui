@@ -12,7 +12,9 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from "./ui/alert-dialog";
-import { GraduationCap, Calculator, TrendingUp, Award, BookOpen, CheckCircle, Clock, Users, Target, Brain, Sparkles, Eye, ChevronRight, Star, ShoppingCart, ArrowRight, Filter, X, UserCheck, Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { GraduationCap, Calculator, TrendingUp, Award, BookOpen, CheckCircle, Clock, Users, Target, Brain, Sparkles, Eye, ChevronRight, Star, ShoppingCart, ArrowRight, Filter, X, UserCheck, Phone, Mail, MapPin, MessageCircle, HelpCircle } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./ui/accordion";
+import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 import { useCart } from './gw/CartContext';
 import { useChatbot } from '../contexts/ChatbotContext';
 import FreeAssessmentModal from './FreeAssessmentModal';
@@ -20,6 +22,21 @@ import { getIconComponent } from '@/lib/iconMap';
 import { RelatedContent } from './seo/RelatedContent';
 import { useLocale } from 'next-intl';
 import { publicPath } from '@/lib/publicPath';
+
+const HS_MATH_FAQS = [
+  {
+    question: "My child is lost in Algebra or Geometry — how is targeted tutoring different from just sitting with them and doing the homework?",
+    answer: "Targeted tutoring addresses the concept your child does not understand, not just tonight's problem set. GrowWise high school math covers Algebra I, Geometry, Algebra II, and Precalculus for Grades 9 through 12. Sessions begin with a free assessment that identifies whether the issue is in the current unit, a gap from a previous course, or a missing prerequisite skill.",
+  },
+  {
+    question: "My child is in an honours math class and still struggling — is that something tutoring can help with?",
+    answer: "Struggling in an honours course does not mean the student is in the wrong class. It often means the pace is faster than the student can absorb independently. GrowWise high school math sessions provide focused time on specific concepts that large classroom settings cannot. The free assessment identifies which concepts need reinforcing.",
+  },
+  {
+    question: "Can GrowWise help my child prepare for Precalculus before the next school year starts?",
+    answer: "Yes. GrowWise Precalculus support is available through the high school math program. Students preparing for a harder course can use the period between school years to build the skills they will need. The free assessment sets the right starting point.",
+  },
+];
 
 const HighSchoolMathPage: React.FC = () => {
   const router = useRouter();
@@ -747,6 +764,42 @@ const HighSchoolMathPage: React.FC = () => {
           </div>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50" aria-labelledby="hs-math-faq-heading">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(generateFAQPageSchema(HS_MATH_FAQS)) }} />
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 id="hs-math-faq-heading" className="text-3xl font-bold text-gray-900 mb-4">
+              Frequently Asked <span className="text-[#F16112]">Questions</span>
+            </h2>
+            <p className="text-lg text-gray-600">
+              Common questions from families about GrowWise high school math support.
+            </p>
+          </div>
+          <Accordion type="single" collapsible className="space-y-4">
+            {HS_MATH_FAQS.map((faq, index) => (
+              <AccordionItem
+                key={index}
+                value={`item-${index}`}
+                className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-[#F16112]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <HelpCircle className="w-4 h-4 text-[#F16112]" />
+                    </div>
+                    <span className="font-semibold text-gray-900">{faq.question}</span>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-600">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
 
       {/* Related Content Section */}
       <RelatedContent locale={locale} currentPage="high-school-math" />

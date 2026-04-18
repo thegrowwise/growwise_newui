@@ -15,31 +15,37 @@ export default function ProgramsLayout({
 }) {
   const baseUrl = getCanonicalSiteUrl()
 
-  const collectionPageSchema = {
+  const serviceSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "GrowWise Programs — K-12 Academic & STEAM",
-    "description": "Explore all GrowWise programs for K-12 students in Dublin, CA: Math tutoring, English tutoring, SAT prep, ML/AI coding, game development, and summer camps.",
+    "@type": "Service",
+    "name": "K-12 Academic & STEAM Programs | GrowWise Dublin CA",
+    "description": "All GrowWise programs for K-12 students in Dublin, CA: Math tutoring, English tutoring, SAT prep, ML/AI coding, game development, and summer camps.",
     "url": `${baseUrl}/programs`,
+    "serviceType": "K-12 Educational Programs",
     "provider": {
       "@type": "EducationalOrganization",
       "name": "GrowWise",
       "url": baseUrl,
     },
-    "hasPart": [
-      { "@type": "Course", "name": "Math Tutoring", "url": `${baseUrl}/courses/math` },
-      { "@type": "Course", "name": "English Tutoring", "url": `${baseUrl}/courses/english` },
-      { "@type": "Course", "name": "SAT Prep", "url": `${baseUrl}/courses/sat-prep` },
-      { "@type": "Course", "name": "ML/AI Coding", "url": `${baseUrl}/steam/ml-ai-coding` },
-      { "@type": "Course", "name": "Game Development", "url": `${baseUrl}/steam/game-development` },
-    ],
+    "areaServed": ["Dublin, CA", "Pleasanton, CA", "San Ramon, CA", "Tri-Valley, CA"],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "All Programs",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Math Tutoring", "url": `${baseUrl}/courses/math` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "English Tutoring", "url": `${baseUrl}/courses/english` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "SAT Prep", "url": `${baseUrl}/courses/sat-prep` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "ML/AI Coding", "url": `${baseUrl}/steam/ml-ai-coding` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Game Development", "url": `${baseUrl}/steam/game-development` } },
+      ],
+    },
   }
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       {children}
     </>

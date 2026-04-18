@@ -23,30 +23,36 @@ export default function AcademicLayout({
 }) {
   const baseUrl = getCanonicalSiteUrl()
 
-  const collectionPageSchema = {
+  const serviceSchema = {
     "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "name": "Academic Programs — Math & English Tutoring Dublin CA | GrowWise",
-    "description": "K-12 academic programs in Dublin, CA: Math tutoring (grade-level, accelerated, integrated), English Language Arts, and SAT prep. Aligned with DUSD & PUSD standards.",
+    "@type": "Service",
+    "name": "Academic Tutoring — Math, English & SAT Prep | GrowWise Dublin CA",
+    "description": "K-12 academic tutoring in Dublin, CA: Math (grade-level, accelerated, integrated), English Language Arts, and SAT prep. Aligned with DUSD & PUSD standards.",
     "url": `${baseUrl}/academic`,
+    "serviceType": "Educational Tutoring",
     "provider": {
       "@type": "EducationalOrganization",
       "name": "GrowWise",
       "url": baseUrl,
     },
-    "hasPart": [
-      { "@type": "Course", "name": "Math Tutoring K-12", "url": `${baseUrl}/courses/math` },
-      { "@type": "Course", "name": "High School Math", "url": `${baseUrl}/courses/high-school-math` },
-      { "@type": "Course", "name": "English Tutoring K-12", "url": `${baseUrl}/courses/english` },
-      { "@type": "Course", "name": "SAT Prep", "url": `${baseUrl}/courses/sat-prep` },
-    ],
+    "areaServed": ["Dublin, CA", "Pleasanton, CA", "San Ramon, CA", "Tri-Valley, CA"],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Academic Programs",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Math Tutoring K-12", "url": `${baseUrl}/courses/math` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "High School Math", "url": `${baseUrl}/courses/high-school-math` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "English Tutoring K-12", "url": `${baseUrl}/courses/english` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "SAT Prep", "url": `${baseUrl}/courses/sat-prep` } },
+      ],
+    },
   }
 
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       {children}
     </>

@@ -2,13 +2,35 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllCampPages } from "@/lib/camps/get-camp-page";
 import { buildCampIndexMetadata } from "@/lib/seo/camp-metadata";
+import { getCanonicalSiteUrl } from "@/lib/seo/siteUrl";
 
 export const metadata: Metadata = buildCampIndexMetadata();
 
 export default function CampLandingIndexPage() {
   const pages = getAllCampPages();
+  const baseUrl = getCanonicalSiteUrl();
+
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Summer Camp Programs — Dublin, CA | GrowWise",
+    "description": "Summer camp tracks for K-12 students in Dublin, CA. One campus. Families enroll from across the Tri-Valley.",
+    "url": `${baseUrl}/camps`,
+    "itemListElement": pages.map((p, i) => ({
+      "@type": "ListItem",
+      "position": i + 1,
+      "name": p.h1,
+      "url": `${baseUrl}/camps/${p.slug}`,
+      "description": p.metaDescription,
+    })),
+  };
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
+      />
     <article className="bg-white pb-24">
       <header className="border-b border-slate-200/80 bg-slate-50/50">
         <div className="container-7xl py-12 sm:py-16">
@@ -43,5 +65,6 @@ export default function CampLandingIndexPage() {
         </ul>
       </section>
     </article>
+    </>
   );
 }

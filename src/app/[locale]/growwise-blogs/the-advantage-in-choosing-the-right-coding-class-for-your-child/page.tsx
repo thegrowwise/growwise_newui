@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -36,8 +36,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'The Advantage in Choosing the Right Coding Class for Your Child', url: absoluteSiteUrl('/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/the-advantage-in-choosing-the-right-coding-class-for-your-child', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'The Advantage in Choosing the Right Coding Class for Your Child',
+    description: 'Learn how selecting the right coding class can set your child up for success in technology and future career opportunities.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

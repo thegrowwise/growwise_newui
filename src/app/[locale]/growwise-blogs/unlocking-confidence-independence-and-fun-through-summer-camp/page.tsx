@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -37,8 +37,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
     { name: 'Unlocking Confidence, Independence, and Fun Through Summer Camp', url: absoluteSiteUrl('/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp', locale, baseUrl) },
   ])
 
+  const pageUrl = absoluteSiteUrl('/growwise-blogs/unlocking-confidence-independence-and-fun-through-summer-camp', locale, baseUrl)
+  const articleSchema = generateArticleSchema({
+    headline: 'Unlocking Confidence, Independence, and Fun Through Summer Camp',
+    description: 'How structured summer camps build confidence, independence, and social skills—while kids learn through projects they enjoy.',
+    url: pageUrl,
+  })
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

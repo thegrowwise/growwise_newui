@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { CONTACT_INFO } from '@/lib/constants';
 import Link from 'next/link';
 import { useLocale } from 'next-intl';
@@ -25,8 +26,6 @@ import { fetchAboutRequested } from '@/store/slices/aboutSlice';
 import TestimonialsWithBackend from './TestimonialsWithBackend';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { HelpCircle } from "lucide-react";
-import { StructuredDataScript } from '@/components/seo/StructuredDataScript';
-import { generateFAQPageSchema } from '@/lib/seo/structuredData';
 
 export default function About() {
   const locale = useLocale();
@@ -144,26 +143,42 @@ export default function About() {
             
             <div className="relative">
               <div className="grid grid-cols-2 gap-4">
-                <img
-                  src="/assets/hero-master-the-core.jpg"
-                  alt="Students learning in classroom"
-                  className="w-full h-48 object-cover rounded-xl shadow-lg"
-                />
-                <img
-                  src="/assets/photos/photo-1522071820081-009f0129c71c.jpg"
-                  alt="STEAM learning activities"
-                  className="w-full h-48 object-cover rounded-xl shadow-lg mt-8"
-                />
-                <img
-                  src="/assets/hero-one-on-one.jpg"
-                  alt="One-on-one tutoring session"
-                  className="w-full h-48 object-cover rounded-xl shadow-lg -mt-8"
-                />
-                <img
-                  src="/assets/photos/photo-1503676260728-1c00da094a0b.jpg"
-                  alt="Modern learning environment"
-                  className="w-full h-48 object-cover rounded-xl shadow-lg"
-                />
+                <div className="relative w-full h-48 rounded-xl overflow-hidden shadow-lg">
+                  <Image
+                    src="/assets/hero-master-the-core.jpg"
+                    alt="Students learning in classroom"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative w-full h-48 rounded-xl overflow-hidden shadow-lg mt-8">
+                  <Image
+                    src="/assets/photos/photo-1522071820081-009f0129c71c.jpg"
+                    alt="STEAM learning activities"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative w-full h-48 rounded-xl overflow-hidden shadow-lg -mt-8">
+                  <Image
+                    src="/assets/hero-one-on-one.jpg"
+                    alt="One-on-one tutoring session"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative w-full h-48 rounded-xl overflow-hidden shadow-lg">
+                  <Image
+                    src="/assets/photos/photo-1503676260728-1c00da094a0b.jpg"
+                    alt="Modern learning environment"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    className="object-cover"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -379,36 +394,16 @@ export default function About() {
         {(() => {
           const faqs = [
             {
-              question: "What makes GrowWise different from other tutoring centers?",
-              answer: "GrowWise offers personalized K-12 education with expert instructors, proven results, and flexible scheduling. We align our curriculum with DUSD & PUSD standards and provide both academic and innovative STEAM programs. Our small class sizes and individualized attention ensure every student reaches their full potential."
+              question: "What makes GrowWise different from other tutoring centres in Dublin?",
+              answer: "GrowWise is the only centre in Dublin offering academic tutoring in Math and English alongside STEAM programs in coding, AI, and game development, plus summer camps — all in one place. Programs are aligned with DUSD and PUSD curriculum. Classes have a maximum of 8 students. Every student starts with a free assessment rather than being placed into a one-size-fits-all track.",
             },
             {
-              question: "What age groups do you serve?",
-              answer: "We serve students from Kindergarten through 12th grade (K-12). Our programs are tailored to each grade level, from elementary foundational skills to advanced high school courses and SAT preparation."
+              question: "Where is GrowWise located and which areas do you serve?",
+              answer: "GrowWise is located at 4564 Dublin Blvd, Dublin, CA 94568. We serve families from Dublin, Pleasanton, San Ramon, Danville, and Livermore across the Tri-Valley area. In-person, online, and hybrid formats are available.",
             },
-            {
-              question: "Do you offer online or in-person classes?",
-              answer: "We offer both in-person classes at our Dublin, CA location and flexible scheduling options. Contact us to learn more about our current class formats and availability."
-            },
-            {
-              question: "How do I enroll my child?",
-              answer: `You can enroll online through our enrollment page, or contact us directly at ${CONTACT_INFO.email} or ${CONTACT_INFO.phone}. We also offer free assessments to help determine the best program for your child.`
-            },
-            {
-              question: "What subjects do you offer?",
-              answer: "We offer comprehensive academic programs including Math (grade-level, accelerated, and integrated), English Language Arts, and SAT Prep. We also offer innovative STEAM programs including ML/AI, Game Development (Roblox, Scratch), Python coding, and more."
-            },
-            {
-              question: "Are your programs aligned with school curriculum?",
-              answer: "Yes, our academic programs are aligned with DUSD (Dublin Unified School District) and PUSD (Pleasanton Unified School District) standards, as well as California Common Core Standards (CACCS)."
-            }
           ];
           return (
             <>
-              <StructuredDataScript 
-                data={generateFAQPageSchema(faqs)} 
-                id="about-faq-structured-data" 
-              />
               <div className="max-w-4xl mx-auto">
                 <div className="text-center mb-12">
                   <h2 className="text-3xl font-bold text-gray-900 mb-4">
