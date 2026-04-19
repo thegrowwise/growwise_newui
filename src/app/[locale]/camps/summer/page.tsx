@@ -540,26 +540,6 @@ export default function SummerCampPage() {
         showStickyCta ? 'pb-28 md:pb-24' : 'max-[768px]:pb-[60px]'
       )}
     >
-      {faqs.length > 0 && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'FAQPage',
-              mainEntity: faqs.map((faq) => ({
-                '@type': 'Question',
-                name: faq.question,
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text: faq.answer,
-                },
-              })),
-            }),
-          }}
-        />
-      )}
-
       <main>
         {/* Hero: single image + overlay, headline → context → price → CTAs → trust → discount */}
         <section className="relative isolate min-h-[min(70vh,44rem)] w-full overflow-hidden">
