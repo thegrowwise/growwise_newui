@@ -96,10 +96,9 @@ async function fetchContentAPI(): Promise<ContentData> {
     footer: {
       description: "Empowering students to reach their full potential through innovative education and personalized learning experiences.",
       socialLinks: [
-        { id: "1", platform: "Facebook", url: "https://facebook.com/growwise", icon: "📘" },
-        { id: "2", platform: "Twitter", url: "https://twitter.com/growwise", icon: "🐦" },
-        { id: "3", platform: "Instagram", url: "https://instagram.com/growwise", icon: "📷" },
-        { id: "4", platform: "LinkedIn", url: "https://linkedin.com/company/growwise", icon: "💼" }
+        { id: "1", platform: "Facebook", url: "https://www.facebook.com/people/GrowWise/61561059687164/", icon: "📘" },
+        { id: "2", platform: "Instagram", url: "https://www.instagram.com/growwise.dublin/", icon: "📷" },
+        { id: "3", platform: "LinkedIn", url: "https://www.linkedin.com/company/thegrowwise/", icon: "💼" }
       ],
       links: [
         { id: "1", label: "Privacy Policy", url: "/privacy" },

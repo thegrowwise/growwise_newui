@@ -100,7 +100,7 @@ const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
   {
     category: 'statistics',
     key: 'satisfaction',
-    value: '98% student satisfaction rate',
+    value: '98% parent satisfaction rate',
   },
   
   // Popular Courses
