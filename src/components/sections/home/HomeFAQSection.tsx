@@ -23,25 +23,11 @@ const FAQS = [
   },
 ];
 
-const faqSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  mainEntity: FAQS.map((faq) => ({
-    '@type': 'Question',
-    name: faq.question,
-    acceptedAnswer: {
-      '@type': 'Answer',
-      text: faq.answer,
-    },
-  })),
-};
-
 export function HomeFAQSection() {
   const [openValue, setOpenValue] = useState<string | undefined>('faq-0');
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <section
         className="py-16 md:py-24 bg-white border-t border-slate-200"
         aria-labelledby="home-faq-heading"

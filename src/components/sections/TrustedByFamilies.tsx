@@ -25,7 +25,7 @@ const statisticsData = [
   {
     id: 3,
     value: "98%",
-    label: "Students Satisfaction",
+    label: "Parent Satisfaction",
     icon: ThumbsUp,
     color: "text-[#F1894F]",
     bgColor: "bg-[#F1894F]/10"

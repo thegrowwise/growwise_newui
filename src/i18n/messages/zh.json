@@ -278,7 +278,7 @@
     },
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
-      "subtitle": "Join hundreds of students who are already building the future with our innovative programs",
+      "subtitle": "Join 325+ students who are already building the future with our innovative programs",
       "primaryCta": "预约免费测评",
       "secondaryCta": "参加免费周六工作坊"
     },
@@ -411,7 +411,7 @@
     "programs": {
       "titlePrefix": "Academic ",
       "titleHighlight": "Programs",
-      "subtitle": "Personalized learning for K-12 students in Math and English",
+      "subtitle": "Personalized learning for Grades 1–12 students in Math and English",
       "mathSessionTitle": "Math Session",
       "mathSessionDesc": "Practice math problems and concepts with step-by-step guidance and instant feedback.",
       "englishSessionTitle": "English Session",
@@ -426,7 +426,7 @@
     },
     "why": {
       "title": "Why Choose Our Academic Programs?",
-      "subtitle": "Comprehensive support designed for K-12 academic excellence"
+      "subtitle": "Comprehensive support designed for Grades 1–12 academic excellence"
     },
     "stories": {
       "title": "Student Success Stories",
@@ -454,7 +454,7 @@
     },
     "cta": {
       "title": "Ready to Excel in Academics?",
-      "subtitle": "Join hundreds of students who have improved their academic performance with our personalized programs.",
+      "subtitle": "Join 325+ students who have improved their academic performance with our personalized programs.",
       "primary": "Book Free Assessment",
       "secondary": "Learn More"
     },
@@ -484,7 +484,7 @@
   "about": {
     "hero": {
       "title": "About GrowWise",
-      "subtitle": "Since 2019, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
+      "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
     },
     "foundation": {
       "title": "Our Foundation",
@@ -492,9 +492,9 @@
     },
     "story": {
       "title": "Our Story",
-      "p1": "Founded in 2019 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
+      "p1": "Founded in 2024 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
       "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Dr. Sarah Chen, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
-      "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
+      "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 325+ students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     },
     "achievements": {
       "title": "Our Achievements",
@@ -558,12 +558,12 @@
   "englishCourses": {
     "hero": {
       "title": "Excel in English Arts",
-      "subtitle": "Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
+      "subtitle": "Comprehensive English Language Arts programs for students in Grades 1–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
       "badge": "Master English with Excellence"
     },
     "cta": {
       "title": "Ready to Excel in English?",
-      "subtitle": "Join hundreds of students who have transformed their writing and reading skills with GrowWise English programs.",
+      "subtitle": "Join 325+ students who have transformed their writing and reading skills with GrowWise English programs.",
       "primaryButton": "Get Started",
       "secondaryButton": "Contact Us"
     }
@@ -571,7 +571,7 @@
   "mathCourses": {
     "hero": {
       "title": "Master Mathematics with Confidence",
-      "subtitle": "Comprehensive math programs for students in Grades K–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
+      "subtitle": "Comprehensive math programs for students in Grades 1–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
       "badge": "Master Math with Excellence"
     },
     "whyChoose": {
@@ -588,7 +588,7 @@
     },
     "cta": {
       "title": "Ready to Master Math?",
-      "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
+      "subtitle": "Join 325+ students who have transformed their mathematical skills with GrowWise Math programs.",
       "primaryButton": "Get Started",
       "secondaryButton": "Contact Us"
     }

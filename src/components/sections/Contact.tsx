@@ -582,7 +582,7 @@ export default function Contact() {
                     </div>
                     <div className="flex items-center gap-3">
                       <Star className="w-5 h-5 text-[#F1894F]" />
-                      <span className="text-sm">98% Success Rate</span>
+                      <span className="text-sm">98% Parent Satisfaction</span>
                     </div>
                     <div className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-[#F1894F]" />
@@ -590,7 +590,7 @@ export default function Contact() {
                     </div>
                     <div className="flex items-center gap-3">
                       <Award className="w-5 h-5 text-[#F1894F]" />
-                      <span className="text-sm">5+ Years Experience</span>
+                      <span className="text-sm">Est. 2024</span>
                     </div>
                   </div>
                 </CardContent>
