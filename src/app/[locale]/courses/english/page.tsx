@@ -83,7 +83,7 @@ function EnglishCoursesContent() {
   const contactInfo = [
     { icon: 'Phone', title: 'Call Us', primary: '(925) 456-4606', bgColor: 'bg-[#1F396D]' },
     { icon: 'Mail', title: 'Email Us', primary: CONTACT_INFO.email, bgColor: 'bg-[#F16112]' },
-    { icon: 'MapPin', title: 'Visit Us', primary: '4564 Dublin Blvd, CA', bgColor: 'bg-[#F1894F]' },
+    { icon: 'MapPin', title: 'Visit Us', primary: '4564 Dublin Blvd, Dublin, CA 94568', bgColor: 'bg-[#F1894F]' },
     { icon: 'MessageCircle', title: 'Live Chat', primary: 'Instant Support', bgColor: 'bg-[#29335C]' }
   ];
 

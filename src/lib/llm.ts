@@ -23,7 +23,7 @@ CONTACT INFORMATION (IMPORTANT - Always use these exact details):
 
 About GrowWise:
 - We serve 325+ students with 25+ courses
-- 98% student satisfaction rate
+- 98% parent satisfaction rate
 - Expert instructors with years of experience
 - Personalized 1:1 attention and small group learning
 

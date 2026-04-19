@@ -4,6 +4,7 @@ import { generateEventSchema, generateBreadcrumbSchema, generateFAQPageSchema } 
 import { CONTACT_INFO } from '@/lib/constants';
 import { absoluteSiteUrl } from '@/lib/publicPath';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
+import summerCampFaqData from '../../../../../public/api/mock/en/summer-camp-faq.json';
 
 // Q-SC1–SC4: hardcoded here so FAQPage JSON-LD lands in server HTML (page.tsx is 'use client')
 const SUMMER_CAMP_FAQS = [
@@ -91,7 +92,7 @@ export default async function SummerCampLayout({
     { name: 'Summer Camp 2026', url: absoluteSiteUrl('/camps/summer', locale, baseUrl) },
   ]);
 
-  const faqSchema = generateFAQPageSchema(SUMMER_CAMP_FAQS);
+  const faqSchema = generateFAQPageSchema(summerCampFaqData.faqs);
 
   return (
     <>

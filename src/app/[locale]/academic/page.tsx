@@ -233,7 +233,7 @@ const AcademicPage: React.FC = () => {
   ];
 
   const pricingOptions = [
-    { id: 1, title: 'Affordable, Accessible Pricing', description: 'Small-Group $35/hr • One-on-One from $45/hr', icon: '💰', color: 'bg-white', borderColor: 'border-[#F16112]/30' },
+    { id: 1, title: 'Affordable, Accessible Pricing', description: 'Small-Group $35/session • One-on-One from $45/session', icon: '💰', color: 'bg-white', borderColor: 'border-[#F16112]/30' },
     { id: 2, title: 'Study your way', description: 'Choose from online, in-person, or hybrid classes to fit your schedule.', icon: '📚', color: 'bg-[#F16112]', textColor: 'text-white' },
     { id: 3, title: 'Personalized Assistance', description: 'Receive dedicated support and personalized help to reach your goals.', icon: '🎯', color: 'bg-white', borderColor: 'border-[#F16112]/30' }
   ];
