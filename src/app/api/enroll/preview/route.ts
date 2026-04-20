@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getBackendBaseUrlForProxy } from '@/lib/config';
 import type { EnrollPreviewRequestBody } from '@/lib/enrollCheckout';
-import { buildEnrollPreviewLocal } from '@/lib/enrollPreviewLocal';
 
 export const maxDuration = 30;
 
@@ -39,6 +38,9 @@ function isSameOriginAsRequest(request: Request, baseUrl: string): boolean {
   }
 }
 
+/**
+ * Proxies POST /api/enroll/preview → Express backend (same pattern as /api/testimonials, /api/enroll payment).
+ */
 export async function POST(request: Request) {
   let body: unknown;
   try {
@@ -57,21 +59,26 @@ export async function POST(request: Request) {
 
   const baseUrl = getBackendBaseUrlForProxy();
 
-  // No backend URL, or backend points at this same Next origin (avoids infinite self-proxy when
-  // NEXT_PUBLIC_BACKEND_URL is mistakenly set to the app URL, e.g. localhost:3000).
-  const useLocalFirst = !baseUrl || isSameOriginAsRequest(request, baseUrl);
-
-  if (useLocalFirst) {
-    const local = buildEnrollPreviewLocal(parsed);
-    if (local) {
-      return NextResponse.json(local);
-    }
+  if (!baseUrl) {
     return NextResponse.json(
       {
-        error: 'Preview unavailable',
-        message: 'Could not build enrollment preview for this selection.',
+        success: false,
+        error: 'Backend is not configured',
+        message: 'Set BACKEND_URL or NEXT_PUBLIC_BACKEND_URL in the server environment.',
       },
-      { status: 422 },
+      { status: 503 },
+    );
+  }
+
+  if (isSameOriginAsRequest(request, baseUrl)) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Backend URL misconfigured',
+        message:
+          'BACKEND_URL must point to the API host (not this Next.js origin), e.g. your api.* domain.',
+      },
+      { status: 503 },
     );
   }
 
@@ -89,13 +96,6 @@ export async function POST(request: Request) {
     const contentType = upstream.headers.get('content-type') ?? 'application/json';
     const text = await upstream.text();
 
-    if (!upstream.ok && (upstream.status === 502 || upstream.status === 503)) {
-      const local = buildEnrollPreviewLocal(parsed);
-      if (local) {
-        return NextResponse.json(local);
-      }
-    }
-
     return new NextResponse(text, {
       status: upstream.status,
       headers: {
@@ -103,11 +103,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (err) {
-    const local = buildEnrollPreviewLocal(parsed);
-    if (local) {
-      return NextResponse.json(local);
-    }
     const message = err instanceof Error ? err.message : 'Upstream request failed';
-    return NextResponse.json({ error: message, message }, { status: 502 });
+    return NextResponse.json({ success: false, error: message, message }, { status: 502 });
   }
 }

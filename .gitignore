@@ -26,6 +26,9 @@ test-results/
 .env.local
 /build
 
+# Cursor MCP (secrets — copy from .cursor/mcp.json.example)
+.cursor/mcp.json
+
 # misc
 .DS_Store
 *.pem
