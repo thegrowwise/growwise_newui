@@ -24,7 +24,7 @@ export const organizationSchema = {
   "alternateName": "GrowWise School",
   "url": CANONICAL_BASE,
   "logo": `${CANONICAL_BASE}/logo.png`,
-  "description": "Empowering students through personalized K-12 education and innovative STEAM programs in Dublin, CA. Expert instruction, proven results, and flexible scheduling.",
+  "description": "Empowering students through personalized Grades 1-12 education and innovative STEAM programs in Dublin, CA. Expert instruction, proven results, and flexible scheduling.",
   "areaServed": [...TRI_VALLEY_AREA_SERVED],
   "address": {
     "@type": "PostalAddress",
@@ -95,13 +95,6 @@ export const localBusinessSchema = {
   "currenciesAccepted": "USD",
   "paymentAccepted": "Credit Card, Cash, Check",
   "areaServed": [...TRI_VALLEY_AREA_SERVED],
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": 4.9,
-    "reviewCount": 325,
-    "bestRating": 5,
-    "worstRating": 1
-  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Educational Services",
@@ -115,7 +108,7 @@ export const localBusinessSchema = {
             "itemOffered": {
               "@type": "Service",
               "name": "Math Tutoring",
-              "description": "K-12 Math courses including grade-level, accelerated, and integrated math"
+              "description": "Grades 1-12 Math courses including grade-level, accelerated, and integrated math"
             }
           },
           {
@@ -123,7 +116,7 @@ export const localBusinessSchema = {
             "itemOffered": {
               "@type": "Service",
               "name": "English Tutoring",
-              "description": "English Language Arts courses for K-12 students"
+              "description": "English Language Arts courses for Grades 1-12 students"
             }
           },
           {
@@ -426,7 +419,7 @@ export function generateAggregateRatingSchema({
 /**
  * Generate FAQPage structured data
  */
-export function generateFAQPageSchema(faqs: Array<{
+export function generateFAQPageSchema(faqs: ReadonlyArray<{
   question: string
   answer: string
 }>) {

@@ -212,7 +212,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "GrowWise Blog — Math, Coding & STEAM for K-12 Families",
+    "name": "GrowWise Blog — Math, Coding & STEAM for Grades 1-12 Families",
     "description": "Practical articles on tutoring, English, coding, and STEAM for Dublin and Tri-Valley families.",
     "url": absoluteSiteUrl('/growwise-blogs', locale, baseUrl),
     "publisher": {
@@ -240,7 +240,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
               GrowWise Blogs
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
-              Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.
+              Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for Grades 1–12 in Dublin, Pleasanton, and San Ramon.
             </p>
             <p className="text-base md:text-lg text-gray-200/95 max-w-2xl mx-auto mt-4">
               Looking ahead to summer?{' '}
@@ -349,7 +349,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
         <section className="bg-gradient-to-r from-[#1F396D] to-[#F16112] text-white py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Enroll Today to Unlock Learning Potential for K-12 Students!
+              Enroll Today to Unlock Learning Potential for Grades 1-12 Students!
             </h2>
             <Link
               href="/enroll"

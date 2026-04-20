@@ -19,7 +19,7 @@ export default function SteamLayout({
     "@context": "https://schema.org",
     "@type": "Service",
     "name": "STEAM Programs — Coding, AI & Game Development | GrowWise Dublin CA",
-    "description": "STEAM programs for K-12 students in Dublin, CA: ML/AI coding, game development, and more. Hands-on project-based learning with expert instructors.",
+    "description": "STEAM programs for Grades 1-12 students in Dublin, CA: ML/AI coding, game development, and more. Hands-on project-based learning with expert instructors.",
     "url": `${baseUrl}/steam`,
     "serviceType": "STEAM Education",
     "provider": {

@@ -42,8 +42,8 @@
   "home": {
     "hero": {
       "title": "Empowering Young Minds for Tomorrow",
-      "subtitle": "Comprehensive K-12 Education & STEAM Programs",
-      "description": "Join 325+ students in our personalized learning journey with 98% satisfaction rate",
+      "subtitle": "Comprehensive Grades 1-12 Education & STEAM Programs",
+      "description": "Join 325+ students in our personalized learning journey with 98% parent satisfaction",
       "cta": "Start Your Journey"
     },
     "statistics": {
@@ -53,7 +53,7 @@
     },
     "programs": {
       "k12": {
-        "title": "K-12 Academic Programs",
+        "title": "Grades 1-12 Academic Programs",
         "subtitle": "Comprehensive academic support for all grade levels"
       }
     },
@@ -147,19 +147,19 @@
     "sendMessage": "Send message",
     "placeholder": "Ask me anything about our programs...",
     "suggestions": {
-      "k12Programs": "What K-12 programs do you offer?",
+      "k12Programs": "What Grades 1-12 programs do you offer?",
       "steamCourses": "Tell me about STEAM courses",
       "bookAssessment": "How do I book a free assessment?",
       "pricing": "What are your prices?",
       "getStarted": "I want to get started"
     },
     "responses": {
-      "welcome": "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. How can I help you today?",
-      "courses": "We offer comprehensive K-12 academic programs and exciting STEAM courses! Our K-12 programs include Math, ELA, Writing Lab, and SAT/ACT prep. For STEAM, we have Game Development, Python Programming, Young Founders, and ML/AI courses. Would you like to know more about any specific program?",
-      "assessment": "We offer FREE assessments and trial classes! 🎓 K-12 Programs: 60-minute FREE assessment. 🚀 STEAM Courses: 30-minute trial class. These help us create a personalized learning plan for your child. Would you like to book one?",
+      "welcome": "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive Grades 1-12 academic programs and exciting STEAM courses. How can I help you today?",
+      "courses": "We offer comprehensive Grades 1-12 academic programs and exciting STEAM courses! Our Grades 1-12 programs include Math, ELA, Writing Lab, and SAT/ACT prep. For STEAM, we have Game Development, Python Programming, Young Founders, and ML/AI courses. Would you like to know more about any specific program?",
+      "assessment": "We offer FREE assessments and trial classes! 🎓 Grades 1-12 Programs: 60-minute FREE assessment. 🚀 STEAM Courses: 30-minute trial class. These help us create a personalized learning plan for your child. Would you like to book one?",
       "pricing": "We offer competitive pricing for all our programs. For the most accurate pricing information, I'd recommend booking a free assessment where our team can provide detailed information based on your specific needs. Would you like to schedule a free assessment?",
       "contact": "You can reach us through our website contact form, phone, or email. We're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.",
-      "fallback": "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?"
+      "fallback": "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive Grades 1-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?"
     }
   },
   "courses": {
@@ -404,7 +404,7 @@
     "programs": {
       "titlePrefix": "Academic ",
       "titleHighlight": "Programs",
-      "subtitle": "Personalized learning for Grades 1–12 students in Math and English",
+      "subtitle": "Personalized learning for Grades 1-12 students in Math and English",
       "mathSessionTitle": "Math Session",
       "mathSessionDesc": "Practice math problems and concepts with step-by-step guidance and instant feedback.",
       "englishSessionTitle": "English Session",
@@ -419,7 +419,7 @@
     },
     "why": {
       "title": "Why Choose Our Academic Programs?",
-      "subtitle": "Comprehensive support designed for Grades 1–12 academic excellence"
+      "subtitle": "Comprehensive support designed for Grades 1-12 academic excellence"
     },
     "stories": {
       "title": "Student Success Stories",
@@ -477,7 +477,7 @@
   "about": {
     "hero": {
       "title": "About GrowWise",
-      "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
+      "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized Grades 1-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
     },
     "foundation": { 
       "title": "Our Foundation",
@@ -487,7 +487,7 @@
       "title": "Our Story",
       "p1": "Founded in 2024 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
       "p2": "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Anshika Verma, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
-      "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 325+ students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
+      "p3": "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 325 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     },
     "achievements": { 
       "title": "Our Achievements",
@@ -736,7 +736,7 @@
     },
     "hero": {
       "h1": "This summer, your child builds something real.",
-      "subhead": "Coding, AI, Robotics, Game Dev & Math Camps · Grades K–12 · Dublin CA · Limited seats",
+      "subhead": "Coding, AI, Robotics, Game Dev & Math Camps · Grades 1–12 · Dublin CA · Limited seats",
       "primaryCta": "Reserve a Spot →",
       "secondaryCta": "Get Camp Guide (PDF, opens in new tab) →",
       "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
@@ -873,7 +873,7 @@
     },
     "highlights": {
       "heading": "Summer STEAM & Coding Camps",
-      "intro": "GrowWise summer STEAM camp Dublin CA 2026 — weekly sessions from June through August for grades K–12. Families across Dublin, Pleasanton, San Ramon, Danville, and Livermore trust our small-group, expert-led programs.",
+      "intro": "GrowWise summer STEAM camp Dublin CA 2026 — weekly sessions from June through August for grades 1–12. Families across Dublin, Pleasanton, San Ramon, Danville, and Livermore trust our small-group, expert-led programs.",
       "programs": [
         {
           "icon": "💻",
@@ -1017,7 +1017,7 @@
   },
   "enrollnow": {
     "h1": "Start Your Enrollment Today",
-    "metaDescription": "Enroll your child in GrowWise K-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and we’ll guide you within 24 hours."
+    "metaDescription": "Enroll your child in GrowWise Grades 1-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and we’ll guide you within 24 hours."
   },
   "notFound": {
     "title": "Page not found",

@@ -2,8 +2,8 @@
   "heroSlides": [
     {
       "id": 1,
-      "title": "K–12 Tutoring & STEAM\nin Dublin, CA",
-      "subtitle": "Expert Assessment. Personalized Plan. Math, English, coding, and SAT prep for K–12 students in the Tri-Valley.",
+      "title": "Grades 1–12 Tutoring & STEAM\nin Dublin, CA",
+      "subtitle": "Expert Assessment. Personalized Plan. Math, English, coding, and SAT prep for Grades 1–12 students in the Tri-Valley.",
       "description": "",
       "cta": "Book Free Assessment",
       "secondaryCta": "Explore Academic Programs",
@@ -61,7 +61,7 @@
       { "name": "High School Math", "icon": "🎯", "description": "Calculus and advanced topics" }
     ] },
     { "id": 2, "title": "ELA Courses", "description": "Develop comprehensive English language arts skills", "icon": "BookOpen", "gradient": "from-[#F16112] to-[#F1894F]", "bgGradient": "bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10", "iconColor": "text-[#F16112]", "href": "/courses/english", "ctaText": "Start Learning", "ctaUrl": "/courses/english", "subItems": [
-      { "name": "English Mastery: K-12", "icon": "📚", "description": "Complete language arts curriculum" },
+      { "name": "English Mastery: Grades 1-12", "icon": "📚", "description": "Complete language arts curriculum" },
       { "name": "Reading Enrichment", "icon": "📖", "description": "Improve reading comprehension" },
       { "name": "Grammar Boost", "icon": "✏️", "description": "Master grammar and mechanics" }
     ] },
@@ -113,7 +113,7 @@
   ],
   "cta": {
     "title": "Ready to Start Your Learning Journey?",
-    "subtitle": "Join thousands of students who have transformed their academic future with GrowWise.",
+    "subtitle": "Join 325+ students who have transformed their academic future with GrowWise.",
     "primaryCta": "Choose Enrollment Type",
     "primaryCtaUrl": "/enroll",
     "secondaryCta": "Talk to GrowWise",

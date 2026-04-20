@@ -26,7 +26,7 @@ export default async function MLAICodingLayout({
       "ML and AI coding in Dublin, CA. Hands-on projects for students. Small classes. Book a free STEAM trial.",
     provider: "GrowWise",
     courseCode: "ML-AI-K12",
-    educationalLevel: "K-12",
+    educationalLevel: "Grades 1-12",
     teaches: [
       "Machine Learning",
       "Artificial Intelligence",

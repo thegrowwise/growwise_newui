@@ -25,12 +25,12 @@ export default async function MathCoursesLayout({
   
   // Generate Course structured data with enhanced details
   const courseSchema = generateCourseSchema({
-    name: "K-12 Math Courses - Grade-Level, Accelerated & Integrated Math | Math Tutoring Dublin CA",
+    name: "Grades 1-12 Math Courses - Grade-Level, Accelerated & Integrated Math | Math Tutoring Dublin CA",
     description:
       "Math tutoring for grades 1–12 in Dublin, CA. Common Core aligned, small groups, placement support. Book a free assessment.",
     provider: "GrowWise",
     courseCode: "MATH-K12",
-    educationalLevel: "K-12",
+    educationalLevel: "Grades 1-12",
     teaches: [
       "Grade-Level Math (California Common Core Standards)",
       "Accelerated Math",

@@ -12,9 +12,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "K-12 Tutoring & STEAM | Dublin CA | GrowWise",
-  description: "GrowWise offers K-12 tutoring and STEAM programs in Dublin, CA. Expert instruction, personalized learning, and proven results.",
-  keywords: "K-12 education, tutoring Dublin CA, STEAM programs, SAT prep, math courses, coding classes, personalized learning",
+  title: "Grades 1-12 Tutoring & STEAM | Dublin CA | GrowWise",
+  description: "GrowWise offers Grades 1-12 tutoring and STEAM programs in Dublin, CA. Expert instruction, personalized learning, and proven results.",
+  keywords: "Grades 1-12 education, tutoring Dublin CA, STEAM programs, SAT prep, math courses, coding classes, personalized learning",
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

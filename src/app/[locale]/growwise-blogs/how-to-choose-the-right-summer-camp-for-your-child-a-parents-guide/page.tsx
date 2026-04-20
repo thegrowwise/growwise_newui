@@ -238,7 +238,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
               <h2 className="text-3xl font-bold text-[#1F396D] mt-12 mb-6">Encourage Creativity Through Game Design</h2>
 
               <p className="text-gray-700 mb-8">
-                If you're in Dublin, CA, check out <strong>GrowWise Summer Camp</strong>—offering high-quality, engaging programs in <strong>math mastery, Roblox coding, web development, and AI/ML</strong> for Grades K–12.
+                If you're in Dublin, CA, check out <strong>GrowWise Summer Camp</strong>—offering high-quality, engaging programs in <strong>math mastery, Roblox coding, web development, and AI/ML</strong> for Grades 1–12.
               </p>
 
               <h2 className="text-3xl font-bold text-[#1F396D] mt-12 mb-6">FAQ's on Summer Camp 2025</h2>

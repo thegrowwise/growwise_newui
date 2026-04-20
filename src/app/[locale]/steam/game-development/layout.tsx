@@ -23,10 +23,10 @@ export default async function GameDevelopmentLayout({
   const courseSchema = generateCourseSchema({
     name: "Game Development Course Dublin CA | Learn to Build Games | Coding Classes | GrowWise",
     description:
-      "Game development in Dublin, CA. Roblox, Scratch, and Python projects for K–12. Book a free STEAM trial.",
+      "Game development in Dublin, CA. Roblox, Scratch, and Python projects for Grades 1–12. Book a free STEAM trial.",
     provider: "GrowWise",
     courseCode: "GAME-DEV-K12",
-    educationalLevel: "K-12",
+    educationalLevel: "Grades 1-12",
     teaches: [
       "Game Design",
       "Game Programming",

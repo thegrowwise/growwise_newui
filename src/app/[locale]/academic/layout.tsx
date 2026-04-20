@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   if (!metadata) {
     return {
       title: 'Academic Programs | GrowWise',
-      description: 'K-12 Math and English programs',
+      description: 'Grades 1-12 Math and English programs',
     }
   }
 
@@ -27,7 +27,7 @@ export default function AcademicLayout({
     "@context": "https://schema.org",
     "@type": "Service",
     "name": "Academic Tutoring — Math, English & SAT Prep | GrowWise Dublin CA",
-    "description": "K-12 academic tutoring in Dublin, CA: Math (grade-level, accelerated, integrated), English Language Arts, and SAT prep. Aligned with DUSD & PUSD standards.",
+    "description": "Grades 1-12 academic tutoring in Dublin, CA: Math (grade-level, accelerated, integrated), English Language Arts, and SAT prep. Aligned with DUSD & PUSD standards.",
     "url": `${baseUrl}/academic`,
     "serviceType": "Educational Tutoring",
     "provider": {
@@ -40,9 +40,9 @@ export default function AcademicLayout({
       "@type": "OfferCatalog",
       "name": "Academic Programs",
       "itemListElement": [
-        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Math Tutoring K-12", "url": `${baseUrl}/courses/math` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "Math Tutoring Grades 1-12", "url": `${baseUrl}/courses/math` } },
         { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "High School Math", "url": `${baseUrl}/courses/high-school-math` } },
-        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "English Tutoring K-12", "url": `${baseUrl}/courses/english` } },
+        { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "English Tutoring Grades 1-12", "url": `${baseUrl}/courses/english` } },
         { "@type": "Offer", "itemOffered": { "@type": "Course", "name": "SAT Prep", "url": `${baseUrl}/courses/sat-prep` } },
       ],
     },

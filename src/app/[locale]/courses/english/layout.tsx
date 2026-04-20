@@ -29,7 +29,7 @@ export default async function EnglishCoursesLayout({
       "English and ELA tutoring for grades 1–12 in Dublin, CA. Reading, writing, and grammar in small groups. Book a free assessment.",
     provider: "GrowWise",
     courseCode: "ELA-K12",
-    educationalLevel: "K-12",
+    educationalLevel: "Grades 1-12",
     teaches: [
       "Reading Comprehension",
       "Vocabulary Development",

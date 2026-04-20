@@ -1033,7 +1033,7 @@ function EnglishCoursesContent() {
         faqs={[
           {
             question: "What English courses do you offer at GrowWise?",
-            answer: "We offer comprehensive English Language Arts courses for K-12 students, including reading comprehension, vocabulary development, grammar and mechanics, essay writing, creative writing, and literary analysis. All courses are aligned with California Common Core Standards."
+            answer: "We offer comprehensive English Language Arts courses for Grades 1-12 students, including reading comprehension, vocabulary development, grammar and mechanics, essay writing, creative writing, and literary analysis. All courses are aligned with California Common Core Standards."
           },
           {
             question: "How do I know which English course is right for my child?",

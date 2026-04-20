@@ -17,7 +17,7 @@ const heroSlides = [
     id: 1,
     title: "Master the Core",
     subtitle: "Personalized and small group learning",
-    description: "Build strong academic foundations with expert K-12 instruction tailored to your child's learning style.",
+    description: "Build strong academic foundations with expert Grades 1-12 instruction tailored to your child's learning style.",
     cta: "Book 60 minutes Free Assessment",
     icon: BookOpen,
     bgGradient: "bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#2a4a7c]",

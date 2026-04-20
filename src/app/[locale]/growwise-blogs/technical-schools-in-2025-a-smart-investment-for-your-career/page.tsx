@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
               </p>
 
               <p className="text-gray-700 mb-6 text-sm">
-                K–12 students can preview similar skills in our 
+                Grades 1–12 students can preview similar skills in our 
                 <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
                   summer skill-building programs
                 </Link> before college.

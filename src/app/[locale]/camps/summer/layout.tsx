@@ -26,7 +26,7 @@ const SUMMER_CAMP_FAQS = [
   {
     question: 'What grades and ages are GrowWise summer camps designed for?',
     answer:
-      'GrowWise summer camps are available for Grades K through 12. Most camps start from Grade 3. Advanced Math camps (Algebra II and Precalculus, and Math Olympiad) are designed for Grades 5 through 12. Each camp page lists the recommended grade range. Half-day and full-day formats are available depending on the camp. Camps are held at 4564 Dublin Blvd, Dublin, CA and serve families from Dublin, Pleasanton, San Ramon, and across the Tri-Valley.',
+      'GrowWise summer camps are available for Grades 1 through 12. Most camps start from Grade 3. Advanced Math camps (Algebra II and Precalculus, and Math Olympiad) are designed for Grades 5 through 12. Each camp page lists the recommended grade range. Half-day and full-day formats are available depending on the camp. Camps are held at 4564 Dublin Blvd, Dublin, CA and serve families from Dublin, Pleasanton, San Ramon, and across the Tri-Valley.',
   },
 ];
 

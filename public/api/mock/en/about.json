@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "About GrowWise",
-    "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed.",
+    "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized Grades 1-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed.",
     "stats": [
       { "label": "Founded", "value": "2024", "color": "text-[#1F396D]" },
       { "label": "Students Served", "value": "325+", "color": "text-[#F16112]" },
@@ -14,7 +14,7 @@
     "paragraphs": [
       "Founded in 2024 in the heart of Dublin, California, GrowWise was born from a simple but powerful vision: every child deserves personalized education that meets them where they are and helps them reach their full potential.",
       "What started as a small tutoring center has grown into a comprehensive educational institution serving families throughout the Tri-Valley area. Our founder, Anshika Verma, recognized that traditional one-size-fits-all education wasn't serving the diverse learning needs of today's students.",
-      "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 300 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
+      "Today, GrowWise stands as a testament to what's possible when passionate educators combine proven teaching methods with innovative technology and genuine care for each student's success. We've helped over 325 students not just improve their grades, but develop confidence, curiosity, and a lifelong love of learning."
     ]
   }
   ,
@@ -23,7 +23,7 @@
     "lead": "GrowWise: Leading Education & Technology Excellence in Dublin, CA",
     "paragraphs": [
       "GrowWise, founded by education innovator Anshika Verma, is where education and technology meet to empower young learners. Inspired by her parents—both lifelong educators—and with over a decade of software engineering experience, Anshika envisioned GrowWise as a platform dedicated to bridging academic excellence with modern digital tools.",
-      "At GrowWise, we create personalized learning environments using AI-driven analytics, customized teaching solutions, and skill-based training programs. Our programs, designed for K–12 students in Dublin, CA, focus on academic tutoring, STEM enrichment, coding courses, and critical thinking development.",
+      "At GrowWise, we create personalized learning environments using AI-driven analytics, customized teaching solutions, and skill-based training programs. Our programs, designed for Grades 1–12 students in Dublin, CA, focus on academic tutoring, STEM enrichment, coding courses, and critical thinking development.",
       "We believe in making learning interactive, engaging, and industry-aligned, ensuring every student develops the technical skills and problem-solving mindset needed for future success. Our mission is to empower educators and students alike through cutting-edge educational technology."
     ],
     "cta": { "label": "Learn more", "href": "/programs" },
@@ -104,7 +104,7 @@
   ],
   "educationalApproach": [
     { "icon": "UserCheck", "title": "Personalized Learning", "description": "Every student receives instruction tailored to their unique learning style, pace, and academic goals through individualized assessment and customized lesson plans.", "benefits": ["Individual assessment", "Custom lesson plans", "Progress tracking"] },
-    { "icon": "Users", "title": "Small Class Sizes", "description": "With maximum 6 students per K-12 class and 4 per STEAM class, every student receives the attention and support they need to succeed.", "benefits": ["Max 6:1 ratio for K-12", "Max 4:1 ratio for STEAM", "Individual attention"] },
+    { "icon": "Users", "title": "Small Class Sizes", "description": "With maximum 6 students per Grades 1-12 class and 4 per STEAM class, every student receives the attention and support they need to succeed.", "benefits": ["Max 6:1 ratio for Grades 1-12", "Max 4:1 ratio for STEAM", "Individual attention"] },
     { "icon": "Lightbulb", "title": "Innovative Methods", "description": "We combine proven traditional teaching methods with cutting-edge educational technology and hands-on learning experiences.", "benefits": ["Latest EdTech tools", "Interactive learning", "Real-world applications"] },
     { "icon": "Target", "title": "Goal-Oriented Approach", "description": "We set clear, measurable goals for each student and track progress regularly to ensure continuous improvement and success.", "benefits": ["SMART goal setting", "Regular assessments", "Parent communication"] }
   ],

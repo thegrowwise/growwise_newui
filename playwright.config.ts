@@ -23,7 +23,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  // `next dev` + parallel Playwright workers reliably triggers RSC/JSON.parse races and flaky tests.
+  // Override with PLAYWRIGHT_WORKERS (e.g. 4) when using `next start` or E2E_BASE_URL against staging.
+  workers: process.env.PLAYWRIGHT_WORKERS
+    ? parseInt(process.env.PLAYWRIGHT_WORKERS, 10)
+    : 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: BASE_URL,
