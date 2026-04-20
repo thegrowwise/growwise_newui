@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { CHATBOT_PUBLIC_CONTACT_EMAIL } from '@/lib/chatbotScope';
 import { llmService } from '@/lib/llm';
 
 interface ChatMessage {
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { 
         error: 'Internal server error',
-        message: "I'm experiencing technical difficulties. Please try again or contact GrowWise directly for assistance."
+        message: `I'm experiencing technical difficulties. Please try again or email ${CHATBOT_PUBLIC_CONTACT_EMAIL} for assistance.`,
       },
       { status: 500 }
     );

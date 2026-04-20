@@ -8,6 +8,7 @@ import { Label } from '../ui/label';
 import { Card, CardContent } from '../ui/card';
 import { Mail, Phone, User, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { CHATBOT_PUBLIC_CONTACT_EMAIL } from '@/lib/chatbotScope';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
@@ -132,6 +133,16 @@ export default function ContactForm({
           <h3 className="text-sm font-semibold text-gray-900 mb-1">Get Personalized Information</h3>
           <p className="text-xs text-gray-600">
             Please provide your contact details.
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Prefer email? Reach us at{' '}
+            <a
+              href={`mailto:${CHATBOT_PUBLIC_CONTACT_EMAIL}`}
+              className="text-[#1F396D] underline underline-offset-2 hover:text-[#F16112]"
+            >
+              {CHATBOT_PUBLIC_CONTACT_EMAIL}
+            </a>
+            .
           </p>
         </div>
 

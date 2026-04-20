@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { ChatbotErrorBoundary } from './ChatbotErrorBoundary';
 
 const Chatbot = dynamic(() => import('./Chatbot'), {
   ssr: false,
@@ -8,5 +9,9 @@ const Chatbot = dynamic(() => import('./Chatbot'), {
 
 /** Mounts chat immediately so the floating control stays bottom-right on first paint (no scroll/idle delay). */
 export default function LazyChatbot() {
-  return <Chatbot />;
+  return (
+    <ChatbotErrorBoundary>
+      <Chatbot />
+    </ChatbotErrorBoundary>
+  );
 }

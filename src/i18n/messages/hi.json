@@ -145,25 +145,29 @@
     }
   },
   "chatbot": {
-    "title": "GrowWise Assistant",
+    "title": "GrowWise School सहायक",
     "openChat": "चैट खोलें",
     "closeChat": "चैट बंद करें",
     "sendMessage": "संदेश भेजें",
     "placeholder": "Ask me anything about our programs...",
+    "status": {
+      "online": "अभी ऑनलाइन",
+      "fallback": "वैकल्पिक मोड"
+    },
     "suggestions": {
-      "k12Programs": "What K-12 programs do you offer?",
-      "steamCourses": "Tell me about STEAM courses",
+      "k12Programs": "What programs do you offer?",
+      "steamCourses": "Tell me about STEM and coding",
       "bookAssessment": "How do I book a free assessment?",
       "pricing": "What are your prices?",
       "getStarted": "I want to get started"
     },
     "responses": {
-      "welcome": "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. How can I help you today?",
-      "courses": "We offer comprehensive K-12 academic programs and exciting STEAM courses! Our K-12 programs include Math, ELA, Writing Lab, and SAT/ACT prep. For STEAM, we have Game Development, Python Programming, Young Founders, and ML/AI courses. Would you like to know more about any specific program?",
-      "assessment": "We offer FREE assessments and trial classes! 🎓 K-12 Programs: 60-minute FREE assessment. 🚀 STEAM Courses: 30-minute trial class. These help us create a personalized learning plan for your child. Would you like to book one?",
-      "pricing": "We offer competitive pricing for all our programs. For the most accurate pricing information, I'd recommend booking a free assessment where our team can provide detailed information based on your specific needs. Would you like to schedule a free assessment?",
-      "contact": "You can reach us through our website contact form, phone, or email. We're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.",
-      "fallback": "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?"
+      "welcome": "नमस्ते! GrowWise School में आपका स्वागत है! 🎓 हम Tri-Valley परिवारों को इन कार्यक्रम क्षेत्रों में सहायता करते हैं: {categories}। आज हम कैसे मदद करें?",
+      "courses": "GrowWise School ट्यूशन, त्वरित गणित, अंग्रेज़ी और लेखन, STEM संवर्धन, कोडिंग, AI, रोबोटिक्स, कार्यशालाएँ और शिविर प्रदान करता है। अपने बच्चे की कक्षा या रुचियाँ बताएँ ताकि हम रास्ता सुझा सकें।",
+      "assessment": "कई पथों पर हम मुफ़्त मूल्यांकन और परीक्षण-शैली अनुभव प्रदान करते हैं। संक्षिप्त बातचीत के बाद हमारी टीम सही विकल्प सुझाएगी।",
+      "pricing": "शुल्क उन कार्यक्रमों पर निर्भर करता है जो आपके लक्ष्यों के अनुरूप हों। मुफ़्त मूल्यांकन के बाद हम स्पष्ट विकल्प साझा करेंगे।",
+      "contact": "आप फ़ोन, ईमेल contact@growwiseschool.org या इस चैट से संपर्क कर सकते हैं। हम आमतौर पर 24 घंटे में जवाब देते हैं।",
+      "fallback": "खुशी से मदद करेंगे! GrowWise School ट्यूशन, त्वरित गणित, अंग्रेज़ी और लेखन, STEM संवर्धन, कोडिंग, AI, रोबोटिक्स, कार्यशालाएँ और शिविर पर केंद्रित है। आप पहले क्या जानना चाहेंगे?"
     }
   },
   "courses": {

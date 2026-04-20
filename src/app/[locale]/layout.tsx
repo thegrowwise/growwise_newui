@@ -10,7 +10,7 @@ import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/se
 
 const Header = dynamic(() => import("@/components/layout/Header/Header"));
 const Footer = dynamic(() => import("@/components/layout/Footer/Footer"));
-const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"));
+const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"), { ssr: false });
 
 // Default metadata - can be overridden by page-specific generateMetadata
 export const metadata: Metadata = {

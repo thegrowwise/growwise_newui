@@ -10,7 +10,7 @@ import Footer from "@/components/layout/Footer/Footer";
 import Header from "@/components/layout/Header/Header";
 
 /** Keep chatbot deferred; header/footer are static imports to avoid Suspense/chunk flash on camp landings. */
-const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"));
+const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"), { ssr: false });
 
 export const metadata: Metadata = {
   title: "Summer Camps | GrowWise School | Dublin, CA",
