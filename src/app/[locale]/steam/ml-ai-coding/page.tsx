@@ -398,10 +398,9 @@ const MLAICoursesPage: React.FC = () => {
           {/* Main Header Content */}
           <div className="text-center mb-16">
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              Master <br />
-              Python Programming <br />
+              ML & AI Coding Classes <br />
               <span className="block bg-gradient-to-r from-[#F1894F] to-[#F16112] bg-clip-text text-transparent">
-                From Beginner to Advanced
+                for Kids in Dublin, CA
               </span>
             </h1>
             <div className="inline-flex items-center gap-3 bg-white/30 backdrop-blur-sm rounded-full px-6 py-3 mb-6 border border-gray-200/50">
@@ -469,10 +468,10 @@ const MLAICoursesPage: React.FC = () => {
           {/* Section Header */}
           <div className="text-center mb-8">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Our <span className="text-[#F16112]">Python Courses</span>
+              Our <span className="text-[#F16112]">Coding Courses</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Choose from our comprehensive range of Python programming courses designed for every skill level and goal.
+              Choose from our comprehensive range of ML, AI, and programming courses designed for every skill level and goal.
             </p>
           </div>
 
@@ -578,7 +577,7 @@ const MLAICoursesPage: React.FC = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-900">
-                Python Programming Courses 
+                Courses
                 <span className="text-[#F16112] ml-2">({filteredAndSortedCourses.length})</span>
               </h2>
             </div>
@@ -805,7 +804,7 @@ const MLAICoursesPage: React.FC = () => {
       <section className="py-20 px-4 lg:px-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-8">
-            Why Choose <span className="text-[#F16112]">GrowWise Python</span>?
+            Why Choose <span className="text-[#F16112]">GrowWise STEAM</span>?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -846,10 +845,10 @@ const MLAICoursesPage: React.FC = () => {
       <section className="py-20 px-4 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-8">
-            Ready to Start Your <span className="text-[#F16112]">Python Journey</span>?
+            Ready to Start Your <span className="text-[#F16112]">Coding Journey</span>?
           </h2>
           <p className="text-xl text-gray-600 mb-12">
-            Have questions about our Python programming courses? Our education specialists are here to help you choose the perfect program.
+            Have questions about our ML, AI, or coding courses? Our education specialists are here to help you choose the perfect program.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">

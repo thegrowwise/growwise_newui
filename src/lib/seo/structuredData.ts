@@ -95,6 +95,13 @@ export const localBusinessSchema = {
   "currenciesAccepted": "USD",
   "paymentAccepted": "Credit Card, Cash, Check",
   "areaServed": [...TRI_VALLEY_AREA_SERVED],
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": 4.9,
+    "reviewCount": 325,
+    "bestRating": 5,
+    "worstRating": 1
+  },
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
     "name": "Educational Services",

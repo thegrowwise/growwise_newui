@@ -170,6 +170,15 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     path: '/book-assessment',
   },
 
+  '/camps': {
+    title: 'Kids Camps Dublin CA | STEAM & Academic | GrowWise',
+    description:
+      'Summer and winter camps in Dublin, CA: coding, AI, robotics, math, and writing. Accredited programs for K–12. Reserve a spot.',
+    keywords:
+      'kids camps Dublin CA, summer camp Dublin, STEAM camp Tri-Valley, coding camp kids, winter camp Dublin, academic camp Dublin CA',
+    path: '/camps',
+  },
+
   '/camps/winter': {
     title: 'Winter Camp 2025 | Dublin CA | GrowWise',
     description:
