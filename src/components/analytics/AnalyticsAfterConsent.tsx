@@ -9,6 +9,7 @@ import {
   isAutomatedAuditEnvironment,
   type CookieConsentState,
 } from '@/lib/consent';
+import { isAppMetaPixelScriptDisabled } from '@/lib/metaPixelEnv';
 
 function buildGtagInline(gaId: string) {
   return `
@@ -44,24 +45,37 @@ export function AnalyticsAfterConsent() {
   }, []);
 
   if (!ready) return null;
-  // Stored consent must not load GTM/Meta during Lighthouse / WebDriver (clean Best Practices audits).
-  if (consent !== 'accepted' || isAutomatedAuditEnvironment()) return null;
+
+  const isAudit = isAutomatedAuditEnvironment();
+  const consentAccepted = consent === 'accepted';
 
   return (
     <>
-      {env.gtmId ? (
-        <>
-          <GTMHead gtmId={env.gtmId} strategy="afterInteractive" />
-          <GTMNoScript gtmId={env.gtmId} />
-        </>
+      {/* Meta Pixel loads without a consent gate so Meta's Event Setup Tool can detect it.
+          Custom events (Lead, Purchase, etc.) are fired explicitly from user actions and are
+          unaffected by this change. Suppress during automated audits and when explicitly
+          disabled (e.g. pixel is already loaded via GTM). */}
+      {!isAudit && !isAppMetaPixelScriptDisabled() && env.pixelId ? (
+        <MetaPixel pixelId={env.pixelId} />
       ) : null}
-      {env.pixelId ? <MetaPixel pixelId={env.pixelId} /> : null}
 
-      {/* GA fallback only when GTM isn't configured */}
-      {!env.gtmId && env.gaId ? (
+      {/* GTM and GA remain behind the consent gate. */}
+      {consentAccepted && !isAudit ? (
         <>
-          <Script src={`https://www.googletagmanager.com/gtag/js?id=${env.gaId}`} strategy="lazyOnload" />
-          <Script id="gtag-inline" strategy="lazyOnload" dangerouslySetInnerHTML={{ __html: buildGtagInline(env.gaId) }} />
+          {env.gtmId ? (
+            <>
+              <GTMHead gtmId={env.gtmId} strategy="afterInteractive" />
+              <GTMNoScript gtmId={env.gtmId} />
+            </>
+          ) : null}
+
+          {/* GA fallback only when GTM isn't configured */}
+          {!env.gtmId && env.gaId ? (
+            <>
+              <Script src={`https://www.googletagmanager.com/gtag/js?id=${env.gaId}`} strategy="lazyOnload" />
+              <Script id="gtag-inline" strategy="lazyOnload" dangerouslySetInnerHTML={{ __html: buildGtagInline(env.gaId) }} />
+            </>
+          ) : null}
         </>
       ) : null}
     </>
