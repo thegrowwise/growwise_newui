@@ -214,7 +214,7 @@ const SATPage: React.FC = () => {
           {/* Main Header Content */}
           <div className="text-center mb-16">
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              SAT Tutoring
+              SAT Prep Courses
               <span className="block bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
                 in Dublin, CA
               </span>
@@ -226,7 +226,7 @@ const SATPage: React.FC = () => {
             </div>
             
             <p className="text-xl text-gray-600 mb-4 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive SAT/PSAT preparation programs for high school students in Dublin, CA. From foundational skills to test-day strategies, achieve your target scores with expert instruction and proven methods.
+              GrowWise offers SAT and PSAT preparation for Grades 9–12 students in Dublin, CA and the Tri-Valley. From closing foundational gaps in Math and English to mastering test-day strategy, our structured three-level program gives students the tools to reach their target score — with expert coaching and real practice exams, not guesswork.
             </p>
             <p className="text-base text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Between school years, consider{' '}
@@ -242,7 +242,7 @@ const SATPage: React.FC = () => {
                 className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
               >
                 <Target className="mr-2 w-5 h-5" />
-                Free Assessment
+                Book a Free Assessment
               </Button>
               <Button variant="outline" className="border-2 border-gray-400 text-gray-700 bg-white/60 hover:bg-white hover:text-[#1F396D] rounded-full px-8 py-4 text-lg backdrop-blur-sm transition-all duration-300 shadow-lg">
                 <Eye className="mr-2 w-5 h-5" />

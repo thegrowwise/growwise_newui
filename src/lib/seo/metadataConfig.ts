@@ -56,7 +56,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/academic': {
     title: 'Grades 1-12 Academic Programs | Dublin CA | GrowWise',
     description:
-      'Math and English programs aligned with DUSD and PUSD. Grade-level, accelerated, and integrated paths. Small groups in Dublin, CA.',
+      'Grades 1–12 Math and English tutoring in Dublin, CA, aligned with DUSD & PUSD. Small groups, personalized paths. Book a free assessment today.',
     keywords:
       'academic programs, math tutoring Dublin CA, English tutoring, DUSD aligned curriculum, PUSD aligned, grade-level math, accelerated math, English Language Arts',
     path: '/academic',
@@ -83,7 +83,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/courses/sat-prep': {
     title: 'SAT Prep Dublin CA | GrowWise School',
     description:
-      'SAT prep in Dublin, CA with practice tests and strategy. Small classes and expert coaches. Book your readiness check.',
+      'SAT prep for Tri-Valley high schoolers in Dublin, CA. Expert coaches, timed practice, and proven strategies. Book a free assessment today.',
     keywords:
       'SAT prep Dublin CA, SAT preparation, SAT course, SAT tutoring Dublin, SAT test prep, SAT strategies, SAT practice tests, SAT classes Dublin CA, SAT help, SAT tutor near me, SAT prep course, SAT score improvement, college entrance exam prep',
     path: '/courses/sat-prep',
@@ -119,7 +119,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/steam': {
     title: 'STEAM Programs | Dublin CA | GrowWise',
     description:
-      'STEAM programs in Dublin, CA: ML/AI, game dev, and Python. Project-based classes for Grades 1–12. Book a free trial.',
+      'STEAM programs in Dublin, CA: coding, ML/AI, and game dev for Grades 1–12. Project-based, hands-on learning. Book a free assessment today.',
     keywords:
       'STEAM programs Dublin CA, ML AI coding, game development, coding classes for kids, programming courses, STEM education, technology courses, coding classes Dublin CA, programming for kids, STEAM education, robotics, computer science for kids',
     path: '/steam',
@@ -173,7 +173,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/camps': {
     title: 'Kids Camps Dublin CA | STEAM & Academic | GrowWise',
     description:
-      'Summer and winter camps in Dublin, CA: coding, AI, robotics, math, and writing. Accredited programs for Grades 1–12. Reserve a spot.',
+      'STEAM & academic summer camps in Dublin, CA. Coding, AI, robotics, math, and writing for Grades 1–12. Book a free assessment today.',
     keywords:
       'kids camps Dublin CA, summer camp Dublin, STEAM camp Tri-Valley, coding camp kids, winter camp Dublin, academic camp Dublin CA',
     path: '/camps',
@@ -200,7 +200,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/camps/summer': {
     title: 'Summer STEM Camps Dublin CA | AI, Coding & Math | GrowWise',
     description:
-      'Summer STEM camps in Dublin and Tri-Valley: coding, AI, robotics, and math. Small groups. Reserve a spot.',
+      'Summer STEAM camps in Dublin, CA for Tri-Valley families. Coding, AI, robotics, and math in small groups. Book a free assessment today.',
     keywords:
       'summer coding camp Dublin CA, summer STEAM camp Dublin CA 2026, coding camp kids Tri-Valley, summer math camp Dublin CA, AI camp for kids Dublin CA, robotics camp kids Dublin CA, game development camp kids, young authors camp summer 2026, summer camp 2026 Dublin CA, STEM camp Pleasanton, STEM camp San Ramon, coding camp Livermore, kids coding camp Danville, machine learning camp for kids, Python coding camp kids',
     path: '/camps/summer',

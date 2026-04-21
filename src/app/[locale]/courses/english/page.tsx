@@ -386,7 +386,7 @@ function EnglishCoursesContent() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Button onClick={() => setIsAssessmentModalOpen(true)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
                 <BookOpen className="mr-2 w-5 h-5" />
-                Book Free Assessment
+                Book a Free Assessment
               </Button>
               <Button 
                 onClick={() => {

@@ -246,7 +246,7 @@
           "machineLearning": "Machine Learning Algorithms",
           "dataScience": "Data Science & Analytics"
         },
-        "cta": "Book Free Assessment"
+        "cta": "Book a Free Assessment"
       },
       "gameDev": {
         "title": "Game Development",
@@ -272,7 +272,7 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join 325+ students who are already building the future with our innovative programs",
-      "primaryCta": "Book Free Assessment",
+      "primaryCta": "Book a Free Assessment",
       "secondaryCta": "Join Free Saturday Workshop"
     },
     "mlAi": {
@@ -333,7 +333,7 @@
       "cta": {
         "title": "Ready to Build the Future with AI?",
         "subtitle": "Start your journey into artificial intelligence and machine learning today",
-        "primaryCta": "Book Free Assessment",
+        "primaryCta": "Book a Free Assessment",
         "secondaryCta": "View Curriculum"
       }
     },
@@ -448,7 +448,7 @@
     "cta": {
       "title": "Ready to Excel in Academics?",
       "subtitle": "Join 325+ students who have improved their academic performance with our personalized programs.",
-      "primary": "Book Free Assessment",
+      "primary": "Book a Free Assessment",
       "secondary": "Learn More"
     },
     "modal": {
@@ -597,12 +597,12 @@
       "titleHighlight": "Arts & Mathematics",
       "subtitle": "Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, our programs combine creativity with cutting-edge technology.",
       "explorePrograms": "Explore Programs",
-      "bookFreeTrial": "Book Free Assessment"
+      "bookFreeTrial": "Book a Free Assessment"
     },
     "programs": {
       "title": "Our STEAM Programs",
       "subtitle": "Comprehensive programs designed to prepare students for the digital future",
-      "startLearning": "Book Free Assessment"
+      "startLearning": "Book a Free Assessment"
     },
     "gameDevelopment": {
       "title": "Game Development",
@@ -637,7 +637,7 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join 325+ students learning cutting-edge technology skills",
-      "primaryCta": "Book Free Assessment",
+      "primaryCta": "Book a Free Assessment",
       "secondaryCta": "Join Free Saturday Workshop"
     }
   },

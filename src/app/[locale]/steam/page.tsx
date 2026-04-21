@@ -381,9 +381,9 @@ export default function SteamPage() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-              Science, Technology, Engineering, 
+              STEAM Programs in Dublin, CA
               <span className="block bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">
-                Arts & Mathematics
+                Coding, AI & Game Dev for Kids
               </span>
             </h1>
             <Badge className="bg-[#F16112] text-white mb-6 px-6 py-2 rounded-full">
@@ -424,7 +424,7 @@ export default function SteamPage() {
                       className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
                     >
                       <Link href={createLocaleUrl('/book-assessment')}>
-                        Book Free Assessment
+                        Book a Free Assessment
                         <ChevronRight className="ml-2 w-5 h-5" />
                       </Link>
                     </Button>
@@ -502,7 +502,7 @@ export default function SteamPage() {
                       <Button className={`w-full bg-gradient-to-r ${program.gradient} hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
                         isHovered ? 'scale-105 shadow-xl' : ''
                       }`}>
-                        Book Free Assessment
+                        Book a Free Assessment
                         <ChevronRight className="ml-2 w-5 h-5" />
                       </Button>
                     </Link>
@@ -587,7 +587,7 @@ export default function SteamPage() {
                       <Button className={`w-full bg-gradient-to-r from-[#1F396D] to-[#F16112] hover:shadow-2xl text-white rounded-xl py-4 transition-all duration-500 transform ${
                         isHovered ? 'scale-105 shadow-xl' : ''
                       }`}>
-                        Book Free Assessment
+                        Book a Free Assessment
                         <ChevronRight className="ml-2 w-5 h-5" />
                       </Button>
                     </Link>
@@ -887,7 +887,7 @@ export default function SteamPage() {
               className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
             >
               <Link href={createLocaleUrl('/book-assessment')}>
-                Book Free Assessment
+                Book a Free Assessment
                 <ChevronRight className="ml-2 w-5 h-5" />
               </Link>
             </Button>
