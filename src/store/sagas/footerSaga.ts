@@ -2,9 +2,10 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { fetchFooterRequested, fetchFooterSucceeded, fetchFooterFailed } from '../slices/footerSlice';
 import { FooterData } from '@/components/layout/Footer/types';
 
-function* fetchFooterSaga() {
+function* fetchFooterSaga(action: ReturnType<typeof fetchFooterRequested>) {
+  const locale = action.payload ?? 'en';
   try {
-    const response: Response = yield call(fetch, '/api/mock/footer');
+    const response: Response = yield call(fetch, `/api/mock/${locale}/footer`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
