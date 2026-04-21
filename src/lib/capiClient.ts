@@ -12,12 +12,13 @@ import type { CAPICustomData } from '@/lib/capi';
  * Usage:
  *   const eventId = generateEventId();
  *   window.fbq('track', 'Lead', params, { eventID: eventId });
- *   sendCAPIEventFromBrowser('Lead', params, eventId);
+ *   sendCAPIEventFromBrowser('Lead', params, eventId, { em: email, fn: firstName });
  */
 export function sendCAPIEventFromBrowser(
   event_name: string,
   custom_data?: CAPICustomData,
-  event_id?: string
+  event_id?: string,
+  user_data?: { em?: string; ph?: string; fn?: string; ln?: string }
 ): void {
   // Guard: never fire during Lighthouse or automated audits.
   if (typeof window === 'undefined' || isAutomatedAuditEnvironment()) return;
@@ -33,6 +34,7 @@ export function sendCAPIEventFromBrowser(
       event_id: id,
       event_source_url: window.location.href,
       custom_data,
+      ...(user_data ? { user_data } : {}),
     }),
     keepalive: true,
   }).catch(() => {

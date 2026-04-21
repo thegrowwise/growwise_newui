@@ -31,14 +31,18 @@ function generateEventId(): string {
  *
  * CAPI call is fire-and-forget — it never blocks the UI or throws.
  */
-function trackWithCAPI(event: string, params?: CAPICustomData): void {
+function trackWithCAPI(
+  event: string,
+  params?: CAPICustomData,
+  userData?: { em?: string; ph?: string; fn?: string; ln?: string }
+): void {
   const eventId = generateEventId();
 
   if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
     window.fbq('track', event, params ?? {}, { eventID: eventId });
   }
 
-  sendCAPIEventFromBrowser(event, params, eventId);
+  sendCAPIEventFromBrowser(event, params, eventId, userData);
 }
 
 /** Browser-only fbq track — for non-standard events not in the CAPI allowed list. */
@@ -53,14 +57,18 @@ function track(event: string, params?: Record<string, unknown>): void {
 // ---------------------------------------------------------------------------
 
 /** Summer camp "Get guide + 15% off" form submission. */
-export function trackSummerCampGuideLead(interest: string, grade: string): void {
+export function trackSummerCampGuideLead(
+  interest: string,
+  grade: string,
+  userData?: { em?: string; ph?: string; fn?: string; ln?: string }
+): void {
   trackWithCAPI('Lead', {
     content_name: 'Summer Camp Guide',
     content_category: interest,
     content_ids: [grade],
     value: 0,
     currency: 'USD',
-  });
+  }, userData);
 }
 
 /** @deprecated Use trackSummerCampGuideLead */
