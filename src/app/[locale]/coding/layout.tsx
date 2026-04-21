@@ -25,7 +25,7 @@ export default async function CodingLayout({
     description: 'Structured coding learning journeys for kids aged 10–18 in Dublin, CA. Learn Python, JavaScript, web development, and more. Project-based coding classes with expert instructors. Small groups, personalized instruction.',
     provider: 'GrowWise',
     courseCode: 'CODING-K12',
-    educationalLevel: 'K-12',
+    educationalLevel: 'Grades 1-12',
     teaches: [
       'Python Programming',
       'JavaScript',

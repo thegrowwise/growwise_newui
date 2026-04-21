@@ -33,15 +33,15 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const aboutPageSchema = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "name": "About GrowWise — K-12 Tutoring Center in Dublin, CA",
-    "description": "Learn about GrowWise, a K-12 education center in Dublin, CA offering personalized tutoring in Math, English, coding, and STEAM programs. Our mission, team, and approach.",
+    "name": "About GrowWise — Grades 1-12 Tutoring Center in Dublin, CA",
+    "description": "Learn about GrowWise, a Grades 1-12 education center in Dublin, CA offering personalized tutoring in Math, English, coding, and STEAM programs. Our mission, team, and approach.",
     "url": absoluteSiteUrl('/about', locale, baseUrl),
     "mainEntity": {
       "@type": "EducationalOrganization",
       "name": "GrowWise",
       "url": baseUrl,
       "foundingDate": "2024",
-      "description": "Empowering K-12 students through personalized education and innovative STEAM programs in Dublin, CA.",
+      "description": "Empowering Grades 1-12 students through personalized education and innovative STEAM programs in Dublin, CA.",
       "areaServed": [...TRI_VALLEY_AREA_SERVED],
       "founder": {
         "@type": "Person",

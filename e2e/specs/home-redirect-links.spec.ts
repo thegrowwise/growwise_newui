@@ -26,6 +26,8 @@ test.describe('Marketing route targets (home CTAs)', () => {
     expect(res?.status()).not.toBe(404);
 
     await page.locator('main').waitFor({ state: 'attached', timeout: 15_000 });
+    // Home is client-heavy; links appear after hydration (not at domcontentloaded).
+    await page.locator('main a[href^="/"]').first().waitFor({ state: 'visible', timeout: 20_000 });
 
     const internalCount = await page.locator('main a[href^="/"]').count();
     expect(internalCount, 'main should contain internal links').toBeGreaterThan(5);

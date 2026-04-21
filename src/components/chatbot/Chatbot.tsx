@@ -326,12 +326,12 @@ export default function Chatbot() {
     
     // Greeting responses
     if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
-      return { text: "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. I'm here to help you learn about our programs, courses, and how we can support your child's learning journey. What would you like to know?" };
+      return { text: "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive Grades 1-12 academic programs and exciting STEAM courses. I'm here to help you learn about our programs, courses, and how we can support your child's learning journey. What would you like to know?" };
     }
     
-    // K-12 Academic Programs
+    // Grades 1-12 Academic Programs
     if (input.includes('k-12') || input.includes('academic') || input.includes('math') || input.includes('english') || input.includes('ela') || input.includes('writing') || input.includes('sat') || input.includes('act')) {
-      return { text: "Our K-12 Academic Programs include:\n\n📚 **Math Courses**: Elementary Math, Middle School Math, DUSD Accelerated Math, and High School Math (including Calculus)\n\n📖 **ELA Courses**: English Mastery K-12, Reading Enrichment, and Grammar Boost\n\n✏️ **Writing Lab**: Creative Writing, Essay Writing, and Create & Reflect programs\n\n🎯 **SAT/ACT Prep**: Math Test Prep, Online SAT Test Prep, and Online ACT Test Prep\n\nWe offer personalized 1:1 attention and small group learning. Would you like details about any specific program?" };
+      return { text: "Our Grades 1-12 Academic Programs include:\n\n📚 **Math Courses**: Elementary Math, Middle School Math, DUSD Accelerated Math, and High School Math (including Calculus)\n\n📖 **ELA Courses**: English Mastery Grades 1-12, Reading Enrichment, and Grammar Boost\n\n✏️ **Writing Lab**: Creative Writing, Essay Writing, and Create & Reflect programs\n\n🎯 **SAT/ACT Prep**: Math Test Prep, Online SAT Test Prep, and Online ACT Test Prep\n\nWe offer personalized 1:1 attention and small group learning. Would you like details about any specific program?" };
     }
     
     // STEAM Programs
@@ -341,13 +341,13 @@ export default function Chatbot() {
     
     // Popular Courses
     if (input.includes('popular') || input.includes('course') || input.includes('program')) {
-      return { text: "Our most popular courses are:\n\n🐍 **Python Coding** - Project-based learning\n🧮 **Math Mastery** - 1:1 attention\n🤖 **AI Explorer** - Future-ready skills\n📚 **Reading Mastery** - Accelerated growth\n\nWe also offer comprehensive K-12 academic programs and exciting STEAM courses. Would you like to know more about any specific course or program?" };
+      return { text: "Our most popular courses are:\n\n🐍 **Python Coding** - Project-based learning\n🧮 **Math Mastery** - 1:1 attention\n🤖 **AI Explorer** - Future-ready skills\n📚 **Reading Mastery** - Accelerated growth\n\nWe also offer comprehensive Grades 1-12 academic programs and exciting STEAM courses. Would you like to know more about any specific course or program?" };
     }
     
     // Assessment and Trial Information
     if (input.includes('assessment') || input.includes('trial') || input.includes('demo') || input.includes('free') || input.includes('evaluate') || input.includes('test')) {
       return { 
-        text: "We offer FREE assessments and trial classes:\n\n🎓 **K-12 Programs**: 60-minute FREE assessment to evaluate your child's needs\n\n🚀 **STEAM Courses**: 30-minute trial class to experience our hands-on learning\n\nThese help us create a personalized learning plan for your child. To get started, I'll need some contact information to schedule your free assessment or trial class.",
+        text: "We offer FREE assessments and trial classes:\n\n🎓 **Grades 1-12 Programs**: 60-minute FREE assessment to evaluate your child's needs\n\n🚀 **STEAM Courses**: 30-minute trial class to experience our hands-on learning\n\nThese help us create a personalized learning plan for your child. To get started, I'll need some contact information to schedule your free assessment or trial class.",
         showContactForm: true
       };
     }
@@ -359,7 +359,7 @@ export default function Chatbot() {
     
     // Why Choose Us
     if (input.includes('why') || input.includes('choose') || input.includes('benefit') || input.includes('advantage')) {
-      return { text: "Why choose GrowWise?\n\n👨‍🏫 **Expert Instructors**: Certified teachers with years of K-12 and STEAM experience\n\n📈 **Proven Results**: 95% of students show measurable improvement in the first semester\n\n📋 **Comprehensive Curriculum**: Aligned with state standards and modern learning needs\n\n🔬 **Hands-on Learning**: Interactive labs and projects that make learning engaging\n\nWe provide personalized attention and innovative teaching methods that make us stand out!" };
+      return { text: "Why choose GrowWise?\n\n👨‍🏫 **Expert Instructors**: Certified teachers with years of Grades 1-12 and STEAM experience\n\n📈 **Proven Results**: 95% of students show measurable improvement in the first semester\n\n📋 **Comprehensive Curriculum**: Aligned with state standards and modern learning needs\n\n🔬 **Hands-on Learning**: Interactive labs and projects that make learning engaging\n\nWe provide personalized attention and innovative teaching methods that make us stand out!" };
     }
     
     // Pricing
@@ -407,7 +407,7 @@ export default function Chatbot() {
     }
 
     // Default response
-    return { text: "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for? I can help with course details, scheduling assessments, pricing, or any other questions about our programs!" };
+    return { text: "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive Grades 1-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for? I can help with course details, scheduling assessments, pricing, or any other questions about our programs!" };
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

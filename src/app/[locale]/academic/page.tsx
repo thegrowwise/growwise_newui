@@ -255,7 +255,7 @@ const AcademicPage: React.FC = () => {
   const whyChooseAcademic = [
     { icon: Target, title: 'Standards-Aligned Curriculum', description: "100% aligned with California Common Core, DUSD, and PUSD standards, ensuring your child's learning directly supports their classroom progress.", color: 'text-[#1F396D]', bgColor: 'bg-[#1F396D]/10' },
     { icon: UserCheck, title: 'Personalized Learning', description: 'Every student receives personalized academic programs tailored to their learning style and pace for maximum growth.', color: 'text-[#F16112]', bgColor: 'bg-[#F16112]/10' },
-    { icon: Award, title: 'Expert Instructors', description: 'Learn from certified K-12 teachers with years of experience in Math and English instruction.', color: 'text-[#F1894F]', bgColor: 'bg-[#F1894F]/10' },
+    { icon: Award, title: 'Expert Instructors', description: 'Learn from certified Grades 1-12 teachers with years of experience in Math and English instruction.', color: 'text-[#F1894F]', bgColor: 'bg-[#F1894F]/10' },
     { icon: TrendingUp, title: 'Proven Results', description: 'Our students consistently show measurable improvement in their academic performance and confidence.', color: 'text-[#1F396D]', bgColor: 'bg-[#1F396D]/10' }
   ];
 
@@ -264,7 +264,7 @@ const AcademicPage: React.FC = () => {
     return [
       {
         name: t[0].name,
-        grade: 'K–12 family',
+        grade: 'Grades 1–12 family',
         subject: 'Tutoring & enrichment',
         improvement: t[0].role,
         quote: t[0].content,
@@ -280,7 +280,7 @@ const AcademicPage: React.FC = () => {
       },
       {
         name: t[2].name,
-        grade: 'K–12 family',
+        grade: 'Grades 1–12 family',
         subject: 'Coding (Roblox)',
         improvement: t[2].role,
         quote: t[2].content,
@@ -307,7 +307,7 @@ const AcademicPage: React.FC = () => {
                 <Badge className="bg-[#F16112] text-white mb-6 px-6 py-3 rounded-full text-lg">ACADEMIC PROGRAMS</Badge>
 
                 <div className="max-w-4xl mx-auto mb-10">
-                  <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">GrowWise School: Dublin's Learning Hub for K-12 Excellence</h2>
+                  <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">GrowWise School: Dublin's Learning Hub for Grades 1-12 Excellence</h2>
                   <p className="text-gray-700 text-xl leading-relaxed mb-6">Welcome to <span className="font-semibold text-[#1F396D]">GrowWise School</span>, your local destination for <span className="font-semibold">personalized academic programs</span>. Serving students from grades 1-12 in Dublin, Pleasanton, and the entire Tri-Valley area, we are committed to nurturing success.</p>
                   <p className="text-gray-700 text-xl leading-relaxed mb-6">
                     Families also explore{' '}
@@ -357,7 +357,7 @@ const AcademicPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Our <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">Academic Programs</span></h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">Comprehensive K-12 academic support designed to help every student excel</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">Comprehensive Grades 1-12 academic support designed to help every student excel</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -580,7 +580,7 @@ const AcademicPage: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Why Choose Our <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Academic Programs</span>?</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Comprehensive support designed for K-12 academic excellence</p>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">Comprehensive support designed for Grades 1-12 academic excellence</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {whyChooseAcademic.map((item, index) => (

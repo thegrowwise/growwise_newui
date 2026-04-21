@@ -1,7 +1,7 @@
 {
   "hero": {
     "title": "Math Tutoring in Dublin, CA",
-    "subtitle": "Comprehensive math programs for students in Grades K–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
+    "subtitle": "Comprehensive math programs for students in Grades 1–12. From basic arithmetic to advanced calculus, develop strong mathematical thinking with expert instruction aligned to Dublin and Pleasanton school district standards.",
     "badge": "Master Math with Excellence"
   },
   "filters": {
@@ -87,7 +87,7 @@
   },
   "cta": {
     "title": "Ready to Master Math?",
-    "subtitle": "Join hundreds of students who have transformed their mathematical skills with GrowWise Math programs.",
+    "subtitle": "Join 325+ students who have transformed their mathematical skills with GrowWise Math programs.",
     "primaryButton": "Get Started",
     "secondaryButton": "Contact Us"
   }

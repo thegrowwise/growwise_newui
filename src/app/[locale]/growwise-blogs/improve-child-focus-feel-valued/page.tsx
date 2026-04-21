@@ -384,7 +384,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                     <li><strong>Daily reading:</strong> Read local event flyers or books together to spot vocabulary or comprehension issues.</li>
                   </ul>
                   <p className="text-gray-700 mt-3">
-                    GrowWise provides <strong>English tutoring for K-12 Students</strong> to strengthen reading skills.
+                    GrowWise provides <strong>English tutoring for Grades 1-12 Students</strong> to strengthen reading skills.
                   </p>
                 </div>
 
@@ -452,7 +452,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                   <h3 className="text-xl font-bold text-[#1F396D] mb-2">How do I register my child?</h3>
                   <p className="text-gray-700">
                     <Link href="/enroll" className="text-[#F16112] hover:underline font-semibold">
-                      Enroll Now-K-12-Courses
+                      Enroll Now-Grades-1-12-Courses
                     </Link>
                   </p>
                 </div>
