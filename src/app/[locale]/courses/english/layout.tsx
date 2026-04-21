@@ -1,8 +1,5 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-
-/** Reduces dev static-path worker churn; mitigates `spawn EBADF` with Turbopack on some macOS setups (see `[locale]/[...catchAll]/page.tsx`). */
-export const dynamic = 'force-dynamic'
 import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'

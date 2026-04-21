@@ -25,6 +25,13 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Development only: limits static-path worker churn that can surface as `spawn EBADF` on some macOS
+ * setups when using links, buttons, or client-side navigation. Production keeps default static behavior.
+ */
+export const dynamic =
+  process.env.NODE_ENV === 'development' ? ('force-dynamic' as const) : ('auto' as const);
+
 export default function RootLayout({
   children,
 }: {
