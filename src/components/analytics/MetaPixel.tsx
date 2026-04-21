@@ -1,6 +1,8 @@
 'use client';
 
 import Script from 'next/script';
+import { useEffect } from 'react';
+import { sendCAPIEventFromBrowser } from '@/lib/capiClient';
 
 interface MetaPixelProps {
   pixelId?: string | null;
@@ -12,6 +14,15 @@ const PIXEL_ID_PATTERN = /^\d{8,20}$/;
 export default function MetaPixel({ pixelId }: MetaPixelProps) {
   const id = pixelId?.trim();
   if (!id || !PIXEL_ID_PATTERN.test(id)) return null;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    // Send the CAPI PageView once on mount. The browser fbq('track','PageView') call
+    // in the inline script below fires separately; Meta deduplicates same-URL events
+    // that arrive within a short window when no shared event_id is present (PageView
+    // timing makes exact-id coordination impractical with lazyOnload).
+    sendCAPIEventFromBrowser('PageView');
+  }, []);
 
   const inlineScript = `!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
