@@ -265,7 +265,10 @@ export default function SummerCampPage() {
         }
         return;
       }
-      trackSummerCampGuideLead(lotteryCampInterest, lotteryChildGrade);
+      trackSummerCampGuideLead(lotteryCampInterest, lotteryChildGrade, {
+        em: emailTrim,
+        fn: lotteryParentName.trim(),
+      });
       const qs = new URLSearchParams({
         interest: lotteryCampInterest,
         grade: lotteryChildGrade,
