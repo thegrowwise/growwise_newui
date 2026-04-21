@@ -16,21 +16,21 @@ export interface PageMetadataConfig {
 export const metadataConfig: Record<string, PageMetadataConfig> = {
   // Home page
   '/': {
-    title: 'K-12 Tutoring & STEAM | Dublin CA | GrowWise',
+    title: 'Grades 1-12 Tutoring & STEAM | Dublin CA | GrowWise',
     description:
-      'K-12 tutoring and STEAM in Dublin, CA. Math, English, coding, and SAT prep. Small groups, personalized lessons. Book a free assessment.',
+      'Grades 1-12 tutoring and STEAM in Dublin, CA. Math, English, coding, and SAT prep. Small groups, personalized lessons. Book a free assessment.',
     keywords:
-      'tutoring Dublin CA, K-12 education, STEAM programs, math tutor, English tutor, coding classes, SAT prep Dublin, personalized learning',
+      'tutoring Dublin CA, Grades 1-12 education, STEAM programs, math tutor, English tutor, coding classes, SAT prep Dublin, personalized learning',
     path: '',
   },
 
   // Core pages
   '/about': {
-    title: 'About GrowWise | Dublin CA | K-12 & STEAM',
+    title: 'About GrowWise | Dublin CA | Grades 1-12 & STEAM',
     description:
-      "GrowWise offers K-12 tutoring and STEAM in Dublin, CA. Expert instructors, personalized learning, and proven results.",
+      "GrowWise offers Grades 1-12 tutoring and STEAM in Dublin, CA. Expert instructors, personalized learning, and proven results.",
     keywords:
-      'about GrowWise, tutoring center Dublin CA, K-12 education Dublin, STEAM programs, educational excellence',
+      'about GrowWise, tutoring center Dublin CA, Grades 1-12 education Dublin, STEAM programs, educational excellence',
     path: '/about',
   },
 
@@ -39,7 +39,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'Reach GrowWise in Dublin, CA for tutoring, STEAM programs, and enrollment. Call, email, or visit—we respond within one business day.',
     keywords:
-      'contact GrowWise, tutoring Dublin CA, K-12 education contact, STEAM programs Dublin, free assessment booking',
+      'contact GrowWise, tutoring Dublin CA, Grades 1-12 education contact, STEAM programs Dublin, free assessment booking',
     path: '/contact',
   },
 
@@ -48,13 +48,13 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'Browse GrowWise academic and STEAM programs in Dublin, CA. Math, English, ML/AI, game dev, and coding paths for every learner.',
     keywords:
-      'GrowWise programs, academic courses, STEAM programs, K-12 education Dublin, math courses, coding classes',
+      'GrowWise programs, academic courses, STEAM programs, Grades 1-12 education Dublin, math courses, coding classes',
     path: '/programs',
   },
 
   // Academic pages
   '/academic': {
-    title: 'K-12 Academic Programs | Dublin CA | GrowWise',
+    title: 'Grades 1-12 Academic Programs | Dublin CA | GrowWise',
     description:
       'Math and English programs aligned with DUSD and PUSD. Grade-level, accelerated, and integrated paths. Small groups in Dublin, CA.',
     keywords:
@@ -63,11 +63,11 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/courses/math': {
-    title: 'Math Tutoring Dublin CA | K-12 | GrowWise',
+    title: 'Math Tutoring Dublin CA | Grades 1-12 | GrowWise',
     description:
       'Math tutoring for grades 1–12 in Dublin, CA. Common Core aligned, small groups, and placement support. Book a free assessment.',
     keywords:
-      'math tutoring Dublin CA, math tutor Dublin, K-12 math courses, grade-level math, accelerated math, integrated math, DUSD math, PUSD math, algebra tutoring, geometry tutoring, pre-calculus, elementary math, middle school math, high school math, math classes Dublin CA, math help Dublin, math tutoring near me',
+      'math tutoring Dublin CA, math tutor Dublin, Grades 1-12 math courses, grade-level math, accelerated math, integrated math, DUSD math, PUSD math, algebra tutoring, geometry tutoring, pre-calculus, elementary math, middle school math, high school math, math classes Dublin CA, math help Dublin, math tutoring near me',
     path: '/courses/math',
   },
 
@@ -76,7 +76,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'English and ELA tutoring for grades 1–12 in Dublin, CA. Reading, writing, and grammar in small groups. Book a free assessment.',
     keywords:
-      'English tutoring Dublin CA, English tutor Dublin, reading comprehension, essay writing, grammar tutoring, vocabulary development, English Language Arts, ELA tutoring, writing tutor, reading tutor, English classes Dublin CA, English help Dublin, English tutoring near me, K-12 English courses',
+      'English tutoring Dublin CA, English tutor Dublin, reading comprehension, essay writing, grammar tutoring, vocabulary development, English Language Arts, ELA tutoring, writing tutor, reading tutor, English classes Dublin CA, English help Dublin, English tutoring near me, Grades 1-12 English courses',
     path: '/courses/english',
   },
 
@@ -103,7 +103,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'Coding classes for ages 10–18 in Dublin, CA. Python, JavaScript, and web basics in small groups. Book a free trial.',
     keywords:
-      'coding classes Dublin CA, coding for kids Dublin, Python classes kids, JavaScript course kids, web development course Dublin, coding programs K-12, coding tutor Dublin, learn to code Dublin CA, kids coding near me, programming classes Dublin CA, coding classes near me',
+      'coding classes Dublin CA, coding for kids Dublin, Python classes kids, JavaScript course kids, web development course Dublin, coding programs Grades 1-12, coding tutor Dublin, learn to code Dublin CA, kids coding near me, programming classes Dublin CA, coding classes near me',
     path: '/coding',
   },
 
@@ -119,7 +119,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/steam': {
     title: 'STEAM Programs | Dublin CA | GrowWise',
     description:
-      'STEAM programs in Dublin, CA: ML/AI, game dev, and Python. Project-based classes for K–12. Book a free trial.',
+      'STEAM programs in Dublin, CA: ML/AI, game dev, and Python. Project-based classes for Grades 1–12. Book a free trial.',
     keywords:
       'STEAM programs Dublin CA, ML AI coding, game development, coding classes for kids, programming courses, STEM education, technology courses, coding classes Dublin CA, programming for kids, STEAM education, robotics, computer science for kids',
     path: '/steam',
@@ -137,18 +137,18 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/steam/game-development': {
     title: 'Game Development Course | Dublin CA | GrowWise',
     description:
-      'Game development in Dublin, CA. Roblox, Scratch, and Python projects for K–12. Book a free trial.',
+      'Game development in Dublin, CA. Roblox, Scratch, and Python projects for Grades 1–12. Book a free trial.',
     keywords:
       'game development course Dublin CA, learn game development, coding games, game programming, game design course, kids game development, Roblox coding, Scratch programming, Python game development, game development classes, coding games for kids',
     path: '/steam/game-development',
   },
 
   '/enroll': {
-    title: 'Enroll | K-12 & STEAM | GrowWise Dublin',
+    title: 'Enroll | Grades 1-12 & STEAM | GrowWise Dublin',
     description:
-      'Enroll in GrowWise K-12 tutoring or STEAM in Dublin, CA. Pick a path and start with a quick intake.',
+      'Enroll in GrowWise Grades 1-12 tutoring or STEAM in Dublin, CA. Pick a path and start with a quick intake.',
     keywords:
-      'enroll GrowWise, tutoring enrollment, K-12 enrollment Dublin CA, STEAM program enrollment, sign up for tutoring',
+      'enroll GrowWise, tutoring enrollment, Grades 1-12 enrollment Dublin CA, STEAM program enrollment, sign up for tutoring',
     path: '/enroll',
   },
 
@@ -157,17 +157,26 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'Enroll in GrowWise math and English programs. DUSD & PUSD aligned curriculum and small groups in Dublin, CA.',
     keywords:
-      'enroll academic programs, math enrollment, English enrollment, academic tutoring enrollment Dublin CA, K-12 enrollment',
+      'enroll academic programs, math enrollment, English enrollment, academic tutoring enrollment Dublin CA, Grades 1-12 enrollment',
     path: '/enroll-academic',
   },
 
   '/book-assessment': {
-    title: 'Book Free K-12 Assessment | GrowWise',
+    title: 'Book Free Grades 1-12 Assessment | GrowWise',
     description:
-      'Book a free K-12 placement assessment in Dublin, CA. Understand strengths, gaps, and the right next step.',
+      'Book a free Grades 1-12 placement assessment in Dublin, CA. Understand strengths, gaps, and the right next step.',
     keywords:
-      'free assessment, placement assessment, K-12 assessment, academic evaluation, free tutoring assessment Dublin CA, book assessment',
+      'free assessment, placement assessment, Grades 1-12 assessment, academic evaluation, free tutoring assessment Dublin CA, book assessment',
     path: '/book-assessment',
+  },
+
+  '/camps': {
+    title: 'Kids Camps Dublin CA | STEAM & Academic | GrowWise',
+    description:
+      'Summer and winter camps in Dublin, CA: coding, AI, robotics, math, and writing. Accredited programs for Grades 1–12. Reserve a spot.',
+    keywords:
+      'kids camps Dublin CA, summer camp Dublin, STEAM camp Tri-Valley, coding camp kids, winter camp Dublin, academic camp Dublin CA',
+    path: '/camps',
   },
 
   '/camps/winter': {
@@ -213,7 +222,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'Articles on tutoring, English, coding, and STEAM for Tri-Valley families. Practical tips from GrowWise educators.',
     keywords:
-      'math tutoring tips, English tutoring advice, coding for kids, STEAM education, K-12 education blog, Dublin CA education, parenting tips, learning resources',
+      'math tutoring tips, English tutoring advice, coding for kids, STEAM education, Grades 1-12 education blog, Dublin CA education, parenting tips, learning resources',
     path: '/growwise-blogs',
   },
 

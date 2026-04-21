@@ -9,7 +9,7 @@ export default function WhyChooseGrowWise() {
       icon: Users,
       title: 'Expert Instructors',
       description:
-        'Learn from certified teachers with years of experience in K-12 and STEAM education',
+        'Learn from certified teachers with years of experience in Grades 1-12 and STEAM education',
     },
     {
       icon: Award,

@@ -35,7 +35,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
     "@context": "https://schema.org",
     "@type": "ContactPage",
     "name": "Contact GrowWise — Dublin, CA Tutoring Center",
-    "description": "Contact GrowWise in Dublin, CA. Call, email, or visit us at 4564 Dublin Blvd. Book a free assessment or ask about our K-12 tutoring and STEAM programs.",
+    "description": "Contact GrowWise in Dublin, CA. Call, email, or visit us at 4564 Dublin Blvd. Book a free assessment or ask about our Grades 1-12 tutoring and STEAM programs.",
     "url": absoluteSiteUrl('/contact', locale, baseUrl),
     "mainEntity": {
       "@type": "EducationalOrganization",

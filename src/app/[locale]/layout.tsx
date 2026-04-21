@@ -14,10 +14,10 @@ const LazyChatbot = dynamic(() => import("@/components/chatbot/LazyChatbot"));
 
 // Default metadata - can be overridden by page-specific generateMetadata
 export const metadata: Metadata = {
-  title: "K-12 Tutoring & STEAM | Dublin CA | GrowWise",
+  title: "Grades 1-12 Tutoring & STEAM | Dublin CA | GrowWise",
   description:
-    "K-12 tutoring and STEAM in Dublin, CA. Math, English, coding, and SAT prep. Small groups, personalized lessons. Book a free assessment.",
-  keywords: "tutoring Dublin CA, K-12 education, STEAM programs, math tutor, English tutor, coding classes, SAT prep Dublin, personalized learning",
+    "Grades 1-12 tutoring and STEAM in Dublin, CA. Math, English, coding, and SAT prep. Small groups, personalized lessons. Book a free assessment.",
+  keywords: "tutoring Dublin CA, Grades 1-12 education, STEAM programs, math tutor, English tutor, coding classes, SAT prep Dublin, personalized learning",
   icons: {
     icon: '/icon.png',
     shortcut: '/icon.png',

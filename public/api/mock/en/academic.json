@@ -41,7 +41,7 @@
   ],
   "heroSection": {
     "title": "Math & English Programs Aligned with DUSD & PUSD",
-    "subtitle": "GrowWise School: Dublin's Learning Hub for K-12 Excellence",
+    "subtitle": "GrowWise School: Dublin's Learning Hub for Grades 1-12 Excellence",
     "description": "Welcome to GrowWise School, your local destination for personalized academic programs. Serving students from grades 1-12 in Dublin, Pleasanton, and the entire Tri-Valley area, we are committed to nurturing success.",
     "alignment": "Our curriculum is 100% aligned with California Common Core, DUSD, and PUSD standards, ensuring your child's learning directly supports their classroom progress.",
     "ctaText": "Enroll now!",
@@ -181,7 +181,7 @@
   },
   "ctaSection": {
     "title": "Ready to Excel in Academics?",
-    "subtitle": "Join hundreds of students who have improved their academic performance with our personalized programs.",
+    "subtitle": "Join 325+ students who have improved their academic performance with our personalized programs.",
     "primaryButton": {
       "text": "Book Free Assessment",
       "url": "/enroll"

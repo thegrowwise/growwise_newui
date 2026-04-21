@@ -46,7 +46,7 @@ function assertNoEmptyOrHashOnlyHref(links: HTMLElement[]) {
   }
 }
 
-describe('ProgramsSection redirect links (K-12 + STEAM)', () => {
+describe('ProgramsSection redirect links (Grades 1-12 + STEAM)', () => {
   const locale = 'en';
   const k12 = toProgramVMs(homeEn.k12Programs as Array<Record<string, unknown>>);
   const steam = toProgramVMs(homeEn.steamPrograms as Array<Record<string, unknown>>);
@@ -57,10 +57,10 @@ describe('ProgramsSection redirect links (K-12 + STEAM)', () => {
     assertNoEmptyOrHashOnlyHref(links as HTMLElement[]);
   });
 
-  it('K-12 card CTAs point at course routes from mock ctaUrl', () => {
+  it('Grades 1-12 card CTAs point at course routes from mock ctaUrl', () => {
     render(<ProgramsSection k12={k12} steam={steam} />);
     const k12Root = screen
-      .getByRole('heading', { name: /K-12 Academic Programs/i })
+      .getByRole('heading', { name: /Grades 1-12 Academic Programs/i })
       .closest('.mb-20');
     expect(k12Root).toBeTruthy();
 

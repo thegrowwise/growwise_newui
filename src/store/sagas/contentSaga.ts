@@ -50,7 +50,7 @@ async function fetchContentAPI(): Promise<ContentData> {
     about: {
       title: "About GrowWise",
       description:
-        "GrowWise School offers personalized K-12 and STEAM learning in Dublin, CA—with expert instructors and programs aligned to local schools.",
+        "GrowWise School offers personalized Grades 1-12 and STEAM learning in Dublin, CA—with expert instructors and programs aligned to local schools.",
       imageUrl: "/images/about-school.jpg"
     },
     testimonials: [

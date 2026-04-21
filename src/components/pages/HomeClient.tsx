@@ -20,7 +20,6 @@ import {
   TestimonialsSkeleton,
 } from '../ui/loading-skeletons';
 import type { HomeContentData } from '@/store/slices/homeSlice';
-import { HomeFAQSection } from '../sections/home/HomeFAQSection';
 
 // SSR enabled (default): below-the-fold HTML ships in first response — better mobile parse/paint than client-only chunks.
 const PopularCoursesSection = dynamic(
@@ -301,8 +300,6 @@ export default function HomeClient({ initialData }: HomeClientProps) {
         onPrimary={openAssessmentModal}
         onSecondary={openChatbot}
       />
-
-      <HomeFAQSection />
 
       <FreeAssessmentModal isOpen={isAssessmentModalOpen} onClose={closeAssessmentModal} />
       <STEAMTrialModal isOpen={isSTEAMTrialModalOpen} onClose={closeSTEAMTrialModal} />

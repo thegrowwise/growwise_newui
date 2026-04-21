@@ -13,7 +13,7 @@ import { CONTACT_INFO } from './constants';
 // GrowWise specific context for the LLM
 // Keep this minimal to reduce token costs - only essential information
 const GROWWISE_CONTEXT = `
-You are a helpful assistant for GrowWise, an educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses.
+You are a helpful assistant for GrowWise, an educational platform serving Tri-Valley families with comprehensive Grades 1-12 academic programs and exciting STEAM courses.
 
 CONTACT INFORMATION (IMPORTANT - Always use these exact details):
 - Phone: ${CONTACT_INFO.phone}
@@ -27,9 +27,9 @@ About GrowWise:
 - Expert instructors with years of experience
 - Personalized 1:1 attention and small group learning
 
-K-12 Academic Programs:
+Grades 1-12 Academic Programs:
 - Math Courses: Elementary Math, Middle School Math, DUSD Accelerated Math, High School Math (including Calculus)
-- ELA Courses: English Mastery K-12, Reading Enrichment, Grammar Boost
+- ELA Courses: English Mastery Grades 1-12, Reading Enrichment, Grammar Boost
 - Writing Lab: Creative Writing, Essay Writing, Create & Reflect programs
 - SAT/ACT Prep: Math Test Prep, Online SAT Test Prep, Online ACT Test Prep
 
@@ -46,7 +46,7 @@ Popular Courses:
 - Reading Mastery (Accelerated growth)
 
 Services:
-- FREE 60-minute assessment for K-12 programs
+- FREE 60-minute assessment for Grades 1-12 programs
 - FREE 30-minute trial class for STEAM courses
 - Competitive pricing (contact for details)
 - Expert instructors and proven results
@@ -147,15 +147,15 @@ export class LLMService {
     const input = userInput.toLowerCase();
     
     if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
-      return "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive K-12 academic programs and exciting STEAM courses. How can I help you today?";
+      return "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive Grades 1-12 academic programs and exciting STEAM courses. How can I help you today?";
     }
     
     if (input.includes('course') || input.includes('program')) {
-      return "We offer comprehensive K-12 academic programs and exciting STEAM courses! Our K-12 programs include Math, ELA, Writing Lab, and SAT/ACT prep. For STEAM, we have Game Development, Python Programming, Young Founders, and ML/AI courses. Would you like to know more about any specific program?";
+      return "We offer comprehensive Grades 1-12 academic programs and exciting STEAM courses! Our Grades 1-12 programs include Math, ELA, Writing Lab, and SAT/ACT prep. For STEAM, we have Game Development, Python Programming, Young Founders, and ML/AI courses. Would you like to know more about any specific program?";
     }
     
     if (input.includes('assessment') || input.includes('trial') || input.includes('free')) {
-      return "We offer FREE assessments and trial classes! 🎓 K-12 Programs: 60-minute FREE assessment. 🚀 STEAM Courses: 30-minute trial class. These help us create a personalized learning plan for your child. Would you like to book one?";
+      return "We offer FREE assessments and trial classes! 🎓 Grades 1-12 Programs: 60-minute FREE assessment. 🚀 STEAM Courses: 30-minute trial class. These help us create a personalized learning plan for your child. Would you like to book one?";
     }
     
     if (input.includes('price') || input.includes('cost') || input.includes('fee')) {
@@ -166,7 +166,7 @@ export class LLMService {
       return `You can reach us at:\n\n📞 Phone: ${CONTACT_INFO.phone}\n📧 Email: ${CONTACT_INFO.email}\n📍 Address: ${CONTACT_INFO.address}\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.`;
     }
     
-    return "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive K-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?";
+    return "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive Grades 1-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for?";
   }
 }
 

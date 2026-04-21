@@ -5,7 +5,7 @@ import { Calculator, BookOpen, PenTool, Award, Gamepad2, Code, Palette, Trending
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
-// Updated K-12 Programs with exact content from original
+// Updated Grades 1-12 Programs with exact content from original
 const k12Programs = [
   {
     id: 1,
@@ -31,7 +31,7 @@ const k12Programs = [
     bgGradient: 'bg-gradient-to-br from-[#F16112]/5 to-[#F1894F]/10',
     iconColor: 'text-[#F16112]',
     subItems: [
-      { name: 'English Mastery: K-12', icon: '📚', description: 'Complete language arts curriculum' },
+      { name: 'English Mastery: Grades 1-12', icon: '📚', description: 'Complete language arts curriculum' },
       { name: 'Reading Enrichment', icon: '📖', description: 'Improve reading comprehension' },
       { name: 'Grammar Boost', icon: '✏️', description: 'Master grammar and mechanics' }
     ]
@@ -194,10 +194,10 @@ export default function Features() {
         </div>
       </section>
 
-      {/* Enhanced K-12 Programs Section with Carousel */}
+      {/* Enhanced Grades 1-12 Programs Section with Carousel */}
       <section className="py-12 px-4 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl mb-8 text-center text-black">K-12 Academic Programs</h3>
+          <h3 className="text-3xl mb-8 text-center text-black">Grades 1-12 Academic Programs</h3>
           
           {/* Carousel Container */}
           <div className="relative">
