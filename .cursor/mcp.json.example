@@ -2,7 +2,7 @@
   "mcpServers": {
     "atlassian": {
       "type": "stdio",
-      "command": "/Users/amit/.local/bin/uvx",
+      "command": "uvx",
       "args": ["mcp-atlassian"],
       "env": {
         "JIRA_URL": "https://thegrowwise-school.atlassian.net",

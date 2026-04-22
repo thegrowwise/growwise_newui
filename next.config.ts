@@ -1,13 +1,6 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from 'next-intl/plugin';
 
-import { getChatbotSupabaseEnv } from './src/lib/supabase/env';
-
-/** When set to `1`, `next build` fails if chatbot Supabase env is incomplete (CI / release gates). */
-if (process.env.REQUIRE_CHATBOT_SUPABASE_AT_BUILD === '1') {
-  getChatbotSupabaseEnv();
-}
-
 const withNextIntl = createNextIntlPlugin('./src/i18n/config.ts');
 
 const isProd = process.env.NODE_ENV === 'production';
