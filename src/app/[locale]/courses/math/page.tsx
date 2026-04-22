@@ -771,7 +771,7 @@ const MathCoursesPage: React.FC = () => {
         faqs={[
           {
             question: "What math courses do you offer at GrowWise?",
-            answer: "We offer comprehensive K-12 math courses including grade-level math (aligned with California Common Core Standards), accelerated math programs, and integrated math 1 & 2. Our courses cover Algebra, Geometry, Pre-Calculus, and more. All programs are aligned with DUSD and PUSD curriculum standards."
+            answer: "We offer comprehensive Grades 1-12 math courses including grade-level math (aligned with California Common Core Standards), accelerated math programs, and integrated math 1 & 2. Our courses cover Algebra, Geometry, Pre-Calculus, and more. All programs are aligned with DUSD and PUSD curriculum standards."
           },
           {
             question: "How do I know which math course is right for my child?",

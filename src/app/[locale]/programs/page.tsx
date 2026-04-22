@@ -17,7 +17,7 @@ export default function ProgramsPage() {
   const faqs = [
     {
       question: "What programs does GrowWise offer?",
-      answer: "GrowWise offers two main program categories: Academic Programs (K-12 Math and English courses aligned with DUSD & PUSD standards) and STEAM Programs (ML/AI, Game Development, Python coding, and more). We also offer SAT Prep courses and specialized high school math programs."
+      answer: "GrowWise offers two main program categories: Academic Programs (Grades 1-12 Math and English courses aligned with DUSD & PUSD standards) and STEAM Programs (ML/AI, Game Development, Python coding, and more). We also offer SAT Prep courses and specialized high school math programs."
     },
     {
       question: "What is the difference between Academic and STEAM programs?",
@@ -29,7 +29,7 @@ export default function ProgramsPage() {
     },
     {
       question: "Are the programs suitable for all grade levels?",
-      answer: "Yes, we offer programs for K-12 students. Academic programs are available for all grade levels, while STEAM programs are typically designed for elementary through high school students, with age-appropriate content for each level."
+      answer: "Yes, we offer programs for Grades 1-12 students. Academic programs are available for all grade levels, while STEAM programs are typically designed for elementary through high school students, with age-appropriate content for each level."
     },
     {
       question: "How do I choose the right program for my child?",
@@ -55,7 +55,7 @@ export default function ProgramsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
           <Link href={createLocaleUrl('/academic')} className="card-base card-padding hover:shadow-xl rounded-xl border border-gray-100">
             <div className="text-strong text-lg mb-2">Academic</div>
-            <div className="text-muted">K-12 Math and English programs</div>
+            <div className="text-muted">Grades 1-12 Math and English programs</div>
           </Link>
           <Link href={createLocaleUrl('/steam')} className="card-base card-padding hover:shadow-xl rounded-xl border border-gray-100">
             <div className="text-strong text-lg mb-2">STEAM</div>

@@ -71,7 +71,7 @@ export function generatePageMetadata({
   // Default keywords if not provided
   const defaultKeywords = [
     "tutoring Dublin CA",
-    "K-12 education",
+    "Grades 1-12 education",
     "STEAM programs",
     "math tutor",
     "English tutor",

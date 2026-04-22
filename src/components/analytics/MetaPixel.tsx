@@ -1,6 +1,8 @@
 'use client';
 
 import Script from 'next/script';
+import { useEffect } from 'react';
+import { sendCAPIEventFromBrowser } from '@/lib/capiClient';
 
 interface MetaPixelProps {
   pixelId?: string | null;
@@ -13,25 +15,24 @@ export default function MetaPixel({ pixelId }: MetaPixelProps) {
   const id = pixelId?.trim();
   if (!id || !PIXEL_ID_PATTERN.test(id)) return null;
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    // Send the CAPI PageView once on mount. The browser fbq('track','PageView') call
+    // in the inline script below fires separately; Meta deduplicates same-URL events
+    // that arrive within a short window when no shared event_id is present (PageView
+    // timing makes exact-id coordination impractical with lazyOnload).
+    sendCAPIEventFromBrowser('PageView');
+  }, []);
+
   const inlineScript = `!function(f,b,e,v,n,t,s)
 {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};
 if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];}(window,document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-function _gwInitFBPixel(){
-var t=document.createElement('script');t.async=true;
-t.src='https://connect.facebook.net/en_US/fbevents.js';
-document.head.appendChild(t);
-fbq('init','${id}');fbq('track','PageView');
-}
-['scroll','click','touchstart'].forEach(function(e){
-window.addEventListener(e,function _fb(){
-_gwInitFBPixel();
-['scroll','click','touchstart'].forEach(function(ev){
-window.removeEventListener(ev,_fb);});
-},{once:true,passive:true});
-});`;
+n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;
+s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','${id}');
+fbq('track','PageView');`;
 
   return (
     <>

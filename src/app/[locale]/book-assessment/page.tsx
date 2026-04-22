@@ -359,7 +359,7 @@ export default function BookAssessmentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50" suppressHydrationWarning>
-      <h1 className="sr-only">Book Free K-12 Assessment | GrowWise Dublin, CA</h1>
+      <h1 className="sr-only">Book Free Grades 1-12 Assessment | GrowWise Dublin, CA</h1>
 
 
       {/* <section className="py-16 bg-white">

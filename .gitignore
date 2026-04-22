@@ -37,6 +37,9 @@ test-results/
 .DS_Store
 *.pem
 
+# Cursor — local workspace settings (plugins, etc.); do not commit
+.cursor/settings.json
+
 # debug
 npm-debug.log*
 yarn-debug.log*

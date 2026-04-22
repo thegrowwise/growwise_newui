@@ -190,7 +190,7 @@ export function ProgramsSection({
         </div>
         <div className="mb-20">
           <div className="flex items-center gap-4 mb-12">
-            <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">K-12 Academic Programs</h3>
+            <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">Grades 1-12 Academic Programs</h3>
             <div className="flex-1 h-px bg-gradient-to-r from-[#1F396D]/30 via-[#F16112]/20 to-transparent"></div>
           </div>
           <ProgramGrid items={k12} accent="blue" />

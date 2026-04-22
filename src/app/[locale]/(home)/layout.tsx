@@ -28,7 +28,7 @@ export async function generateMetadata({
   const { locale: rawLocale } = await params;
   const locale = getValidLocale(rawLocale);
   const metadata = generateMetadataFromPath('/', locale);
-  return metadata || { title: 'K-12 Tutoring & STEAM | Dublin CA | GrowWise' };
+  return metadata || { title: 'Grades 1-12 Tutoring & STEAM | Dublin CA | GrowWise' };
 }
 
 export default function HomeLayout({ children }: { children: ReactNode }) {
@@ -37,8 +37,8 @@ export default function HomeLayout({ children }: { children: ReactNode }) {
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "GrowWise — K-12 Tutoring & STEAM Programs in Dublin, CA",
-    "description": "K-12 tutoring and STEAM in Dublin, CA. Math, English, coding, SAT prep, and camps. Small groups and personalized lessons. Book a free assessment.",
+    "name": "GrowWise — Grades 1-12 Tutoring & STEAM Programs in Dublin, CA",
+    "description": "Grades 1-12 tutoring and STEAM in Dublin, CA. Math, English, coding, SAT prep, and camps. Small groups and personalized lessons. Book a free assessment.",
     "url": baseUrl,
     "isPartOf": {
       "@type": "WebSite",

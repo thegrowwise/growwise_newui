@@ -407,7 +407,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                 </p>
                 <Link href="/enroll-academic">
                   <Button className="bg-white text-[#1F396D] hover:bg-gray-100">
-                    Enroll Now - K-12 Courses
+                    Enroll Now - Grades 1-12 Courses
                   </Button>
                 </Link>
               </div>
@@ -468,7 +468,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                   <h3 className="text-xl font-bold text-[#1F396D] mb-2">How do I register my child?</h3>
                   <p className="text-gray-700">
                     <Link href="/enroll-academic" className="text-[#F16112] hover:underline font-semibold">
-                      Enroll Now-K-12-Courses
+                      Enroll Now-Grades-1-12-Courses
                     </Link>
                   </p>
                 </div>

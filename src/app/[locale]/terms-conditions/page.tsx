@@ -80,7 +80,7 @@ export default async function TermsConditionsPage({ params }: { params: Promise<
                   <li>
                     <strong>Refund Policy:</strong>
                     <ul className="list-disc pl-6 mt-2 space-y-1">
-                      <li>There is no refund policy for K-12 Math and English subjects.</li>
+                      <li>There is no refund policy for Grades 1-12 Math and English subjects.</li>
                       <li>Coding courses have a refund policy if students withdraw within one week after enrollment.</li>
                       <li>For cancellations, a 30-day advance notice is required.</li>
                       <li><strong>No refunds will be issued for any purchased summer camp programs.</strong></li>

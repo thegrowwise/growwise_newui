@@ -25,7 +25,7 @@ export default async function GameDevLayout({
     description: 'Game development courses for kids aged 6–16 in Dublin, CA. Build real games with Scratch, Roblox, Minecraft, and Robotics. Hands-on project-based learning with expert instructors. No experience required.',
     provider: 'GrowWise',
     courseCode: 'GAME-DEV-STANDALONE-K12',
-    educationalLevel: 'K-12',
+    educationalLevel: 'Grades 1-12',
     teaches: [
       'Scratch Programming',
       'Roblox Game Development',
