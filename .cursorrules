@@ -45,6 +45,13 @@ NOT approval: silence, "hmm", "thanks", questions
 - Explain WHY, not WHAT
 - Don't over-comment
 
+## GIT — COMMIT & PUSH (MANDATORY)
+
+- **Never** run `git commit`, `git push`, or any operation that updates remote refs (including force-push, branch publish, `gh pr create` that pushes, etc.) **without explicit prior user approval** for that specific action.
+- Preparing changes locally, showing diffs, and **asking** whether to commit or push is fine.
+- **Silence, implied consent, or “looks good” in another context does not replace** a clear yes to commit/push.
+- If the user did not ask to commit or push, default to **no commit and no push**.
+
 ## ❌ DON'T
 1. Code without approval
 2. Rewrite working code
@@ -53,6 +60,7 @@ NOT approval: silence, "hmm", "thanks", questions
 5. Mix styling approaches
 6. Skip error handling
 7. Ignore accessibility
+8. Commit or push to Git without explicit user approval for that commit/push
 
 ## ✅ DO
 1. Get approval first
@@ -118,3 +126,5 @@ Risks: [issues + mitigation]
 **ASK → PROPOSE → WAIT FOR APPROVAL → CODE**
 
 Never assume. When in doubt, ask.
+
+**Git:** Same bar for **commit** and **push** — ask first; see **GIT — COMMIT & PUSH** above.

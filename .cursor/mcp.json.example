@@ -1,13 +1,14 @@
 {
   "mcpServers": {
     "atlassian": {
+      "type": "stdio",
       "command": "/Users/amit/.local/bin/uvx",
       "args": ["mcp-atlassian"],
       "env": {
-        "JIRA_URL": "https://YOUR-SITE.atlassian.net",
-        "JIRA_USERNAME": "your-atlassian-account-email@example.com",
-        "JIRA_API_TOKEN": "create-at-https://id.atlassian.com/manage-profile/security/api-tokens"
-      }
+        "JIRA_URL": "https://thegrowwise-school.atlassian.net",
+        "JIRA_USERNAME": "your-atlassian-email@example.com"
+      },
+      "envFile": "${workspaceFolder}/.cursor/jira.env"
     }
   }
 }

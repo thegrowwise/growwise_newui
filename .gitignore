@@ -29,6 +29,9 @@ test-results/
 # Cursor MCP (secrets — copy from .cursor/mcp.json.example)
 .cursor/mcp.json
 .cursor/jira.env
+# Cursor Jira data dumps (generated, not source)
+.cursor/jira_all_issues.json
+.cursor/jira_issues_summary.txt
 
 # misc
 .DS_Store
