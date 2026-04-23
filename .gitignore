@@ -26,6 +26,13 @@ test-results/
 .env.local
 /build
 
+# Cursor MCP (secrets — copy from .cursor/mcp.json.example)
+.cursor/mcp.json
+.cursor/jira.env
+# Cursor Jira data dumps (generated, not source)
+.cursor/jira_all_issues.json
+.cursor/jira_issues_summary.txt
+
 # misc
 .DS_Store
 *.pem
@@ -41,6 +48,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel

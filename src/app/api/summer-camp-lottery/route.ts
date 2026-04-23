@@ -1,3 +1,5 @@
+import { readFile } from 'fs/promises';
+import path from 'path';
 import { NextResponse } from 'next/server';
 import { CONTACT_INFO } from '@/lib/constants';
 import {
@@ -5,7 +7,7 @@ import {
   isBrevoTransactionalReady,
   sendBrevoTransactionalEmail,
 } from '@/lib/brevo';
-import { sendEmail, type SendEmailResult } from '@/lib/email';
+import { sendEmail, type EmailAttachment, type SendEmailResult } from '@/lib/email';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
 import {
   buildCampGuidePdfUrl,
@@ -86,12 +88,38 @@ const BREVO_REPLY_TO = { email: CONTACT_INFO.email, name: 'GrowWise' } as const;
 
 const BREVO_RETRY_DELAY_MS = 450;
 
+const SUMMER_CAMP_BROCHURE_REL_PATH = path.join(
+  'public',
+  'assets',
+  'camps',
+  'SummerCampBrochure.pdf'
+);
+
+async function loadSummerCampBrochureAttachment(): Promise<EmailAttachment | null> {
+  try {
+    const abs = path.join(process.cwd(), SUMMER_CAMP_BROCHURE_REL_PATH);
+    const content = await readFile(abs);
+    return {
+      filename: 'GrowWise-Summer-Camp-Guide.pdf',
+      content,
+      contentType: 'application/pdf',
+    };
+  } catch (err) {
+    console.warn(
+      '[summer-camp-guide] Could not read brochure PDF for attachment; email will be link-only.',
+      err instanceof Error ? err.message : err
+    );
+    return null;
+  }
+}
+
 /** Try Brevo (with one retry — cold starts / transient 5xx); then SMTP if still failing. */
 async function sendCampTransactionalWithFallback(opts: {
   to: string;
   subject: string;
   html: string;
   text: string;
+  attachments?: EmailAttachment[];
 }): Promise<SendEmailResult> {
   if (isBrevoTransactionalReady()) {
     let lastErr: string | undefined;
@@ -122,6 +150,7 @@ async function sendCampTransactionalWithFallback(opts: {
     html: opts.html,
     text: opts.text,
     replyTo: BREVO_REPLY_TO.email,
+    ...(opts.attachments?.length ? { attachments: opts.attachments } : {}),
   });
 }
 
@@ -173,6 +202,8 @@ export async function POST(request: Request) {
     const pdfUrl = buildCampGuidePdfUrl(siteUrl);
     const reserveUrl = buildReserveSpotUrl(siteUrl, localeSeg);
     const openPixelUrl = buildEmailOpenPixelUrl(siteUrl);
+    const brochureAttachment = await loadSummerCampBrochureAttachment();
+    const guideAttachments = brochureAttachment ? [brochureAttachment] : undefined;
 
     const interestKey = campInterest as InterestKey;
     const recHtml = recommendedProgramTrackHtml(interestKey);
@@ -185,7 +216,11 @@ export async function POST(request: Request) {
       <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.6;">
         <p style="margin: 0 0 16px;">Hi ${greetingName},</p>
         <p style="margin: 0 0 20px;">Thanks for your interest in GrowWise Summer Camps.</p>
-        <p style="margin: 0 0 12px;">Here’s your full camp guide with program details and schedules:</p>
+        <p style="margin: 0 0 12px;">${
+          brochureAttachment
+            ? 'Your full camp guide with program details and schedules is <strong>attached</strong> to this email (PDF). If the attachment does not show up, use this link:'
+            : 'Here’s your full camp guide with program details and schedules:'
+        }</p>
         <p style="margin: 0 0 20px;">
           <a href="${escapeHtml(pdfUrl)}" target="_blank" rel="noopener noreferrer" style="color: #1F396D; font-weight: bold;">👉 Camp Guide (PDF, opens in new tab)</a>
         </p>
@@ -221,7 +256,9 @@ export async function POST(request: Request) {
       '',
       'Thanks for your interest in GrowWise Summer Camps.',
       '',
-      'Here’s your full camp guide with program details and schedules:',
+      brochureAttachment
+        ? 'Your full camp guide (PDF) is attached to this email. If you do not see it, open this link:'
+        : 'Here’s your full camp guide with program details and schedules (open the link):',
       pdfUrl,
       '',
       '• AI & Coding',
@@ -264,6 +301,7 @@ export async function POST(request: Request) {
       subject: userSubject,
       html: userHtml,
       text: userText,
+      ...(guideAttachments ? { attachments: guideAttachments } : {}),
     });
 
     if (!userResult.success) {

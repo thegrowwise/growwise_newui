@@ -46,15 +46,17 @@ export function SummerCampTrustBlock({
               key={`trust-review-${index}`}
               className="flex h-full flex-col rounded-2xl border border-slate-200/90 bg-white p-5 shadow-sm md:p-6"
             >
-              <span className="text-base leading-none text-amber-500" aria-hidden="true">
-                ★★★★★
-              </span>
-              <p className="mt-3 flex-1 text-sm font-normal leading-relaxed text-slate-800 md:text-[15px]">
-                &ldquo;{review.quote}&rdquo;
-              </p>
-              <p className="mt-4 text-xs font-medium leading-snug text-slate-600 md:text-[13px]">
-                {review.byline}
-              </p>
+              <blockquote className="m-0 flex flex-1 flex-col border-0 p-0">
+                <span className="text-base leading-none text-amber-500" aria-hidden="true">
+                  ★★★★★
+                </span>
+                <p className="mt-3 flex-1 text-sm font-normal leading-relaxed text-slate-800 md:text-[15px]">
+                  &ldquo;{review.quote}&rdquo;
+                </p>
+                <footer className="mt-4 text-xs font-medium leading-snug text-slate-600 md:text-[13px]">
+                  {review.byline}
+                </footer>
+              </blockquote>
             </li>
           ))}
         </ul>
@@ -77,6 +79,7 @@ export function SummerCampTrustBlock({
             href={projectsCtaHref}
             target="_blank"
             rel="noopener noreferrer"
+            aria-label={`${projectsCta} (opens in new tab)`}
             className="inline-flex text-sm font-semibold text-[#1F396D] underline-offset-4 transition-colors hover:text-[#152a52] hover:underline"
           >
             {projectsCta}
