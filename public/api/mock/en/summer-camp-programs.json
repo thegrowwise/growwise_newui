@@ -17,10 +17,11 @@
       "startingPrice": 259,
       "image": "/images/camps/banners/advanced-math-banner.webp",
       "details": {
-        "schedule": "Algebra II (Mon/Wed/Fri)\nPrecal (Tue/Wed/Thu)",
+        "schedule": "Algebra II: Mon / Wed / Fri (session dates shown per week when you enroll)\nPrecalculus: Tue / Wed / Thu (session dates shown per week when you enroll)",
         "daysPerWeek": 3,
         "dailyHours": "3 hours / day",
         "hoursLabel": "Session hours",
+        "deliverySummary": "In-person or online (choose when enrolling)",
         "includes": [
           "Choice of track: Algebra II, Advanced Algebra II, or Precalculus",
           "Expert-led instruction with concept clarity and step-by-step guidance",
@@ -67,6 +68,7 @@
         "daysPerWeek": 5,
         "dailyHours": "3 hours daily",
         "hoursLabel": "Session hours",
+        "deliverySummary": "In-person or online (choose when enrolling)",
         "includes": [
           "AMC8 & MOEMS-aligned curriculum",
           "Timed mock competition tests",
@@ -121,6 +123,7 @@
         "daysPerWeek": 5,
         "dailyHours": "3 hours per day",
         "hoursLabel": "Session hours",
+        "deliverySummary": "In-person or online (choose when enrolling)",
         "includes": [
           "Led by instructor",
           "Hands-on AI tools",
@@ -167,6 +170,7 @@
         "daysPerWeek": 5,
         "dailyHours": "3 hours per day",
         "hoursLabel": "Session hours",
+        "deliverySummary": "In-person or online (choose when enrolling)",
         "includes": [
           "Scratch visual programming environment",
           "Animated story & interactive game projects",
@@ -212,6 +216,7 @@
         "schedule": "Monday – Friday",
         "daysPerWeek": 5,
         "dailyHours": "6 hours / day",
+        "deliverySummary": "In-person only",
         "includes": [
           "Build & program a working robot from scratch",
           "Sensor arrays: ultrasonic, IR & colour sensors",
@@ -258,6 +263,7 @@
         "schedule": "Monday – Friday",
         "daysPerWeek": 5,
         "dailyHours": "6 hours / day",
+        "deliverySummary": "In-person only",
         "includes": [
           "Story structure, plot & character development",
           "Daily creative writing workshops",
@@ -305,6 +311,7 @@
         "daysPerWeek": 5,
         "dailyHours": "3 hours per day",
         "hoursLabel": "Session hours",
+        "deliverySummary": "In-person or online (choose when enrolling)",
         "includes": [
           "Lua scripting fundamentals in Roblox Studio",
           "Game mechanics design & world-building",

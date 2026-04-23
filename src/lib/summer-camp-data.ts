@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Calculator, Brain, Gamepad2, Bot, Code2, Lightbulb, PenTool } from 'lucide-react';
 import enProgramsJson from '../../public/api/mock/en/summer-camp-programs.json';
+import { formatCampWeekSlotHeading } from '@/lib/summer-camp-week-calendar';
 
 export type Slot = {
   id: string;
@@ -32,6 +33,8 @@ export type ProgramDetails = {
   /** When set, used as the label instead of "Daily hours" (e.g. "Session hours"). */
   hoursLabel?: string;
   includes: string[];
+  /** Shown in Program Details modal (e.g. in-person only vs in-person or online). */
+  deliverySummary?: string;
 };
 
 export type Program = {
@@ -174,7 +177,7 @@ function expandSlotTemplate(template: SlotTemplate): Slot[] {
   const price = firstProgramPrices?.[template.defaultFormat] ?? 0;
   return Array.from({ length: template.count }).map((_, i) => ({
     id: `${template.slotIdPrefix}-w${i + 1}`,
-    label: `Week ${i + 1}`,
+    label: formatCampWeekSlotHeading(i),
     time,
     format: template.defaultFormat,
     price,
