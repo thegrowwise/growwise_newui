@@ -12,22 +12,10 @@ import { createLocaleUrl } from '@/components/layout/Header/utils';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { trackSummerCampGuideLead, trackEarlyBirdReveal } from '@/lib/meta-pixel';
-import {
-  LOTTERY_GRADES,
-  LOTTERY_INTERESTS,
   type LotteryGrade,
   type LotteryInterest,
 } from '@/lib/summer-lottery-keys';
-import enMessages from '@/i18n/messages/en.json';
+import canonicalSummerCampEn from '@/i18n/messages/summer-camp-canonical-en.json';
 import {
   SUMMER_CAMP_PROGRAM_GROUP_IDS,
   SUMMER_CAMP_PROGRAM_TRACK_ORDER,
@@ -41,33 +29,15 @@ import {
   summerCampProgramGroupMessagePath,
 } from '@/lib/summer-camp-seo-links';
 
-/** Canonical English hero + conversion copy (en.json). */
-const SUMMER_CAMP_HERO_EN = enMessages.summerCamp.hero;
-type SummerCampConversion = {
-  programGroupsHeading: string;
-  programGroupsSub: string;
-  exploreProgramCta: string;
-  programGroups: Array<{ title: string; outcome: string; ages: string }>;
-  trustBlockHeading: string;
-  trustGoogleRatingLine: string;
-  trustProofStrip: string;
-  trustReviews: Array<{ quote: string; byline: string }>;
-  trustBullets: string[];
-  trustProjectsCta: string;
-  trustProjectsUrl: string;
-  guideModalTitle: string;
-  guideModalSubtitle: string;
-  parentNameLabel: string;
-  parentNamePlaceholder: string;
-  guideSubmitCta: string;
-  finalHeading: string;
-  finalSubtext: string;
-  finalReserveCta: string;
-  finalGuidePdfCta: string;
-  bookingSectionTitle: string;
-  bookingSectionSub: string;
-};
-const SC = (enMessages.summerCamp as { conversion: SummerCampConversion }).conversion;
+/**
+ * Slim English-only hero + conversion copy (~4KB) for this page.
+ * Keeps marketing strings identical on every locale URL; update alongside `en.json` → `summerCamp.hero` / `conversion`.
+ */
+const SUMMER_CAMP_HERO_EN = canonicalSummerCampEn.hero;
+const SC = canonicalSummerCampEn.conversion;
+
+/** Module-scoped default data — avoids per-render `getDefaultSummerCampData()` calls (singleton inside that fn anyway). */
+const DEFAULT_CAMP_DATA = getDefaultSummerCampData();
 
 const ProgramList = dynamic(
   () => import('@/components/camps/SummerCampProgramList').then((m) => ({ default: m.ProgramList })),
@@ -78,10 +48,14 @@ const SummerCampPageFaq = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section className="py-16 md:py-24 bg-white border-t border-slate-200" aria-hidden>
+      <section className="py-16 md:py-24 bg-white border-t border-slate-200" aria-hidden="true">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-20 bg-slate-100 rounded-xl animate-pulse" />
+            <div
+              key={i}
+              className="h-20 bg-slate-100 rounded-xl animate-pulse"
+              aria-hidden="true"
+            />
           ))}
         </div>
       </section>
@@ -96,10 +70,16 @@ const SlotsPanel = dynamic(
     loading: () => (
       <div
         className="rounded-2xl border border-slate-200 bg-white/80 p-6 animate-pulse min-h-[320px]"
-        aria-hidden
+        aria-hidden="true"
       />
     ),
   }
+);
+/** Radix Dialog + lead form — separate chunk so initial /camps/summer load avoids Dialog until first open. */
+const SummerCampGuideLeadDialog = dynamic(
+  () =>
+    import('./SummerCampGuideLeadDialog').then((m) => ({ default: m.SummerCampGuideLeadDialog })),
+  { ssr: false }
 );
 
 export type { SummerCampFaqItem };
@@ -133,12 +113,13 @@ export default function SummerCampPage() {
   const t = useTranslations('summerCamp');
   const locale = useLocale();
   const router = useRouter();
-  const _defaultCampData = getDefaultSummerCampData();
-  const [programs, setPrograms] = useState<Program[]>(_defaultCampData.programs);
-  const [olympiadTierConfigs, setOlympiadTierConfigs] = useState<OlympiadTierConfig[]>(_defaultCampData.olympiadTierConfigs);
+  const [programs, setPrograms] = useState<Program[]>(DEFAULT_CAMP_DATA.programs);
+  const [olympiadTierConfigs, setOlympiadTierConfigs] = useState<OlympiadTierConfig[]>(
+    DEFAULT_CAMP_DATA.olympiadTierConfigs
+  );
   // English data is already loaded from the static bundle; no skeleton needed on first render.
   const [programsLoading, setProgramsLoading] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState<Program | null>(_defaultCampData.programs[0] ?? null);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(DEFAULT_CAMP_DATA.programs[0] ?? null);
   const [programTrackFilter, setProgramTrackFilter] = useState<ProgramTrackFilter>('all');
   const [faqs, setFaqs] = useState<SummerCampFaqItem[]>([]);
   const [faqsLoading, setFaqsLoading] = useState(true);
@@ -155,17 +136,26 @@ export default function SummerCampPage() {
   const [faqMount, setFaqMount] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [guideModalOpen, setGuideModalOpen] = useState(false);
+  /** Load guide dialog chunk only after first open or #lead-capture / #lottery (reduces initial JS). */
+  const [guideLeadDialogMounted, setGuideLeadDialogMounted] = useState(false);
   const guideModalUserDismissedRef = useRef(false);
   /** Timestamp of last programmatic open; null until first open (avoid Date.now()-0 looking “old”). */
   const guideModalOpenedAtRef = useRef<number | null>(null);
   const slotsSectionRef = useRef<HTMLElement>(null);
   const faqSentinelRef = useRef<HTMLDivElement>(null);
+  /** Fires `trackEarlyBirdReveal` at most once per locale after programs are ready (idle + dynamic import). */
+  const earlyBirdRevealFiredForLocaleRef = useRef<string | null>(null);
 
   const openGuideModal = useCallback(() => {
     guideModalUserDismissedRef.current = false;
     guideModalOpenedAtRef.current = Date.now();
+    setGuideLeadDialogMounted(true);
     setGuideModalOpen(true);
   }, []);
+
+  useEffect(() => {
+    if (guideModalOpen) setGuideLeadDialogMounted(true);
+  }, [guideModalOpen]);
 
   const handleGuideModalOpenChange = useCallback((open: boolean) => {
     if (!open) {
@@ -265,10 +255,12 @@ export default function SummerCampPage() {
         }
         return;
       }
-      trackSummerCampGuideLead(lotteryCampInterest, lotteryChildGrade, {
-        em: emailTrim,
-        fn: lotteryParentName.trim(),
-      });
+      void import('@/lib/meta-pixel').then(({ trackSummerCampGuideLead }) =>
+        trackSummerCampGuideLead(lotteryCampInterest, lotteryChildGrade, {
+          em: emailTrim,
+          fn: lotteryParentName.trim(),
+        })
+      );
       const qs = new URLSearchParams({
         interest: lotteryCampInterest,
         grade: lotteryChildGrade,
@@ -293,7 +285,7 @@ export default function SummerCampPage() {
   useEffect(() => {
     // English data is already hydrated from the static bundle — no fetch needed.
     if (locale === 'en') {
-      const p = _defaultCampData.programs;
+      const p = DEFAULT_CAMP_DATA.programs;
       const isMobileViewport = typeof window !== 'undefined' && window.innerWidth <= 768;
       setSelectedProgram((prev) => {
         const mapped = prev ? p.find((x) => x.id === prev.id) : undefined;
@@ -338,6 +330,8 @@ export default function SummerCampPage() {
   useEffect(() => {
     if (programsLoading) return;
     let cancelled = false;
+    const narrow =
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
     const cancelIdle = scheduleIdleTask(() => {
       if (cancelled) return;
       void (async () => {
@@ -362,7 +356,7 @@ export default function SummerCampPage() {
           if (!cancelled) setFaqsLoading(false);
         }
       })();
-    });
+    }, narrow ? 4000 : 2200);
     return () => {
       cancelled = true;
       cancelIdle();
@@ -370,12 +364,15 @@ export default function SummerCampPage() {
   }, [programsLoading, locale]);
 
   // Warm the slots/cart chunk before first interaction (same module as SlotsPanel).
+  // Phones: defer longer so hero + program thumbnails finish first (mobile Lighthouse / LCP).
   useEffect(() => {
     if (programsLoading) return;
     let cancelled = false;
+    const narrow =
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
     const cancelIdle = scheduleIdleTask(() => {
       if (!cancelled) void import('@/components/camps/SummerCampUI');
-    }, 2800);
+    }, narrow ? 5200 : 2800);
     return () => {
       cancelled = true;
       cancelIdle();
@@ -495,7 +492,18 @@ export default function SummerCampPage() {
     return () => io.disconnect();
   }, [locale, faqMount]);
 
-  useEffect(() => { if (!programsLoading) trackEarlyBirdReveal(); }, [programsLoading]);
+  useEffect(() => {
+    if (programsLoading) return;
+    if (earlyBirdRevealFiredForLocaleRef.current === locale) return;
+    const localeWhenScheduled = locale;
+    const narrow =
+      typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
+    const cancel = scheduleIdleTask(() => {
+      earlyBirdRevealFiredForLocaleRef.current = localeWhenScheduled;
+      void import('@/lib/meta-pixel').then(({ trackEarlyBirdReveal }) => trackEarlyBirdReveal());
+    }, narrow ? 4000 : 2800);
+    return cancel;
+  }, [programsLoading, locale]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -519,6 +527,7 @@ export default function SummerCampPage() {
       if (h === '#lead-capture' || h === '#lottery') {
         guideModalUserDismissedRef.current = false;
         guideModalOpenedAtRef.current = Date.now();
+        setGuideLeadDialogMounted(true);
         setGuideModalOpen(true);
       }
     };
@@ -532,6 +541,7 @@ export default function SummerCampPage() {
     const h = typeof window !== 'undefined' ? window.location.hash : '';
     if (!guideModalOpen && (h === '#lead-capture' || h === '#lottery')) {
       guideModalOpenedAtRef.current = Date.now();
+      setGuideLeadDialogMounted(true);
       setGuideModalOpen(true);
     }
   }, [guideModalOpen]);
@@ -544,8 +554,11 @@ export default function SummerCampPage() {
       )}
     >
       <main>
-        {/* Hero: single image + overlay, headline → context → price → CTAs → trust → discount */}
-        <section className="relative isolate min-h-[min(70vh,44rem)] w-full overflow-hidden">
+        {/* Hero: compact height so slots grid peeks; mobile keeps primary CTA above the fold */}
+        <section
+          className="relative isolate w-full min-h-[min(48svh,17rem)] max-h-[600px] overflow-hidden md:min-h-[min(40vh,22rem)]"
+          aria-label="Summer camp hero"
+        >
           <div className="absolute inset-0 z-0">
             <Image
               src="/assets/camps/summer-camp-banner.webp"
@@ -553,8 +566,9 @@ export default function SummerCampPage() {
               fill
               priority
               fetchPriority="high"
-              quality={75}
-              sizes="100vw"
+              decoding="async"
+              quality={70}
+              sizes="(max-width: 768px) 100vw, min(1100px, 85vw)"
               className="object-cover object-center select-none"
               draggable={false}
             />
@@ -563,19 +577,19 @@ export default function SummerCampPage() {
           <div
             className={cn(
               'relative z-10 mx-auto flex w-full max-w-[1100px] flex-col justify-center text-left',
-              'px-10 py-10 md:py-[120px] md:pl-20 md:pr-12'
+              'px-5 py-8 sm:px-8 md:px-12 md:py-14 lg:px-16 lg:py-16'
             )}
           >
-            <h1 className="font-heading max-w-[700px] text-[1.625rem] font-bold leading-[1.2] text-white sm:text-[1.875rem] md:text-[2.75rem] lg:text-[3rem]">
+            <h1 className="font-heading max-w-[700px] text-[1.5rem] font-bold leading-[1.15] text-white sm:text-[1.75rem] md:text-[2.25rem] lg:text-[2.625rem]">
               {SUMMER_CAMP_HERO_EN.h1}
             </h1>
-            <p className="mt-3 max-w-[650px] text-lg text-zinc-200 md:text-xl">
+            <p className="mt-2 max-w-[650px] text-base leading-snug text-zinc-100 sm:mt-2.5 md:text-lg md:leading-snug">
               {SUMMER_CAMP_HERO_EN.subhead}
             </p>
-            <div className="mt-6 flex w-full max-w-2xl flex-col gap-3 sm:flex-row sm:items-stretch sm:gap-4">
+            <div className="mt-4 flex w-full max-w-2xl flex-col gap-2.5 sm:mt-5 sm:flex-row sm:items-stretch sm:gap-3 md:gap-4">
               <Link
                 href="#slots-section"
-                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-[#10b981] px-7 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#059669] sm:w-auto sm:min-w-[220px] sm:text-base"
+                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-[#047857] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#065f46] sm:w-auto sm:min-w-[220px] sm:px-7 sm:py-3.5 sm:text-base"
               >
                 {SUMMER_CAMP_HERO_EN.primaryCta}
               </Link>
@@ -583,16 +597,17 @@ export default function SummerCampPage() {
                 href={SUMMER_CAMP_HERO_EN.brochurePdf}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[40px] w-full items-center justify-center rounded-lg border border-white/90 bg-transparent px-5 py-2.5 text-center text-xs font-medium text-white/95 transition-colors hover:bg-white/10 sm:w-auto sm:min-w-[min(100%,11rem)] sm:max-w-[14rem] sm:text-sm"
+                className="inline-flex min-h-[40px] w-full items-center justify-center rounded-lg border border-white/90 bg-transparent px-4 py-2 text-center text-[11px] font-medium leading-tight text-white transition-colors hover:bg-white/10 sm:min-h-[44px] sm:px-5 sm:py-2.5 sm:text-xs md:text-sm"
                 aria-label={`${SUMMER_CAMP_HERO_EN.secondaryCta.trim()} — ${SUMMER_CAMP_HERO_EN.downloadBrochure}`}
               >
                 {SUMMER_CAMP_HERO_EN.secondaryCta}
               </a>
             </div>
-            <p className="mt-3 max-w-2xl text-xs font-semibold leading-snug text-amber-100 sm:text-sm sm:leading-snug">
+            {/* Below CTAs: hidden on narrow phones so Reserve stays in first viewport; visible sm+ */}
+            <p className="mt-3 hidden max-w-2xl text-xs font-semibold leading-snug text-amber-200 sm:block sm:text-sm sm:leading-snug md:mt-4">
               {SUMMER_CAMP_HERO_EN.urgencyLine}
             </p>
-            <p className="mt-4 max-w-2xl text-[15px] font-medium leading-relaxed text-zinc-200 sm:text-base sm:leading-relaxed">
+            <p className="mt-3 hidden max-w-2xl text-sm font-medium leading-relaxed text-zinc-100 sm:mt-4 sm:block md:text-base md:leading-relaxed">
               {SUMMER_CAMP_HERO_EN.trustMicro}
             </p>
           </div>
@@ -660,6 +675,8 @@ export default function SummerCampPage() {
                         alt="GrowWise"
                         fill
                         sizes="120px"
+                        fetchPriority="low"
+                        decoding="async"
                         className="object-contain object-left"
                         draggable={false}
                       />
@@ -697,8 +714,8 @@ export default function SummerCampPage() {
                         style={
                           programTrackFilter === 'all'
                             ? {
-                                background: '#1D9E75',
-                                border: '1px solid #1D9E75',
+                                background: '#146c43',
+                                border: '1px solid #146c43',
                                 color: 'white',
                               }
                             : {
@@ -727,8 +744,8 @@ export default function SummerCampPage() {
                             style={
                               programTrackFilter === track
                                 ? {
-                                    background: '#1D9E75',
-                                    border: '1px solid #1D9E75',
+                                    background: '#146c43',
+                                    border: '1px solid #146c43',
                                     color: 'white',
                                   }
                                 : {
@@ -750,8 +767,8 @@ export default function SummerCampPage() {
                           style={
                             programTrackFilter === 'fullDay'
                               ? {
-                                  background: '#1D9E75',
-                                  border: '1px solid #1D9E75',
+                                  background: '#146c43',
+                                  border: '1px solid #146c43',
                                   color: 'white',
                                 }
                               : {
@@ -805,7 +822,7 @@ export default function SummerCampPage() {
               <button
                 type="button"
                 onClick={scrollToSlots}
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#10b981] px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#059669] md:text-base"
+                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#047857] px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#065f46] md:text-base"
               >
                 {SC.finalReserveCta}
               </button>
@@ -904,118 +921,45 @@ export default function SummerCampPage() {
         ) : null}
       </main>
 
-      <Dialog open={guideModalOpen} onOpenChange={handleGuideModalOpenChange}>
-        <DialogContent id="lead-capture" className="max-h-[min(90vh,720px)] overflow-y-auto sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="font-heading text-xl text-slate-900">{SC.guideModalTitle}</DialogTitle>
-            <DialogDescription id="lead-modal-description" className="text-slate-600">
-              {SC.guideModalSubtitle}
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleLotterySubmit} className="mt-2 space-y-4" noValidate aria-label={t('guideForm.ariaLabel')}>
-            <div className="space-y-2">
-              <Label htmlFor="summer-lead-parent">{SC.parentNameLabel}</Label>
-              <Input
-                id="summer-lead-parent"
-                name="parentName"
-                type="text"
-                autoComplete="name"
-                placeholder={SC.parentNamePlaceholder}
-                value={lotteryParentName}
-                onChange={(ev) => {
-                  setLotteryParentName(ev.target.value);
-                  clearLotteryError();
-                }}
-                disabled={lotteryStatus === 'loading'}
-                aria-invalid={lotteryStatus === 'error' && lotteryErrorKind === 'invalid_form'}
-                className="h-11"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="summer-lottery-email">{t('lottery.emailLabel')}</Label>
-              <Input
-                id="summer-lottery-email"
-                type="email"
-                name="email"
-                autoComplete="email"
-                inputMode="email"
-                placeholder={t('lottery.emailPlaceholder')}
-                value={lotteryEmail}
-                onChange={(ev) => {
-                  setLotteryEmail(ev.target.value);
-                  clearLotteryError();
-                }}
-                disabled={lotteryStatus === 'loading'}
-                aria-invalid={
-                  lotteryStatus === 'error' &&
-                  (lotteryErrorKind === 'invalid_email' || lotteryErrorKind === 'invalid_form')
-                }
-                className="h-11"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="summer-lottery-grade">{t('lottery.childGradeLabel')}</Label>
-              <select
-                id="summer-lottery-grade"
-                name="childGrade"
-                value={lotteryChildGrade}
-                onChange={(ev) => {
-                  setLotteryChildGrade(ev.target.value as LotteryGrade | '');
-                  clearLotteryError();
-                }}
-                disabled={lotteryStatus === 'loading'}
-                aria-invalid={lotteryStatus === 'error' && lotteryErrorKind === 'invalid_form'}
-                className={lotterySelectClass}
-              >
-                <option value="">{t('lottery.gradePlaceholder')}</option>
-                {LOTTERY_GRADES.map((g) => (
-                  <option key={g} value={g}>
-                    {t(`lottery.grades.${g}`)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="summer-lottery-interest">{t('lottery.campInterestLabel')}</Label>
-              <select
-                id="summer-lottery-interest"
-                name="campInterest"
-                value={lotteryCampInterest}
-                onChange={(ev) => {
-                  setLotteryCampInterest(ev.target.value as LotteryInterest | '');
-                  clearLotteryError();
-                }}
-                disabled={lotteryStatus === 'loading'}
-                aria-invalid={lotteryStatus === 'error' && lotteryErrorKind === 'invalid_form'}
-                className={lotterySelectClass}
-              >
-                <option value="">{t('lottery.interestPlaceholder')}</option>
-                {LOTTERY_INTERESTS.map((key) => (
-                  <option key={key} value={key}>
-                    {t(`lottery.interests.${key}`)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {lotteryStatus === 'error' && lotteryErrorKind ? (
-              <p className="text-sm text-red-600" role="alert">
-                {lotteryErrorKind === 'invalid_email'
-                  ? t('lottery.errorInvalidEmail')
-                  : lotteryErrorKind === 'invalid_form'
-                    ? lotteryErrorDetail ?? t('lottery.errorInvalidForm')
-                    : lotteryErrorDetail ?? t('lottery.errorGeneric')}
-              </p>
-            ) : null}
-            <Button
-              type="submit"
-              disabled={lotteryStatus === 'loading'}
-              className="h-12 w-full font-bold bg-[#1D9E75] hover:bg-[#178a66] text-white text-base"
-            >
-              {lotteryStatus === 'loading' ? t('lottery.submitting') : SC.guideSubmitCta}
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      {guideLeadDialogMounted ? (
+        <SummerCampGuideLeadDialog
+          open={guideModalOpen}
+          onOpenChange={handleGuideModalOpenChange}
+          copy={{
+            guideModalTitle: SC.guideModalTitle,
+            guideModalSubtitle: SC.guideModalSubtitle,
+            parentNameLabel: SC.parentNameLabel,
+            parentNamePlaceholder: SC.parentNamePlaceholder,
+            guideSubmitCta: SC.guideSubmitCta,
+          }}
+          formAriaLabel={t('guideForm.ariaLabel')}
+          lotterySelectClassName={lotterySelectClass}
+          parentName={lotteryParentName}
+          email={lotteryEmail}
+          childGrade={lotteryChildGrade}
+          campInterest={lotteryCampInterest}
+          status={lotteryStatus}
+          errorKind={lotteryErrorKind}
+          errorDetail={lotteryErrorDetail}
+          onParentNameChange={(v) => {
+            setLotteryParentName(v);
+            clearLotteryError();
+          }}
+          onEmailChange={(v) => {
+            setLotteryEmail(v);
+            clearLotteryError();
+          }}
+          onChildGradeChange={(v) => {
+            setLotteryChildGrade(v);
+            clearLotteryError();
+          }}
+          onCampInterestChange={(v) => {
+            setLotteryCampInterest(v);
+            clearLotteryError();
+          }}
+          onSubmit={handleLotterySubmit}
+        />
+      ) : null}
 
       {/* Sticky conversion bar — reserve vs guide (hidden while guide modal is open) */}
       {showStickyCta && !guideModalOpen ? (
@@ -1024,7 +968,7 @@ export default function SummerCampPage() {
             <button
               type="button"
               onClick={scrollToSlots}
-              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#10b981] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#059669] sm:w-auto md:text-base"
+              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#047857] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#065f46] sm:w-auto md:text-base"
             >
               {SC.finalReserveCta}
             </button>

@@ -191,6 +191,20 @@ describe('hydrateSummerCampData (programs)', () => {
     expect(adv!.category).toBe('Half-Day Camps');
   });
 
+  it('hydrated slots use Week N (date range) headings from expandSlotTemplate', () => {
+    const adv = SUMMER_CAMP_PROGRAMS.find((p) => p.id === 'adv-math')!;
+    const slots = adv.levels[0]?.slots ?? [];
+    expect(slots[0]?.label).toBe('Week 1 (Jun 8–12, 2026)');
+    expect(slots[7]?.label).toBe('Week 8 (Jul 27–31, 2026)');
+  });
+
+  it('every program details includes deliverySummary for the info modal', () => {
+    SUMMER_CAMP_PROGRAMS.forEach((p) => {
+      expect(typeof p.details.deliverySummary).toBe('string');
+      expect((p.details.deliverySummary as string).length).toBeGreaterThan(3);
+    });
+  });
+
   it('math olympiad program exists and is in Half-Day Camps', () => {
     const olympiad = SUMMER_CAMP_PROGRAMS.find((p) => p.id === 'math-olympiad');
     expect(olympiad).toBeDefined();

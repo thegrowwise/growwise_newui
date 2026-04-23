@@ -4,7 +4,7 @@
  * BREVO_LIST_LOTTERY (numeric list id — summer camp guide leads + Meta Lead Ads upsert; legacy env name).
  */
 
-import type { SendEmailResult } from '@/lib/email';
+import type { EmailAttachment, SendEmailResult } from '@/lib/email';
 import type { NormalizedMetaLead } from '@/lib/meta-lead';
 
 const BREVO_API_BASE = 'https://api.brevo.com/v3';
@@ -58,6 +58,8 @@ export interface BrevoTransactionalEmailOptions {
   html: string;
   text: string;
   replyTo?: { email: string; name?: string };
+  /** Brevo expects base64 `content` per attachment (see POST /v3/smtp/email). */
+  attachments?: EmailAttachment[];
 }
 
 /** POST /v3/smtp/email — same logical inputs as Nodemailer send (html/text), mapped to Brevo field names. */
@@ -91,6 +93,14 @@ export async function sendBrevoTransactionalEmail(
         htmlContent: options.html,
         textContent: options.text,
         ...(options.replyTo ? { replyTo: options.replyTo } : {}),
+        ...(options.attachments?.length
+          ? {
+              attachment: options.attachments.map((a) => ({
+                name: a.filename,
+                content: a.content.toString('base64'),
+              })),
+            }
+          : {}),
       }),
     });
 

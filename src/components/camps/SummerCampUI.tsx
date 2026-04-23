@@ -19,7 +19,7 @@ import {
 } from '@/lib/summer-camp-data';
 import { useCart } from '@/components/gw/CartContext';
 import { Button } from '@/components/ui/button';
-import { X, Clock, Info, CalendarDays, CheckCircle2 } from 'lucide-react';
+import { X, Clock, Info, CalendarDays, CheckCircle2, MapPin } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -28,13 +28,19 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { trackEnrollClick } from '@/lib/meta-pixel';
 import { createLocaleUrl } from '@/components/layout/Header/utils';
 import {
   getRoboticsFullDaySeoLink,
   getSummerCampProgramSeoLink,
   summerCampSeoMessagePath,
 } from '@/lib/summer-camp-seo-links';
+import { formatAdvMathWeekSlotHeading } from '@/lib/adv-math-week-sessions';
+import {
+  formatCampWeekSlotHeading,
+  formatOlympiadTier2SlotHeading,
+  SUMMER_CAMP_JULY4_NOTE,
+  SUMMER_CAMP_SEASON_RANGE_TEXT,
+} from '@/lib/summer-camp-week-calendar';
 
 function InfoModal({
   program,
@@ -124,6 +130,37 @@ function InfoModal({
               </div>
             </div>
 
+            {/* Camp season + format (shared calendar; delivery from program JSON) */}
+            <div className="flex flex-wrap items-center gap-4 px-5 py-3 bg-white border-b border-slate-100">
+              <div className="flex items-center gap-2 text-[#1F396D]">
+                <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{t('infoModal.campDatesLabel')}</p>
+                  <p className="text-xs font-bold text-slate-900">{SUMMER_CAMP_SEASON_RANGE_TEXT}</p>
+                </div>
+              </div>
+              <div className="w-px h-8 bg-slate-200 max-[360px]:hidden" aria-hidden="true" />
+              <div className="flex items-center gap-2 text-[#1F396D]">
+                <CalendarDays className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{t('infoModal.seasonNoteLabel')}</p>
+                  <p className="text-xs font-bold text-slate-900">{SUMMER_CAMP_JULY4_NOTE}</p>
+                </div>
+              </div>
+              {details.deliverySummary ? (
+                <>
+                  <div className="w-px h-8 bg-slate-200 max-[360px]:hidden" aria-hidden="true" />
+                  <div className="flex items-center gap-2 text-[#1F396D]">
+                    <MapPin className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{t('infoModal.deliveryLabel')}</p>
+                      <p className="text-xs font-bold text-slate-900">{details.deliverySummary}</p>
+                    </div>
+                  </div>
+                </>
+              ) : null}
+            </div>
+
             {/* What's included */}
             <div className="px-5 py-4">
               <p className="text-[10px] font-black uppercase tracking-widest text-slate-700 mb-3">
@@ -191,18 +228,18 @@ function SlotRow({
       `}
     >
       <div className="space-y-0.5">
-        <div className="font-bold text-slate-800 text-sm">{slot.label}</div>
-        <div className="text-[9px] text-slate-600 flex items-center gap-2 font-medium uppercase tracking-wider">
+        <div className="font-bold text-slate-800 text-sm leading-snug">{slot.label}</div>
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[9px] font-medium uppercase tracking-wider text-slate-600">
           <span className="flex items-center gap-1">
             <span
               aria-hidden="true"
-              className={`w-1.5 h-1.5 rounded-full ${
+              className={`w-1.5 h-1.5 flex-shrink-0 rounded-full ${
                 slot.format === 'Online' ? 'bg-sky-400' : 'bg-amber-400'
               }`}
             />
             {slot.format}
           </span>
-          <span>{slot.time}</span>
+          <span className="font-semibold normal-case tracking-normal text-slate-700">{slot.time}</span>
         </div>
       </div>
       <div className="flex items-center gap-3 mt-3 sm:mt-0">
@@ -299,7 +336,9 @@ export function SlotsPanel({
 
   const handleAdd = (level: Level, slot: Slot) => {
     if (summerCampItemIds.has(slot.id)) return;
-    trackEnrollClick(program.title, slot.price);
+    void import('@/lib/meta-pixel').then(({ trackEnrollClick }) =>
+      trackEnrollClick(program.title, slot.price)
+    );
     addItem(toGlobalCartItem(program, level, slot));
   };
 
@@ -332,15 +371,15 @@ export function SlotsPanel({
     const priceByProgramAndFormat = level.priceByProgramAndFormat;
     const price =
       (priceByProgramAndFormat?.[advMathProgram]?.[format] ?? level.slots[0]?.price) ?? 0;
-    return level.slots.map((s) => ({
+    return level.slots.map((s, i) => ({
       ...s,
       id: `${s.id}-${advMathMode}-${advMathProgram}`,
-      label: `${s.label} — ${programLabels[advMathProgram]}, ${modeLabels[advMathMode]}`,
+      label: `${formatAdvMathWeekSlotHeading(advMathProgram, i)} — ${programLabels[advMathProgram]}`,
       format,
       time: timeMap[advMathMode] ?? '9:00 AM - 12:00 PM',
       price,
     }));
-  }, [isAdvMath, program, advMathMode, advMathProgram, programLabels, modeLabels]);
+  }, [isAdvMath, program, advMathMode, advMathProgram, programLabels]);
 
   const aiEntrepreneurSlots: Slot[] = useMemo(() => {
     if (!isAiEntrepreneur || !program.levels[0]) return [];
@@ -354,12 +393,12 @@ export function SlotsPanel({
     return level.slots.map((s) => ({
       ...s,
       id: `${s.id}-${aiEntrepreneurMode}`,
-      label: `${s.label} — ${modeLabels[aiEntrepreneurMode]}`,
+      label: s.label,
       format,
       time: timeMap[aiEntrepreneurMode] ?? '9:00 AM - 12:00 PM',
       price,
     }));
-  }, [isAiEntrepreneur, program, aiEntrepreneurMode, modeLabels]);
+  }, [isAiEntrepreneur, program, aiEntrepreneurMode]);
 
   const scratchSlots: Slot[] = useMemo(() => {
     if (!isScratch || !program.levels[0]) return [];
@@ -373,12 +412,12 @@ export function SlotsPanel({
     return level.slots.map((s) => ({
       ...s,
       id: `${s.id}-${scratchMode}`,
-      label: `${s.label} — ${modeLabels[scratchMode]}`,
+      label: s.label,
       format,
       time: timeMap[scratchMode] ?? '9:00 AM - 12:00 PM',
       price,
     }));
-  }, [isScratch, program, scratchMode, modeLabels]);
+  }, [isScratch, program, scratchMode]);
 
   const robloxSlots: Slot[] = useMemo(() => {
     if (!isRoblox || !program.levels[0]) return [];
@@ -392,12 +431,12 @@ export function SlotsPanel({
     return level.slots.map((s) => ({
       ...s,
       id: `${s.id}-${robloxMode}`,
-      label: `${s.label} — ${modeLabels[robloxMode]}`,
+      label: s.label,
       format,
       time: timeMap[robloxMode] ?? '9:00 AM - 12:00 PM',
       price,
     }));
-  }, [isRoblox, program, robloxMode, modeLabels]);
+  }, [isRoblox, program, robloxMode]);
 
   const olympiadTierConfig = useMemo(
     () => (olympiadTierConfigs ?? []).find((c) => c.id === olympiadTier),
@@ -411,22 +450,20 @@ export function SlotsPanel({
     const format = (formatMap[olympiadMode] ?? 'In-Person') as Slot['format'];
     const price = olympiadTierConfig.priceByFormat[format];
     return Array.from({ length: olympiadTierConfig.slotCount }).map((_, i) => {
-      const baseLabel =
+      const weekHeading =
         olympiadTierConfig.weeksPerSlot === 1
-          ? t('slotLabel.singleWeek', { week: i + 1 })
-          : t('slotLabel.weekRange', {
-              start: i * 2 + 1,
-              end: i * 2 + 2,
-            });
+          ? formatCampWeekSlotHeading(i)
+          : formatOlympiadTier2SlotHeading(i);
+      const tierName = tierLabels[olympiadTierConfig.id].name;
       return {
         id: `${olympiadTierConfig.slotId(i)}-${olympiadMode}`,
-        label: `${baseLabel} — ${tierLabels[olympiadTierConfig.id].name}, ${modeLabels[olympiadMode]}`,
+        label: `${weekHeading} — ${tierName}`,
         time: timeMap[olympiadMode] ?? '9:00 AM - 12:00 PM',
         format,
         price,
       };
     });
-  }, [isMathOlympiad, olympiadTierConfig, olympiadMode, t, tierLabels, modeLabels]);
+  }, [isMathOlympiad, olympiadTierConfig, olympiadMode, tierLabels]);
 
   return (
     <div
