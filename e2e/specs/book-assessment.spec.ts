@@ -44,14 +44,18 @@ test.describe('Book assessment form', () => {
     await page.getByTestId('assessment-type-trigger').click();
     await page.getByRole('option', { name: /Math Skills Assessment/i }).click();
 
-    // Mode
+    // Mode: choose online, then in-person to ensure switching works
     await page.getByTestId('assessment-mode-online').click();
+    await page.getByTestId('assessment-mode-in-person').click();
 
-    // Schedule
-    await page.getByTestId('assessment-schedule-trigger').click();
-    await page
-      .getByRole('option', { name: /Weekdays After School/i })
-      .click();
+    // Preferred days + time, then how you heard
+    await page.getByTestId('assessment-schedule-day-trigger').click();
+    await page.getByRole('option', { name: /Monday.*Friday/i }).click();
+    await page.getByTestId('assessment-schedule-time-trigger').click();
+    await page.getByRole('option', { name: /3:00.*7:00.*pm/i }).click();
+
+    await page.getByTestId('hear-about-trigger').click();
+    await page.getByRole('option', { name: /Google/i }).click();
 
     // Submit form (consent defaults to checked on this page)
     const submitBtn = page.getByTestId('assessment-submit');
@@ -67,13 +71,12 @@ test.describe('Book assessment form', () => {
       { timeout: 20000 }
     );
 
-    // Success view (page resets form after 5s, so assert promptly)
-    await expect(
-      page.getByTestId('assessment-success'),
-    ).toBeVisible({ timeout: 20000 });
-    await expect(
-      page.getByText(/free assessment booking request/i),
-    ).toBeVisible();
+    const successPath = localePath('/book-assessment/thank-you');
+    await expect(page).toHaveURL(new RegExp(`${successPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`), {
+      timeout: 20000,
+    });
+    await expect(page.getByTestId('form-thank-you')).toBeVisible({ timeout: 20000 });
+    await expect(page.getByRole('heading', { level: 1, name: /thank you for your request/i })).toBeVisible();
   });
 });
 

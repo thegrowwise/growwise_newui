@@ -162,12 +162,42 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/book-assessment': {
-    title: 'Book Free Grades 1-12 Assessment | GrowWise',
+    title: 'Free Academic Assessment in Dublin, CA | GrowWise',
     description:
-      'Book a free Grades 1-12 placement assessment in Dublin, CA. Understand strengths, gaps, and the right next step.',
+      'Book a free academic assessment for your child at GrowWise in Dublin, CA. Get expert evaluation in math or English and a personalized learning plan.',
     keywords:
-      'free assessment, placement assessment, Grades 1-12 assessment, academic evaluation, free tutoring assessment Dublin CA, book assessment',
+      'free academic assessment Dublin CA, free assessment, placement assessment, math English evaluation, personalized learning plan, book assessment',
     path: '/book-assessment',
+  },
+
+  // Thank-you: runtime `generateMetadata` uses `buildFormThankYouMetadata` + `src/data/form-thank-you/en.json` (noindex).
+  '/book-assessment/thank-you': {
+    title: 'Assessment request received | GrowWise',
+    description:
+      'Thank you — we received your free assessment booking. Our team will contact you within 24 hours to confirm your appointment.',
+    keywords: 'GrowWise, assessment, thank you, confirmation',
+    path: '/book-assessment/thank-you',
+  },
+  '/enroll-academic/thank-you': {
+    title: 'Academic enrollment request received | GrowWise',
+    description:
+      'Thank you for your academic enrollment request. We will connect with you within 24 hours.',
+    keywords: 'GrowWise, academic enrollment, thank you',
+    path: '/enroll-academic/thank-you',
+  },
+  '/enroll/thank-you': {
+    title: 'Enrollment request received | GrowWise',
+    description:
+      'Thank you for your enrollment request. A GrowWise advisor will contact you within 24 hours.',
+    keywords: 'GrowWise, enrollment, thank you',
+    path: '/enroll/thank-you',
+  },
+  '/contact/thank-you': {
+    title: 'Message received | GrowWise',
+    description:
+      'Thank you for contacting GrowWise. We will respond as soon as possible, typically within one business day.',
+    keywords: 'GrowWise, contact, thank you',
+    path: '/contact/thank-you',
   },
 
   '/camps': {

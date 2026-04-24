@@ -3,7 +3,9 @@
  * Schema.org markup for better search engine understanding
  */
 
+import type { FormThankYouId } from '@/data/form-thank-you/types'
 import { CONTACT_INFO } from '@/lib/constants'
+import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from './siteUrl'
 
 const CANONICAL_BASE = getCanonicalSiteUrl()
@@ -457,6 +459,60 @@ export function generateBreadcrumbSchema(items: Array<{
 }
 
 /**
+ * WebPage for a program/marketing URL — mirrors form-thank-you WebPage; site org graph stays in root layout.
+ */
+export function generateWebPageJsonLd({
+  name,
+  description,
+  url,
+  inLanguage = "en-US",
+}: {
+  name: string
+  description: string
+  url: string
+  inLanguage?: string
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": name,
+    "description": description,
+    "url": url,
+    "inLanguage": inLanguage,
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "GrowWise",
+      "url": CANONICAL_BASE,
+    },
+    "about": {
+      "@type": "EducationalOrganization",
+      "name": "GrowWise",
+      "url": CANONICAL_BASE,
+    },
+  }
+}
+
+/**
+ * ItemList of public URLs (e.g. summer program detail pages). Each entry must map to a real on-site route.
+ */
+export function generateItemListSchema(
+  name: string,
+  items: ReadonlyArray<{ name: string; url: string }>,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": name,
+    "itemListElement": items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "name": item.name,
+      "item": item.url,
+    })),
+  }
+}
+
+/**
  * Generate Article structured data (for blog posts)
  * Only include verified fields — never invent dates, images, or author names not visible on the page.
  */
@@ -500,5 +556,75 @@ export function generateArticleSchema({
     ...(datePublished && { "datePublished": datePublished }),
     ...(dateModified && { "dateModified": dateModified }),
   }
+}
+
+const BREADCRUMB_FOR_FORM: Record<
+  FormThankYouId,
+  { parentName: string; parentPath: string }
+> = {
+  'book-assessment': { parentName: 'Book assessment', parentPath: '/book-assessment' },
+  enroll: { parentName: 'Enroll', parentPath: '/enroll' },
+  'enroll-academic': { parentName: 'Academic enrollment', parentPath: '/enroll-academic' },
+  contact: { parentName: 'Contact', parentPath: '/contact' },
+};
+
+/**
+ * JSON-LD for form thank-you pages: BreadcrumbList + WebPage in one @graph.
+ * No PII; aligns with home WebPage pattern in (home)/layout.tsx.
+ */
+export function generateFormThankYouJsonLd({
+  name,
+  description,
+  pageUrl,
+  locale,
+  inLanguage = 'en-US',
+  formId,
+}: {
+  name: string;
+  description: string;
+  pageUrl: string;
+  /** Used with publicPath for Home and parent funnel URLs. */
+  locale: string;
+  inLanguage?: string;
+  formId: FormThankYouId;
+}): Record<string, unknown> {
+  const { parentName, parentPath } = BREADCRUMB_FOR_FORM[formId];
+  const homeUrl = absoluteSiteUrl('/', locale, CANONICAL_BASE);
+  const parentUrl = absoluteSiteUrl(parentPath, locale, CANONICAL_BASE);
+
+  const breadcrumb: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: homeUrl },
+      { '@type': 'ListItem', position: 2, name: parentName, item: parentUrl },
+      { '@type': 'ListItem', position: 3, name: 'Thank you', item: pageUrl },
+    ],
+  };
+
+  const orgUrl = homeUrl;
+  const webPage: Record<string, unknown> = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name,
+    description,
+    url: pageUrl,
+    inLanguage,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'GrowWise',
+      url: orgUrl,
+    },
+    about: {
+      '@type': 'EducationalOrganization',
+      name: 'GrowWise',
+      url: orgUrl,
+    },
+  };
+
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [breadcrumb, webPage],
+  };
 }
 

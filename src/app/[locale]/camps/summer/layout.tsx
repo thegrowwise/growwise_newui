@@ -1,6 +1,17 @@
+/**
+ * Summer camp hub JSON-LD: Event, BreadcrumbList, FAQPage, WebPage, ItemList (programs with detail URLs).
+ * Site-wide `EducationalOrganization` + `LocalBusiness` live in `[locale]/layout.tsx` only — do not paste
+ * duplicate org/course/FAQ blocks from third-party snippets (domain, season, and FAQ must match this app).
+ */
 import { Metadata } from 'next';
 import { generateMetadataFromPath } from '@/lib/seo/metadata';
-import { generateEventSchema, generateBreadcrumbSchema, generateFAQPageSchema } from '@/lib/seo/structuredData';
+import {
+  generateEventSchema,
+  generateBreadcrumbSchema,
+  generateFAQPageSchema,
+  generateItemListSchema,
+  generateWebPageJsonLd,
+} from '@/lib/seo/structuredData';
 import { CONTACT_INFO } from '@/lib/constants';
 import { absoluteSiteUrl } from '@/lib/publicPath';
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl';
@@ -8,6 +19,8 @@ import {
   SUMMER_CAMP_EVENT_END_ISO,
   SUMMER_CAMP_EVENT_START_ISO,
 } from '@/lib/summer-camp-week-calendar';
+import { getDefaultSummerCampData, getMinimumPublishedSummerCampPriceUsd } from '@/lib/summer-camp-data';
+import { getSummerCampProgramSeoLink } from '@/lib/summer-camp-seo-links';
 import summerCampFaqData from '../../../../../public/api/mock/en/summer-camp-faq.json';
 
 export async function generateMetadata({
@@ -34,11 +47,13 @@ export default async function SummerCampLayout({
 }) {
   const { locale } = await params;
   const baseUrl = getCanonicalSiteUrl();
+  const minCampPriceUsd = getMinimumPublishedSummerCampPriceUsd();
+  const summerEventDescription =
+    'Enrollment open for GrowWise Summer Camp 2026! Accredited courses in Math, Coding, Robotics, and more. Half-day and full-day camps. Small cohorts. Dublin, CA.';
 
   const eventSchema = generateEventSchema({
     name: 'Summer Camp 2026 - Math, Coding & Robotics',
-    description:
-      'Enrollment open for GrowWise Summer Camp 2026! Accredited courses in Math, Coding, Robotics, and more. Half-day and full-day camps. Small cohorts. Dublin, CA.',
+    description: summerEventDescription,
     startDate: SUMMER_CAMP_EVENT_START_ISO,
     endDate: SUMMER_CAMP_EVENT_END_ISO,
     location: {
@@ -56,8 +71,9 @@ export default async function SummerCampLayout({
       url: baseUrl,
     },
     image: `${baseUrl}/assets/growwise-logo.png`,
-    // No fixed price: programs use multiple tiers; misleading Offer.price hurts trust signals.
+    // price = lowest published option; program/week/format prices vary on the page.
     offers: {
+      price: String(minCampPriceUsd),
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       url: absoluteSiteUrl('/camps/summer', locale, baseUrl),
@@ -74,6 +90,29 @@ export default async function SummerCampLayout({
 
   const faqSchema = generateFAQPageSchema(summerCampFaqData.faqs);
 
+  const pageUrl = absoluteSiteUrl('/camps/summer', locale, baseUrl);
+  const webPageSchema = generateWebPageJsonLd({
+    name: 'Summer Camp 2026 - Math, Coding & Robotics | GrowWise',
+    description: summerEventDescription,
+    url: pageUrl,
+  });
+
+  const programLinks: Array<{ name: string; url: string }> = [];
+  const seenUrls = new Set<string>();
+  for (const p of getDefaultSummerCampData().programs) {
+    const link = getSummerCampProgramSeoLink(p.id);
+    if (!link) continue;
+    const itemUrl = absoluteSiteUrl(`/camps/${link.slug}`, locale, baseUrl);
+    if (seenUrls.has(itemUrl)) continue;
+    seenUrls.add(itemUrl);
+    programLinks.push({ name: p.title, url: itemUrl });
+  }
+  programLinks.sort((a, b) => a.name.localeCompare(b.name, 'en'));
+  const programItemListSchema =
+    programLinks.length > 0
+      ? generateItemListSchema('Summer camp programs (Dublin, CA)', programLinks)
+      : null;
+
   return (
     <>
       <script
@@ -88,6 +127,16 @@ export default async function SummerCampLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+      />
+      {programItemListSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(programItemListSchema) }}
+        />
+      )}
       {children}
     </>
   );

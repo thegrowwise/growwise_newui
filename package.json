@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "dev:webpack": "next dev --webpack",
-    "dev:turbo": "next dev --turbo",
+    "dev": "lsof -ti:3000 | xargs kill -9 2>/dev/null; next dev --webpack",
+    "dev:webpack": "lsof -ti:3000 | xargs kill -9 2>/dev/null; next dev --webpack",
+    "dev:turbo": "lsof -ti:3000 | xargs kill -9 2>/dev/null; next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "eslint src",

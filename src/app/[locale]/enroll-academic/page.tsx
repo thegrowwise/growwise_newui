@@ -1,6 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
+import { publicPath } from "@/lib/publicPath";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,7 +30,8 @@ interface EnrollFormData {
 }
 
 export default function EnrollAcademicPage() {
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const router = useRouter();
+  const locale = useLocale();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [phoneError, setPhoneError] = useState<string | null>(null);
   const [formData, setFormData] = useState<EnrollFormData>({
@@ -142,7 +146,8 @@ export default function EnrollAcademicPage() {
       }
 
       if (result.success) {
-        setIsSubmitted(true);
+        router.replace(publicPath("/enroll-academic/thank-you", locale));
+        return;
       } else {
         throw new Error(result.message || 'Failed to submit enrollment');
       }
@@ -240,7 +245,6 @@ export default function EnrollAcademicPage() {
 
           <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-xl rounded-3xl overflow-hidden">
             <CardContent className="p-6 md:p-10">
-              {!isSubmitted ? (
                 <form onSubmit={handleSubmit} className="space-y-8">
                   <div className="space-y-6 p-6 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-2xl border-2 border-[#1F396D]/10">
                     <div className="flex items-center gap-3 pb-4 border-b-2 border-[#1F396D]/20">
@@ -360,23 +364,6 @@ export default function EnrollAcademicPage() {
                     </Button>
                   </div>
                 </form>
-              ) : (
-                <div className="text-center py-16">
-                  <div className="w-24 h-24 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white">
-                    <Shield className="w-10 h-10" />
-                  </div>
-                  <h3 className="text-gray-900 mb-4 text-3xl">Registration Successful!</h3>
-                  <p className="text-gray-600 max-w-lg mx-auto mb-8 text-lg">
-                    Thank you for enrolling! Our team will contact you within 24 hours to complete the process and answer any questions.
-                  </p>
-                  <div className="flex justify-center">
-                    <Button onClick={() => setIsSubmitted(false)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white px-8 py-6 rounded-xl">
-                      <GraduationCap className="w-5 h-5 mr-2" />
-                      Enroll Another Student
-                    </Button>
-                  </div>
-                </div>
-              )}
             </CardContent>
           </Card>
 
