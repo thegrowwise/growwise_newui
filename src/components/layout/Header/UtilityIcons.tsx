@@ -25,7 +25,7 @@ export default function UtilityIcons({ cartItemCount, createLocaleUrl, showCart 
   };
 
   return (
-    <div className="hidden lg:flex items-center space-x-3 flex-shrink-0">
+    <div className="header-utilities relative z-0 hidden lg:flex items-center space-x-3 flex-shrink-0">
       <div className="flex items-center space-x-3">
         <SearchBar />
         {showCart && (
