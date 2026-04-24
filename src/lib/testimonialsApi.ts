@@ -123,7 +123,19 @@ class TestimonialsApiService {
         console.warn('⚠️ Backend API error, using default testimonials:', data.error);
         return this.getDefaultTestimonials(limit || null, offset, minRating);
       }
-      
+
+      // Backend returns 200 with empty `testimonials` when Google/credentials are unavailable
+      // (replaces previous HTTP 500 for the same condition).
+      const source = (data as { data?: { testimonials?: TestimonialVM[]; source?: string } }).data?.source;
+      if (
+        data.success &&
+        data.data?.testimonials?.length === 0 &&
+        (source === 'unavailable' || source === 'empty')
+      ) {
+        console.warn(`⚠️ No live testimonials; using default testimonials (source: ${source})`);
+        return this.getDefaultTestimonials(limit || null, offset, minRating);
+      }
+
       return data;
     } catch (error) {
       console.warn('⚠️ Backend API unavailable, using default testimonials:', error);

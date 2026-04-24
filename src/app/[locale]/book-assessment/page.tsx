@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { Card, CardContent } from '@/components/ui/card';
@@ -8,10 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   AlertDialog,
@@ -20,7 +18,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from '@/components/ui/alert-dialog';
-import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, PenTool, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, MessageSquare, Send, ThumbsUp, Globe, Video, CheckSquare, Calculator, X, AlertCircle } from 'lucide-react';
+import { BookOpen, BookMarked, CheckCircle, Clock, Users, Award, TrendingUp, Brain, FileText, Sparkles, Eye, ChevronRight, Lightbulb, Trophy, Star, Shield, ArrowRight, Calendar, Target, GraduationCap, User, Mail, Phone as PhoneIcon, Send, Globe, Video, Calculator, X, AlertCircle, Megaphone } from 'lucide-react';
 import CountryCodeSelector from '@/components/CountryCodeSelector';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useRouter } from 'next/navigation';
@@ -38,11 +36,11 @@ interface FormData {
   phone: string;
   studentName: string;
   grade: string;
-  subjects: string[];
   assessmentType: string;
   mode: string;
-  schedule: string;
-  notes: string;
+  scheduleDay: string;
+  scheduleTime: string;
+  hearAboutUs: string;
 }
 
 export default function BookAssessmentPage() {
@@ -50,7 +48,6 @@ export default function BookAssessmentPage() {
   const locale = useLocale();
   const router = useRouter();
   const [scrollY, setScrollY] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [phoneError, setPhoneError] = useState<string | null>(null);
@@ -60,19 +57,24 @@ export default function BookAssessmentPage() {
 
   // Default consent to true so users (and automated tests) are not blocked if they miss this single checkbox.
   const [agreeToCommunications, setAgreeToCommunications] = useState(true);
-  const [formData, setFormData] = useState<FormData>({
-    parentName: '',
-    email: '',
-    countryCode: '+1',
-    phone: '',
-    studentName: '',
-    grade: '',
-    subjects: [],
-    assessmentType: '',
-    mode: '',
-    schedule: '',
-    notes: ''
-  });
+  const initialFormData = useMemo<FormData>(
+    () => ({
+      parentName: '',
+      email: '',
+      countryCode: '+1',
+      phone: '',
+      studentName: '',
+      grade: '',
+      assessmentType: '',
+      mode: '',
+      scheduleDay: '',
+      scheduleTime: '',
+      hearAboutUs: '',
+    }),
+    []
+  );
+
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -85,22 +87,45 @@ export default function BookAssessmentPage() {
     'Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'
   ];
 
-  // Move availableSubjects outside component or use useMemo to prevent recreation
-  const availableSubjects = useMemo(() => [
-    { value: 'Math', icon: '📐' },
-    { value: 'English', icon: '📚' },
-    { value: 'SAT/ACT', icon: '🎯' }
-  ], []);
+  const scheduleDayOptions = useMemo(
+    () => [
+      { value: 'weekdays', label: 'Monday – Friday' },
+      { value: 'sunday', label: 'Sunday' },
+      { value: 'either-day', label: 'Either / flexible' },
+    ],
+    []
+  );
 
-  const scheduleOptions = [
-    'Weekdays Morning', 'Weekdays After School', 'Weekends Morning', 'Weekends Afternoon'
-  ];
+  const scheduleTimeOptions = useMemo(
+    () => [
+      { value: '3-7', label: '3:00 – 7:00 pm' },
+      { value: '11-1', label: '11:00 am – 1:00 pm' },
+      { value: 'either-time', label: 'Either / flexible' },
+    ],
+    []
+  );
 
-  const assessmentTypes = [
-    { value: 'English Reading Assessment', icon: '📚', label: 'English Reading Assessment' },
-    { value: 'Math Skills Assessment', icon: '📐', label: 'Math Skills Assessment' },
-    { value: 'Complete Academic Assessment', icon: '🎓', label: '(English + Maths) Complete Academic Assessment' }
-  ];
+  const hearAboutOptions = useMemo(
+    () => [
+      { value: 'google', label: 'Google / web search' },
+      { value: 'social', label: 'Social media' },
+      { value: 'referral', label: 'Friend or family referral' },
+      { value: 'school', label: 'School or community' },
+      { value: 'walkin', label: 'Walk-in or drove by' },
+      { value: 'other', label: 'Other' },
+    ],
+    []
+  );
+
+  const assessmentTypes = useMemo(
+    () => [
+      { value: 'English Reading Assessment', icon: '📚', label: 'English Reading Assessment' },
+      { value: 'Math Skills Assessment', icon: '📐', label: 'Math Skills Assessment' },
+      { value: 'SAT/ACT', icon: '🎯', label: 'SAT/ACT' },
+      { value: 'Complete Academic Assessment', icon: '🎓', label: 'Complete academic (English + Math)' },
+    ],
+    []
+  );
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -134,27 +159,6 @@ export default function BookAssessmentPage() {
       setPhoneError(result.errorMessage);
     }
   };
-
-  // Use ref to store handlers to prevent recreation
-  const handlersRef = useRef<Record<string, (checked: boolean | 'indeterminate') => void>>({});
-
-  // Initialize handlers only once
-  if (Object.keys(handlersRef.current).length === 0) {
-    availableSubjects.forEach(subject => {
-      handlersRef.current[subject.value] = (checked: boolean | 'indeterminate') => {
-        const isChecked = checked === true;
-        setFormData(prev => {
-          const currentSubjects = Array.isArray(prev.subjects) ? prev.subjects : [];
-          return {
-            ...prev,
-            subjects: isChecked
-              ? [...currentSubjects, subject.value]
-              : currentSubjects.filter(s => s !== subject.value)
-          };
-        });
-      };
-    });
-  }
 
   // Validate all form fields
   const validateForm = useCallback((): { isValid: boolean; errors: Record<string, string> } => {
@@ -199,9 +203,15 @@ export default function BookAssessmentPage() {
       errors.mode = 'Please select a mode (Online or In-Person)';
     }
 
-    // Validate schedule
-    if (!formData.schedule.trim()) {
-      errors.schedule = 'Please select a preferred schedule';
+    if (!formData.scheduleDay.trim()) {
+      errors.scheduleDay = 'Select preferred days';
+    }
+    if (!formData.scheduleTime.trim()) {
+      errors.scheduleTime = 'Select preferred time';
+    }
+
+    if (!formData.hearAboutUs.trim()) {
+      errors.hearAboutUs = 'Please tell us how you heard about us';
     }
 
     // Validate communication consent
@@ -213,7 +223,7 @@ export default function BookAssessmentPage() {
     setPhoneError(errors.phone || null);
 
     return { isValid: Object.keys(errors).length === 0, errors };
-  }, [formData, agreeToCommunications]);
+  }, [formData, agreeToCommunications, t]);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -239,7 +249,9 @@ export default function BookAssessmentPage() {
             grade: 'grade',
             assessmentType: 'assessmentType',
             mode: 'mode',
-            schedule: 'schedule',
+            scheduleDay: 'schedule-day',
+            scheduleTime: 'schedule-time',
+            hearAboutUs: 'hearAboutUs',
             agreeToCommunications: 'agreeToCommunications'
           };
           const inputId = fieldIdMap[firstErrorId] || firstErrorId;
@@ -263,6 +275,12 @@ export default function BookAssessmentPage() {
     try {
       const recaptchaToken = await getRecaptchaToken('assessment_submit');
 
+      const dayLabel =
+        scheduleDayOptions.find((d) => d.value === formData.scheduleDay)?.label ?? formData.scheduleDay;
+      const timeLabel =
+        scheduleTimeOptions.find((t) => t.value === formData.scheduleTime)?.label ?? formData.scheduleTime;
+      const scheduleCombined = `${dayLabel} · ${timeLabel}`;
+
       const assessmentData = {
         parentName: formData.parentName,
         email: formData.email,
@@ -270,11 +288,12 @@ export default function BookAssessmentPage() {
         phone: phoneValidation.e164 || formData.phone, // Use E.164 format if available
         studentName: formData.studentName,
         grade: formData.grade,
-        subjects: formData.subjects,
+        subjects: [],
         assessmentType: formData.assessmentType,
         mode: formData.mode,
-        schedule: formData.schedule,
-        notes: formData.notes,
+        schedule: scheduleCombined,
+        hearAboutUs: hearAboutOptions.find((h) => h.value === formData.hearAboutUs)?.label ?? formData.hearAboutUs,
+        notes: '',
         agreeToCommunications,
         recaptchaToken: recaptchaToken || undefined,
       };
@@ -296,26 +315,8 @@ export default function BookAssessmentPage() {
       }
 
       if (result.success) {
-        setIsSubmitted(true);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Reset form after success
-        setTimeout(() => {
-          setFormData({
-            parentName: '',
-            email: '',
-            countryCode: '+1',
-            phone: '',
-            studentName: '',
-            grade: '',
-            subjects: [],
-            assessmentType: '',
-            mode: '',
-            schedule: '',
-            notes: ''
-          });
-          setAgreeToCommunications(false);
-          setIsSubmitted(false);
-        }, 5000);
+        router.replace(publicPath('/book-assessment/thank-you', locale));
+        return;
       } else {
         setErrorMessage(result.error || 'Failed to submit assessment booking');
       }
@@ -325,7 +326,16 @@ export default function BookAssessmentPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [formData]);
+  }, [
+    formData,
+    agreeToCommunications,
+    validateForm,
+    router,
+    locale,
+    hearAboutOptions,
+    scheduleDayOptions,
+    scheduleTimeOptions,
+  ]);
 
   const assessmentFeatures = [
     { icon: FileText, title: 'Detailed Report', description: 'Comprehensive analysis of strengths and growth areas', color: 'from-blue-500 to-blue-600', stats: '15+ Pages' },
@@ -336,7 +346,7 @@ export default function BookAssessmentPage() {
 
   // const processSteps = [
   //   { number: '1', title: 'Book Your Assessment', description: 'Choose your package and schedule a convenient time', icon: Calendar, color: 'from-[#1F396D] to-[#29335C]' },
-  //   { number: '2', title: 'Take the Assessment', description: 'Complete the evaluation with our expert teachers', icon: PenTool, color: 'from-[#F16112] to-[#F1894F]' },
+  //   { number: '2', title: 'Take the Assessment', description: 'Complete the evaluation with our expert teachers', icon: FileText, color: 'from-[#F16112] to-[#F1894F]' },
   //   { number: '3', title: 'Receive Your Report', description: 'Get detailed insights within 48 hours', icon: FileText, color: 'from-[#1F396D] to-[#F16112]' },
   //   { number: '4', title: 'Plan Your Path', description: 'Schedule a consultation to discuss next steps', icon: Lightbulb, color: 'from-[#F1894F] to-[#1F396D]' }
   // ];
@@ -359,9 +369,6 @@ export default function BookAssessmentPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50" suppressHydrationWarning>
-      <h1 className="sr-only">Book Free Grades 1-12 Assessment | GrowWise Dublin, CA</h1>
-
-
       {/* <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -434,19 +441,27 @@ export default function BookAssessmentPage() {
           <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-br from-[#1F396D]/10 to-transparent rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-10 w-[500px] h-[500px] bg-gradient-to-br from-[#F16112]/10 to-transparent rounded-full blur-3xl"></div>
         </div>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-12">
             <Badge className="mb-6 bg-gradient-to-r from-[#F16112] to-[#F1894F] text-white border-0 px-8 py-3 shadow-lg">
               <Sparkles className="w-5 h-5 mr-2" />
               100% Free - No Credit Card Required
             </Badge>
-            <h2 className="text-gray-900 mb-4">Book Your <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">Free Assessment</span></h2>
+            <h1
+              id="book-assessment-hero-h1"
+              className="text-3xl sm:text-4xl font-semibold tracking-tight text-balance text-gray-900 mb-4"
+            >
+              Book Your{' '}
+              <span className="bg-gradient-to-r from-[#F16112] to-[#F1894F] bg-clip-text text-transparent">
+                Free Academic Assessment
+              </span>{' '}
+              Today
+            </h1>
             <p className="text-gray-600 max-w-2xl mx-auto text-lg">Fill out the form below and our academic advisors will contact you within 24 hours</p>
           </div>
           <div suppressHydrationWarning>
             <Card className="bg-white/95 backdrop-blur-xl border-2 border-white/60 shadow-2xl rounded-xl md:rounded-3xl overflow-hidden" suppressHydrationWarning>
               <CardContent className="p-4 sm:p-6 md:p-8 lg:p-10 pt-4 sm:pt-6 md:pt-8 lg:pt-10" suppressHydrationWarning>
-                {!isSubmitted ? (
                   <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8" suppressHydrationWarning noValidate>
                     <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
                       <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#1F396D]/20">
@@ -532,109 +547,161 @@ export default function BookAssessmentPage() {
                       </div>
                     </div>
 
-                    <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
-                      <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-[#1F396D]/20">
+                    <div className="space-y-4 md:space-y-5 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10">
+                      <div className="flex items-center gap-2 sm:gap-3 pb-2 border-b-2 border-[#1F396D]/20">
                         <div className="p-2 sm:p-3 bg-gradient-to-br from-[#1F396D] to-[#F16112] rounded-lg md:rounded-xl"><BookMarked className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
-                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Assessment Preferences</h3><p className="text-xs sm:text-sm text-gray-500">Customize your assessment experience</p></div>
+                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Assessment preferences</h3><p className="text-xs sm:text-sm text-gray-500">Type, format, and availability</p></div>
                       </div>
-                      <div className="space-y-3">
-                        <Label htmlFor="assessmentType" className="text-gray-700 font-medium text-base flex items-center gap-2"><Target className="w-4 h-4 text-[#F16112]" />Assessment Type <span className="text-red-500">*</span></Label>
-                        <Select onValueChange={(value) => handleInputChange('assessmentType', value)} required>
+                      <div className="space-y-2">
+                        <span className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2"><Target className="w-4 h-4 text-[#F16112] shrink-0" />Assessment type <span className="text-red-500">*</span></span>
+                        <Select
+                          onValueChange={(value) => handleInputChange('assessmentType', value)}
+                          value={formData.assessmentType || undefined}
+                          required
+                        >
                           <SelectTrigger
                             data-testid="assessment-type-trigger"
-                            className="bg-white border-2 border-gray-300 rounded-xl hover:border-gray-400 transition-all h-14 text-base"
+                            id="assessmentType"
+                            className="bg-white border-2 border-gray-300 rounded-xl hover:border-gray-400 transition-all h-12 sm:h-14 text-sm sm:text-base"
                           >
-                            <SelectValue placeholder="Select assessment type" />
+                            <SelectValue placeholder="Select type" />
                           </SelectTrigger>
-                          <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
+                          <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl max-h-72">
                             {assessmentTypes.map((type) => (
-                              <SelectItem key={type.value} value={type.value} className="hover:bg-[#F16112]/10 py-4 text-base">
-                                <div className="flex items-center w-full gap-4">
-                                  <span className="flex items-center gap-2">
-                                    <span>{type.icon}</span>
-                                    {type.label ?? type.value}
-                                  </span>
-                                </div>
+                              <SelectItem key={type.value} value={type.value} className="hover:bg-[#F16112]/10 py-3 text-sm sm:text-base">
+                                <span className="flex items-center gap-2">
+                                  <span>{type.icon}</span>
+                                  {type.label}
+                                </span>
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-                      <div>
-                        <Label className="text-gray-700 font-medium mb-3 md:mb-4 block flex items-center gap-2 text-sm sm:text-base"><CheckSquare className="w-4 h-4 text-[#F16112]" />Areas of Focus <span className="text-red-500">*</span></Label>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                          {availableSubjects.map((subject) => {
-                            const isSelected = Array.isArray(formData.subjects) && formData.subjects.includes(subject.value);
-
-                            return (
-                              <div
-                                key={subject.value}
-                                className={cn(
-                                  "flex items-center space-x-2 sm:space-x-3 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer",
-                                  isSelected
-                                    ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md'
-                                    : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm'
-                                )}
-                              >
-                                <Checkbox
-                                  id={subject.value}
-                                  checked={isSelected}
-                                  onCheckedChange={handlersRef.current[subject.value]}
-                                  className="border-2 border-gray-400 data-[state=checked]:bg-[#F16112] data-[state=checked]:border-[#F16112] w-5 h-5 flex-shrink-0"
-                                  suppressHydrationWarning
-                                />
-                                <Label
-                                  htmlFor={subject.value}
-                                  className="cursor-pointer text-gray-700 font-medium flex-1 flex items-center gap-2"
-                                >
-                                  <span>{subject.icon}</span>{subject.value}
-                                </Label>
-                              </div>
-                            );
-                          })}
-                        </div>
+                      <div className="space-y-2">
+                        <span className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2" id="mode-label"><Globe className="w-4 h-4 text-[#1F396D] shrink-0" />Preferred format <span className="text-red-500">*</span></span>
+                        <RadioGroup
+                          value={formData.mode}
+                          onValueChange={(value) => handleInputChange('mode', value)}
+                          className="flex flex-col gap-2.5"
+                          aria-labelledby="mode-label"
+                        >
+                          <label
+                            data-testid="assessment-mode-in-person"
+                            className={cn(
+                              'flex w-full items-center gap-3 p-3 sm:p-3.5 rounded-lg md:rounded-xl border-2 transition-colors cursor-pointer',
+                              formData.mode === 'in-person'
+                                ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5'
+                                : 'border-gray-200 bg-white hover:border-[#F16112]/30'
+                            )}
+                          >
+                            <RadioGroupItem value="in-person" id="assessment-mode-in-person-input" className="border-2 border-gray-400 text-[#F16112] shrink-0" />
+                            <span className="text-gray-800 text-sm sm:text-base font-medium">In-person at {CONTACT_INFO.city}</span>
+                          </label>
+                          <label
+                            data-testid="assessment-mode-online"
+                            className={cn(
+                              'flex w-full items-center gap-3 p-3 sm:p-3.5 rounded-lg md:rounded-xl border-2 transition-colors cursor-pointer',
+                              formData.mode === 'online'
+                                ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5'
+                                : 'border-gray-200 bg-white hover:border-[#F16112]/30'
+                            )}
+                          >
+                            <RadioGroupItem value="online" id="assessment-mode-online-input" className="border-2 border-gray-400 text-[#F16112] shrink-0" />
+                            <span className="text-gray-800 text-sm sm:text-base font-medium inline-flex items-center gap-2"><Video className="w-4 h-4 opacity-80" />Online (virtual)</span>
+                          </label>
+                        </RadioGroup>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <div className="space-y-3 md:space-y-4">
-                          <Label className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Globe className="w-4 h-4 text-[#1F396D]" />Preferred Mode <span className="text-red-500">*</span></Label>
-                          <RadioGroup value={formData.mode} onValueChange={(value) => handleInputChange('mode', value)} className="flex flex-col gap-3 md:gap-4">
-                            <div data-testid="assessment-mode-in-person" onClick={() => handleInputChange('mode', 'in-person')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'in-person' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
-                              <RadioGroupItem value="in-person" id="in-person" className="border-2 border-gray-400 text-[#F16112] w-5 h-5" />
-                              <Label htmlFor="in-person" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1">In-person at {CONTACT_INFO.city}</Label>
+                      <div className="space-y-3 sm:space-y-4">
+                        <div>
+                          <span
+                            className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2 mb-2"
+                            id="availability-label"
+                          >
+                            <Calendar className="w-4 h-4 text-[#F16112] shrink-0" />
+                            Preferred availability <span className="text-red-500">*</span>
+                          </span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor="schedule-day" className="text-gray-600 text-xs sm:text-sm">
+                                Days
+                              </Label>
+                              <Select
+                                onValueChange={(value) => handleInputChange('scheduleDay', value)}
+                                value={formData.scheduleDay || undefined}
+                                required
+                              >
+                                <SelectTrigger
+                                  data-testid="assessment-schedule-day-trigger"
+                                  id="schedule-day"
+                                  className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl h-12 md:h-14 text-sm sm:text-base"
+                                  aria-labelledby="availability-label"
+                                >
+                                  <SelectValue placeholder="Select days" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {scheduleDayOptions.map((opt) => (
+                                    <SelectItem key={opt.value} value={opt.value} className="text-sm sm:text-base">
+                                      {opt.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
-                            <div data-testid="assessment-mode-online" onClick={() => handleInputChange('mode', 'online')} className={cn("flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-white rounded-lg md:rounded-xl border-2 transition-all cursor-pointer", formData.mode === 'online' ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5 shadow-md' : 'border-gray-300 hover:border-[#F16112]/30 hover:shadow-sm')}>
-                              <RadioGroupItem value="online" id="online" className="border-2 border-gray-400 text-[#F16112] w-5 h-5" />
-                              <Label htmlFor="online" className="cursor-pointer text-gray-700 font-medium text-sm sm:text-base flex-1 flex items-center gap-2"><Video className="w-4 h-4" />Online (Virtual)</Label>
+                            <div className="space-y-2">
+                              <Label htmlFor="schedule-time" className="text-gray-600 text-xs sm:text-sm">
+                                Time
+                              </Label>
+                              <Select
+                                onValueChange={(value) => handleInputChange('scheduleTime', value)}
+                                value={formData.scheduleTime || undefined}
+                                required
+                              >
+                                <SelectTrigger
+                                  data-testid="assessment-schedule-time-trigger"
+                                  id="schedule-time"
+                                  className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl h-12 md:h-14 text-sm sm:text-base"
+                                  aria-labelledby="availability-label"
+                                >
+                                  <SelectValue placeholder="Select time" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {scheduleTimeOptions.map((opt) => (
+                                    <SelectItem key={opt.value} value={opt.value} className="text-sm sm:text-base">
+                                      {opt.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
                             </div>
-                          </RadioGroup>
+                          </div>
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="schedule" className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><Calendar className="w-4 h-4 text-[#F16112]" />Preferred Schedule <span className="text-red-500">*</span></Label>
-                          <Select onValueChange={(value) => handleInputChange('schedule', value)} required>
+                          <Label htmlFor="hearAboutUs" className="text-gray-700 font-medium text-sm sm:text-base flex items-center gap-2">
+                            <Megaphone className="w-4 h-4 text-[#F16112] shrink-0" />
+                            How did you hear about us? <span className="text-red-500">*</span>
+                          </Label>
+                          <Select
+                            onValueChange={(value) => handleInputChange('hearAboutUs', value)}
+                            value={formData.hearAboutUs || undefined}
+                            required
+                          >
                             <SelectTrigger
-                              data-testid="assessment-schedule-trigger"
-                              className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl hover:border-gray-400 transition-all h-12 md:h-14 text-sm sm:text-base"
+                              data-testid="hear-about-trigger"
+                              id="hearAboutUs"
+                              className="bg-white border-2 border-gray-300 rounded-lg md:rounded-xl h-12 md:h-14 text-sm sm:text-base w-full"
                             >
-                              <SelectValue placeholder="Select preferred time" />
+                              <SelectValue placeholder="Select one" />
                             </SelectTrigger>
-                            <SelectContent className="bg-white/95 backdrop-blur-xl border-2 border-white/60 rounded-xl shadow-2xl">
-                              {scheduleOptions.map((option) => (
-                                <SelectItem key={option} value={option} className="hover:bg-[#F16112]/10 py-3">{option}</SelectItem>
+                            <SelectContent>
+                              {hearAboutOptions.map((opt) => (
+                                <SelectItem key={opt.value} value={opt.value} className="text-sm sm:text-base">
+                                  {opt.label}
+                                </SelectItem>
                               ))}
                             </SelectContent>
                           </Select>
                         </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4 md:space-y-6 p-4 sm:p-6 md:p-8 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl md:rounded-2xl border-2 border-blue-200/50">
-                      <div className="flex items-center gap-2 sm:gap-3 pb-3 md:pb-4 border-b-2 border-blue-300/50">
-                        <div className="p-2 sm:p-3 bg-blue-500 rounded-lg md:rounded-xl"><MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-white" /></div>
-                        <div><h3 className="text-gray-900 text-lg sm:text-xl">Additional Information</h3><p className="text-xs sm:text-sm text-gray-600">Any special requirements or questions?</p></div>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="notes" className="text-gray-700 font-medium flex items-center gap-2 text-sm sm:text-base"><PenTool className="w-4 h-4 text-blue-600" />Special Requirements or Questions (Optional)</Label>
-                        <Textarea id="notes" value={formData.notes} onChange={(e) => handleInputChange('notes', e.target.value)} onFocus={() => setFocusedField('notes')} onBlur={() => setFocusedField(null)} className={cn("bg-white border-2 rounded-lg md:rounded-xl transition-all min-h-[100px] sm:min-h-[140px] resize-none text-sm sm:text-base", focusedField === 'notes' ? 'border-blue-500 shadow-md ring-2 ring-blue-500/10' : 'border-gray-300 hover:border-gray-400')} placeholder="Let us know if you have any specific concerns or questions about the assessment..." />
                       </div>
                     </div>
 
@@ -708,10 +775,22 @@ export default function BookAssessmentPage() {
                                   <span><strong>Mode:</strong> {formErrors.mode}</span>
                                 </li>
                               )}
-                              {formErrors.schedule && (
+                              {formErrors.scheduleDay && (
                                 <li className="flex items-center gap-2">
                                   <X className="w-4 h-4" />
-                                  <span><strong>Schedule:</strong> {formErrors.schedule}</span>
+                                  <span><strong>Days:</strong> {formErrors.scheduleDay}</span>
+                                </li>
+                              )}
+                              {formErrors.scheduleTime && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>Time:</strong> {formErrors.scheduleTime}</span>
+                                </li>
+                              )}
+                              {formErrors.hearAboutUs && (
+                                <li className="flex items-center gap-2">
+                                  <X className="w-4 h-4" />
+                                  <span><strong>How you heard about us:</strong> {formErrors.hearAboutUs}</span>
                                 </li>
                               )}
                               {formErrors.agreeToCommunications && (
@@ -772,34 +851,6 @@ export default function BookAssessmentPage() {
                       )}
                     </div>
                   </form>
-                ) : (
-                  <div className="text-center py-20" data-testid="assessment-success">
-                    <div className="w-28 h-28 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl"><CheckCircle className="w-14 h-14 text-white" /></div>
-                    <p className="text-green-700 font-semibold mb-2">Submission completed successfully.</p>
-                    <h3 className="text-gray-900 mb-6 text-4xl">🎉 Thank You for Your Request!</h3>
-                    <p className="text-gray-600 max-w-lg mx-auto mb-10 text-xl leading-relaxed">We've received your free assessment booking request. Our team will contact you within 24 hours to confirm your appointment.</p>
-                    <div className="space-y-4">
-                      <div className="flex flex-wrap justify-center gap-4">
-                        <Button onClick={() => setIsSubmitted(false)} className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white px-10 py-7 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"><Calendar className="w-6 h-6 mr-2" />Book Another Assessment</Button>
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-3xl mx-auto">
-                        {[
-                          { icon: Clock, text: '24-hour response guaranteed' },
-                          { icon: Shield, text: 'Your data is secure' },
-                          { icon: ThumbsUp, text: 'Welcome to GrowWise!' }
-                        ].map((item, idx) => {
-                          const IconComponent = item.icon as any;
-                          return (
-                            <div key={idx} className="flex flex-col items-center gap-3">
-                              <div className="p-3 bg-gradient-to-br from-green-100 to-green-200 rounded-xl"><IconComponent className="w-6 h-6 text-green-700" /></div>
-                              <p className="text-sm text-gray-600 font-medium">{item.text}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </div>

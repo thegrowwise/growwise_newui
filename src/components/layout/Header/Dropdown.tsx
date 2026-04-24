@@ -108,7 +108,7 @@ export default function Dropdown({
       {/* FIX #2: ADD MOUSE ENTER AND MOUSE LEAVE - Keeps dropdown open when cursor moves onto the dropdown panel and triggers close delay when cursor leaves the dropdown panel */}
       {visibleItems.length > 0 && (
         <div 
-          className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
+          className={`absolute top-full left-0 z-50 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
             isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
           }`}
           onMouseEnter={onMouseEnter} 

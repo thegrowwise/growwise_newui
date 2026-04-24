@@ -11,6 +11,7 @@ import { join } from 'path';
 
 import {
   hydrateSummerCampData,
+  getMinimumPublishedSummerCampPriceUsd,
   LEARNING_MODE_KEYS,
   LEARNING_MODE_FORMAT,
   LEARNING_MODE_TIME,
@@ -215,5 +216,29 @@ describe('hydrateSummerCampData (programs)', () => {
     const roblox = SUMMER_CAMP_PROGRAMS.find((p) => p.id === 'roblox-in-person');
     expect(roblox).toBeDefined();
     expect(roblox!.category).toBe('Half-Day Camps');
+  });
+});
+
+describe('getMinimumPublishedSummerCampPriceUsd', () => {
+  it('is the global minimum in hydrated EN data (Event JSON-LD offer price source)', () => {
+    const min = getMinimumPublishedSummerCampPriceUsd();
+    const { programs, olympiadTierConfigs } = loadHydrated();
+    const all: number[] = [];
+    for (const p of programs) {
+      if (p.startingPrice > 0) all.push(p.startingPrice);
+      for (const l of p.levels) {
+        l.slots.forEach((s) => all.push(s.price));
+        if (l.priceByProgramAndFormat) {
+          for (const m of Object.values(l.priceByProgramAndFormat)) {
+            all.push(m.Online, m['In-Person']);
+          }
+        }
+      }
+    }
+    for (const t of olympiadTierConfigs) {
+      all.push(t.priceByFormat.Online, t.priceByFormat['In-Person']);
+    }
+    expect(min).toBe(Math.min(...all));
+    expect(min).toBe(259);
   });
 });

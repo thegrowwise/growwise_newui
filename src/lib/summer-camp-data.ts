@@ -275,6 +275,39 @@ export function getDefaultSummerCampData(): ReturnType<typeof hydrateSummerCampD
   return _defaultData;
 }
 
+/**
+ * Lowest published USD price across default camp data (all slot prices, per-format prices, and Olympiad tiers).
+ * Used for Event JSON-LD `Offer.price` (e.g. GSC) so the value matches on-page pricing, not GTM or data layer.
+ */
+export function getMinimumPublishedSummerCampPriceUsd(): number {
+  const { programs, olympiadTierConfigs } = getDefaultSummerCampData();
+  const candidates: number[] = [];
+  for (const p of programs) {
+    if (p.startingPrice > 0) candidates.push(p.startingPrice);
+    for (const level of p.levels) {
+      for (const s of level.slots) {
+        if (s.price > 0) candidates.push(s.price);
+      }
+      if (level.priceByProgramAndFormat) {
+        for (const byFmt of Object.values(level.priceByProgramAndFormat)) {
+          for (const n of Object.values(byFmt)) {
+            if (n > 0) candidates.push(n);
+          }
+        }
+      }
+    }
+  }
+  for (const t of olympiadTierConfigs) {
+    for (const n of Object.values(t.priceByFormat)) {
+      if (n > 0) candidates.push(n);
+    }
+  }
+  if (candidates.length === 0) {
+    throw new Error('getMinimumPublishedSummerCampPriceUsd: no positive prices in camp data');
+  }
+  return Math.min(...candidates);
+}
+
 /** Fetches summer camp data from the mock API (same pattern as FAQ, academic, math, steam). Fallback to en if locale file missing. */
 export async function fetchSummerCampData(locale: string): Promise<{
   programs: Program[];

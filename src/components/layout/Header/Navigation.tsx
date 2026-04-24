@@ -44,7 +44,11 @@ export default function Navigation({
   return (
     <>
       {/* Desktop Navigation */}
-      <nav className="header-desktop-nav">
+      {/*
+        Stack nav above the utility column (search/cart/enroll) so open dropdowns and
+        submenus are not covered by a later flex sibling. See .header-dropdown-panel in globals.
+      */}
+      <nav className="header-desktop-nav relative z-[100]">
         {menuItems
           .filter((item) => item.key !== 'enroll') // Filter out enroll button as it's now in UtilityIcons
           .map((item) => (
