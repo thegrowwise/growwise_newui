@@ -172,6 +172,13 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async rewrites() {
+    // Legacy camp guide POST path → canonical API route.
+    return [
+      { source: '/api/summer-camp-lottery', destination: '/api/summer-camp-summercamp' },
+    ];
+  },
+
   // Legacy `/camp/*` SEO landings → `/camps/*` (canonical namespace aligns with /camps/summer, /camps/winter).
   // `/en/camp/*` listed before `/en/:path*` so one redirect hop to `/camps/*`.
   async redirects() {
@@ -182,6 +189,11 @@ const nextConfig: NextConfig = {
       { source: '/en/camp/:slug', destination: '/camps/:slug', permanent: true },
       { source: '/en', destination: '/', permanent: true },
       { source: '/en/:path*', destination: '/:path*', permanent: true },
+      {
+        source: '/:locale/camps/summer/lottery-success',
+        destination: '/:locale/camps/summer/summercamp-success',
+        permanent: true,
+      },
     ];
   },
 };

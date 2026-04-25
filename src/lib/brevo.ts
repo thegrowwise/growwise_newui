@@ -128,7 +128,7 @@ export async function sendBrevoTransactionalEmail(
 }
 
 /** POST /v3/contacts — add/update contact and attach to the summer camp guide / nurture list. */
-export async function addSummerCampLotteryContactToBrevoList(email: string): Promise<SendEmailResult> {
+export async function addSummerCampSummercampContactToBrevoList(email: string): Promise<SendEmailResult> {
   const sender = getBrevoSender();
   const listIdRaw = process.env.BREVO_LIST_LOTTERY?.trim();
 
@@ -179,14 +179,14 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
 
     if (!res.ok) {
       const errMsg = parsed.message || raw || `HTTP ${res.status}`;
-      console.warn('[brevo] Lottery list contact failed:', errMsg);
+      console.warn('[brevo] Summer camp summercamp list contact failed:', errMsg);
       return { success: false, error: errMsg };
     }
 
     return { success: true };
   } catch (err) {
     const error = err instanceof Error ? err.message : 'List add failed';
-    console.warn('[brevo] Lottery list contact error:', error);
+    console.warn('[brevo] Summer camp summercamp list contact error:', error);
     return { success: false, error };
   }
 }

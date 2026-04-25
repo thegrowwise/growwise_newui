@@ -820,14 +820,14 @@
       "viewAllCamps": "View all camps ↑",
       "earlyBirdBar": "Early bird ends April 30",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Get camp guide instead",
+      "summercampLink": "Get camp guide instead",
       "enrollNow": "Enroll Now",
       "earlyBirdBadge": "Early bird — GWSUMMER15"
     },
-    "lottery": {
+    "summercamp": {
       "title": "Win a free Summer Camp spot",
       "subtitle": "Quick entry — email, camp interest, and grade. We’ll email you if you win.",
-      "formAriaLabel": "Free camp spot lottery entry",
+      "formAriaLabel": "Free camp spot summercamp entry",
       "childGradeLabel": "Child’s grade (2026–27)",
       "gradePlaceholder": "Select grade",
       "campInterestLabel": "Camp interest",
@@ -858,7 +858,9 @@
       },
       "emailLabel": "Email",
       "emailPlaceholder": "you@example.com",
-      "submit": "Enter lottery",
+      "phoneLabel": "Phone number",
+      "phonePlaceholder": "(555) 123-4567",
+      "submit": "Enter summercamp",
       "submitting": "Submitting…",
       "successTitle": "You’re entered!",
       "successBody": "Winner announced May 20th. Only 10 spots — results emailed directly.",

@@ -12,9 +12,9 @@ import { createLocaleUrl } from '@/components/layout/Header/utils';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
-  type LotteryGrade,
-  type LotteryInterest,
-} from '@/lib/summer-lottery-keys';
+  type SummerCampGrade,
+  type SummerCampInterest,
+} from '@/lib/summercamp-keys';
 import canonicalSummerCampEn from '@/i18n/messages/summer-camp-canonical-en.json';
 import {
   SUMMER_CAMP_PROGRAM_GROUP_IDS,
@@ -91,7 +91,7 @@ export interface SummerCampFaqData {
 /** Booking grid filter: all programs, one program track, or full-day-only (e.g. robotics, Young Authors). */
 type ProgramTrackFilter = 'all' | SummerCampProgramTrack | 'fullDay';
 
-const lotterySelectClass = cn(
+const summerCampSelectClass = cn(
   'flex h-11 w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm md:text-base',
   'text-foreground outline-none transition-[color,box-shadow]',
   'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
@@ -123,20 +123,21 @@ export default function SummerCampPage() {
   const [programTrackFilter, setProgramTrackFilter] = useState<ProgramTrackFilter>('all');
   const [faqs, setFaqs] = useState<SummerCampFaqItem[]>([]);
   const [faqsLoading, setFaqsLoading] = useState(true);
-  const [lotteryEmail, setLotteryEmail] = useState('');
-  const [lotteryParentName, setLotteryParentName] = useState('');
-  const [lotteryCampInterest, setLotteryCampInterest] = useState<LotteryInterest | ''>('');
-  const [lotteryChildGrade, setLotteryChildGrade] = useState<LotteryGrade | ''>('');
-  const [lotteryStatus, setLotteryStatus] = useState<'idle' | 'loading' | 'error'>('idle');
-  const [lotteryErrorKind, setLotteryErrorKind] = useState<
+  const [summerCampEmail, setSummerCampEmail] = useState('');
+  const [summerCampParentName, setSummerCampParentName] = useState('');
+  const [summerCampPhone, setSummerCampPhone] = useState('');
+  const [summerCampInterest, setSummerCampInterest] = useState<SummerCampInterest | ''>('');
+  const [summerCampChildGrade, setSummerCampChildGrade] = useState<SummerCampGrade | ''>('');
+  const [summerCampStatus, setSummerCampStatus] = useState<'idle' | 'loading' | 'error'>('idle');
+  const [summerCampErrorKind, setSummerCampErrorKind] = useState<
     'invalid_form' | 'invalid_email' | 'server' | null
   >(null);
   /** API `error` string or dev hint when the response was not JSON (e.g. HTML error page). */
-  const [lotteryErrorDetail, setLotteryErrorDetail] = useState<string | null>(null);
+  const [summerCampErrorDetail, setSummerCampErrorDetail] = useState<string | null>(null);
   const [faqMount, setFaqMount] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [guideModalOpen, setGuideModalOpen] = useState(false);
-  /** Load guide dialog chunk only after first open or #lead-capture / #lottery (reduces initial JS). */
+  /** Load guide dialog chunk only after first open or #lead-capture / #summercamp (reduces initial JS). */
   const [guideLeadDialogMounted, setGuideLeadDialogMounted] = useState(false);
   const guideModalUserDismissedRef = useRef(false);
   /** Timestamp of last programmatic open; null until first open (avoid Date.now()-0 looking “old”). */
@@ -178,44 +179,45 @@ export default function SummerCampPage() {
     }
   }, []);
 
-  const clearLotteryError = () => {
-    if (lotteryStatus === 'error') {
-      setLotteryStatus('idle');
-      setLotteryErrorKind(null);
-      setLotteryErrorDetail(null);
+  const clearSummerCampError = () => {
+    if (summerCampStatus === 'error') {
+      setSummerCampStatus('idle');
+      setSummerCampErrorKind(null);
+      setSummerCampErrorDetail(null);
     }
   };
 
-  const handleLotterySubmit = async (e: React.FormEvent) => {
+  const handleSummerCampFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const emailTrim = lotteryEmail.trim();
-    const parentOk = lotteryParentName.trim().length >= 2;
-    const gradeOk = lotteryChildGrade !== '';
-    const interestOk = lotteryCampInterest !== '';
+    const emailTrim = summerCampEmail.trim();
+    const phoneTrim = summerCampPhone.trim();
+    const parentOk = summerCampParentName.trim().length >= 2;
+    const gradeOk = summerCampChildGrade !== '';
+    const interestOk = summerCampInterest !== '';
     const emailOk = EMAIL_REGEX.test(emailTrim);
 
     if (!parentOk || !gradeOk || !interestOk) {
-      setLotteryStatus('error');
-      setLotteryErrorKind('invalid_form');
+      setSummerCampStatus('error');
+      setSummerCampErrorKind('invalid_form');
       return;
     }
     if (!emailOk) {
-      setLotteryStatus('error');
-      setLotteryErrorKind('invalid_email');
+      setSummerCampStatus('error');
+      setSummerCampErrorKind('invalid_email');
       return;
     }
 
-    setLotteryStatus('loading');
-    setLotteryErrorKind(null);
-    setLotteryErrorDetail(null);
+    setSummerCampStatus('loading');
+    setSummerCampErrorKind(null);
+    setSummerCampErrorDetail(null);
     try {
-      const res = await fetch('/api/summer-camp-lottery', {
+      const res = await fetch('/api/summer-camp-summercamp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          parentName: lotteryParentName.trim(),
-          childGrade: lotteryChildGrade,
-          campInterest: lotteryCampInterest,
+          parentName: summerCampParentName.trim(),
+          childGrade: summerCampChildGrade,
+          campInterest: summerCampInterest,
           email: emailTrim,
           locale,
         }),
@@ -237,46 +239,48 @@ export default function SummerCampPage() {
           : null;
 
       if (!res.ok || parsed.success !== true) {
-        setLotteryStatus('error');
+        setSummerCampStatus('error');
         const kind = res.status === 400 ? 'invalid_form' : 'server';
-        setLotteryErrorKind(kind);
+        setSummerCampErrorKind(kind);
         if (jsonInvalid && raw.trim()) {
           const html = raw.trimStart().startsWith('<');
-          setLotteryErrorDetail(
+          setSummerCampErrorDetail(
             html && process.env.NODE_ENV === 'development'
               ? 'Server returned an error page instead of JSON — check the terminal running next dev.'
               : apiError
           );
           if (process.env.NODE_ENV === 'development' && html) {
-            console.error('[summer lottery] Non-JSON error response (first 200 chars):', raw.slice(0, 200));
+            console.error('[summer camp summercamp] Non-JSON error response (first 200 chars):', raw.slice(0, 200));
           }
         } else {
-          setLotteryErrorDetail(apiError);
+          setSummerCampErrorDetail(apiError);
         }
         return;
       }
       void import('@/lib/meta-pixel').then(({ trackSummerCampGuideLead }) =>
-        trackSummerCampGuideLead(lotteryCampInterest, lotteryChildGrade, {
+        trackSummerCampGuideLead(summerCampInterest, summerCampChildGrade, {
           em: emailTrim,
-          fn: lotteryParentName.trim(),
+          fn: summerCampParentName.trim(),
+          ...(phoneTrim ? { ph: phoneTrim } : {}),
         })
       );
       const qs = new URLSearchParams({
-        interest: lotteryCampInterest,
-        grade: lotteryChildGrade,
+        interest: summerCampInterest,
+        grade: summerCampChildGrade,
       });
       router.push(
         `${createLocaleUrl('/camps/summer/guide-success', locale)}?${qs.toString()}`
       );
-      setLotteryChildGrade('');
-      setLotteryCampInterest('');
-      setLotteryEmail('');
-      setLotteryParentName('');
-      setLotteryStatus('idle');
+      setSummerCampChildGrade('');
+      setSummerCampInterest('');
+      setSummerCampEmail('');
+      setSummerCampParentName('');
+      setSummerCampPhone('');
+      setSummerCampStatus('idle');
     } catch (err) {
-      setLotteryStatus('error');
-      setLotteryErrorKind('server');
-      setLotteryErrorDetail(
+      setSummerCampStatus('error');
+      setSummerCampErrorKind('server');
+      setSummerCampErrorDetail(
         process.env.NODE_ENV === 'development' && err instanceof Error ? err.message : null
       );
     }
@@ -516,7 +520,7 @@ export default function SummerCampPage() {
   }, []);
 
   /**
-   * Deep links #lead-capture / #lottery open the lead modal.
+   * Deep links #lead-capture / #summercamp open the lead modal.
    * In dev, Strict Mode can flip Radix Dialog closed without a real user dismiss; the follow-up
    * effect re-opens while `guideModalUserDismissedRef` is false. Intentional closes set the ref
    * (overlay/X, or “Explore program” navigation) so we do not fight the user.
@@ -524,7 +528,7 @@ export default function SummerCampPage() {
   useLayoutEffect(() => {
     const syncFromHash = () => {
       const h = window.location.hash;
-      if (h === '#lead-capture' || h === '#lottery') {
+      if (h === '#lead-capture' || h === '#summercamp') {
         guideModalUserDismissedRef.current = false;
         guideModalOpenedAtRef.current = Date.now();
         setGuideLeadDialogMounted(true);
@@ -539,7 +543,7 @@ export default function SummerCampPage() {
   useEffect(() => {
     if (guideModalUserDismissedRef.current) return;
     const h = typeof window !== 'undefined' ? window.location.hash : '';
-    if (!guideModalOpen && (h === '#lead-capture' || h === '#lottery')) {
+    if (!guideModalOpen && (h === '#lead-capture' || h === '#summercamp')) {
       guideModalOpenedAtRef.current = Date.now();
       setGuideLeadDialogMounted(true);
       setGuideModalOpen(true);
@@ -933,31 +937,36 @@ export default function SummerCampPage() {
             guideSubmitCta: SC.guideSubmitCta,
           }}
           formAriaLabel={t('guideForm.ariaLabel')}
-          lotterySelectClassName={lotterySelectClass}
-          parentName={lotteryParentName}
-          email={lotteryEmail}
-          childGrade={lotteryChildGrade}
-          campInterest={lotteryCampInterest}
-          status={lotteryStatus}
-          errorKind={lotteryErrorKind}
-          errorDetail={lotteryErrorDetail}
+          summerCampSelectClassName={summerCampSelectClass}
+          parentName={summerCampParentName}
+          email={summerCampEmail}
+          phone={summerCampPhone}
+          childGrade={summerCampChildGrade}
+          campInterest={summerCampInterest}
+          status={summerCampStatus}
+          errorKind={summerCampErrorKind}
+          errorDetail={summerCampErrorDetail}
           onParentNameChange={(v) => {
-            setLotteryParentName(v);
-            clearLotteryError();
+            setSummerCampParentName(v);
+            clearSummerCampError();
           }}
           onEmailChange={(v) => {
-            setLotteryEmail(v);
-            clearLotteryError();
+            setSummerCampEmail(v);
+            clearSummerCampError();
+          }}
+          onPhoneChange={(v) => {
+            setSummerCampPhone(v);
+            clearSummerCampError();
           }}
           onChildGradeChange={(v) => {
-            setLotteryChildGrade(v);
-            clearLotteryError();
+            setSummerCampChildGrade(v);
+            clearSummerCampError();
           }}
           onCampInterestChange={(v) => {
-            setLotteryCampInterest(v);
-            clearLotteryError();
+            setSummerCampInterest(v);
+            clearSummerCampError();
           }}
-          onSubmit={handleLotterySubmit}
+          onSubmit={handleSummerCampFormSubmit}
         />
       ) : null}
 

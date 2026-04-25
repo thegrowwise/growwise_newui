@@ -14,9 +14,9 @@ async function openSummerCampGuideModal(page: Page): Promise<void> {
   }
 }
 
-test.describe('Summer camp lottery form (UI)', () => {
-  test('submits lottery form and navigates to thank-you page with mocked API', async ({ page }) => {
-    await page.route('**/api/summer-camp-lottery', async (route) => {
+test.describe('Summer camp summercamp form (UI)', () => {
+  test('submits summercamp form and navigates to thank-you page with mocked API', async ({ page }) => {
+    await page.route('**/api/summer-camp-summercamp', async (route) => {
       if (route.request().method() !== 'POST') {
         await route.continue();
         return;
@@ -29,7 +29,7 @@ test.describe('Summer camp lottery form (UI)', () => {
         locale?: string;
       };
       expect(body.parentName).toBe('E2E Parent');
-      expect(body.email).toBe('lottery.e2e@example.com');
+      expect(body.email).toBe('summercamp.e2e@example.com');
       expect(body.childGrade).toBe('5');
       expect(body.campInterest).toBe('academic');
       expect(body.locale).toBe(E2E_LOCALE);
@@ -44,9 +44,9 @@ test.describe('Summer camp lottery form (UI)', () => {
     await openSummerCampGuideModal(page);
 
     await page.locator('#summer-lead-parent').fill('E2E Parent');
-    await page.locator('#summer-lottery-email').fill('lottery.e2e@example.com');
-    await page.locator('#summer-lottery-grade').selectOption('5');
-    await page.locator('#summer-lottery-interest').selectOption('academic');
+    await page.locator('#summercamp-email').fill('summercamp.e2e@example.com');
+    await page.locator('#summercamp-grade').selectOption('5');
+    await page.locator('#summercamp-interest').selectOption('academic');
 
     await page.getByRole('button', { name: /Get Guide|15%/i }).click();
 
@@ -62,8 +62,8 @@ test.describe('Summer camp lottery form (UI)', () => {
     await expect(page.getByRole('link', { name: /Back to Summer Camp/i })).toBeVisible();
   });
 
-  test('shows API error message when lottery endpoint returns 500 JSON', async ({ page }) => {
-    await page.route('**/api/summer-camp-lottery', async (route) => {
+  test('shows API error message when summercamp endpoint returns 500 JSON', async ({ page }) => {
+    await page.route('**/api/summer-camp-summercamp', async (route) => {
       if (route.request().method() !== 'POST') {
         await route.continue();
         return;
@@ -81,9 +81,9 @@ test.describe('Summer camp lottery form (UI)', () => {
     await openSummerCampGuideModal(page);
 
     await page.locator('#summer-lead-parent').fill('E2E Parent');
-    await page.locator('#summer-lottery-email').fill('fail@example.com');
-    await page.locator('#summer-lottery-grade').selectOption('3');
-    await page.locator('#summer-lottery-interest').selectOption('coding');
+    await page.locator('#summercamp-email').fill('fail@example.com');
+    await page.locator('#summercamp-grade').selectOption('3');
+    await page.locator('#summercamp-interest').selectOption('coding');
 
     await page.getByRole('button', { name: /Get Guide|15%/i }).click();
 

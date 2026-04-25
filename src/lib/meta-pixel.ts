@@ -72,7 +72,7 @@ export function trackSummerCampGuideLead(
 }
 
 /** @deprecated Use trackSummerCampGuideLead */
-export function trackLotteryEntry(interest: string, grade: string): void {
+export function trackSummercampEntry(interest: string, grade: string): void {
   trackSummerCampGuideLead(interest, grade);
 }
 

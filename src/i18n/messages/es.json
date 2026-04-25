@@ -700,11 +700,11 @@
       "viewAllCamps": "View all camps ↑",
       "earlyBirdBar": "Early bird hasta el 30 de abril",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Enter free lottery instead",
+      "summercampLink": "Enter free summercamp instead",
       "enrollNow": "Enroll Now",
       "earlyBirdBadge": "Early bird — GWSUMMER15"
     },
-    "lottery": {
+    "summercamp": {
       "title": "Gana un lugar gratis en Summer Camp",
       "subtitle": "Entrada rápida: correo, interés en el campamento y grado. Te avisaremos si ganas.",
       "formAriaLabel": "Formulario del sorteo de plaza gratis",
@@ -734,6 +734,8 @@
       },
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "tu@ejemplo.com",
+      "phoneLabel": "Número de teléfono",
+      "phonePlaceholder": "+1 555 123 4567",
       "submit": "Participar en el sorteo",
       "submitting": "Enviando…",
       "successTitle": "¡Ya estás participando!",
