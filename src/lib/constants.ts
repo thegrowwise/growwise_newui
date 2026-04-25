@@ -32,7 +32,7 @@ export const S3_IMAGE_BASE_URL =
 export function getS3ImageUrl(imagePath: string, size?: string): string {
   const basePath = imagePath.replace(/^\//, ''); // Remove leading slash if present
   if (size) {
-    // If size is provided, try to find size-specific version
+    // Try to find size-specific version
     // Format: images/founder/anshika-verma-300x180.png
     const ext = basePath.split('.').pop();
     const nameWithoutExt = basePath.replace(`.${ext}`, '');
@@ -48,4 +48,3 @@ export const BUSINESS_EMAIL = CONTACT_INFO.businessEmail;
 export const ADDRESS = CONTACT_INFO.address;
 export const FORMATTED_ADDRESS = CONTACT_INFO.formattedAddress;
 export const CITY = CONTACT_INFO.city;
-

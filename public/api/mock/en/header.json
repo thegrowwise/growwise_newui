@@ -65,7 +65,25 @@
             "description": "Advanced mathematics for high school students",
             "icon": "GraduationCap",
             "href": "/courses/high-school-math",
-            "gradient": "from-[#29335C] to-[#1F396D]"
+            "gradient": "from-[#29335C] to-[#1F396D]",
+            "hasSubmenu": true,
+            "submenuHeaderSubtitle": "Tutoring, curriculum, and finals prep",
+            "submenuItems": [
+              {
+                "title": "High School Math",
+                "description": "Algebra I through Pre-Calculus — tutoring overview",
+                "icon": "GraduationCap",
+                "href": "/courses/high-school-math",
+                "gradient": "from-[#29335C] to-[#1F396D]"
+              },
+              {
+                "title": "Math Finals Prep",
+                "description": "End-of-year finals support & complimentary preview session",
+                "icon": "Target",
+                "href": "/math-finals-practice-session",
+                "gradient": "from-[#1F396D] to-[#F16112]"
+              }
+            ]
           },
           {
             "key": "satPrep",
