@@ -138,6 +138,7 @@ function parseForm(fields: {
   if (!parentName) return { ok: false, error: 'Parent name is required', status: 400 }
   if (!studentName) return { ok: false, error: 'Student name is required', status: 400 }
   if (!grade) return { ok: false, error: 'Grade is required', status: 400 }
+  if (!school) return { ok: false, error: "School is required", status: 400 }
   if (!parentEmail) return { ok: false, error: 'Email is required', status: 400 }
   if (!EMAIL_REGEX.test(parentEmail)) return { ok: false, error: 'Please enter a valid email address', status: 400 }
   if (!parentPhone) return { ok: false, error: 'Phone is required', status: 400 }

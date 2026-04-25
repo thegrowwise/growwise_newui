@@ -173,9 +173,9 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/math-finals-practice-session': {
     title: 'Math Finals Sunday Session 12–1 | Dublin, CA | GrowWise',
     description:
-      'Request a complimentary in-center high school math finals session (Sunday 12–1 pm) or four-session prep in Dublin, CA. Algebra 1 through Pre-Calculus.',
+      'Request a complimentary in-center high school math finals session (Sunday 12–1 pm) or four-session prep in Dublin, CA. Algebra 1, Algebra 2, and Pre-Calculus.',
     keywords:
-      'high school math finals prep, free math practice session, Dublin CA math tutoring, algebra finals, geometry finals, Pre-Calculus review, Tri-Valley math, GrowWise',
+      'high school math finals prep, free math practice session, Dublin CA math tutoring, algebra 1 finals, algebra 2 finals, Pre-Calculus review, Tri-Valley math, GrowWise',
     path: '/math-finals-practice-session',
   },
 

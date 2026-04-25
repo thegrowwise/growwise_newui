@@ -24,7 +24,7 @@ export default async function MathFinalsPracticePage({
     meta?.title ?? 'Free High School Math Finals Practice Session | GrowWise'
   const description =
     meta?.description ??
-    'Request a high school math finals session in Dublin, CA — Sunday 12–1 pm or structured prep. Algebra 1 through Pre-Calculus.'
+    'Request a high school math finals session in Dublin, CA — Sunday 12–1 pm or structured prep. Algebra 1, Algebra 2, and Pre-Calculus.'
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
