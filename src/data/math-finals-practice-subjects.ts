@@ -1,6 +1,5 @@
 export const MATH_FINALS_PRACTICE_SUBJECTS = [
   'Algebra 1',
-  'Geometry',
   'Algebra 2',
   'Pre-Calculus',
 ] as const

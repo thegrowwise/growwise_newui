@@ -411,7 +411,7 @@ const MathCoursesPage: React.FC = () => {
                 className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
               >
                 <Calculator className="mr-2 w-5 h-5" />
-                Book Free Assessment
+                Book a Free Assessment
               </Button>
               {/* Fixed View Programs Button - Better Visibility */}
               <Button 

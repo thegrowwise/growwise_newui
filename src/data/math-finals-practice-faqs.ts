@@ -26,7 +26,7 @@ export const MATH_FINALS_PRACTICE_FAQS: ReadonlyArray<{
   {
     question: 'What subjects are covered?',
     answer:
-      'The preview is designed to support final exam prep for high school courses in Algebra 1, Geometry, Algebra 2, and Pre-Calculus. Your child should register for the subject that matches the course they are taking this year.',
+      'The preview is designed to support final exam prep for high school courses in Algebra 1, Algebra 2, and Pre-Calculus. Your child should register for the subject that matches the course they are taking this year.',
   },
   {
     question: 'Do we have to join the full Math Finals Prep program?',

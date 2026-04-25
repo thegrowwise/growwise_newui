@@ -303,7 +303,7 @@ const AcademicPage: React.FC = () => {
           <Card className="bg-white/80 backdrop-blur-xl rounded-[40px] shadow-[0px_30px_80px_0px_rgba(31,57,109,0.15)] border border-white/30 overflow-hidden">
             <CardContent className="p-12 lg:p-16">
               <div className="text-center">
-                <h1 className="text-4xl lg:text-6xl font-bold text-[#1F396D] mb-8 leading-tight">Math & English Programs Aligned with DUSD & PUSD</h1>
+                <h1 className="text-4xl lg:text-6xl font-bold text-[#1F396D] mb-8 leading-tight">Grades 1–12 Math & English Tutoring in Dublin, CA</h1>
                 <Badge className="bg-[#F16112] text-white mb-6 px-6 py-3 rounded-full text-lg">ACADEMIC PROGRAMS</Badge>
 
                 <div className="max-w-4xl mx-auto mb-10">
@@ -321,7 +321,7 @@ const AcademicPage: React.FC = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                  <Button onClick={() => setIsLearnMoreModalOpen(true)} className="bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Book Free Assessment →</Button>
+                  <Button onClick={() => setIsLearnMoreModalOpen(true)} className="bg-[#1F396D] hover:bg-[#29335C] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Book a Free Assessment</Button>
                   <Button onClick={() => router.push(publicPath('/enroll', locale))} className="bg-[#F16112] hover:bg-[#F1894F] text-white rounded-full px-10 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-300">Enroll Now</Button>
                 </div>
               </div>
@@ -736,7 +736,7 @@ const AcademicPage: React.FC = () => {
               className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full text-lg font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105" 
               size="lg"
             >
-              Book Free Assessment
+              Book a Free Assessment
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
             <Button 

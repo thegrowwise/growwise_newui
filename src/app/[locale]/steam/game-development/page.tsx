@@ -445,7 +445,7 @@ const GameDevelopmentPage: React.FC = () => {
               <Button asChild className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-8 py-4 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <Link href={publicPath('/book-assessment', locale)} className="inline-flex items-center justify-center">
                   <Zap className="w-5 h-5 mr-2" />
-                  Book Free Assessment
+                  Book a Free Assessment
                 </Link>
               </Button>
               <Button asChild variant="outline" className="border-2 border-[#1F396D] text-[#1F396D] hover:bg-[#1F396D] hover:text-white px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
