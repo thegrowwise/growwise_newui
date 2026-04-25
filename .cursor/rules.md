@@ -177,6 +177,7 @@ Include with every change:
 ## 15. SELF-REVIEW
 
 Before final output, verify:
+- [ ] **Did not run `git commit` or `git push` without explicit user approval** (see §16)
 - [ ] `npm run build` passes with 0 errors
 - [ ] `npm run lint` passes with 0 new errors
 - [ ] No hardcoded strings, prices, or routes added
@@ -192,3 +193,14 @@ Before final output, verify:
 - [ ] Heading hierarchy is correct (`h1` → `h2` → `h3`, one `h1` per page)
 
 State **PASS** or **FAIL**. If FAIL: fix or refuse and explain.
+
+---
+
+## 16. GIT — COMMIT & PUSH (MANDATORY)
+
+**AI agents must not commit or push without explicit user approval.**
+
+1. **Never** run `git commit`, `git push`, or any operation that updates remote refs (including force-push, publishing a branch, or tools like `gh pr create` when they perform a push) **without explicit prior user approval** for that specific action.
+2. Preparing changes locally, showing diffs, and **asking** whether to commit or push is acceptable.
+3. **Silence, implied consent, or approval of an unrelated step** does not authorize commit or push — the user must clearly approve that commit or push.
+4. If the user did not ask to commit or push, default to **no commit and no push**.

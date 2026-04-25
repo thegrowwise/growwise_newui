@@ -24,10 +24,13 @@ interface AssessmentFormData {
   phone: string;
   studentName: string;
   grade: string;
-  subjects: string[];
+  /** @deprecated Kept for older clients; book form no longer sends focus areas. */
+  subjects?: string[];
   assessmentType: string;
   mode: string;
   schedule: string;
+  /** Free-text or select value, e.g. how the family found GrowWise. */
+  hearAboutUs?: string;
   notes?: string;
 }
 
@@ -41,12 +44,14 @@ export async function POST(request: Request) {
       phone,
       studentName,
       grade,
-      subjects,
+      subjects: subjectsRaw,
       assessmentType,
       mode,
       schedule,
+      hearAboutUs,
       notes
     }: AssessmentFormData = body;
+    const subjects = Array.isArray(subjectsRaw) ? subjectsRaw : [];
 
     // Validate required fields
     if (!parentName || !email || !phone || !studentName || !grade || !assessmentType || !mode || !schedule) {
@@ -90,10 +95,11 @@ export async function POST(request: Request) {
       phone: phone.trim(),
       studentName: studentName.trim(),
       grade: grade.trim(),
-      subjects: subjects || [],
+      subjects,
       assessmentType: assessmentType.trim(),
       mode: mode.trim(),
       schedule: schedule.trim(),
+      hearAboutUs: (typeof hearAboutUs === 'string' ? hearAboutUs : '').trim(),
       notes: notes?.trim() || '',
       timestamp: new Date().toISOString(),
       ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
@@ -150,6 +156,7 @@ interface AssessmentPayload {
   assessmentType: string;
   mode: string;
   schedule: string;
+  hearAboutUs: string;
   notes: string;
   timestamp: string;
   ip: string;
@@ -234,10 +241,9 @@ async function sendUserAssessmentConfirmationEmail(
 }
 
 function generateBusinessAssessmentEmailHTML(data: AssessmentPayload) {
-  const subjectsLine =
-    data.subjects.length > 0
-      ? data.subjects.map((s) => escapeHtml(s)).join(', ')
-      : 'Not specified';
+  const hearLine = data.hearAboutUs
+    ? escapeHtml(data.hearAboutUs)
+    : '—';
   const notesBlock = data.notes
     ? `<p><strong>Notes:</strong> ${escapeHtml(data.notes)}</p>`
     : '';
@@ -257,7 +263,6 @@ function generateBusinessAssessmentEmailHTML(data: AssessmentPayload) {
         <h3 style="color: #1F396D; margin-top: 0;">Student Information</h3>
         <p><strong>Student Name:</strong> ${escapeHtml(data.studentName)}</p>
         <p><strong>Grade:</strong> ${escapeHtml(data.grade)}</p>
-        <p><strong>Subjects:</strong> ${subjectsLine}</p>
       </div>
 
       <div style="background-color: #e8f4f8; padding: 20px; border-radius: 8px; margin: 20px 0;">
@@ -265,6 +270,7 @@ function generateBusinessAssessmentEmailHTML(data: AssessmentPayload) {
         <p><strong>Assessment Type:</strong> ${escapeHtml(data.assessmentType)}</p>
         <p><strong>Mode:</strong> ${escapeHtml(data.mode)}</p>
         <p><strong>Preferred Schedule:</strong> ${escapeHtml(data.schedule)}</p>
+        <p><strong>How they heard about us:</strong> ${hearLine}</p>
         ${notesBlock}
       </div>
 
@@ -301,12 +307,12 @@ Submitted: ${new Date(data.timestamp).toLocaleString()}
 Student Information:
 Student Name: ${data.studentName}
 Grade: ${data.grade}
-Subjects: ${data.subjects && data.subjects.length > 0 ? data.subjects.join(', ') : 'Not specified'}
 
 Assessment Details:
 Assessment Type: ${data.assessmentType}
 Mode: ${data.mode}
 Preferred Schedule: ${data.schedule}
+How they heard about us: ${data.hearAboutUs || '—'}
 ${data.notes ? `Notes: ${data.notes}` : ''}
 
 Next Steps:
@@ -333,6 +339,7 @@ function generateUserAssessmentConfirmationEmailHTML(data: AssessmentPayload) {
         <p><strong>Assessment Type:</strong> ${escapeHtml(data.assessmentType)}</p>
         <p><strong>Mode:</strong> ${escapeHtml(data.mode)}</p>
         <p><strong>Preferred Schedule:</strong> ${escapeHtml(data.schedule)}</p>
+        ${data.hearAboutUs ? `<p><strong>How you heard about us:</strong> ${escapeHtml(data.hearAboutUs)}</p>` : ''}
       </div>
 
       <div style="background-color: #fff; padding: 20px; border-radius: 8px; border-left: 4px solid #F16112; margin: 20px 0;">
@@ -373,6 +380,7 @@ Grade: ${data.grade}
 Assessment Type: ${data.assessmentType}
 Mode: ${data.mode}
 Preferred Schedule: ${data.schedule}
+${data.hearAboutUs ? `How you heard about us: ${data.hearAboutUs}` : ''}
 
 What Happens Next?
 - Our team will contact you within 24 hours to confirm your assessment appointment

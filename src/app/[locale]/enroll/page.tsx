@@ -1,13 +1,15 @@
 'use client';
 
 import React, { Suspense, useState, useRef, useCallback } from 'react';
-import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, CheckCircle, AlertCircle, User, Mail, Phone as PhoneIcon, GraduationCap, MapPin, Target, BookOpen, Code } from 'lucide-react';
+import { Loader2, AlertCircle, User, Mail, Phone as PhoneIcon, GraduationCap, MapPin, Target, BookOpen, Code } from 'lucide-react';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { useFormTracking, usePageTracking } from '@/lib/analytics/hooks';
 import { TrackedForm } from '@/lib/analytics/components';
@@ -16,8 +18,10 @@ import { useSearchParams } from 'next/navigation';
 import { getRecaptchaToken } from '@/lib/recaptcha';
 
 function EnrollPageInner() {
+  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const t = useTranslations('enrollnow');
+  const locale = useLocale();
   const [agree, setAgree] = useState(false);
   const [programType, setProgramType] = useState<'academic' | 'steam' | undefined>(undefined);
   const [bootcamp, setBootcamp] = useState<string | undefined>(undefined);
@@ -101,26 +105,9 @@ function EnrollPageInner() {
       }
 
       if (result.success) {
-        setSubmitStatus('success');
-        // Track successful form submission
         trackFormSubmit('enrollment_form', true);
-        
-        // Reset form by clearing all state and form fields
-        setAgree(false);
-        setProgramType(undefined);
-        setBootcamp(undefined);
-        setCourse(undefined);
-        setLevel(undefined);
-        
-        // Reset form fields using ref
-        if (formRef.current) {
-          formRef.current.reset();
-        }
-        
-        // Clear success message after 5 seconds
-        setTimeout(() => {
-          setSubmitStatus('idle');
-        }, 5000);
+        router.replace(publicPath('/enroll/thank-you', locale));
+        return;
       } else {
         setSubmitStatus('error');
         setErrorMessage(result.error || 'Failed to submit enrollment');
@@ -155,17 +142,6 @@ function EnrollPageInner() {
       </section>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
-        {/* Success Message */}
-        {submitStatus === 'success' && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-600" />
-            <div>
-              <h3 className="text-green-800 font-semibold">Enrollment Successful!</h3>
-              <p className="text-green-700 text-sm">Thank you for enrolling with GrowWise. We will contact you within 24 hours.</p>
-            </div>
-          </div>
-        )}
 
         {/* Error Message */}
         {submitStatus === 'error' && (

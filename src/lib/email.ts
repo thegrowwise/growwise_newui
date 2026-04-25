@@ -5,6 +5,12 @@
 
 import nodemailer from 'nodemailer';
 
+export type EmailAttachment = {
+  filename: string;
+  content: Buffer;
+  contentType?: string;
+};
+
 export interface SendEmailOptions {
   to: string | string[];
   subject: string;
@@ -12,6 +18,8 @@ export interface SendEmailOptions {
   text: string;
   /** Optional Reply-To header (e.g. connect@thegrowwise.com). */
   replyTo?: string;
+  /** Optional files (e.g. camp brochure PDF). */
+  attachments?: EmailAttachment[];
 }
 
 export interface SendEmailResult {
@@ -42,7 +50,7 @@ function getTransporter(): nodemailer.Transporter | null {
 }
 
 export async function sendEmail(options: SendEmailOptions): Promise<SendEmailResult> {
-  const { to, subject, html, text, replyTo } = options;
+  const { to, subject, html, text, replyTo, attachments } = options;
   const fromEmail = process.env.FROM_EMAIL;
   const fromName = process.env.FROM_NAME ?? 'GrowWise';
 
@@ -65,6 +73,15 @@ export async function sendEmail(options: SendEmailOptions): Promise<SendEmailRes
       text,
       html,
       ...(replyTo ? { replyTo } : {}),
+      ...(attachments?.length
+        ? {
+            attachments: attachments.map((a) => ({
+              filename: a.filename,
+              content: a.content,
+              contentType: a.contentType ?? 'application/octet-stream',
+            })),
+          }
+        : {}),
     });
     return { success: true, messageId: result.messageId };
   } catch (err) {

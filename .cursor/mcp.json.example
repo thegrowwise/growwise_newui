@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "atlassian": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-atlassian"],
+      "env": {
+        "JIRA_URL": "https://thegrowwise-school.atlassian.net",
+        "JIRA_USERNAME": "your-atlassian-email@example.com"
+      },
+      "envFile": "${workspaceFolder}/.cursor/jira.env"
+    }
+  }
+}

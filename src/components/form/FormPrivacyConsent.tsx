@@ -21,6 +21,8 @@ export interface FormPrivacyConsentProps {
   showSubmitDisclaimer?: boolean;
   /** Layout variant: default (full blocks), compact (single block, smaller spacing) */
   variant?: 'default' | 'compact';
+  /** When true, one card: privacy + consent share column alignment; smaller privacy text (math-finals style). */
+  alignPrivacyWithConsent?: boolean;
   /** Optional class for the wrapper */
   className?: string;
 }
@@ -37,6 +39,7 @@ export default function FormPrivacyConsent({
   required = true,
   showSubmitDisclaimer = true,
   variant = 'default',
+  alignPrivacyWithConsent = false,
   className,
 }: FormPrivacyConsentProps) {
   const t = useTranslations('commonForm.privacy');
@@ -44,6 +47,69 @@ export default function FormPrivacyConsent({
   const blockClass = variant === 'compact'
     ? 'space-y-3 p-4 bg-gray-100 rounded-xl border border-gray-200'
     : 'space-y-4 p-4 sm:p-6 md:p-8 bg-gray-100 rounded-xl md:rounded-2xl border border-gray-200';
+
+  const colIcon = 'w-10 flex shrink-0 justify-center';
+
+  if (alignPrivacyWithConsent) {
+    return (
+      <div className={cn('space-y-3', className)}>
+        <div className={blockClass}>
+          <div className="flex items-start gap-2.5">
+            <div className={colIcon}>
+              <div className="rounded-lg bg-[#1F396D] p-1.5">
+                <Shield className="h-4 w-4 text-white" aria-hidden />
+              </div>
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="mb-0.5 text-sm font-semibold text-gray-900">{t('title')}</h3>
+              <p className="text-xs leading-relaxed text-gray-600">{t('description')}</p>
+            </div>
+          </div>
+          <div className="mt-3 border-t border-gray-200/90 pt-3">
+            <div className="flex items-start gap-2.5">
+              <div className={cn(colIcon, 'pt-0.5')}>
+                <Checkbox
+                  id={checkboxId}
+                  checked={checked}
+                  onCheckedChange={(value) => onCheckedChange(value === true)}
+                  required={required}
+                  className={cn(
+                    'h-5 w-5 flex-shrink-0 border-2 border-gray-400 data-[state=checked]:border-[#1F396D] data-[state=checked]:bg-[#1F396D]',
+                    error && 'border-red-500',
+                  )}
+                  aria-invalid={!!error}
+                  aria-describedby={error ? `${checkboxId}-error` : undefined}
+                />
+              </div>
+              <Label
+                htmlFor={checkboxId}
+                id={`${checkboxId}-label`}
+                className="flex-1 cursor-pointer text-sm leading-relaxed text-gray-700"
+              >
+                {t('agreeLabel')}
+              </Label>
+            </div>
+            {error && (
+              <p
+                id={`${checkboxId}-error`}
+                className="mt-2 flex items-center gap-1 pl-0 text-xs text-red-600 sm:pl-12"
+                role="alert"
+              >
+                <AlertCircle className="h-3.5 w-3.5 flex-shrink-0" />
+                {error}
+              </p>
+            )}
+          </div>
+        </div>
+        {showSubmitDisclaimer && (
+          <p className="flex items-center justify-center gap-1.5 text-center text-xs text-gray-500">
+            <Shield className="h-3.5 w-3.5 flex-shrink-0 text-green-600" aria-hidden />
+            {t('submitDisclaimer')}
+          </p>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className={cn('space-y-4', className)}>

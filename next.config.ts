@@ -51,8 +51,8 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'], // Use modern image formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Allow both quality levels so next/image cache doesn't miss when quality=75 (default) or quality=85 is requested.
-    qualities: [75, 85],
+    // Include 70 for summer hero / program cards; 75 default; 85 where explicitly requested.
+    qualities: [70, 75, 85],
     // Short TTL in dev; longer in prod so repeat views hit the image optimizer cache more often.
     minimumCacheTTL: isProd ? 86_400 : 60,
   },

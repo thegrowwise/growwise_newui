@@ -163,6 +163,36 @@ export default function MobileNavigation({
                             {isExpanded && visibleDropdownItems.length > 0 && (
                               <div className="ml-4 mt-1 mb-2 space-y-1 border-l-2 border-gray-200 pl-4">
                                 {visibleDropdownItems.map((dropdownItem) => {
+                                  if (dropdownItem.hasSubmenu && dropdownItem.submenuItems?.length) {
+                                    return (
+                                      <div key={dropdownItem.key} className="mb-2 last:mb-0">
+                                        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide py-1.5 px-2">
+                                          {dropdownItem.title}
+                                        </p>
+                                        <div className="space-y-0.5 pl-0">
+                                          {dropdownItem.submenuItems.map((sub) => {
+                                            const isSubActive = pathname?.startsWith(
+                                              createLocaleUrl(sub.href)
+                                            );
+                                            return (
+                                              <Link
+                                                key={sub.title}
+                                                href={createLocaleUrl(sub.href)}
+                                                className={`block py-2 px-2 text-sm transition-colors duration-200 rounded-lg ${
+                                                  isSubActive
+                                                    ? 'text-[#1F396D] bg-[#1F396D]/10 font-medium'
+                                                    : 'text-gray-600 hover:text-[#F16112] hover:bg-gray-50'
+                                                }`}
+                                                onClick={onCloseMobileMenu}
+                                              >
+                                                {sub.title}
+                                              </Link>
+                                            );
+                                          })}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
                                   const isDropdownItemActive = pathname?.startsWith(
                                     createLocaleUrl(dropdownItem.href)
                                   );

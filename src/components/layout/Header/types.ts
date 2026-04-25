@@ -27,6 +27,10 @@ export interface DropdownItem {
   visible?: boolean;
   hasSubmenu?: boolean;
   submenuItems?: SubmenuItem[];
+  /** Optional submenu panel header; defaults to `title` (e.g. "High School Math"). */
+  submenuHeaderTitle?: string;
+  /** Optional submenu panel subtitle; defaults to "Select your subject". */
+  submenuHeaderSubtitle?: string;
 }
 
 export interface SubmenuItem {

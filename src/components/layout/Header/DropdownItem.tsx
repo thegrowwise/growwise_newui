@@ -117,11 +117,13 @@ export default function DropdownItem({
       
       {/* Submenu */}
       {hasSubmenu && item.submenuItems && isSubmenuOpen && (
-        <Submenu 
+        <Submenu
+          parentItem={item}
           items={item.submenuItems}
           onItemClick={onItemClick}
           onSubmenuEnter={onSubmenuEnter}
           onSubmenuLeave={onSubmenuLeave}
+          createLocaleUrl={createLocaleUrl}
           colors={colors}
         />
       )}
@@ -130,15 +132,19 @@ export default function DropdownItem({
 }
 
 interface SubmenuProps {
+  parentItem: DropdownItemType;
   items: SubmenuItem[];
   onItemClick: () => void;
   onSubmenuEnter: () => void;
   onSubmenuLeave: () => void;
+  createLocaleUrl: (path: string) => string;
   colors: { primary: string; secondary: string };
 }
 
-function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }: SubmenuProps) {
+function Submenu({ parentItem, items, onItemClick, onSubmenuEnter, onSubmenuLeave, createLocaleUrl, colors }: SubmenuProps) {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const headerTitle = parentItem.submenuHeaderTitle ?? parentItem.title;
+  const headerSubtitle = parentItem.submenuHeaderSubtitle ?? 'Select your subject';
 
   return (
     <div 
@@ -148,8 +154,8 @@ function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }:
     >
       {/* Header */}
       <div className="px-4 py-3 bg-gradient-to-r from-[#1F396D]/5 to-[#F16112]/5 border-b border-gray-100">
-        <div className="font-semibold text-gray-900 text-sm">Courses</div>
-        <p className="text-xs text-gray-600 mt-0.5">Select your subject</p>
+        <div className="font-semibold text-gray-900 text-sm">{headerTitle}</div>
+        <p className="text-xs text-gray-600 mt-0.5">{headerSubtitle}</p>
       </div>
       
       {/* Items */}
@@ -163,7 +169,7 @@ function Submenu({ items, onItemClick, onSubmenuEnter, onSubmenuLeave, colors }:
           return (
             <Link
               key={subItem.title}
-              href={subItem.href}
+              href={createLocaleUrl(subItem.href)}
               onClick={onItemClick}
               onMouseEnter={() => setHoveredItem(subItem.title)}
               onMouseLeave={() => setHoveredItem(null)}
