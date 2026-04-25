@@ -31,7 +31,7 @@ export default async function MathFinalsPracticeLayout({
     '@id': absoluteSiteUrl('/math-finals-practice-session#service', locale, baseUrl),
     name: 'Complimentary high school math finals session (Sunday 12–1 pm)',
     description:
-      'One complimentary in-center session in the Sunday 12–1 pm window for high school students preparing for math finals (Algebra 1 through Pre-Calculus) at GrowWise in Dublin, CA. Paid four-session Math Finals Prep is a separate program.',
+      'One complimentary in-center session in the Sunday 12–1 pm window for high school students preparing for math finals (Algebra 1, Algebra 2, and Pre-Calculus) at GrowWise in Dublin, CA. Paid four-session Math Finals Prep is a separate program.',
     serviceType: 'Tutoring session',
     provider: {
       '@type': 'EducationalOrganization',

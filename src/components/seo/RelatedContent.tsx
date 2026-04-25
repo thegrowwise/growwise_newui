@@ -108,13 +108,13 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
   const relatedItems = allItems.filter(item => item.id !== currentPage).slice(0, 6)
 
   const anchorCta: Record<(typeof allItems)[number]['id'], string> = {
-    math: 'Book Free Assessment',
-    english: 'Book Free Assessment',
+    math: 'Book a Free Assessment',
+    english: 'Book a Free Assessment',
     'sat-prep': 'Book SAT Readiness Check',
-    'high-school-math': 'Book Free Assessment',
-    academic: 'Book Free Assessment',
-    steam: 'Book Free Assessment',
-    assessment: 'Book Free Assessment',
+    'high-school-math': 'Book a Free Assessment',
+    academic: 'Book a Free Assessment',
+    steam: 'Book a Free Assessment',
+    assessment: 'Book a Free Assessment',
   }
 
   return (

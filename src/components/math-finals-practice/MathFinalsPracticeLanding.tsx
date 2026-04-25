@@ -126,6 +126,7 @@ export function MathFinalsPracticeLanding() {
     if (!form.parentName.trim()) e.parentName = 'Please enter the parent or guardian name.'
     if (!form.studentName.trim()) e.studentName = "Please enter the student's name."
     if (!form.grade) e.grade = 'Please select a grade level.'
+    if (!form.school.trim()) e.school = "Please enter the student's school."
     if (!MATH_FINALS_PRACTICE_SUBJECTS.includes(form.subject as MathFinalsPracticeSubject)) {
       e.subject = 'Please select a current math course.'
     }
@@ -206,8 +207,7 @@ export function MathFinalsPracticeLanding() {
             High School Math Finals Practice in Dublin, CA
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-slate-600 sm:text-lg">
-            One complimentary hour of exam-style practice covering <strong>Algebra 1</strong>, <strong>Geometry</strong>,
-            <strong> Algebra 2</strong>, and <strong>Pre-Calculus</strong>. This session is dedicated to finals-style
+            One complimentary hour of exam-style practice covering <strong>Algebra 1</strong>, <strong>Algebra 2</strong>, and <strong>Pre-Calculus</strong>. This session is dedicated to finals-style
             review—not foundational tutoring.
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm font-medium text-[#F16112]">
@@ -265,6 +265,7 @@ export function MathFinalsPracticeLanding() {
         id="signup"
         className="scroll-mt-20 py-16 sm:py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden"
         aria-labelledby="signup-heading"
+        suppressHydrationWarning
       >
         <div className="absolute inset-0 pointer-events-none opacity-30 overflow-hidden" aria-hidden>
           <div className="absolute top-20 left-4 w-72 h-72 bg-gradient-to-br from-[#1F396D]/10 to-transparent rounded-full blur-3xl sm:left-10" />
@@ -276,13 +277,20 @@ export function MathFinalsPracticeLanding() {
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">We’ll follow up by email or phone.</p>
 
-          <Card className="mt-8 border-2 border-white/60 bg-white/95 shadow-2xl backdrop-blur-xl rounded-xl md:rounded-3xl overflow-hidden">
-            <CardContent className="p-4 sm:p-6 md:p-8 lg:pt-8">
-              {/* data-* attrs: keep password manager extensions from injecting DOM (hydration mismatch vs SSR). */}
+          <Card
+            className="mt-8 border-2 border-white/60 bg-white/95 shadow-2xl backdrop-blur-xl rounded-xl md:rounded-3xl overflow-hidden"
+            suppressHydrationWarning
+          >
+            <CardContent
+              className="p-4 sm:p-6 md:p-8 lg:pt-8"
+              suppressHydrationWarning
+            >
+              {/* data-* on form + suppressHydrationWarning: PM extensions (LastPass) inject sibling nodes on inputs; without this, client HTML !== SSR. */}
               <form
                 onSubmit={onSubmit}
                 className="space-y-6 md:space-y-8"
                 noValidate
+                suppressHydrationWarning
                 data-lpignore="true"
                 data-1p-ignore
                 data-bwignore
@@ -537,7 +545,7 @@ export function MathFinalsPracticeLanding() {
                         </SelectContent>
                       </Select>
                       <p id="subject-hint" className="text-xs text-gray-500">
-                        Algebra 1, Geometry, Algebra 2, or Pre-Calculus.
+                        Algebra 1, Algebra 2, or Pre-Calculus.
                       </p>
                       {errors.subject && <p className="text-sm text-red-600">{errors.subject}</p>}
                     </div>
@@ -548,7 +556,7 @@ export function MathFinalsPracticeLanding() {
                       className="flex items-center gap-2 text-sm font-medium text-gray-700 sm:text-base"
                     >
                       <School className="h-4 w-4 text-[#1F396D]" aria-hidden />
-                      School (optional)
+                      School <span className="text-red-500">*</span>
                     </Label>
                     <Input
                       {...PM_NO_INJECT}
@@ -562,10 +570,12 @@ export function MathFinalsPracticeLanding() {
                         focusedField === 'school'
                           ? 'border-[#F16112] shadow-md ring-2 ring-[#F16112]/10'
                           : 'border-gray-300 hover:border-gray-400',
+                        errors.school && 'border-red-500',
                       )}
                       autoComplete="organization"
                       placeholder="High school name"
                     />
+                    {errors.school && <p className="text-sm text-red-600">{errors.school}</p>}
                   </div>
                 </div>
 
@@ -576,19 +586,22 @@ export function MathFinalsPracticeLanding() {
                       <FileText className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
                     </div>
                     <div>
-                      <h3 className="text-lg text-gray-900 sm:text-xl">Optional</h3>
-                      <p className="text-xs text-gray-500 sm:text-sm">Helps us align the session to your class</p>
+                      <h3 className="text-lg text-gray-900 sm:text-xl">Align practice to your class (optional)</h3>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <Label
                       htmlFor="q4-agenda"
-                      className="flex items-center gap-2 text-sm font-medium text-gray-700 sm:text-base"
+                      className="flex items-start gap-2 text-sm font-medium text-gray-700 sm:text-base"
                     >
-                      <FileText className="h-4 w-4 text-[#F16112]" aria-hidden />
-                      Upload Quarter 4 topics or class outline (optional)
+                      <FileText
+                        className="mt-0.5 h-4 w-4 shrink-0 text-[#F16112]"
+                        aria-hidden
+                      />
+                      <span>
+                        Upload current topics, a class outline, or a teacher handout. PDF or image, max 5 MB.
+                      </span>
                     </Label>
-                    <p className="text-xs text-gray-500">PDF or image, max 5 MB.</p>
                     <input
                       {...PM_NO_INJECT}
                       ref={agendaInputRef}
@@ -605,7 +618,7 @@ export function MathFinalsPracticeLanding() {
                       className="flex items-center gap-2 text-sm font-medium text-gray-700 sm:text-base"
                     >
                       <MessageSquare className="h-4 w-4 text-[#1F396D]" aria-hidden />
-                      Notes (optional)
+                      Other details for the instructor (optional)
                     </Label>
                     <Textarea
                       {...PM_NO_INJECT}

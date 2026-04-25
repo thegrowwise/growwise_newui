@@ -13,7 +13,7 @@ export default function CampLandingIndexPage() {
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    "name": "Summer Camp Programs — Dublin, CA | GrowWise",
+    "name": "STEAM & Academic Summer Camps in Dublin, CA",
     "description": "Summer camp tracks for Grades 1-12 students in Dublin, CA. One campus. Families enroll from across the Tri-Valley.",
     "url": `${baseUrl}/camps`,
     "itemListElement": pages.map((p, i) => ({
@@ -35,7 +35,7 @@ export default function CampLandingIndexPage() {
       <header className="border-b border-slate-200/80 bg-slate-50/50">
         <div className="container-7xl py-12 sm:py-16">
           <p className="text-sm font-semibold uppercase tracking-wide text-[#1F396D]">GrowWise School · Summer · Dublin campus</p>
-          <h1 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">Summer camp tracks (Dublin, CA)</h1>
+          <h1 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">STEAM & Academic Summer Camps in Dublin, CA</h1>
           <p className="mt-4 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600">
             GrowWise operates one physical campus in Dublin, California. Families from San Ramon, Pleasanton, Livermore, Danville, and nearby Tri-Valley cities enroll here—those are served areas families travel from, not additional GrowWise locations.
           </p>
