@@ -124,7 +124,15 @@ export default function Dropdown({
           {/* Menu Items */}
           <div className="py-1 overflow-visible">
             {visibleItems.map((dropdownItem, index) => {
-              const isDropdownItemActive = pathname?.startsWith(createLocaleUrl(dropdownItem.href));
+              const isDropdownItemActive = (() => {
+                if (pathname?.startsWith(createLocaleUrl(dropdownItem.href))) return true;
+                if (dropdownItem.submenuItems?.length) {
+                  return dropdownItem.submenuItems.some((sub) =>
+                    pathname?.startsWith(createLocaleUrl(sub.href))
+                  );
+                }
+                return false;
+              })();
               const hasSubmenu = dropdownItem.hasSubmenu && dropdownItem.submenuItems;
               const isSubmenuOpen = openSubmenus[dropdownItem.key];
               

@@ -170,6 +170,15 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     path: '/book-assessment',
   },
 
+  '/math-finals-practice-session': {
+    title: 'Math Finals Sunday Session 12–1 | Dublin, CA | GrowWise',
+    description:
+      'Request a complimentary in-center high school math finals session (Sunday 12–1 pm) or four-session prep in Dublin, CA. Algebra 1 through Pre-Calculus.',
+    keywords:
+      'high school math finals prep, free math practice session, Dublin CA math tutoring, algebra finals, geometry finals, Pre-Calculus review, Tri-Valley math, GrowWise',
+    path: '/math-finals-practice-session',
+  },
+
   // Thank-you: runtime `generateMetadata` uses `buildFormThankYouMetadata` + `src/data/form-thank-you/en.json` (noindex).
   '/book-assessment/thank-you': {
     title: 'Assessment request received | GrowWise',
