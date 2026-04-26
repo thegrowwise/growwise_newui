@@ -179,7 +179,7 @@ export function SummerCampGuideLeadDialog({
           <Button
             type="submit"
             disabled={status === 'loading'}
-            className="h-12 w-full font-bold bg-[#146c43] hover:bg-[#166534] text-white text-base"
+            className="h-12 w-full text-base font-bold bg-[#F16112] text-white hover:bg-[#d54f0a] focus-visible:ring-[#F16112] disabled:opacity-70"
           >
             {status === 'loading' ? t('summercamp.submitting') : copy.guideSubmitCta}
           </Button>

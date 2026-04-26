@@ -15,6 +15,7 @@ import {
   type SummerCampGrade,
   type SummerCampInterest,
 } from '@/lib/summercamp-keys';
+import { isAutomatedAuditEnvironment } from '@/lib/consent';
 import canonicalSummerCampEn from '@/i18n/messages/summer-camp-canonical-en.json';
 import {
   SUMMER_CAMP_PROGRAM_GROUP_IDS,
@@ -28,6 +29,7 @@ import {
   SUMMER_CAMP_PROGRAM_GROUP_SEO_LINKS,
   summerCampProgramGroupMessagePath,
 } from '@/lib/summer-camp-seo-links';
+import { SummerCampGuideLeadDialog } from './SummerCampGuideLeadDialog';
 
 /**
  * Slim English-only hero + conversion copy (~4KB) for this page.
@@ -75,12 +77,6 @@ const SlotsPanel = dynamic(
     ),
   }
 );
-/** Radix Dialog + lead form — separate chunk so initial /camps/summer load avoids Dialog until first open. */
-const SummerCampGuideLeadDialog = dynamic(
-  () =>
-    import('./SummerCampGuideLeadDialog').then((m) => ({ default: m.SummerCampGuideLeadDialog })),
-  { ssr: false }
-);
 
 export type { SummerCampFaqItem };
 
@@ -98,6 +94,16 @@ const summerCampSelectClass = cn(
   'disabled:cursor-not-allowed disabled:opacity-50',
   'aria-invalid:border-destructive aria-invalid:ring-destructive/20'
 );
+
+/** Timed guide modal: desktop only (see fire-time `innerWidth` check). */
+const SUMMERCAMP_POPUP_DISMISSED_KEY = 'summercamp_popup_dismissed';
+const SUMMERCAMP_SUBMITTED_KEY = 'summercamp_submitted';
+const SUMMERCAMP_TIMED_POPUP_MS = 3000;
+const SUMMERCAMP_TIMED_POPUP_MIN_WIDTH = 768;
+/** Ignore Radix duplicate `onOpenChange(false)` immediately after open (timestamp set in `markGuideModalOpenIntent`). */
+const GUIDE_MODAL_SPURIOUS_CLOSE_MS = 150;
+/** `?openGuide=1` — force timed popup (bypass localStorage) and allow in webdriver/Lighthouse for QA. */
+const OPEN_GUIDE_QUERY = 'openGuide';
 
 /** Defer work off the critical path (FAQ fetch, route prefetch). Falls back to setTimeout. */
 function scheduleIdleTask(cb: () => void, timeoutMs = 2200): () => void {
@@ -137,35 +143,79 @@ export default function SummerCampPage() {
   const [faqMount, setFaqMount] = useState(false);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [guideModalOpen, setGuideModalOpen] = useState(false);
-  /** Load guide dialog chunk only after first open or #lead-capture / #summercamp (reduces initial JS). */
-  const [guideLeadDialogMounted, setGuideLeadDialogMounted] = useState(false);
   const guideModalUserDismissedRef = useRef(false);
-  /** Timestamp of last programmatic open; null until first open (avoid Date.now()-0 looking “old”). */
+  /** Set synchronously before `setGuideModalOpen(true)` so Radix never sees `onOpenChange(false)` with a null timestamp. */
   const guideModalOpenedAtRef = useRef<number | null>(null);
   const slotsSectionRef = useRef<HTMLElement>(null);
   const faqSentinelRef = useRef<HTMLDivElement>(null);
   /** Fires `trackEarlyBirdReveal` at most once per locale after programs are ready (idle + dynamic import). */
   const earlyBirdRevealFiredForLocaleRef = useRef<string | null>(null);
 
-  const openGuideModal = useCallback(() => {
-    guideModalUserDismissedRef.current = false;
+  const markGuideModalOpenIntent = useCallback(() => {
     guideModalOpenedAtRef.current = Date.now();
-    setGuideLeadDialogMounted(true);
-    setGuideModalOpen(true);
   }, []);
 
+  const openGuideModal = useCallback(() => {
+    guideModalUserDismissedRef.current = false;
+    markGuideModalOpenIntent();
+    setGuideModalOpen(true);
+  }, [markGuideModalOpenIntent]);
+
+  /** Timed desktop-only guide modal: 3s after load if not dismissed/submitted. */
   useEffect(() => {
-    if (guideModalOpen) setGuideLeadDialogMounted(true);
-  }, [guideModalOpen]);
+    if (typeof window === 'undefined') return;
+
+    const shouldForce = () => {
+      try {
+        return new URLSearchParams(window.location.search).get(OPEN_GUIDE_QUERY) === '1';
+      } catch {
+        return false;
+      }
+    };
+
+    if (!shouldForce() && isAutomatedAuditEnvironment()) return;
+
+    const shouldSkipByStorage = () => {
+      if (shouldForce()) return false;
+      try {
+        return (
+          window.localStorage.getItem(SUMMERCAMP_POPUP_DISMISSED_KEY) === 'true' ||
+          window.localStorage.getItem(SUMMERCAMP_SUBMITTED_KEY) === 'true'
+        );
+      } catch {
+        return true;
+      }
+    };
+
+    if (shouldSkipByStorage()) return;
+    if (!window.matchMedia(`(min-width: ${SUMMERCAMP_TIMED_POPUP_MIN_WIDTH}px)`).matches) return;
+
+    const id = window.setTimeout(() => {
+      if (shouldSkipByStorage()) return;
+      if (!window.matchMedia(`(min-width: ${SUMMERCAMP_TIMED_POPUP_MIN_WIDTH}px)`).matches) return;
+      openGuideModal();
+    }, SUMMERCAMP_TIMED_POPUP_MS);
+
+    return () => window.clearTimeout(id);
+  }, [openGuideModal]);
 
   const handleGuideModalOpenChange = useCallback((open: boolean) => {
     if (!open) {
       const openedAt = guideModalOpenedAtRef.current;
-      // Radix + React Strict Mode in dev often emit a false right after open; do not commit that close.
-      if (openedAt != null && Date.now() - openedAt < 500) return;
-      if (openedAt != null) guideModalUserDismissedRef.current = true;
-    } else {
-      guideModalOpenedAtRef.current = Date.now();
+      if (openedAt == null) {
+        setGuideModalOpen(false);
+        return;
+      }
+      if (Date.now() - openedAt < GUIDE_MODAL_SPURIOUS_CLOSE_MS) return;
+      guideModalUserDismissedRef.current = true;
+      try {
+        if (window.localStorage.getItem(SUMMERCAMP_SUBMITTED_KEY) !== 'true') {
+          window.localStorage.setItem(SUMMERCAMP_POPUP_DISMISSED_KEY, 'true');
+        }
+      } catch {
+        // storage blocked
+      }
+      guideModalOpenedAtRef.current = null;
     }
     setGuideModalOpen(open);
   }, []);
@@ -256,6 +306,11 @@ export default function SummerCampPage() {
           setSummerCampErrorDetail(apiError);
         }
         return;
+      }
+      try {
+        window.localStorage.setItem(SUMMERCAMP_SUBMITTED_KEY, 'true');
+      } catch {
+        // storage blocked
       }
       void import('@/lib/meta-pixel').then(({ trackSummerCampGuideLead }) =>
         trackSummerCampGuideLead(summerCampInterest, summerCampChildGrade, {
@@ -530,25 +585,23 @@ export default function SummerCampPage() {
       const h = window.location.hash;
       if (h === '#lead-capture' || h === '#summercamp') {
         guideModalUserDismissedRef.current = false;
-        guideModalOpenedAtRef.current = Date.now();
-        setGuideLeadDialogMounted(true);
+        markGuideModalOpenIntent();
         setGuideModalOpen(true);
       }
     };
     syncFromHash();
     window.addEventListener('hashchange', syncFromHash);
     return () => window.removeEventListener('hashchange', syncFromHash);
-  }, []);
+  }, [markGuideModalOpenIntent]);
 
   useEffect(() => {
     if (guideModalUserDismissedRef.current) return;
     const h = typeof window !== 'undefined' ? window.location.hash : '';
     if (!guideModalOpen && (h === '#lead-capture' || h === '#summercamp')) {
-      guideModalOpenedAtRef.current = Date.now();
-      setGuideLeadDialogMounted(true);
+      markGuideModalOpenIntent();
       setGuideModalOpen(true);
     }
-  }, [guideModalOpen]);
+  }, [guideModalOpen, markGuideModalOpenIntent]);
 
   return (
     <div
@@ -593,7 +646,7 @@ export default function SummerCampPage() {
             <div className="mt-4 flex w-full max-w-2xl flex-col gap-2.5 sm:mt-5 sm:flex-row sm:items-stretch sm:gap-3 md:gap-4">
               <Link
                 href="#slots-section"
-                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-[#047857] px-6 py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#065f46] sm:w-auto sm:min-w-[220px] sm:px-7 sm:py-3.5 sm:text-base"
+                className="inline-flex min-h-[44px] w-full min-w-0 flex-1 items-center justify-center rounded-lg bg-[#1F396D] px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#183056] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 sm:min-h-[48px] sm:px-6 sm:py-3 sm:text-base"
               >
                 {SUMMER_CAMP_HERO_EN.primaryCta}
               </Link>
@@ -601,7 +654,7 @@ export default function SummerCampPage() {
                 href={SUMMER_CAMP_HERO_EN.brochurePdf}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-[40px] w-full items-center justify-center rounded-lg border border-white/90 bg-transparent px-4 py-2 text-center text-[11px] font-medium leading-tight text-white transition-colors hover:bg-white/10 sm:min-h-[44px] sm:px-5 sm:py-2.5 sm:text-xs md:text-sm"
+                className="inline-flex min-h-[44px] w-full min-w-0 flex-1 items-center justify-center rounded-lg border border-white bg-white px-4 py-3 text-center text-xs font-medium leading-snug text-[#F16112] shadow-sm transition-colors hover:bg-[#FFF4ED] hover:text-[#d54f0a] sm:min-h-[48px] sm:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2"
                 aria-label={`${SUMMER_CAMP_HERO_EN.secondaryCta.trim()} — ${SUMMER_CAMP_HERO_EN.downloadBrochure}`}
               >
                 {SUMMER_CAMP_HERO_EN.secondaryCta}
@@ -826,14 +879,14 @@ export default function SummerCampPage() {
               <button
                 type="button"
                 onClick={scrollToSlots}
-                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#047857] px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#065f46] md:text-base"
+                className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#1F396D] px-7 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#183056] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 md:text-base"
               >
                 {SC.finalReserveCta}
               </button>
               <button
                 type="button"
                 onClick={openGuideModal}
-                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg border-2 border-[#1F396D] bg-white px-6 py-3 text-sm font-medium text-[#1F396D] transition-colors hover:bg-slate-50"
+                className="inline-flex min-h-[44px] w-full items-center justify-center rounded-lg bg-[#F16112] px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#d54f0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2"
               >
                 {SC.finalGuidePdfCta}
               </button>
@@ -925,50 +978,48 @@ export default function SummerCampPage() {
         ) : null}
       </main>
 
-      {guideLeadDialogMounted ? (
-        <SummerCampGuideLeadDialog
-          open={guideModalOpen}
-          onOpenChange={handleGuideModalOpenChange}
-          copy={{
-            guideModalTitle: SC.guideModalTitle,
-            guideModalSubtitle: SC.guideModalSubtitle,
-            parentNameLabel: SC.parentNameLabel,
-            parentNamePlaceholder: SC.parentNamePlaceholder,
-            guideSubmitCta: SC.guideSubmitCta,
-          }}
-          formAriaLabel={t('guideForm.ariaLabel')}
-          summerCampSelectClassName={summerCampSelectClass}
-          parentName={summerCampParentName}
-          email={summerCampEmail}
-          phone={summerCampPhone}
-          childGrade={summerCampChildGrade}
-          campInterest={summerCampInterest}
-          status={summerCampStatus}
-          errorKind={summerCampErrorKind}
-          errorDetail={summerCampErrorDetail}
-          onParentNameChange={(v) => {
-            setSummerCampParentName(v);
-            clearSummerCampError();
-          }}
-          onEmailChange={(v) => {
-            setSummerCampEmail(v);
-            clearSummerCampError();
-          }}
-          onPhoneChange={(v) => {
-            setSummerCampPhone(v);
-            clearSummerCampError();
-          }}
-          onChildGradeChange={(v) => {
-            setSummerCampChildGrade(v);
-            clearSummerCampError();
-          }}
-          onCampInterestChange={(v) => {
-            setSummerCampInterest(v);
-            clearSummerCampError();
-          }}
-          onSubmit={handleSummerCampFormSubmit}
-        />
-      ) : null}
+      <SummerCampGuideLeadDialog
+        open={guideModalOpen}
+        onOpenChange={handleGuideModalOpenChange}
+        copy={{
+          guideModalTitle: SC.guideModalTitle,
+          guideModalSubtitle: SC.guideModalSubtitle,
+          parentNameLabel: SC.parentNameLabel,
+          parentNamePlaceholder: SC.parentNamePlaceholder,
+          guideSubmitCta: SC.guideSubmitCta,
+        }}
+        formAriaLabel={t('guideForm.ariaLabel')}
+        summerCampSelectClassName={summerCampSelectClass}
+        parentName={summerCampParentName}
+        email={summerCampEmail}
+        phone={summerCampPhone}
+        childGrade={summerCampChildGrade}
+        campInterest={summerCampInterest}
+        status={summerCampStatus}
+        errorKind={summerCampErrorKind}
+        errorDetail={summerCampErrorDetail}
+        onParentNameChange={(v) => {
+          setSummerCampParentName(v);
+          clearSummerCampError();
+        }}
+        onEmailChange={(v) => {
+          setSummerCampEmail(v);
+          clearSummerCampError();
+        }}
+        onPhoneChange={(v) => {
+          setSummerCampPhone(v);
+          clearSummerCampError();
+        }}
+        onChildGradeChange={(v) => {
+          setSummerCampChildGrade(v);
+          clearSummerCampError();
+        }}
+        onCampInterestChange={(v) => {
+          setSummerCampInterest(v);
+          clearSummerCampError();
+        }}
+        onSubmit={handleSummerCampFormSubmit}
+      />
 
       {/* Sticky conversion bar — reserve vs guide (hidden while guide modal is open) */}
       {showStickyCta && !guideModalOpen ? (
@@ -977,14 +1028,14 @@ export default function SummerCampPage() {
             <button
               type="button"
               onClick={scrollToSlots}
-              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#047857] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#065f46] sm:w-auto md:text-base"
+              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#1F396D] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#183056] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#1F396D] focus-visible:ring-offset-2 sm:w-auto md:text-base"
             >
               {SC.finalReserveCta}
             </button>
             <button
               type="button"
               onClick={openGuideModal}
-              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg border-2 border-slate-300 bg-transparent px-4 py-3 text-sm font-semibold text-slate-800 hover:bg-slate-50 sm:w-auto"
+              className="inline-flex min-h-[48px] w-full items-center justify-center rounded-lg bg-[#F16112] px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#d54f0a] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2 sm:w-auto"
             >
               {SC.finalGuidePdfCta}
             </button>
