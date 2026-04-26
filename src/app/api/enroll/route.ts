@@ -8,7 +8,7 @@ import {
   sendBrevoTransactionalEmail,
 } from '@/lib/brevo';
 
-/** Serverless: allow Brevo HTTP + dual sends to finish (matches summer-camp-lottery). */
+/** Serverless: allow Brevo HTTP + dual sends to finish (matches summer-camp-summercamp). */
 export const maxDuration = 60;
 
 function escapeHtml(s: string): string {
@@ -193,7 +193,7 @@ interface EnrollmentPayload {
   ip: string;
 }
 
-/** Brevo when configured (typical production); otherwise Nodemailer SMTP — same as summer-camp-lottery. */
+/** Brevo when configured (typical production); otherwise Nodemailer SMTP — same as summer-camp-summercamp. */
 async function deliverEnrollmentEmail(options: {
   to: string | string[];
   subject: string;

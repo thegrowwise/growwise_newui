@@ -178,7 +178,7 @@ export const ProgramList = memo(function ProgramList({
             href="#lead-capture"
             className="text-[13px] font-medium text-[#065f46]"
           >
-            {t('mobile.lotteryLink')}
+            {t('mobile.summercampLink')}
           </a>
         </p>
       </div>

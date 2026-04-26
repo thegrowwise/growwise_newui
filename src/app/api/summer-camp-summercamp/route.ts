@@ -3,7 +3,7 @@ import path from 'path';
 import { NextResponse } from 'next/server';
 import { CONTACT_INFO } from '@/lib/constants';
 import {
-  addSummerCampLotteryContactToBrevoList,
+  addSummerCampSummercampContactToBrevoList,
   isBrevoTransactionalReady,
   sendBrevoTransactionalEmail,
 } from '@/lib/brevo';
@@ -16,7 +16,7 @@ import {
   recommendedProgramTrackHtml,
   recommendedProgramTrackText,
 } from '@/lib/summer-camp-guide-email';
-import { LOTTERY_GRADES, type LotteryGrade } from '@/lib/summer-lottery-keys';
+import { SUMMERCAMP_GRADES, type SummerCampGrade } from '@/lib/summercamp-keys';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -32,7 +32,7 @@ const INTEREST_KEYS = [
 
 type InterestKey = (typeof INTEREST_KEYS)[number];
 
-const GRADE_LABELS: Record<LotteryGrade, string> = {
+const GRADE_LABELS: Record<SummerCampGrade, string> = {
   '1': '1st grade',
   '2': '2nd grade',
   '3': '3rd grade',
@@ -172,7 +172,7 @@ export async function POST(request: Request) {
     const campInterest = typeof body.campInterest === 'string' ? body.campInterest.trim() : '';
     const locale = typeof body.locale === 'string' ? body.locale.trim().slice(0, 10) : '';
 
-    const gradeOk = (LOTTERY_GRADES as readonly string[]).includes(childGrade);
+    const gradeOk = (SUMMERCAMP_GRADES as readonly string[]).includes(childGrade);
     const interestOk = INTEREST_KEYS.includes(campInterest as InterestKey);
 
     if (!gradeOk || !interestOk || !emailRaw || !EMAIL_REGEX.test(emailRaw)) {
@@ -183,7 +183,7 @@ export async function POST(request: Request) {
     }
 
     const email = emailRaw.toLowerCase();
-    const gradeLabel = GRADE_LABELS[childGrade as LotteryGrade];
+    const gradeLabel = GRADE_LABELS[childGrade as SummerCampGrade];
     const interestLabel = INTEREST_LABELS[campInterest as InterestKey];
     const timestamp = new Date().toISOString();
     const ip = request.headers.get('x-forwarded-for') ?? request.headers.get('x-real-ip') ?? undefined;
@@ -357,7 +357,7 @@ export async function POST(request: Request) {
 
     let listAddResult: SendEmailResult | undefined;
     if (brevoReady) {
-      listAddResult = await addSummerCampLotteryContactToBrevoList(email);
+      listAddResult = await addSummerCampSummercampContactToBrevoList(email);
       if (!listAddResult.success) {
         console.warn('[summer-camp-guide] Brevo list add skipped (emails already sent).', listAddResult.error);
       }
