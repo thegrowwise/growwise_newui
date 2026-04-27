@@ -50,6 +50,15 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    id: 'math-finals-2026',
+    category: 'academic',
+    title: 'High School Math Finals Prep in Dublin, CA: Algebra 1–AP Precalculus',
+    excerpt:
+      'How to prepare for Algebra 1, Algebra 2, Precalculus, and AP Precalculus finals—practice plans, what to review, and in-center finals prep in Dublin, CA.',
+    href: '/growwise-blogs/high-school-math-finals-prep-dublin-tri-valley',
+    readMore: 'Read article »',
+  },
+  {
     id: '1',
     category: 'academic',
     title: 'US Kids & Core Skills — How Parents Can Help',

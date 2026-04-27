@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useRef, useState } from 'react'
+import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -658,6 +659,15 @@ export function MathFinalsPracticeLanding() {
               <a href="#signup">Request Math Finals Prep</a>
             </Button>
           </div>
+          <p className="mt-5 text-sm text-slate-500">
+            More for families:{' '}
+            <Link
+              href={publicPath('/growwise-blogs', locale)}
+              className="font-medium text-[#1F396D] underline-offset-2 hover:underline"
+            >
+              GrowWise blog
+            </Link>
+          </p>
         </div>
       </section>
     </main>
