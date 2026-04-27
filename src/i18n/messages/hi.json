@@ -700,11 +700,11 @@
       "viewAllCamps": "View all camps ↑",
       "earlyBirdBar": "अर्ली बर्ड 30 अप्रैल को समाप्त",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Enter free lottery instead",
+      "summercampLink": "Enter free summercamp instead",
       "enrollNow": "Enroll Now",
       "earlyBirdBadge": "Early bird — GWSUMMER15"
     },
-    "lottery": {
+    "summercamp": {
       "title": "मुफ़्त समर कैंप स्पॉट जीतें",
       "subtitle": "जल्दी भरें — ईमेल, कैंप रुचि और कक्षा। जीतने पर ईमेल मिलेगा।",
       "formAriaLabel": "मुफ़्त कैंप स्पॉट लॉटरी फ़ॉर्म",
@@ -734,6 +734,8 @@
       },
       "emailLabel": "ईमेल",
       "emailPlaceholder": "aap@example.com",
+      "phoneLabel": "फ़ोन नंबर",
+      "phonePlaceholder": "+1 555 123 4567",
       "submit": "लॉटरी में शामिल हों",
       "submitting": "भेजा जा रहा है…",
       "successTitle": "आप शामिल हो गए!",

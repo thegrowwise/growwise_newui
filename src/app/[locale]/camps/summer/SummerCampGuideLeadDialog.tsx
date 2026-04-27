@@ -12,11 +12,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
-  LOTTERY_GRADES,
-  LOTTERY_INTERESTS,
-  type LotteryGrade,
-  type LotteryInterest,
-} from '@/lib/summer-lottery-keys';
+  SUMMERCAMP_GRADES,
+  SUMMERCAMP_INTERESTS,
+  type SummerCampGrade,
+  type SummerCampInterest,
+} from '@/lib/summercamp-keys';
 
 export type GuideLeadCopy = {
   guideModalTitle: string;
@@ -26,16 +26,17 @@ export type GuideLeadCopy = {
   guideSubmitCta: string;
 };
 
-export type LotteryErrorKind = 'invalid_form' | 'invalid_email' | 'server' | null;
+export type SummerCampErrorKind = 'invalid_form' | 'invalid_email' | 'server' | null;
 
 export function SummerCampGuideLeadDialog({
   open,
   onOpenChange,
   copy,
-  lotterySelectClassName,
+  summerCampSelectClassName,
   formAriaLabel,
   parentName,
   email,
+  phone,
   childGrade,
   campInterest,
   status,
@@ -43,6 +44,7 @@ export function SummerCampGuideLeadDialog({
   errorDetail,
   onParentNameChange,
   onEmailChange,
+  onPhoneChange,
   onChildGradeChange,
   onCampInterestChange,
   onSubmit,
@@ -50,19 +52,21 @@ export function SummerCampGuideLeadDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
   copy: GuideLeadCopy;
-  lotterySelectClassName: string;
+  summerCampSelectClassName: string;
   formAriaLabel: string;
   parentName: string;
   email: string;
-  childGrade: LotteryGrade | '';
-  campInterest: LotteryInterest | '';
+  phone: string;
+  childGrade: SummerCampGrade | '';
+  campInterest: SummerCampInterest | '';
   status: 'idle' | 'loading' | 'error';
-  errorKind: LotteryErrorKind;
+  errorKind: SummerCampErrorKind;
   errorDetail: string | null;
   onParentNameChange: (v: string) => void;
   onEmailChange: (v: string) => void;
-  onChildGradeChange: (v: LotteryGrade | '') => void;
-  onCampInterestChange: (v: LotteryInterest | '') => void;
+  onPhoneChange: (v: string) => void;
+  onChildGradeChange: (v: SummerCampGrade | '') => void;
+  onCampInterestChange: (v: SummerCampInterest | '') => void;
   onSubmit: (e: React.FormEvent) => void;
 }) {
   const t = useTranslations('summerCamp');
@@ -93,14 +97,14 @@ export function SummerCampGuideLeadDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="summer-lottery-email">{t('lottery.emailLabel')}</Label>
+            <Label htmlFor="summercamp-email">{t('summercamp.emailLabel')}</Label>
             <Input
-              id="summer-lottery-email"
+              id="summercamp-email"
               type="email"
               name="email"
               autoComplete="email"
               inputMode="email"
-              placeholder={t('lottery.emailPlaceholder')}
+              placeholder={t('summercamp.emailPlaceholder')}
               value={email}
               onChange={(ev) => onEmailChange(ev.target.value)}
               disabled={status === 'loading'}
@@ -111,39 +115,54 @@ export function SummerCampGuideLeadDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="summer-lottery-grade">{t('lottery.childGradeLabel')}</Label>
+            <Label htmlFor="summercamp-phone">{t('summercamp.phoneLabel')}</Label>
+            <Input
+              id="summercamp-phone"
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder={t('summercamp.phonePlaceholder')}
+              value={phone}
+              onChange={(ev) => onPhoneChange(ev.target.value)}
+              disabled={status === 'loading'}
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="summercamp-grade">{t('summercamp.childGradeLabel')}</Label>
             <select
-              id="summer-lottery-grade"
+              id="summercamp-grade"
               name="childGrade"
               value={childGrade}
-              onChange={(ev) => onChildGradeChange(ev.target.value as LotteryGrade | '')}
+              onChange={(ev) => onChildGradeChange(ev.target.value as SummerCampGrade | '')}
               disabled={status === 'loading'}
               aria-invalid={status === 'error' && errorKind === 'invalid_form'}
-              className={lotterySelectClassName}
+              className={summerCampSelectClassName}
             >
-              <option value="">{t('lottery.gradePlaceholder')}</option>
-              {LOTTERY_GRADES.map((g) => (
+              <option value="">{t('summercamp.gradePlaceholder')}</option>
+              {SUMMERCAMP_GRADES.map((g) => (
                 <option key={g} value={g}>
-                  {t(`lottery.grades.${g}`)}
+                  {t(`summercamp.grades.${g}`)}
                 </option>
               ))}
             </select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="summer-lottery-interest">{t('lottery.campInterestLabel')}</Label>
+            <Label htmlFor="summercamp-interest">{t('summercamp.campInterestLabel')}</Label>
             <select
-              id="summer-lottery-interest"
+              id="summercamp-interest"
               name="campInterest"
               value={campInterest}
-              onChange={(ev) => onCampInterestChange(ev.target.value as LotteryInterest | '')}
+              onChange={(ev) => onCampInterestChange(ev.target.value as SummerCampInterest | '')}
               disabled={status === 'loading'}
               aria-invalid={status === 'error' && errorKind === 'invalid_form'}
-              className={lotterySelectClassName}
+              className={summerCampSelectClassName}
             >
-              <option value="">{t('lottery.interestPlaceholder')}</option>
-              {LOTTERY_INTERESTS.map((key) => (
+              <option value="">{t('summercamp.interestPlaceholder')}</option>
+              {SUMMERCAMP_INTERESTS.map((key) => (
                 <option key={key} value={key}>
-                  {t(`lottery.interests.${key}`)}
+                  {t(`summercamp.interests.${key}`)}
                 </option>
               ))}
             </select>
@@ -151,18 +170,18 @@ export function SummerCampGuideLeadDialog({
           {status === 'error' && errorKind ? (
             <p className="text-sm text-red-600" role="alert">
               {errorKind === 'invalid_email'
-                ? t('lottery.errorInvalidEmail')
+                ? t('summercamp.errorInvalidEmail')
                 : errorKind === 'invalid_form'
-                  ? errorDetail ?? t('lottery.errorInvalidForm')
-                  : errorDetail ?? t('lottery.errorGeneric')}
+                  ? errorDetail ?? t('summercamp.errorInvalidForm')
+                  : errorDetail ?? t('summercamp.errorGeneric')}
             </p>
           ) : null}
           <Button
             type="submit"
             disabled={status === 'loading'}
-            className="h-12 w-full font-bold bg-[#146c43] hover:bg-[#166534] text-white text-base"
+            className="h-12 w-full text-base font-bold bg-[#F16112] text-white hover:bg-[#d54f0a] focus-visible:ring-[#F16112] disabled:opacity-70"
           >
-            {status === 'loading' ? t('lottery.submitting') : copy.guideSubmitCta}
+            {status === 'loading' ? t('summercamp.submitting') : copy.guideSubmitCta}
           </Button>
         </form>
       </DialogContent>

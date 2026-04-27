@@ -700,11 +700,11 @@
       "viewAllCamps": "View all camps ↑",
       "earlyBirdBar": "早鸟优惠4月30日截止",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Enter free lottery instead",
+      "summercampLink": "Enter free summercamp instead",
       "enrollNow": "Enroll Now",
       "earlyBirdBadge": "Early bird — GWSUMMER15"
     },
-    "lottery": {
+    "summercamp": {
       "title": "赢取免费夏令营名额",
       "subtitle": "快速填写：邮箱、营地意向与年级。中奖后我们将邮件通知您。",
       "formAriaLabel": "免费夏令营名额抽奖报名表",
@@ -734,6 +734,8 @@
       },
       "emailLabel": "电子邮箱",
       "emailPlaceholder": "you@example.com",
+      "phoneLabel": "电话号码",
+      "phonePlaceholder": "+1 555 123 4567",
       "submit": "参与抽奖",
       "submitting": "提交中…",
       "successTitle": "您已成功报名！",
