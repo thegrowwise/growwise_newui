@@ -1,6 +1,6 @@
 import { MathFinalsPracticeLanding } from '@/components/math-finals-practice/MathFinalsPracticeLanding'
 import { MATH_FINALS_PRACTICE_FAQS } from '@/data/math-finals-practice-faqs'
-import { getMetadataConfig } from '@/lib/seo/metadataConfig'
+import { getMetadataConfig, MATH_FINALS_PRACTICE_SESSION_DESCRIPTION } from '@/lib/seo/metadataConfig'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 import {
@@ -20,11 +20,8 @@ export default async function MathFinalsPracticePage({
   const baseUrl = getCanonicalSiteUrl()
   const pageUrl = absoluteSiteUrl(PAGE_PATH, locale, baseUrl)
   const meta = getMetadataConfig(PAGE_PATH)
-  const name =
-    meta?.title ?? 'Free High School Math Finals Practice Session | GrowWise'
-  const description =
-    meta?.description ??
-    'Request a high school math finals session in Dublin, CA — Sunday 12–1 pm or structured prep. Algebra 1, Algebra 2, and Pre-Calculus.'
+  const name = meta?.title ?? 'High School Math Finals Prep | GrowWise'
+  const description = meta?.description ?? MATH_FINALS_PRACTICE_SESSION_DESCRIPTION
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },

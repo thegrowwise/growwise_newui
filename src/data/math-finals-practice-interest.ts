@@ -1,11 +1,10 @@
-export const MATH_FINALS_INTEREST_VALUES = ['structured_prep', 'free_sunday'] as const
+export const MATH_FINALS_INTEREST_VALUES = ['structured_prep'] as const
 
 export type MathFinalsPracticeInterest = (typeof MATH_FINALS_INTEREST_VALUES)[number]
 
 /** Short labels for staff-facing emails and logs */
 export const MATH_FINALS_INTEREST_LABELS: Record<MathFinalsPracticeInterest, string> = {
-  structured_prep: 'Four-session structured finals prep course (paid)',
-  free_sunday: 'Complimentary Sunday finals session (12–1 pm)',
+  structured_prep: 'Four-session structured finals prep course',
 }
 
 export function isMathFinalsPracticeInterest(v: string): v is MathFinalsPracticeInterest {
