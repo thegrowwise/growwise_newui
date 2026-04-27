@@ -13,6 +13,10 @@ export interface PageMetadataConfig {
   type?: 'website' | 'article'
 }
 
+/** Used for `/math-finals-practice-session` meta tags, JSON-LD, and fallbacks. */
+export const MATH_FINALS_PRACTICE_SESSION_DESCRIPTION =
+  'In-center high school math finals prep in Dublin, CA for Algebra 1, Algebra 2, and Pre-Calculus with exam-style practice.'
+
 export const metadataConfig: Record<string, PageMetadataConfig> = {
   // Home page
   '/': {
@@ -171,11 +175,10 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/math-finals-practice-session': {
-    title: 'Math Finals Sunday Session 12–1 | Dublin, CA | GrowWise',
-    description:
-      'Request a complimentary in-center high school math finals session (Sunday 12–1 pm) or four-session prep in Dublin, CA. Algebra 1, Algebra 2, and Pre-Calculus.',
+    title: 'High School Math Finals Prep | Dublin, CA | GrowWise',
+    description: MATH_FINALS_PRACTICE_SESSION_DESCRIPTION,
     keywords:
-      'high school math finals prep, free math practice session, Dublin CA math tutoring, algebra 1 finals, algebra 2 finals, Pre-Calculus review, Tri-Valley math, GrowWise',
+      'high school math finals prep, Dublin CA math tutoring, algebra 1 finals, algebra 2 finals, Pre-Calculus review, Tri-Valley math, GrowWise',
     path: '/math-finals-practice-session',
   },
 

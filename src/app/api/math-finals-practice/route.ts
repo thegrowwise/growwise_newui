@@ -6,11 +6,7 @@ import {
   upsertMathFinalsLeadInBrevo,
 } from '@/lib/brevo'
 import { sendEmail, type EmailAttachment, type SendEmailResult } from '@/lib/email'
-import {
-  isMathFinalsPracticeInterest,
-  MATH_FINALS_INTEREST_LABELS,
-  type MathFinalsPracticeInterest,
-} from '@/data/math-finals-practice-interest'
+import { isMathFinalsPracticeInterest, MATH_FINALS_INTEREST_LABELS, type MathFinalsPracticeInterest } from '@/data/math-finals-practice-interest'
 import { MATH_FINALS_PRACTICE_SUBJECTS, type MathFinalsPracticeSubject } from '@/data/math-finals-practice-subjects'
 
 export const maxDuration = 60
@@ -89,22 +85,12 @@ async function sendMathFinalsEmailWithFallback(opts: {
   })
 }
 
-function userFollowUpParagraphHtml(interest: MathFinalsPracticeInterest): string {
-  switch (interest) {
-    case 'structured_prep':
-      return 'Our team will follow up about the <strong>four-session structured finals prep</strong> course (paid)—scheduling, scope, and next steps.'
-    case 'free_sunday':
-      return 'We will follow up to confirm your <strong>complimentary Sunday finals</strong> session in the <strong>12–1 pm</strong> time window (exact slot when we contact you).'
-  }
+function userFollowUpParagraphHtml(_interest: MathFinalsPracticeInterest): string {
+  return 'Our team will follow up about the <strong>four-session Math Finals Prep</strong> program—scheduling, scope, enrollment, and next steps.'
 }
 
-function userFollowUpParagraphPlain(interest: MathFinalsPracticeInterest): string {
-  switch (interest) {
-    case 'structured_prep':
-      return 'Our team will follow up about the four-session structured finals prep course (paid)—scheduling, scope, and next steps.'
-    case 'free_sunday':
-      return 'We will follow up to confirm your complimentary Sunday finals session in the 12–1 pm time window (exact slot when we contact you).'
-  }
+function userFollowUpParagraphPlain(_interest: MathFinalsPracticeInterest): string {
+  return 'Our team will follow up about the four-session Math Finals Prep program—scheduling, scope, enrollment, and next steps.'
 }
 
 function parseForm(fields: {
@@ -121,10 +107,18 @@ function parseForm(fields: {
   | { ok: true; data: ParsedMathFinalsForm }
   | { ok: false; error: string; status: number } {
   const interestRaw = fields.interest.trim()
-  if (!isMathFinalsPracticeInterest(interestRaw)) {
-    return { ok: false, error: 'Please select which option you want.', status: 400 }
+  if (interestRaw === 'free_sunday') {
+    return {
+      ok: false,
+      error: 'That option is no longer available. Please refresh the page and submit again.',
+      status: 400,
+    }
   }
-  const interest = interestRaw
+  const interestCandidate = interestRaw || 'structured_prep'
+  if (!isMathFinalsPracticeInterest(interestCandidate)) {
+    return { ok: false, error: 'Invalid request. Please use the form on our website.', status: 400 }
+  }
+  const interest = interestCandidate
 
   const parentName = fields.parentName.trim()
   const studentName = fields.studentName.trim()

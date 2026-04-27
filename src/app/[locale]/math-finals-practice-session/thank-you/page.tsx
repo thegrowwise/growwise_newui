@@ -51,8 +51,8 @@ export default async function MathFinalsPracticeThankYouPage({
             Thank you — we received your request.
           </h1>
           <p className="mt-4 text-slate-600">
-            Our team will follow up shortly by email or phone to confirm next steps for the option you selected—the
-            four-session structured prep course or the complimentary Sunday session (12–1 pm time window).
+            Our team will follow up shortly by email or phone with next steps for the four-session Math Finals Prep
+            program—schedule, scope, and enrollment.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Link
