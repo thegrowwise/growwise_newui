@@ -18,15 +18,10 @@ import {
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent'
 import { MATH_FINALS_PRACTICE_FAQS } from '@/data/math-finals-practice-faqs'
 import {
-  isMathFinalsPracticeInterest,
-  type MathFinalsPracticeInterest,
-} from '@/data/math-finals-practice-interest'
-import {
   MATH_FINALS_PRACTICE_SUBJECTS,
   type MathFinalsPracticeSubject,
 } from '@/data/math-finals-practice-subjects'
 import { PHONE_PLACEHOLDER } from '@/lib/constants'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { publicPath } from '@/lib/publicPath'
 import { cn } from '@/lib/utils'
 import {
@@ -35,7 +30,6 @@ import {
   CheckCircle2,
   FileText,
   GraduationCap,
-  ListChecks,
   Loader2,
   Mail,
   MessageSquare,
@@ -53,25 +47,13 @@ const PM_NO_INJECT = { 'data-lpignore': 'true' } as const
 const HS_GRADES = ['Grade 9', 'Grade 10', 'Grade 11', 'Grade 12'] as const
 
 const WHAT_TO_EXPECT_BULLETS: readonly string[] = [
-  'School-aligned Quarter 4 topics preparation',
-  'Fast-paced 2-hour session: 1 hour of teaching and 1 hour of practice',
-  'One complimentary session per student',
-  'New topics in each session; previous topics are not repeated',
-]
-
-const INTEREST_OPTIONS: ReadonlyArray<{ value: MathFinalsPracticeInterest; label: string }> = [
-  {
-    value: 'structured_prep',
-    label: 'Request the four-session structured finals prep course',
-  },
-  {
-    value: 'free_sunday',
-    label: 'Request the complimentary Sunday finals session (12–1 pm)',
-  },
+  'School-aligned Quarter 4 topics and finals-period focus',
+  'Four-session structured program with teaching and exam-style practice',
+  'In-center at GrowWise in Dublin, CA',
+  'Paced across multiple sessions for steady review before finals week',
 ]
 
 type FormState = {
-  interest: string
   parentName: string
   studentName: string
   grade: string
@@ -83,7 +65,6 @@ type FormState = {
 }
 
 const initialForm: FormState = {
-  interest: '',
   parentName: '',
   studentName: '',
   grade: '',
@@ -120,9 +101,6 @@ export function MathFinalsPracticeLanding() {
 
   const validate = useCallback((): boolean => {
     const e: Partial<Record<keyof FormState, string>> = {}
-    if (!form.interest || !isMathFinalsPracticeInterest(form.interest)) {
-      e.interest = 'Please select which option you want.'
-    }
     if (!form.parentName.trim()) e.parentName = 'Please enter the parent or guardian name.'
     if (!form.studentName.trim()) e.studentName = "Please enter the student's name."
     if (!form.grade) e.grade = 'Please select a grade level.'
@@ -150,7 +128,7 @@ export function MathFinalsPracticeLanding() {
     setSubmitting(true)
     try {
       const fd = new FormData()
-      fd.set('interest', form.interest)
+      fd.set('interest', 'structured_prep')
       fd.set('parentName', form.parentName.trim())
       fd.set('studentName', form.studentName.trim())
       fd.set('grade', form.grade)
@@ -198,27 +176,27 @@ export function MathFinalsPracticeLanding() {
           <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-slate-600">
             <span>GrowWise In-center</span>
             <span className="h-1 w-1 rounded-full bg-slate-400" aria-hidden />
-            <span>Sunday 12–1 pm</span>
+            <span>Dublin, CA</span>
           </div>
           <h1
             id="math-finals-hero-title"
             className="mt-6 text-4xl font-semibold leading-tight text-slate-900 sm:text-5xl md:text-6xl"
           >
-            High School Math Finals Practice in Dublin, CA
+            High School Math Finals Prep in Dublin, CA
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-slate-600 sm:text-lg">
-            One complimentary hour of exam-style practice covering <strong>Algebra 1</strong>, <strong>Algebra 2</strong>, and <strong>Pre-Calculus</strong>. This session is dedicated to finals-style
-            review—not foundational tutoring.
+            In-center high school math finals prep in Dublin, CA for <strong>Algebra 1</strong>,{' '}
+            <strong>Algebra 2</strong>, and <strong>Pre-Calculus</strong> with exam-style practice.
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-sm font-medium text-[#F16112]">
-            Strictly limited to one complimentary session per student.
+            Submit the form and our team will follow up with schedule, scope, and enrollment details.
           </p>
           <div className="mt-10 flex w-full max-w-2xl flex-col items-center justify-center gap-3 sm:mx-auto sm:flex-row sm:gap-4">
             <Button
               asChild
               className="h-11 w-full max-w-[280px] rounded-full bg-gradient-to-r from-[#F16112] to-[#F1894F] px-7 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:from-[#d54f0a] hover:to-[#F16112] hover:shadow-xl sm:max-w-none sm:w-auto"
             >
-              <a href="#signup">Reserve Free Practice Spot</a>
+              <a href="#signup">Request Math Finals Prep</a>
             </Button>
             <a
               href="#what-to-expect"
@@ -230,7 +208,7 @@ export function MathFinalsPracticeLanding() {
         </div>
       </section>
 
-      {/* 2. What to expect — free session offer (2 hours: teach + practice) */}
+      {/* 2. What to expect */}
       <section
         id="what-to-expect"
         className="border-b border-slate-200/80 bg-slate-50/90 py-8 sm:py-10"
@@ -241,10 +219,10 @@ export function MathFinalsPracticeLanding() {
             id="what-to-expect-heading"
             className="text-center text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl"
           >
-            What to expect in your free session
+            What to expect
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-center text-slate-600">
-            In-center in Dublin, CA. One complimentary session per student.
+            In-center in Dublin, CA. Our team confirms details when we respond to your request.
           </p>
           <ul className="mt-5 grid gap-2.5 sm:grid-cols-2 sm:mt-6" role="list">
             {WHAT_TO_EXPECT_BULLETS.map((line) => (
@@ -296,56 +274,6 @@ export function MathFinalsPracticeLanding() {
                 data-bwignore
                 data-dashlane-ignore="true"
               >
-                {/* Your request */}
-                <div className="space-y-4 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 p-4 sm:p-6 md:p-8">
-                  <div className="flex items-center gap-2 sm:gap-3 border-b-2 border-[#1F396D]/20 pb-3 md:pb-4">
-                    <div className="rounded-lg bg-gradient-to-br from-[#1F396D] to-[#29335C] p-2 sm:rounded-xl sm:p-3">
-                      <ListChecks className="h-5 w-5 text-white sm:h-6 sm:w-6" aria-hidden />
-                    </div>
-                    <div>
-                      <h3 className="text-lg text-gray-900 sm:text-xl">Your request</h3>
-                      <p className="text-xs text-gray-500 sm:text-sm">Structured prep (paid) or complimentary Sunday session</p>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <span id="interest-label" className="flex items-center gap-2 text-sm font-medium text-gray-700 sm:text-base">
-                      <ListChecks className="h-4 w-4 shrink-0 text-[#F16112]" aria-hidden />
-                      Which option would you like? <span className="text-red-500">*</span>
-                    </span>
-                    <RadioGroup
-                      value={form.interest || undefined}
-                      onValueChange={(v) => setField('interest', v)}
-                      className="flex flex-col gap-2.5"
-                      aria-labelledby="interest-label"
-                    >
-                      {INTEREST_OPTIONS.map(({ value, label }) => (
-                        <label
-                          key={value}
-                          htmlFor={`interest-${value}`}
-                          className={cn(
-                            'flex cursor-pointer gap-3 rounded-lg border-2 p-3 transition-colors md:rounded-xl md:p-3.5',
-                            form.interest === value
-                              ? 'border-[#F16112] bg-gradient-to-r from-[#F16112]/5 to-[#F1894F]/5'
-                              : 'border-gray-200 bg-white hover:border-[#F16112]/30',
-                          )}
-                        >
-                          <RadioGroupItem
-                            value={value}
-                            id={`interest-${value}`}
-                            className="mt-0.5 shrink-0 border-2 border-gray-400 text-[#F16112]"
-                          />
-                          <span className="text-sm font-medium leading-snug text-gray-800">{label}</span>
-                        </label>
-                      ))}
-                    </RadioGroup>
-                    {errors.interest && (
-                      <p className="text-sm text-red-600" role="alert">
-                        {errors.interest}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
                 {/* Parent & contact */}
                 <div className="space-y-4 md:space-y-6 rounded-xl md:rounded-2xl border-2 border-[#1F396D]/10 bg-gradient-to-br from-[#1F396D]/5 to-[#F16112]/5 p-4 sm:p-6 md:p-8">
                   <div className="flex items-center gap-2 sm:gap-3 border-b-2 border-[#1F396D]/20 pb-3 md:pb-4">
@@ -688,9 +616,8 @@ export function MathFinalsPracticeLanding() {
               Questions parents and students usually ask before booking
             </h2>
             <p className="text-lg text-gray-600 mx-auto max-w-3xl">
-              This free high school math finals practice is designed for students who want one focused, exam-style
-              review session before finals. It is not a long-term tutoring program and it is not meant to reteach an
-              entire course in one hour.
+              Math Finals Prep is for students who want structured, exam-style review before finals. It is not a
+              long-term tutoring plan and it is not designed to reteach an entire course in a short sequence.
             </p>
           </div>
           <Accordion type="single" collapsible className="space-y-4">
@@ -728,7 +655,7 @@ export function MathFinalsPracticeLanding() {
               variant="outline"
               className="h-10 rounded-full border-2 border-[#1F396D] px-5 text-base font-semibold text-[#1F396D] hover:bg-slate-50"
             >
-              <a href="#signup">Reserve Free Practice Spot</a>
+              <a href="#signup">Request Math Finals Prep</a>
             </Button>
           </div>
         </div>

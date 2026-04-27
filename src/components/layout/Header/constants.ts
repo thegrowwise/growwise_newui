@@ -133,7 +133,7 @@ export const FALLBACK_MENU_ITEMS: MenuItem[] = [
             },
             {
               title: 'Math Finals Prep',
-              description: 'End-of-year finals support & complimentary preview session',
+              description: 'End-of-year finals support & structured prep program',
               icon: 'Target',
               href: '/math-finals-practice-session',
               gradient: 'from-[#1F396D] to-[#F16112]',

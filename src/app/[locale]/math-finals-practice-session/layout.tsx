@@ -3,14 +3,15 @@ import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { CONTACT_INFO } from '@/lib/constants'
+import { MATH_FINALS_PRACTICE_SESSION_DESCRIPTION } from '@/lib/seo/metadataConfig'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
   const metadata = generateMetadataFromPath('/math-finals-practice-session', locale)
   return (
     metadata || {
-      title: 'Free math finals practice | GrowWise',
-      description: 'Free in-center high school math finals practice session in Dublin, CA.',
+      title: 'High School Math Finals Prep | GrowWise',
+      description: MATH_FINALS_PRACTICE_SESSION_DESCRIPTION,
     }
   )
 }
@@ -29,10 +30,9 @@ export default async function MathFinalsPracticeLayout({
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': absoluteSiteUrl('/math-finals-practice-session#service', locale, baseUrl),
-    name: 'Complimentary high school math finals session (Sunday 12–1 pm)',
-    description:
-      'One complimentary in-center session in the Sunday 12–1 pm window for high school students preparing for math finals (Algebra 1, Algebra 2, and Pre-Calculus) at GrowWise in Dublin, CA. Paid four-session Math Finals Prep is a separate program.',
-    serviceType: 'Tutoring session',
+    name: 'High school Math Finals Prep (four-session program)',
+    description: MATH_FINALS_PRACTICE_SESSION_DESCRIPTION,
+    serviceType: 'Educational program',
     provider: {
       '@type': 'EducationalOrganization',
       name: 'GrowWise',
@@ -55,12 +55,11 @@ export default async function MathFinalsPracticeLayout({
     ],
     offers: {
       '@type': 'Offer',
-      price: '0',
       priceCurrency: 'USD',
       availability: 'https://schema.org/InStock',
       url: absoluteSiteUrl('/math-finals-practice-session', locale, baseUrl),
       description:
-        'Complimentary Sunday session in the 12–1 pm window (registration required; capacity limited). Paid four-session Math Finals Prep is separate.',
+        'Four-session Math Finals Prep. Contact GrowWise for current schedule, scope, and enrollment.',
     },
     url: absoluteSiteUrl('/math-finals-practice-session', locale, baseUrl),
   }
