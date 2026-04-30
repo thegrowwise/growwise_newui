@@ -1,0 +1,89 @@
+name: Performance (Lighthouse smoke)
+
+# Targets the prod build at http://127.0.0.1 — localhost is the PRIMARY perf surface for this repo.
+# Lab checks — does not publish or touch ads tags.
+# Tune triggers: uncomment `push` for every main deployment (adds CI minutes).
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    # Mondays 06:15 UTC (~ Sunday evening US PT)
+    - cron: '15 6 * * 1'
+
+# Optional: uncomment to run smoke on merges that touch app or perf config
+# push:
+#   branches: [main]
+#   paths:
+#     - 'src/**'
+#     - 'performance-testing/**'
+#     - 'next.config.ts'
+#     - 'package.json'
+#     - 'package-lock.json'
+
+concurrency:
+  group: performance-smoke-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse-smoke:
+    name: Lighthouse smoke (mobile-only)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    env:
+      NODE_VERSION: '22'
+      PORT: '3000'
+      PERF_BASE_URL: http://127.0.0.1:3000
+      PERF_RUNS: '1'
+      # Full HTML Lighthouse reports (+ JSON artifacts) → artifacts/lighthouse-html/ for CI debugging and audit trail.
+      PERF_SAVE_HTML: 'true'
+      NEXT_PUBLIC_SITE_URL: http://127.0.0.1:3000
+      NEXT_PUBLIC_USE_MOCK: 'true'
+      NEXT_PUBLIC_API_BASE: http://127.0.0.1:3000
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Start production server (background)
+        run: npm run start &
+
+      - name: Wait for readiness
+        shell: bash
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$PERF_BASE_URL/" -o /dev/null; then
+              echo "Ready on attempt $i"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Dev server never became reachable at $PERF_BASE_URL"; exit 1
+
+      - name: Lighthouse smoke
+        # Mobile-only keeps scheduled/manual CI actionable until mobile LCP reliably passes budgets.
+        # Desktop + mobile: `npm run perf:lighthouse:smoke` or `npm run perf:ci` locally / pre-release.
+        run: node performance-testing/scripts/lighthouse-batch.mjs --smoke --mobile-only
+
+      # Summary JSON + lighthouse-html/*.report.html + index.html (see PERF_SAVE_HTML)
+      - name: Upload Lighthouse artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-perf-${{ github.run_id }}
+          path: artifacts/
+          if-no-files-found: warn

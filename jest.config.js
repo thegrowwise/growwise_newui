@@ -15,7 +15,13 @@ const customJestConfig = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   // Playwright E2E specs (e2e/*.spec.ts) should not be executed by Jest
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/e2e/'],
+  // `performance-testing/**/*.test.mjs` uses node:test + ESM — run via `npm run test:perf`
+  testPathIgnorePatterns: [
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+    '<rootDir>/e2e/',
+    '<rootDir>/performance-testing/',
+  ],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',
