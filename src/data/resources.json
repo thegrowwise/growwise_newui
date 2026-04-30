@@ -1,0 +1,66 @@
+[
+  {
+    "id": "math-problem-solving-checklist",
+    "name": "Problem-Solving Checklist (PDF)",
+    "category": "Math",
+    "grade": "Grades 3–8",
+    "description": "A one-page checklist to help students show their work and catch common errors before turning in word problems.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-math-checklist/view"
+  },
+  {
+    "id": "math-multiplication-facts-poster",
+    "name": "Multiplication Facts Mini-Poster",
+    "category": "Math",
+    "grade": "Grades 2–5",
+    "description": "Print-friendly reference for core facts — useful for drills or desk reference at home.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-math-poster/view"
+  },
+  {
+    "id": "english-reading-comprehension-stems",
+    "name": "Reading Comprehension Question Stems",
+    "category": "English",
+    "grade": "Grades 4–10",
+    "description": "Parent- and student-friendly prompts to discuss any fiction or nonfiction passage.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-english-stems/view"
+  },
+  {
+    "id": "english-writing-revision-rubric",
+    "name": "Quick Revision Rubric",
+    "category": "English",
+    "grade": "Grades 5–12",
+    "description": "Short rubric for self-editing paragraphs and short essays.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-english-rubric/view"
+  },
+  {
+    "id": "coding-first-script-ideas",
+    "name": "10 First Script Ideas",
+    "category": "Coding",
+    "grade": "Grades 3–9",
+    "description": "Starter project ideas for block or text-based coding practice at home.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-coding-ideas/view"
+  },
+  {
+    "id": "ai-prompts-study-buddy",
+    "name": "Study-Buddy Prompt Patterns (Safe Use)",
+    "category": "AI & Prompts",
+    "grade": "Grades 6–12",
+    "description": "Examples of helpful vs harmful prompts for homework support — with guardrails for families.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-ai-prompts/view"
+  },
+  {
+    "id": "web-dev-html-css-cheatsheet",
+    "name": "HTML & CSS One-Pager",
+    "category": "Web Dev",
+    "grade": "Grades 6–12",
+    "description": "Compact reference for semantic HTML tags and common CSS properties for beginners.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-web-cheatsheet/view"
+  },
+  {
+    "id": "parent-guide-screen-homework-routine",
+    "name": "Screen & Homework Routine Template",
+    "category": "Parent Guides",
+    "grade": "All ages",
+    "description": "A simple weekly template families can adapt to reduce friction around homework time.",
+    "driveUrl": "https://drive.google.com/file/d/placeholder-parent-routine/view"
+  }
+]
