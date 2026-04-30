@@ -47,6 +47,15 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     path: '/contact',
   },
 
+  '/free-resources': {
+    title: 'Free Learning Resources for K–12 | GrowWise',
+    description:
+      'Download free math worksheets, English practice sheets, coding cheat sheets, and AI guides for grades 1–12. No sign-up hassle — just enter your email and get instant access.',
+    keywords:
+      'free worksheets, math resources, English resources, coding for kids, parent guides, GrowWise downloads',
+    path: '/free-resources',
+  },
+
   '/programs': {
     title: 'Programs | Academic & STEAM | GrowWise',
     description:
