@@ -1,0 +1,46 @@
+name: Production Deploy — Frontend
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-frontend-prod:
+    name: Deploy Frontend — Amplify (prod)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Trigger Amplify production deployment
+        run: |
+          JOB=$(aws amplify start-job \
+            --app-id "${{ secrets.AMPLIFY_APP_ID }}" \
+            --branch-name main \
+            --job-type RELEASE \
+            --query 'jobSummary.jobId' \
+            --output text)
+          echo "Amplify job started: $JOB"
+
+          while true; do
+            STATUS=$(aws amplify get-job \
+              --app-id "${{ secrets.AMPLIFY_APP_ID }}" \
+              --branch-name main \
+              --job-id "$JOB" \
+              --query 'job.summary.status' \
+              --output text)
+            echo "Status: $STATUS"
+            if [[ "$STATUS" == "SUCCEED" ]]; then
+              echo "Deployment succeeded."
+              break
+            elif [[ "$STATUS" == "FAILED" || "$STATUS" == "CANCELLED" ]]; then
+              echo "Deployment failed: $STATUS"
+              exit 1
+            fi
+            sleep 30
+          done

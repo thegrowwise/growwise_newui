@@ -1,0 +1,102 @@
+name: Nightly Tests — Frontend
+
+on:
+  schedule:
+    - cron: '15 2 * * *'  # 02:15 UTC daily
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Jest + Playwright + Lighthouse against staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        env:
+          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
+        run: npm run build
+
+      - name: Run Jest
+        env:
+          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
+          CI: true
+        run: npm run test:ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start Next.js server
+        env:
+          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
+          PORT: 3000
+        run: npm run start &
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run Playwright E2E
+        env:
+          E2E_BASE_URL: http://localhost:3000
+          PLAYWRIGHT_WORKERS: '2'
+          CI: true
+        run: npx playwright test --project=chromium
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-nightly
+          path: playwright-report/
+          retention-days: 7
+
+      - name: Install Chrome for Lighthouse
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Run Lighthouse smoke
+        env:
+          LIGHTHOUSE_TARGET_URL: http://localhost:3000
+        run: npm run perf:ci
+
+      - name: Upload Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report-nightly
+          path: performance-testing/results/
+          retention-days: 7
+
+  open-issue-on-failure:
+    name: Open GitHub issue on failure
+    needs: test
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create failure issue
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          DATE=$(date -u '+%Y-%m-%d')
+          RUN_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          gh issue create \
+            --title "Nightly frontend tests failed — ${DATE}" \
+            --body "## Nightly frontend test failure
+
+          **Date:** ${DATE}
+          **Run:** [View logs](${RUN_URL})
+          **API:** \`STAGING_API_URL\`
+
+          One or more of Jest / Playwright / Lighthouse smoke tests failed." \
+            --label "bug,ci-failure" \
+            --repo ${{ github.repository }}

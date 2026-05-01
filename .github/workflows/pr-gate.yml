@@ -1,0 +1,59 @@
+name: PR Gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-frontend:
+    name: Frontend — Jest + Playwright
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        env:
+          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
+        run: npm run build
+
+      - name: Run Jest
+        env:
+          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
+          CI: true
+        run: npm run test:ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Start Next.js server
+        env:
+          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
+          PORT: 3000
+        run: npm run start &
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run Playwright E2E
+        env:
+          E2E_BASE_URL: http://localhost:3000
+          PLAYWRIGHT_WORKERS: '2'
+          CI: true
+        run: npx playwright test --project=chromium
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-pr-${{ github.event.pull_request.number }}
+          path: playwright-report/
+          retention-days: 7
