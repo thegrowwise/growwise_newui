@@ -10,7 +10,8 @@ async function openSummerCampGuideModal(page: Page): Promise<void> {
 
 test.describe('Summer camp lottery form (UI)', () => {
   test('submits lottery form and navigates to thank-you page with mocked API', async ({ page }) => {
-    await page.route('**/api/summer-camp-lottery', async (route) => {
+    // The guide modal form posts to /api/summer-camp-summercamp (not /api/summer-camp-lottery).
+    await page.route('**/api/summer-camp-summercamp', async (route) => {
       if (route.request().method() !== 'POST') {
         await route.continue();
         return;
@@ -37,13 +38,12 @@ test.describe('Summer camp lottery form (UI)', () => {
 
     await openSummerCampGuideModal(page);
 
-    const dialog = page.locator('#lead-capture');
-    await dialog.locator('#summer-lead-parent').fill('E2E Parent');
-    await dialog.locator('#summercamp-email').fill('lottery.e2e@example.com');
-    await dialog.locator('#summercamp-grade').selectOption('5');
-    await dialog.locator('#summercamp-interest').selectOption('academic');
+    await page.locator('#summer-lead-parent').fill('E2E Parent');
+    await page.locator('#summercamp-email').fill('lottery.e2e@example.com');
+    await page.locator('#summercamp-grade').selectOption('5');
+    await page.locator('#summercamp-interest').selectOption('academic');
 
-    await dialog.locator('button[type="submit"]').click();
+    await page.locator('#lead-capture button[type="submit"]').click();
 
     const successPath = localePath('/camps/summer/guide-success').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     await expect(page).toHaveURL(new RegExp(`${successPath}(\\?|$)`), {
@@ -58,7 +58,7 @@ test.describe('Summer camp lottery form (UI)', () => {
   });
 
   test('shows API error message when lottery endpoint returns 500 JSON', async ({ page }) => {
-    await page.route('**/api/summer-camp-lottery', async (route) => {
+    await page.route('**/api/summer-camp-summercamp', async (route) => {
       if (route.request().method() !== 'POST') {
         await route.continue();
         return;
@@ -75,13 +75,12 @@ test.describe('Summer camp lottery form (UI)', () => {
 
     await openSummerCampGuideModal(page);
 
-    const dialog = page.locator('#lead-capture');
-    await dialog.locator('#summer-lead-parent').fill('E2E Parent');
-    await dialog.locator('#summercamp-email').fill('fail@example.com');
-    await dialog.locator('#summercamp-grade').selectOption('3');
-    await dialog.locator('#summercamp-interest').selectOption('coding');
+    await page.locator('#summer-lead-parent').fill('E2E Parent');
+    await page.locator('#summercamp-email').fill('fail@example.com');
+    await page.locator('#summercamp-grade').selectOption('3');
+    await page.locator('#summercamp-interest').selectOption('coding');
 
-    await dialog.locator('button[type="submit"]').click();
+    await page.locator('#lead-capture button[type="submit"]').click();
 
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
