@@ -1,0 +1,12 @@
+{
+  "name": "@growwise/performance-testing",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Lab performance module: Lighthouse batch, smoke URL config, CI workflow target. Runs from repo root via npm perf:* scripts.",
+  "scripts": {
+    "smoke": "node scripts/lighthouse-batch.mjs --smoke",
+    "smoke:mobile": "node scripts/lighthouse-batch.mjs --smoke --mobile-only",
+    "full": "node scripts/lighthouse-batch.mjs"
+  },
+  "type": "module"
+}
