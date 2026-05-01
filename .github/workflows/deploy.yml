@@ -1,0 +1,16 @@
+name: Production Deploy — Frontend
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-frontend-prod:
+    name: Deploy Frontend — Vercel (prod)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Vercel production deployment
+        run: |
+          curl -s -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_PROD }}"
+          echo "Vercel production deployment triggered."
