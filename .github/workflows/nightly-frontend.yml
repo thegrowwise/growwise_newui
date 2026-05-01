@@ -55,6 +55,22 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
+      - name: Run Lighthouse smoke
+        env:
+          NEXT_PUBLIC_USE_MOCK: 'true'
+          NEXT_PUBLIC_API_BASE: http://localhost:3000
+          NEXT_PUBLIC_SITE_URL: http://localhost:3000
+        run: node performance-testing/scripts/lighthouse-batch.mjs --smoke --mobile-only
+
+      - name: Upload Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-nightly-${{ github.run_id }}
+          path: artifacts/
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Notify Slack — success
         if: success()
         run: |
