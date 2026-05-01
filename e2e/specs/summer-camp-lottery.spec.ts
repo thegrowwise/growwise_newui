@@ -37,12 +37,13 @@ test.describe('Summer camp lottery form (UI)', () => {
 
     await openSummerCampGuideModal(page);
 
-    await page.locator('#summer-lead-parent').fill('E2E Parent');
-    await page.locator('#summercamp-email').fill('lottery.e2e@example.com');
-    await page.locator('#summercamp-grade').selectOption('5');
-    await page.locator('#summercamp-interest').selectOption('academic');
+    const dialog = page.locator('#lead-capture');
+    await dialog.locator('#summer-lead-parent').fill('E2E Parent');
+    await dialog.locator('#summercamp-email').fill('lottery.e2e@example.com');
+    await dialog.locator('#summercamp-grade').selectOption('5');
+    await dialog.locator('#summercamp-interest').selectOption('academic');
 
-    await page.getByRole('button', { name: /Get Guide|15%/i }).click();
+    await dialog.locator('button[type="submit"]').click();
 
     const successPath = localePath('/camps/summer/guide-success').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     await expect(page).toHaveURL(new RegExp(`${successPath}(\\?|$)`), {
@@ -74,12 +75,13 @@ test.describe('Summer camp lottery form (UI)', () => {
 
     await openSummerCampGuideModal(page);
 
-    await page.locator('#summer-lead-parent').fill('E2E Parent');
-    await page.locator('#summercamp-email').fill('fail@example.com');
-    await page.locator('#summercamp-grade').selectOption('3');
-    await page.locator('#summercamp-interest').selectOption('coding');
+    const dialog = page.locator('#lead-capture');
+    await dialog.locator('#summer-lead-parent').fill('E2E Parent');
+    await dialog.locator('#summercamp-email').fill('fail@example.com');
+    await dialog.locator('#summercamp-grade').selectOption('3');
+    await dialog.locator('#summercamp-interest').selectOption('coding');
 
-    await page.getByRole('button', { name: /Get Guide|15%/i }).click();
+    await dialog.locator('button[type="submit"]').click();
 
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
