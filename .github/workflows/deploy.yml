@@ -14,3 +14,21 @@ jobs:
         run: |
           curl -s -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_PROD }}"
           echo "Vercel production deployment triggered."
+
+      - name: Notify Slack — success
+        if: success()
+        run: |
+          curl -s -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+            -H 'Content-type: application/json' \
+            --data '{
+              "text": "🚀 *Production deployed* — frontend is live on Vercel\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+            }'
+
+      - name: Notify Slack — failure
+        if: failure()
+        run: |
+          curl -s -X POST "${{ secrets.SLACK_WEBHOOK_URL }}" \
+            -H 'Content-type: application/json' \
+            --data '{
+              "text": "❌ *Production deploy failed* — Vercel deploy hook did not respond\n<https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|View run>"
+            }'
