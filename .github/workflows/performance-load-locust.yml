@@ -1,0 +1,87 @@
+name: Performance load (Locust)
+
+# Primary perf surface (localhost): build + serve next start on 127.0.0.1, then load-test.
+on:
+  workflow_dispatch:
+    inputs:
+      locust_users:
+        description: 'Concurrent users (-u)'
+        required: false
+        default: '15'
+      locust_spawn_rate:
+        description: 'Spawn rate (-r)'
+        required: false
+        default: '3'
+      locust_duration:
+        description: 'Run duration (e.g. 90s)'
+        required: false
+        default: '90s'
+
+concurrency:
+  group: performance-locust-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  locust-headless:
+    name: Locust smoke load
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    env:
+      NODE_VERSION: '22'
+      PYTHON_VERSION: '3.12'
+      PORT: '3000'
+      LOCUST_HOST: http://127.0.0.1:3000
+      NEXT_PUBLIC_SITE_URL: http://127.0.0.1:3000
+      NEXT_PUBLIC_USE_MOCK: 'true'
+      NEXT_PUBLIC_API_BASE: http://127.0.0.1:3000
+      LOCUST_USERS: ${{ github.event.inputs.locust_users }}
+      LOCUST_SPAWN_RATE: ${{ github.event.inputs.locust_spawn_rate }}
+      LOCUST_RUN_TIME: ${{ github.event.inputs.locust_duration }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+          cache-dependency-path: performance-testing/load/requirements.txt
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+
+      - name: Start production server (background)
+        run: npm run start &
+
+      - name: Wait for readiness
+        shell: bash
+        run: |
+          for i in {1..60}; do
+            if curl -fsS "$LOCUST_HOST/" -o /dev/null; then
+              echo "Ready on attempt $i"; exit 0
+            fi
+            sleep 2
+          done
+          echo "::error::Server unreachable at $LOCUST_HOST"; exit 1
+
+      - name: Install Locust
+        working-directory: performance-testing/load
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Locust headless
+        working-directory: performance-testing/load
+        run: bash run-locust-headless.sh

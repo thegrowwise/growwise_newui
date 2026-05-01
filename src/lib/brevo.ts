@@ -191,6 +191,13 @@ export async function addSummerCampSummercampContactToBrevoList(email: string): 
   }
 }
 
+/** Same list + upsert behavior as {@link addSummerCampSummercampContactToBrevoList} (`BREVO_LIST_LOTTERY`). */
+export async function addSummerCampLotteryContactToBrevoList(
+  email: string,
+): Promise<SendEmailResult> {
+  return addSummerCampSummercampContactToBrevoList(email);
+}
+
 /** Math finals practice form — fields synced to Brevo for list-based automations. */
 export interface MathFinalsLeadBrevoInput {
   email: string

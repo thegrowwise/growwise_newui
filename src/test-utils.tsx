@@ -2,13 +2,19 @@ import React, { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { configureStore } from '@reduxjs/toolkit'
-import contentReducer from './store/slices/contentSlice'
+
+/** Minimal stand-in — production no longer mounts a `content` slice */
+function contentTestReducer(
+  state = { data: null, loading: false, error: null }
+) {
+  return state
+}
 
 // Create a mock store for testing
 const createTestStore = () => {
   return configureStore({
     reducer: {
-      content: contentReducer,
+      content: contentTestReducer,
     },
     preloadedState: {
       content: {
