@@ -18,7 +18,7 @@ test.describe('About and blogs pages', () => {
     await page.goto(localePath('/growwise-blogs'));
 
     await expect(
-      page.getByRole('heading', { name: /Blogs|Articles|Resources/i }),
+      page.getByRole('heading', { name: /Blogs|Articles|Resources/i }).first(),
     ).toBeVisible();
 
     // Card CTA is "Read article »" (growwise-blogs `readMore`); not "Read More" / "Learn More"

@@ -21,10 +21,8 @@ test.describe('Enrollment form', () => {
     await page.getByLabel(/^City\b/i).fill('Test City');
     await page.getByLabel(/Postal code/i).fill('12345');
 
-    // Choose Academic program
     await page.getByRole('button', { name: /Academic\b/i }).click();
 
-    // Select course and level
     await page.getByLabel(/^Course\b/i).click();
     await page.getByRole('option', { name: /Math Courses/i }).click();
 
@@ -32,13 +30,10 @@ test.describe('Enrollment form', () => {
     await page.getByRole('option', { name: /Elementary/i }).click();
 
     await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
-
     await page.getByRole('button', { name: /Register for Assessment/i }).click();
 
-    // Assert success banner heading is visible
-    await expect(
-      page.getByRole('heading', { name: /Enrollment Successful!/i }),
-    ).toBeVisible({ timeout: 10000 });
+    // Form redirects to thank-you page on success
+    await expect(page).toHaveURL(/\/enroll\/thank-you/, { timeout: 15_000 });
+    await expect(page.getByRole('heading', { name: /Thank you/i })).toBeVisible();
   });
 });
-
