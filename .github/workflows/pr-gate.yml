@@ -21,13 +21,10 @@ jobs:
         run: npm ci
 
       - name: Build Next.js
-        env:
-          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
         run: npm run build
 
       - name: Run Jest
         env:
-          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
           CI: true
         run: npm run test:ci
 
@@ -36,7 +33,6 @@ jobs:
 
       - name: Start Next.js server
         env:
-          NEXT_PUBLIC_API_BASE: ${{ secrets.STAGING_API_URL }}
           PORT: 3000
         run: npm run start &
 
