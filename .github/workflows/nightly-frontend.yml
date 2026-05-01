@@ -55,21 +55,6 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-      - name: Install Chrome for Lighthouse
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Run Lighthouse smoke
-        env:
-          LIGHTHOUSE_TARGET_URL: http://localhost:3000
-        run: npm run perf:ci
-
-      - name: Upload Lighthouse results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lighthouse-report-nightly
-          path: performance-testing/results/
-          retention-days: 7
 
   open-issue-on-failure:
     name: Open GitHub issue on failure
