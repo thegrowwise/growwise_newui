@@ -1,9 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { localePath } from '../localePath';
 
+/** Click a Radix SelectTrigger reliably — scroll it into view first to avoid sticky-header interception. */
+async function clickTrigger(page: import('@playwright/test').Page, testId: string) {
+  const trigger = page.getByTestId(testId);
+  await trigger.scrollIntoViewIfNeeded();
+  await trigger.click({ force: true });
+}
+
 test.describe('Book assessment form', () => {
-  test.skip('submits free assessment booking with mocked backend', async ({ page }) => {
-    // Skipped: flaky in CI due to sticky header intercepting Radix Select trigger clicks.
+  test('submits free assessment booking with mocked backend', async ({ page }) => {
     await page.route('**/*', async (route) => {
       const req = route.request();
       if (req.url().includes('/api/assessment') && req.method() === 'POST') {
@@ -19,63 +25,54 @@ test.describe('Book assessment form', () => {
 
     await page.goto(localePath('/book-assessment'));
 
-    // Required fields
     await page.getByLabel(/Parent Name/i).fill('Parent Name');
     await page.getByLabel(/Email Address/i).fill('parent@example.com');
-
-    // Phone uses CountryCodeSelector + input with id="phone"
     await page.getByLabel(/Phone Number/i).fill('5551234567');
 
-    // WebKit can occasionally type before hydration finishes; hydration may reset controlled inputs.
+    // WebKit can reset controlled inputs before hydration settles
     const studentName = page.getByLabel(/Student Name/i);
     for (let i = 0; i < 3; i++) {
       await studentName.fill('Student Name');
-      const v = await studentName.inputValue();
-      if (v === 'Student Name') break;
+      if (await studentName.inputValue() === 'Student Name') break;
     }
     await expect(studentName).toHaveValue('Student Name');
 
-    // Grade select
-    await page.getByTestId('assessment-grade-trigger').click();
+    await clickTrigger(page, 'assessment-grade-trigger');
     await page.getByRole('option', { name: /^Grade 5$/i }).click();
 
-    // Assessment type
-    await page.getByTestId('assessment-type-trigger').click();
+    await clickTrigger(page, 'assessment-type-trigger');
     await page.getByRole('option', { name: /Math Skills Assessment/i }).click();
 
-    // Mode: choose online, then in-person to ensure switching works
-    await page.getByTestId('assessment-mode-online').click();
-    await page.getByTestId('assessment-mode-in-person').click();
+    await page.getByTestId('assessment-mode-online').click({ force: true });
+    await page.getByTestId('assessment-mode-in-person').click({ force: true });
 
-    // Preferred days + time, then how you heard
-    await page.getByTestId('assessment-schedule-day-trigger').click();
+    await clickTrigger(page, 'assessment-schedule-day-trigger');
     await page.getByRole('option', { name: /Monday.*Friday/i }).click();
-    await page.getByTestId('assessment-schedule-time-trigger').click();
+
+    await clickTrigger(page, 'assessment-schedule-time-trigger');
     await page.getByRole('option', { name: /3:00.*7:00.*pm/i }).click();
 
-    await page.getByTestId('hear-about-trigger').click();
+    await clickTrigger(page, 'hear-about-trigger');
     await page.getByRole('option', { name: /Google/i }).click();
 
-    // Submit form (consent defaults to checked on this page)
     const submitBtn = page.getByTestId('assessment-submit');
     await expect(submitBtn).toBeEnabled({ timeout: 15000 });
     await submitBtn.scrollIntoViewIfNeeded();
-    // WebKit can be finicky with click dispatch on large animated buttons; submit via form API.
     await submitBtn.evaluate((btn) => {
-      const b = btn as HTMLButtonElement;
-      b.form?.requestSubmit(b);
+      (btn as HTMLButtonElement).form?.requestSubmit(btn as HTMLButtonElement);
     });
+
     await page.waitForResponse(
       (r) => r.url().includes('/api/assessment') && r.request().method() === 'POST',
-      { timeout: 20000 }
+      { timeout: 20000 },
     );
 
     const successPath = localePath('/book-assessment/thank-you');
-    await expect(page).toHaveURL(new RegExp(`${successPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`), {
-      timeout: 20000,
-    });
+    await expect(page).toHaveURL(
+      new RegExp(`${successPath.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\?.*)?$`),
+      { timeout: 20000 },
+    );
     await expect(page.getByTestId('form-thank-you')).toBeVisible({ timeout: 20000 });
     await expect(page.getByRole('heading', { level: 1, name: /thank you for your request/i })).toBeVisible();
   });
 });
-
