@@ -83,6 +83,7 @@ const campLandingHub: SitemapEntry = {
 
 /** Blog post paths (same slugs as under `src/app/[locale]/growwise-blogs/`). */
 const blogPostPaths = [
+  '/growwise-blogs/high-school-math-finals-prep-dublin-tri-valley',
   '/growwise-blogs/embrace-the-future-of-technology-advance-your-coding-expertise-with-growwise',
   '/growwise-blogs/harnessing-the-power-of-code-a-skill-for-the-modern-era',
   '/growwise-blogs/how-coding-skills-empower-you-to-shape-tomorrows-ai-innovations',

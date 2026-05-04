@@ -1,0 +1,2 @@
+# Pin range for repeatable CI/local runs — upgrade consciously.
+locust>=2.31.5,<4

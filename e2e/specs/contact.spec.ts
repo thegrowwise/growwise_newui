@@ -25,7 +25,6 @@ test.describe('Contact form', () => {
       await expect(loc).toHaveValue(value);
     };
 
-    // Fill required fields
     await fillStable(/First Name/i, 'First');
     await fillStable(/Last Name/i, 'Last');
     await fillStable(/Email Address/i, 'first.last@example.com');
@@ -33,17 +32,11 @@ test.describe('Contact form', () => {
     await fillStable(/^Subject \*/i, 'Free Assessment Request');
     await fillStable(/^Message \*/i, 'I would like more information about programs.');
 
-    // Radix Checkbox: use role + check() so state updates (label click alone can leave submit disabled)
     await page.getByRole('checkbox', { name: /I agree to receive/i }).check();
-
-    // Submit (prefer explicit label; avoids matching non-submit buttons)
     await page.getByRole('button', { name: /Send Message/i }).click();
 
-    // Success: heading then secondary action (recaptcha + backend mock can be slower on Firefox)
-    await expect(page.getByRole('heading', { name: /Thank You/i })).toBeVisible({ timeout: 20_000 });
-    await expect(page.getByRole('button', { name: /Send Another Message/i })).toBeVisible({
-      timeout: 15_000,
-    });
+    // Form redirects to thank-you page on success
+    await expect(page).toHaveURL(/\/contact\/thank-you/, { timeout: 20_000 });
+    await expect(page.getByRole('heading', { name: /Thank you/i })).toBeVisible();
   });
 });
-

@@ -1,6 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, {
+  startTransition,
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+} from 'react';
 import dynamic from 'next/dynamic';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslations, useLocale } from 'next-intl';
@@ -177,23 +183,32 @@ export default function HomeClient({ initialData }: HomeClientProps) {
   );
 
   const [currentHeroSlide, setCurrentHeroSlide] = useState(0);
+  /** Delay auto-advance so LCP/hydration are not competing with timer-driven hero re-renders. */
+  const [heroCarouselReady, setHeroCarouselReady] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     if (initialData) {
-      dispatch(fetchHomeSuccess(initialData));
+      startTransition(() => {
+        dispatch(fetchHomeSuccess(initialData));
+      });
     } else {
       dispatch(fetchHomeStart());
     }
   }, [dispatch, initialData]);
 
   useEffect(() => {
-    if (isPaused) return;
+    const id = window.setTimeout(() => setHeroCarouselReady(true), 2000);
+    return () => clearTimeout(id);
+  }, []);
+
+  useEffect(() => {
+    if (!heroCarouselReady || isPaused) return;
     const interval = setInterval(() => {
       setCurrentHeroSlide((prev) => (prev + 1) % (heroSlides.length || 1));
     }, 7000);
     return () => clearInterval(interval);
-  }, [heroSlides.length, isPaused]);
+  }, [heroSlides.length, isPaused, heroCarouselReady]);
 
   const nextHeroSlide = () =>
     setCurrentHeroSlide((prev) => (prev + 1) % (heroSlides.length || 1));

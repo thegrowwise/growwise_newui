@@ -21,7 +21,37 @@ export default function Footer() {
   const fallback = useMemo(() => getFooterFallback(locale), [locale]);
 
   useEffect(() => {
-    if (!footer) dispatch(fetchFooterRequested(locale));
+    if (footer) return undefined;
+
+    let cancelled = false;
+    const run = () => {
+      if (!cancelled) dispatch(fetchFooterRequested(locale));
+    };
+
+    const w = typeof window !== 'undefined' ? window : undefined;
+    if (!w) {
+      dispatch(fetchFooterRequested(locale));
+      return undefined;
+    }
+
+    let idleHandle: ReturnType<typeof window.requestIdleCallback> | undefined;
+    let timeoutHandle: ReturnType<typeof setTimeout> | undefined;
+
+    if ('requestIdleCallback' in w) {
+      idleHandle = w.requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      timeoutHandle = w.setTimeout(run, 250);
+    }
+
+    return () => {
+      cancelled = true;
+      if (idleHandle !== undefined && 'cancelIdleCallback' in w) {
+        w.cancelIdleCallback(idleHandle);
+      }
+      if (timeoutHandle !== undefined) {
+        clearTimeout(timeoutHandle);
+      }
+    };
   }, [dispatch, footer, locale]);
 
   const createLocaleUrlHelper = (path: string) => createLocaleUrl(path, locale);

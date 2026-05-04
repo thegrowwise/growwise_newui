@@ -59,6 +59,10 @@ const nextConfig: NextConfig = {
   
   // Experimental features for better performance
   experimental: {
+    // Inline route CSS into HTML in production to remove render-blocking stylesheet round-trips
+    // (helps mobile LCP/FCP; Tailwind-friendly per Next.js docs). Trade-off: larger HTML, experimental.
+    // https://nextjs.org/docs/app/api-reference/config/next-config-js/inlineCss
+    inlineCss: true,
     // Dev-only: avoid distDir lockfile acquisition (can ETIMEDOUT on iCloud/synced or slow disks).
     // Production builds keep the default lock behavior via NODE_ENV.
     ...(process.env.NODE_ENV === 'development' ? { lockDistDir: false as const } : {}),
@@ -67,6 +71,12 @@ const nextConfig: NextConfig = {
       'lucide-react',
       'next-intl',
       'recharts',
+      'embla-carousel-react',
+      '@stripe/react-stripe-js',
+      'react-day-picker',
+      'cmdk',
+      'input-otp',
+      'vaul',
       '@radix-ui/react-accordion',
       '@radix-ui/react-alert-dialog',
       '@radix-ui/react-aspect-ratio',
