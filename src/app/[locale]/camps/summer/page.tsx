@@ -148,9 +148,6 @@ export default function SummerCampPage() {
   const guideModalOpenedAtRef = useRef<number | null>(null);
   const slotsSectionRef = useRef<HTMLElement>(null);
   const faqSentinelRef = useRef<HTMLDivElement>(null);
-  /** Fires `trackEarlyBirdReveal` at most once per locale after programs are ready (idle + dynamic import). */
-  const earlyBirdRevealFiredForLocaleRef = useRef<string | null>(null);
-
   const markGuideModalOpenIntent = useCallback(() => {
     guideModalOpenedAtRef.current = Date.now();
   }, []);
@@ -550,19 +547,6 @@ export default function SummerCampPage() {
     io.observe(el);
     return () => io.disconnect();
   }, [locale, faqMount]);
-
-  useEffect(() => {
-    if (programsLoading) return;
-    if (earlyBirdRevealFiredForLocaleRef.current === locale) return;
-    const localeWhenScheduled = locale;
-    const narrow =
-      typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches;
-    const cancel = scheduleIdleTask(() => {
-      earlyBirdRevealFiredForLocaleRef.current = localeWhenScheduled;
-      void import('@/lib/meta-pixel').then(({ trackEarlyBirdReveal }) => trackEarlyBirdReveal());
-    }, narrow ? 4000 : 2800);
-    return cancel;
-  }, [programsLoading, locale]);
 
   useEffect(() => {
     const onScroll = () => {

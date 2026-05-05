@@ -254,7 +254,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     description:
       'Thanks for requesting the GrowWise summer camp guide. Check email and reserve your week before seats fill.',
     keywords:
-      'GrowWise summer camp, camp guide PDF, Dublin CA summer camp, STEM camp Tri-Valley, early bird summer camp',
+      'GrowWise summer camp, camp guide PDF, Dublin CA summer camp, STEM camp Tri-Valley',
     path: '/camps/summer/guide-success',
     image: 'https://growwiseschool.org/assets/camps/summer-camp-banner.png',
   },
