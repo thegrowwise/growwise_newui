@@ -682,11 +682,10 @@
       "secondaryCta": "Guía completa del campamento →",
       "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
       "downloadBrochure": "Descargar folleto 2026",
-      "urgencyLine": "15% early bird hasta el 30 de abril · Plazas limitadas por semana",
-      "earlyBirdPromoBefore": "15% de descuento early bird en cualquier curso hasta el 30 de abril — Código: "
+      "urgencyLine": "Plazas limitadas por semana — las semanas populares se llenan primero"
     },
     "guideForm": {
-      "ariaLabel": "Solicitar guía del campamento y oferta early bird"
+      "ariaLabel": "Solicitar la guía PDF del campamento por correo"
     },
     "guideSuccess": {
       "title": "¡Tu guía del campamento está en camino!",
@@ -698,11 +697,11 @@
     },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird hasta el 30 de abril",
+      "earlyBirdBar": "Plazas limitadas cada semana",
       "winFreeSpot": "Win free spot",
       "summercampLink": "Enter free summercamp instead",
       "enrollNow": "Enroll Now",
-      "earlyBirdBadge": "Early bird — GWSUMMER15"
+      "earlyBirdBadge": "Guía por correo"
     },
     "summercamp": {
       "title": "Gana un lugar gratis en Summer Camp",

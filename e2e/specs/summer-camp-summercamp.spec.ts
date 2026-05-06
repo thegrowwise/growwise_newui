@@ -9,7 +9,7 @@ async function openSummerCampGuideModal(page: Page): Promise<void> {
   try {
     await expect(dialog).toBeVisible({ timeout: 4_000 });
   } catch {
-    await page.getByRole('button', { name: /Get guide|15%/i }).first().click();
+    await page.getByRole('button', { name: /email me the guide|get guide|camp guide/i }).first().click();
     await expect(dialog).toBeVisible({ timeout: 15_000 });
   }
 }
@@ -48,7 +48,7 @@ test.describe('Summer camp summercamp form (UI)', () => {
     await page.locator('#summercamp-grade').selectOption('5');
     await page.locator('#summercamp-interest').selectOption('academic');
 
-    await page.getByRole('button', { name: /Get Guide|15%/i }).click();
+    await page.getByRole('button', { name: /email me the guide|get guide|camp guide/i }).click();
 
     const successPath = localePath('/camps/summer/guide-success').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     await expect(page).toHaveURL(new RegExp(`${successPath}(\\?|$)`), {
@@ -85,7 +85,7 @@ test.describe('Summer camp summercamp form (UI)', () => {
     await page.locator('#summercamp-grade').selectOption('3');
     await page.locator('#summercamp-interest').selectOption('coding');
 
-    await page.getByRole('button', { name: /Get Guide|15%/i }).click();
+    await page.getByRole('button', { name: /email me the guide|get guide|camp guide/i }).click();
 
     // Next.js adds a second role="alert" (route announcer); target the form error only.
     await expect(
