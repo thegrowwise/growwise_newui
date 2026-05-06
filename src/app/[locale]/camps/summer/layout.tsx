@@ -1,14 +1,14 @@
 /**
  * Summer camp hub JSON-LD: Event, BreadcrumbList, FAQPage, WebPage, ItemList (programs with detail URLs).
- * Site-wide `EducationalOrganization` + `LocalBusiness` live in `[locale]/layout.tsx` only — do not paste
- * duplicate org/course/FAQ blocks from third-party snippets (domain, season, and FAQ must match this app).
+ * Site-wide org graph: root `app/layout.tsx` (`LocalBusinessSchema`) + `[locale]/layout.tsx` (`websiteSchema`).
  */
 import { Metadata } from 'next';
+import FAQSchema from '@/components/schema/FAQSchema';
 import { generateMetadataFromPath } from '@/lib/seo/metadata';
+import { SUMMER_HUB_PRIORITY_FAQS } from '@/lib/schema/summer-hub-jsonld-faqs';
 import {
   generateEventSchema,
   generateBreadcrumbSchema,
-  generateFAQPageSchema,
   generateItemListSchema,
   generateWebPageJsonLd,
 } from '@/lib/seo/structuredData';
@@ -22,6 +22,16 @@ import {
 import { getDefaultSummerCampData, getMinimumPublishedSummerCampPriceUsd } from '@/lib/summer-camp-data';
 import { getSummerCampProgramSeoLink } from '@/lib/summer-camp-seo-links';
 import summerCampFaqData from '../../../../../public/api/mock/en/summer-camp-faq.json';
+
+function mergeSummerHubJsonLdFaqs() {
+  const priorityKeys = new Set(
+    SUMMER_HUB_PRIORITY_FAQS.map((f) => f.question.trim().toLowerCase()),
+  );
+  const rest = summerCampFaqData.faqs.filter(
+    (f) => !priorityKeys.has(f.question.trim().toLowerCase()),
+  );
+  return [...SUMMER_HUB_PRIORITY_FAQS, ...rest];
+}
 
 export async function generateMetadata({
   params,
@@ -88,8 +98,6 @@ export default async function SummerCampLayout({
     { name: 'Summer Camp 2026', url: absoluteSiteUrl('/camps/summer', locale, baseUrl) },
   ]);
 
-  const faqSchema = generateFAQPageSchema(summerCampFaqData.faqs);
-
   const pageUrl = absoluteSiteUrl('/camps/summer', locale, baseUrl);
   const webPageSchema = generateWebPageJsonLd({
     name: 'Summer Camp 2026 - Math, Coding & Robotics | GrowWise',
@@ -123,10 +131,7 @@ export default async function SummerCampLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <FAQSchema faqs={mergeSummerHubJsonLdFaqs()} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}

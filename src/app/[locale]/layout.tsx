@@ -6,7 +6,7 @@ import ContentProvider from "@/components/providers/ContentProvider";
 import { ChatbotProvider } from "@/contexts/ChatbotContext";
 import { locales } from '@/i18n/config';
 import { PageTrackingWrapper } from '@/components/analytics/PageTrackingWrapper';
-import { organizationSchema, localBusinessSchema, websiteSchema } from '@/lib/seo/structuredData';
+import { websiteSchema } from '@/lib/seo/structuredData';
 
 const Header = dynamic(() => import("@/components/layout/Header/Header"));
 const Footer = dynamic(() => import("@/components/layout/Footer/Footer"));
@@ -41,15 +41,7 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      {/* Structured Data for SEO */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
-      />
+      {/* WebSite search JSON-LD — primary EducationalOrganization lives in root layout head */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
