@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
 import FAQSchema from '@/components/schema/FAQSchema'
-import { ENGLISH_COURSE_FAQ_JSONLD } from '@/lib/schema/course-hub-jsonld-faqs'
+import { ENGLISH_COURSE_MERGED_FAQ_JSONLD } from '@/lib/schema/course-hub-jsonld-faqs'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { generateCourseSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
@@ -70,7 +70,7 @@ export default async function EnglishCoursesLayout({
           },
         ]}
       />
-      <FAQSchema faqs={ENGLISH_COURSE_FAQ_JSONLD} />
+      <FAQSchema faqs={ENGLISH_COURSE_MERGED_FAQ_JSONLD} />
       {children}
     </>
   )

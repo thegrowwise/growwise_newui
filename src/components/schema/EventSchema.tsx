@@ -63,6 +63,11 @@ export default function EventSchema({
       url: site,
       telephone: telE164Us(CONTACT_INFO.phone),
     },
+    performer: {
+      '@type': 'Organization',
+      name: 'GrowWise School',
+      url: 'https://www.growwiseschool.org',
+    },
     offers: {
       '@type': 'Offer',
       url,
