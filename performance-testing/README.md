@@ -98,3 +98,4 @@ _No layout changes unless accepted as a perf task._
 ## Related
 
 - [`scripts/lighthouse-summer-camp.mjs`](../scripts/lighthouse-summer-camp.mjs) — single-route historical script (unchanged paths).
+- Lighthouse **Best Practices** / Meta Pixel deprecations (`fbevents.js`) and a **no-Pixel/GTM lab baseline** build command: [`docs/performance-tests-status.md`](../docs/performance-tests-status.md) (subsection *Lighthouse Best Practices — “Uses deprecated APIs”*).
