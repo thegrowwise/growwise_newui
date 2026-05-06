@@ -53,6 +53,9 @@ const INTEREST_LABELS: Record<InterestKey, string> = {
   young_authors: 'Young Authors',
 };
 
+const SUMMER_EARLY_BIRD_CODE = 'GWSUMMER15';
+const SUMMER_EARLY_BIRD_DEADLINE = 'April 30';
+
 /** WhatsApp business (US +1 925-456-4606) — wa.me expects country code + number, no symbols. */
 const WHATSAPP_HELP_URL = 'https://wa.me/19254564606';
 
@@ -203,7 +206,7 @@ export async function POST(request: Request) {
 
     const greetingName = escapeHtml(firstNameFromParentName(parentNameRaw));
 
-    const userSubject = 'Your GrowWise Summer Camp Guide';
+    const userSubject = 'Your Camp Guide + 15% Off (Limited Seats)';
     const userHtml = `
       <div style="font-family: Arial, Helvetica, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.6;">
         <p style="margin: 0 0 16px;">Hi ${greetingName},</p>
@@ -219,6 +222,10 @@ export async function POST(request: Request) {
         <p style="margin: 0 0 8px;">• AI &amp; Coding</p>
         <p style="margin: 0 0 8px;">• Robotics &amp; Game Development</p>
         <p style="margin: 0 0 24px;">• Math &amp; Olympiad Prep</p>
+        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+        <p style="margin: 0 0 8px; font-weight: bold;">Your 15% Early-Bird Code:</p>
+        <p style="margin: 0 0 4px;">Code: <strong style="font-size: 16px; letter-spacing: 0.5px;">${escapeHtml(SUMMER_EARLY_BIRD_CODE)}</strong></p>
+        <p style="margin: 0 0 24px; color: #64748b; font-size: 14px;">Valid until ${escapeHtml(SUMMER_EARLY_BIRD_DEADLINE)} (limited seats per batch)</p>
         <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
         <p style="margin: 0 0 12px; font-weight: bold;">Based on your input:</p>
         <p style="margin: 0 0 4px;">• Interest: ${escapeHtml(interestLabel)}</p>
@@ -252,6 +259,14 @@ export async function POST(request: Request) {
       '• AI & Coding',
       '• Robotics & Game Development',
       '• Math & Olympiad Prep',
+      '',
+      '---',
+      '',
+      'Your 15% Early-Bird Code:',
+      `Code: ${SUMMER_EARLY_BIRD_CODE}`,
+      `Valid until ${SUMMER_EARLY_BIRD_DEADLINE} (limited seats per batch)`,
+      '',
+      '---',
       '',
       'Based on your input:',
       `• Interest: ${interestLabel}`,
@@ -345,7 +360,7 @@ export async function POST(request: Request) {
 
     const payload: Record<string, unknown> = {
       success: true,
-      message: 'Check your email for the camp guide PDF.',
+      message: 'Check your email for the camp guide and 15% off code.',
     };
 
     if (process.env.NODE_ENV === 'development') {
