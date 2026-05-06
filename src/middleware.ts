@@ -47,6 +47,15 @@ function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | n
   return NextResponse.rewrite(url);
 }
 
+/** Sitemaps, robots, and llms.txt must bypass next-intl so Route Handlers return XML/plain text, not HTML. */
+const SEO_ROUTES_BYPASS_INTL = new Set([
+  '/sitemap.xml',
+  '/sitemap-pages.xml',
+  '/sitemap-blogs.xml',
+  '/robots.txt',
+  '/llms.txt',
+]);
+
 /**
  * With `src/app`, Next.js expects middleware beside `src/app` (`src/middleware.ts`).
  * A root-level `middleware.ts` can be ignored in some setups, which makes `/` 404
@@ -54,6 +63,9 @@ function rewriteLocalePrefixedNextAssets(request: NextRequest): NextResponse | n
  */
 export default function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  if (SEO_ROUTES_BYPASS_INTL.has(pathname)) {
+    return NextResponse.next();
+  }
   // Non-localized App Router segments (`app/camp/...` at repo root). Running next-intl on these
   // can fight with `[locale]/camp/[slug]` and caused redirect loops to the same URL.
   if (pathname === '/camp' || pathname.startsWith('/camp/')) {
@@ -70,6 +82,6 @@ export default function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    '/((?!api|_next|_vercel|.*\\..*).*)',
+    '/((?!api|_next|_vercel|sitemap\\.xml|sitemap-pages\\.xml|sitemap-blogs\\.xml|robots\\.txt|llms\\.txt|.*\\..*).*)',
   ],
 };
