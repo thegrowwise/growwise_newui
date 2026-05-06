@@ -20,22 +20,27 @@ interface CourseFAQProps {
   title?: string
   subtitle?: string
   className?: string
+  /** When false, FAQ JSON-LD is omitted (e.g. layout emits merged FAQPage). Default true. */
+  includeStructuredData?: boolean
 }
 
 export function CourseFAQ({ 
   faqs, 
   title = "Frequently Asked Questions",
   subtitle,
-  className = ""
+  className = "",
+  includeStructuredData = true,
 }: CourseFAQProps) {
   if (!faqs || faqs.length === 0) return null
 
   return (
     <section className={`py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 ${className}`}>
-      <StructuredDataScript 
-        data={generateFAQPageSchema(faqs)} 
-        id="course-faq-structured-data" 
-      />
+      {includeStructuredData && (
+        <StructuredDataScript 
+          data={generateFAQPageSchema(faqs)} 
+          id="course-faq-structured-data" 
+        />
+      )}
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
