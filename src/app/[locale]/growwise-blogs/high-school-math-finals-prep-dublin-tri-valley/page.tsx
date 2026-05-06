@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
-import { generateBreadcrumbSchema, generateArticleSchema, generateFAQPageSchema } from '@/lib/seo/structuredData'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
+import { generateArticleSchema, generateFAQPageSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { ArrowLeft, Calendar, User } from 'lucide-react'
@@ -90,11 +91,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const pageUrl = absoluteSiteUrl(pagePath, locale, baseUrl)
   const absImage = `${baseUrl}${BLOG_IMAGE_URL}`
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Blog', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
     { name: HEADLINE, url: pageUrl },
-  ])
+  ]
 
   const articleSchema = generateArticleSchema({
     headline: HEADLINE,
@@ -113,10 +114,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
