@@ -113,6 +113,26 @@ Paths match [`performance-testing/config/smoke-paths.json`](../performance-testi
 1. **Server:** `npm run build` then `npm run start` — never benchmark `next dev` for budget enforcement.
 2. **Base URL (priority):** **`http://127.0.0.1:<PORT>`** — default for Lighthouse, Locust, and CI (**regression / same-build lab**). **Preview or staging** on the real host (e.g. Vercel) is the right place to approximate **production** behavior (CDN, region, cold start). **Production** origin: optional Lighthouse with clear labels; avoid surprising traffic (especially load tests).
 3. **Third-party:** Full marketing stack (GTM, Pixel, HubSpot after consent) may affect LCP; consider a **labeled** run (e.g. “full” vs “no consent / blocked third-party”) if debugging regressions — not a substitute for §2 compliance in [.cursor/rules.md](../.cursor/rules.md).
+
+### Lighthouse Best Practices — “Uses deprecated APIs” (Meta Pixel)
+
+Chrome’s Lighthouse **Best Practices** category may report **`AttributionReporting`** with source **`connect.facebook.net/.../fbevents.js`**. That is **Meta’s Facebook Pixel base library**, not first-party code. The app loads it from [`MetaPixel.tsx`](../src/components/analytics/MetaPixel.tsx) when `NEXT_PUBLIC_META_PIXEL_ID` is set (see [`AnalyticsAfterConsent.tsx`](../src/components/analytics/AnalyticsAfterConsent.tsx)).
+
+**GTM vs app Pixel:** The checked-in GTM import [`gtm/virtual_page_view_import.json`](../gtm/virtual_page_view_import.json) contains **only** GA4 + `virtual_page_view` — **no Meta Pixel tag**. The **live** GTM container may still include a Pixel; confirm in the Tag Manager UI. If Pixel fires from GTM, set `NEXT_PUBLIC_META_PIXEL_DISABLE_APP=true` so the app does not inject a second copy ([`metaPixelEnv.ts`](../src/lib/metaPixelEnv.ts)). Details: [`gtm/README.md`](../gtm/README.md).
+
+**Lab baseline (isolate first-party Best Practices noise):** `NEXT_PUBLIC_*` values are baked at **`next build`**. To confirm the deprecation warning is tied to Pixel/GTM rather than the app shell:
+
+1. From repo root, build with Pixel and GTM **omitted** (empty strings unset the IDs in the client bundle):
+
+   `NEXT_PUBLIC_META_PIXEL_ID= NEXT_PUBLIC_GTM_ID= npm run build`
+
+2. `PORT=3000 npm run start` (or your usual port).
+
+3. Run Lighthouse against a representative path (e.g. `/camps/summer`), Best Practices only, e.g.  
+   `npx lighthouse@13.0.2 http://127.0.0.1:3000/camps/summer --only-categories=best-practices --chrome-flags="--headless"`  
+   The Facebook **`AttributionReporting` / `fbevents.js`** finding should **not** appear when neither the app nor GTM loads the Pixel. (Production-like runs should keep real env vars; label the comparison “no third-party Pixel/GTM”.)
+
+   **Recorded check (2026-05-06, local):** After `NEXT_PUBLIC_META_PIXEL_ID= NEXT_PUBLIC_GTM_ID= npm run build`, `next start` on port **3042**, `npx lighthouse@13.0.2 http://127.0.0.1:3042/en/camps/summer --only-categories=best-practices` → audit **`deprecations`** score **1**, **0** detail items (“Avoids deprecated APIs”). Full JSON is reproducible under `performance-testing/artifacts/` (gitignored); re-run overwrites or add `--output-path` as needed.
 4. **Locales:** Phase 1 test **default English paths**; Phase 2 add other locales for high-traffic templates.
 5. **CSS delivery (prod):** [`next.config.ts`](../next.config.ts) enables **`experimental.inlineCss: true`** so critical styles ship with HTML and reduce render-blocking stylesheet round-trips (Next.js docs: [`inlineCss`](https://nextjs.org/docs/app/api-reference/config/next-config-js/inlineCss)). **Experimental:** larger HTML, no separate CSS cache on first load; not applied in dev. Re-run Lighthouse after changes.
 6. **Defer non-critical client work:** [`LazyChatbot`](../src/components/chatbot/LazyChatbot.tsx) loads the chat bundle after **idle or first scroll/tap**. [`Footer`](../src/components/layout/Footer/Footer.tsx) schedules the mock footer fetch for **idle** (fallback `setTimeout` if `requestIdleCallback` is missing). **GTM/consent gates and standalone Meta Pixel bootstrap** unchanged per [.cursor/rules.md](../.cursor/rules.md).
