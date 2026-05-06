@@ -744,9 +744,8 @@
       "secondaryCta": "Get Camp Guide →",
       "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
       "trustMicro": "98% parent satisfaction · Max 8 students per class · Expert instructors",
-      "urgencyLine": "15% early-bird ends April 30 · Limited seats per week",
-      "downloadBrochure": "View 2026 brochure PDF (new tab)",
-      "earlyBirdPromoBefore": "15% off for early bird on any course through April 30 — Use code: "
+      "urgencyLine": "Limited seats per week — popular weeks fill first",
+      "downloadBrochure": "View 2026 brochure PDF (new tab)"
     },
     "conversion": {
       "programGroupsHeading": "Start with one track",
@@ -793,24 +792,24 @@
       ],
       "trustProjectsCta": "See Student Projects →",
       "trustProjectsUrl": "https://thegrowwise.com/nextgen-hub/",
-      "guideModalTitle": "Get your camp guide + 15% off",
-      "guideModalSubtitle": "Tell us a bit about your child—we’ll email the PDF and early-bird details.",
+      "guideModalTitle": "Get your summer camp guide",
+      "guideModalSubtitle": "Tell us a bit about your child—we’ll email the PDF camp guide.",
       "parentNameLabel": "Parent name",
       "parentNamePlaceholder": "Your full name",
-      "guideSubmitCta": "Get Guide + 15% Off →",
+      "guideSubmitCta": "Email Me the Guide →",
       "finalHeading": "Still not sure which summer camp is right for your child?",
-      "finalSubtext": "Limited seats per batch · 15% early-bird ends April 30",
+      "finalSubtext": "Limited seats per batch — reserve early for your preferred week",
       "finalReserveCta": "Reserve a Spot →",
-      "finalGuidePdfCta": "Get guide + 15% off (by email) →",
+      "finalGuidePdfCta": "Get camp guide by email →",
       "bookingSectionTitle": "Choose your camp & reserve a week",
       "bookingSectionSub": "Pick a program, then select your week and checkout."
     },
     "guideForm": {
-      "ariaLabel": "Request camp guide and early-bird offer"
+      "ariaLabel": "Request the summer camp guide PDF by email"
     },
     "guideSuccess": {
       "title": "Your camp guide is on the way!",
-      "bodyEmail": "We’ve emailed your PDF camp guide and your 15% early-bird code (check inbox & spam).",
+      "bodyEmail": "We’ve emailed your PDF camp guide (check inbox & spam).",
       "bodyUrgency": "Reserve a week before your preferred dates fill up.",
       "reserveCta": "Reserve a Spot →",
       "viewOptionsCta": "View Camp Options →",
@@ -818,11 +817,11 @@
     },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird ends April 30",
+      "earlyBirdBar": "Limited seats each week",
       "winFreeSpot": "Win free spot",
       "summercampLink": "Get camp guide instead",
       "enrollNow": "Enroll Now",
-      "earlyBirdBadge": "Early bird — GWSUMMER15"
+      "earlyBirdBadge": "Camp guide by email"
     },
     "summercamp": {
       "title": "Win a free Summer Camp spot",
@@ -928,7 +927,7 @@
         {
           "icon": "📅",
           "title": "Flexible Scheduling",
-          "description": "Half-day and full-day sessions, June through August, with week-by-week enrollment and early bird savings."
+          "description": "Half-day and full-day sessions, June through August, with flexible week-by-week enrollment."
         },
         {
           "icon": "📍",

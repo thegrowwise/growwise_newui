@@ -11,7 +11,7 @@ export async function generateMetadata({
   return (
     generateMetadataFromPath('/camps/summer/guide-success', locale) ?? {
       title: 'Camp guide sent | GrowWise Summer Camp',
-      description: 'Thank you — your camp guide and early-bird details are on the way.',
+      description: 'Thank you — your camp guide PDF is on the way by email.',
     }
   );
 }

@@ -56,7 +56,7 @@ function track(event: string, params?: Record<string, unknown>): void {
 // Public track functions
 // ---------------------------------------------------------------------------
 
-/** Summer camp "Get guide + 15% off" form submission. */
+/** Summer camp guide lead form submission. */
 export function trackSummerCampGuideLead(
   interest: string,
   grade: string,
@@ -111,7 +111,3 @@ export function trackBrochureDownload(): void {
   track('ViewContent', { content_name: 'Camp Brochure PDF', content_type: 'document' });
 }
 
-/** Browser-only — CustomEvent is not in CAPI's standard event list. */
-export function trackEarlyBirdReveal(): void {
-  track('CustomEvent', { content_name: 'Early Bird Code Reveal', content_category: 'Promotion' });
-}
