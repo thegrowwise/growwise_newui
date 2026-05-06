@@ -64,8 +64,9 @@ export async function generateMetadata({
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return {
-    title: 'Math Finals Prep Dublin CA | Algebra 1 – AP Precalculus | GrowWise',
-    description: DESCRIPTION,
+    title: 'High School Math Finals Prep Dublin CA | GrowWise',
+    description:
+      'High school math finals prep in Dublin, CA. Exam-style practice for Algebra 1 through AP Precalculus. In-center sessions at GrowWise School.',
     alternates: {
       canonical: absoluteSiteUrl(`/growwise-blogs/${BLOG_SLUG}`, locale, baseUrl),
     },

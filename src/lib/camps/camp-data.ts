@@ -46,9 +46,9 @@ const BASE_TRUST = [
 export const CAMP_LANDING_PAGES: readonly CampLandingPage[] = [
   {
     slug: "ai-studio-dublin-ca",
-    seoTitle: "AI Studio Summer Camp in Dublin, CA | GrowWise School",
+    seoTitle: "AI Studio Summer Camp Dublin CA | GrowWise",
     metaDescription:
-      "A structured AI Studio summer experience at GrowWise in Dublin, CA—built for Tri-Valley families seeking serious skill-building, not hype. Inquiry-first enrollment.",
+      "AI Studio summer camp at GrowWise in Dublin, CA — project-based AI learning for grades 6–12. Built for Tri-Valley families who want substance.",
     h1: "AI Studio Summer Camp (Dublin, CA)",
     eyebrow: "GrowWise School · Summer · Dublin campus",
     heroSubtext:
@@ -181,9 +181,9 @@ export const CAMP_LANDING_PAGES: readonly CampLandingPage[] = [
   },
   {
     slug: "game-development-camp-dublin-ca",
-    seoTitle: "Game Development Summer Camp in Dublin, CA | GrowWise School",
+    seoTitle: "Game Development Summer Camp Dublin CA | GrowWise",
     metaDescription:
-      "Game development summer camp at GrowWise in Dublin, CA: systems thinking, implementation discipline, and reviewable milestones—built for Tri-Valley families who want substance, not gimmicks.",
+      "Game dev summer camp at GrowWise in Dublin, CA — real builds, systems thinking, reviewable milestones. For Tri-Valley families, grades 5–12.",
     h1: "Game Development Summer Camp (Dublin, CA)",
     eyebrow: "GrowWise School · Summer · Dublin campus",
     heroSubtext:
@@ -243,9 +243,9 @@ export const CAMP_LANDING_PAGES: readonly CampLandingPage[] = [
   },
   {
     slug: "math-olympiad-camp-dublin-ca",
-    seoTitle: "Math Olympiad Summer Camp in Dublin, CA | GrowWise School",
+    seoTitle: "Math Olympiad Summer Camp Dublin CA | GrowWise",
     metaDescription:
-      "Challenging, structured math olympiad-style summer work at GrowWise in Dublin, CA—problem-solving discipline for motivated Tri-Valley students.",
+      "Math Olympiad prep camp in Dublin, CA. AMC8-ready problem solving for grades 5–8. Small groups, expert instruction at GrowWise School.",
     h1: "Math Olympiad Summer Camp (Dublin, CA)",
     eyebrow: "GrowWise School · Summer · Dublin campus",
     heroSubtext:
@@ -375,9 +375,9 @@ export const CAMP_LANDING_PAGES: readonly CampLandingPage[] = [
   },
   {
     slug: "young-authors-camp-dublin-ca",
-    seoTitle: "Young Authors Summer Camp in Dublin, CA | GrowWise School",
+    seoTitle: "Young Authors Summer Camp Dublin CA | GrowWise",
     metaDescription:
-      "Young Authors summer camp at GrowWise in Dublin, CA: drafting, revision, and publishing-ready habits—structured writing instruction for Tri-Valley families.",
+      "Young Authors camp at GrowWise in Dublin, CA — drafting, revision, publishing-ready writing habits for Tri-Valley students. Grades 3–8.",
     h1: "Young Authors Summer Camp (Dublin, CA)",
     eyebrow: "GrowWise School · Summer · Dublin campus",
     heroSubtext:

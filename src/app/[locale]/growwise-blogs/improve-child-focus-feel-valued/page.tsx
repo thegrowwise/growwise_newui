@@ -18,9 +18,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: '12 Smart & Simple Ways to Improve Your Child\'s Focus | GrowWise', 
+    title: '12 Ways to Improve Your Child\'s Focus | GrowWise', 
     description:
-      'Twelve practical ways to build focus: routines, connection, and small wins—without fighting your child every night.',
+      'Simple, research-backed strategies to help your child focus better in school and at home. A parent guide from GrowWise School in Dublin, CA.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl)
     }

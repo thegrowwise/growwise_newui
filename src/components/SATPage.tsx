@@ -214,8 +214,8 @@ const SATPage: React.FC = () => {
           {/* Main Header Content */}
           <div className="text-center mb-16">
             <h1 className="text-4xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-              SAT Prep Courses
-              <span className="block bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
+              <span className="text-gray-800">SAT Prep Courses </span>
+              <span className="bg-gradient-to-r from-[#1F396D] to-[#F16112] bg-clip-text text-transparent">
                 in Dublin, CA
               </span>
             </h1>
