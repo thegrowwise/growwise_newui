@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
+import { generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -18,9 +19,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   return { 
-    title: '12 Smart & Simple Ways to Improve Your Child\'s Focus | GrowWise', 
+    title: '12 Ways to Improve Your Child\'s Focus | GrowWise', 
     description:
-      'Twelve practical ways to build focus: routines, connection, and small wins—without fighting your child every night.',
+      'Simple, research-backed strategies to help your child focus better in school and at home. A parent guide from GrowWise School in Dublin, CA.',
     alternates: {
       canonical: absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl)
     }
@@ -33,11 +34,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   
   const pageUrl = absoluteSiteUrl('/growwise-blogs/improve-child-focus-feel-valued', locale, baseUrl)
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Blog', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
     { name: '12 Smart & Simple Ways to Improve Your Child\'s Focus', url: pageUrl },
-  ])
+  ]
 
   const articleSchema = generateArticleSchema({
     headline: "12 Smart & Simple Ways to Improve Your Child's Focus",
@@ -51,10 +52,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <BreadcrumbSchema items={breadcrumbItems} />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">

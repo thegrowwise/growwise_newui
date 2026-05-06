@@ -148,9 +148,9 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/enroll': {
-    title: 'Enroll | Grades 1-12 & STEAM | GrowWise Dublin',
+    title: 'Enroll at GrowWise School | Dublin, CA',
     description:
-      'Enroll in GrowWise Grades 1-12 tutoring or STEAM in Dublin, CA. Pick a path and start with a quick intake.',
+      'Enroll your child at GrowWise — grades 1–12 tutoring and STEAM programs in Dublin, CA. Fill out the form and we\'ll respond within 24 hours.',
     keywords:
       'enroll GrowWise, tutoring enrollment, Grades 1-12 enrollment Dublin CA, STEAM program enrollment, sign up for tutoring',
     path: '/enroll',
@@ -240,9 +240,9 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   },
 
   '/camps/summer': {
-    title: 'Summer STEM Camps Dublin CA | AI, Coding & Math | GrowWise',
+    title: 'Summer STEAM Camps Dublin CA | GrowWise',
     description:
-      'Summer STEAM camps in Dublin, CA for Tri-Valley families. Coding, AI, robotics, and math in small groups. Book a free assessment today.',
+      'Small-group summer STEAM camps in Dublin, CA for grades 3–12. Students build real projects — games, robots, apps. Enroll at GrowWise School.',
     keywords:
       'summer coding camp Dublin CA, summer STEAM camp Dublin CA 2026, coding camp kids Tri-Valley, summer math camp Dublin CA, AI camp for kids Dublin CA, robotics camp kids Dublin CA, game development camp kids, young authors camp summer 2026, summer camp 2026 Dublin CA, STEM camp Pleasanton, STEM camp San Ramon, coding camp Livermore, kids coding camp Danville, machine learning camp for kids, Python coding camp kids',
     path: '/camps/summer',

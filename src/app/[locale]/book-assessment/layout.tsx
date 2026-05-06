@@ -1,4 +1,6 @@
 import { Metadata } from 'next'
+import FAQSchema from '@/components/schema/FAQSchema'
+import { BOOK_ASSESSMENT_FAQ_JSONLD } from '@/lib/schema/course-hub-jsonld-faqs'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 import { absoluteSiteUrl } from '@/lib/publicPath'
@@ -65,6 +67,7 @@ export default async function BookAssessmentLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
+      <FAQSchema faqs={BOOK_ASSESSMENT_FAQ_JSONLD} />
       {children}
     </>
   )

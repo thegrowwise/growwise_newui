@@ -28,10 +28,10 @@ export default async function CampsSlugPage({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const page = getCampPage(slug);
   if (!page) {
     notFound();
   }
-  return <CampLandingTemplate page={page} />;
+  return <CampLandingTemplate page={page} locale={locale} />;
 }
