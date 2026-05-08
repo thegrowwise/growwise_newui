@@ -2,7 +2,9 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useTranslations, useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { X, CheckCircle, User, GraduationCap, BookOpen, Users, MessageSquare } from 'lucide-react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -17,7 +19,7 @@ import { PHONE_PLACEHOLDER } from '@/lib/constants';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 import { validatePhoneWithCountryCode } from '@/lib/phoneValidation';
 
-/** Matches `assessmentTypes` value on `src/app/[locale]/book-assessment/page.tsx` for general K–12 intake. */
+/** Matches `assessmentTypes` value on `src/app/[locale]/book-assessment/page.tsx` for general Grades 1–12 intake. */
 const DEFAULT_ASSESSMENT_TYPE = 'Complete Academic Assessment' as const;
 
 interface FreeAssessmentModalProps {
@@ -45,6 +47,8 @@ interface FormData {
 }
 
 const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClose }) => {
+  const router = useRouter();
+  const locale = useLocale();
   const t = useTranslations();
   const [formData, setFormData] = useState<FormData>({
     parentName: '',
@@ -61,7 +65,6 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
     notes: ''
   });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const [agreeToCommunications, setAgreeToCommunications] = useState(false);
@@ -190,6 +193,7 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
       mode: formData.mode.trim(),
       schedule,
       notes: notesCombined,
+      hearAboutUs: 'Website — free assessment modal (not specified)',
     };
 
     setIsSubmitting(true);
@@ -207,7 +211,9 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
       }
 
       if (result.success) {
-        setIsSubmitted(true);
+        router.replace(publicPath('/book-assessment/thank-you', locale));
+        resetAndClose();
+        return;
       } else {
         setSubmitError(result.error || 'Failed to submit assessment booking.');
       }
@@ -233,7 +239,6 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
       preferredTime: '',
       notes: ''
     });
-    setIsSubmitted(false);
     setIsSubmitting(false);
     setSubmitError('');
     setAgreeToCommunications(false);
@@ -256,7 +261,6 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
 
             <div className="overflow-y-auto max-h-[78vh] min-h-0 custom-scrollbar">
               <CardContent className="p-8 lg:p-12">
-              {!isSubmitted ? (
                 <>
                   <div className="text-center mb-8">
                     <div className="w-16 h-16 bg-gradient-to-r from-[#F16112] to-[#F1894F] rounded-full flex items-center justify-center mx-auto mb-4 shadow-[0px_15px_40px_rgba(241,97,18,0.4)]">
@@ -542,39 +546,6 @@ const FreeAssessmentModal: React.FC<FreeAssessmentModalProps> = ({ isOpen, onClo
                     </div>
                   </form>
                 </>
-              ) : (
-                <div className="text-center py-8">
-                  <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0px_20px_50px_rgba(34,197,94,0.4)]">
-                    <CheckCircle className="w-10 h-10 text-white" />
-                  </div>
-
-                  <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                    Thank You!
-                  </h2>
-
-                  <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-md mx-auto">
-                    Our team will contact you within 24 hours to confirm your free assessment.
-                  </p>
-
-                  <div className="space-y-4">
-                    <div className="bg-gradient-to-r from-[#1F396D]/10 to-[#F16112]/10 rounded-xl p-6 backdrop-blur-xl border-2 border-white/60">
-                      <h3 className="font-semibold text-[#1F396D] mb-2">What happens next?</h3>
-                      <ul className="text-sm text-gray-600 space-y-1 text-left">
-                        <li>✓ We'll review your child's information</li>
-                        <li>✓ Schedule a convenient assessment time</li>
-                        <li>✓ Provide personalized learning recommendations</li>
-                      </ul>
-                    </div>
-
-                    <Button
-                      onClick={resetAndClose}
-                      className="bg-gradient-to-r from-[#1F396D] to-[#29335C] hover:from-[#29335C] hover:to-[#1F396D] text-white rounded-xl px-8 py-3 font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      Close
-                    </Button>
-                  </div>
-                </div>
-              )}
               </CardContent>
             </div>
           </div>

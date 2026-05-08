@@ -108,7 +108,7 @@ export default function Dropdown({
       {/* FIX #2: ADD MOUSE ENTER AND MOUSE LEAVE - Keeps dropdown open when cursor moves onto the dropdown panel and triggers close delay when cursor leaves the dropdown panel */}
       {visibleItems.length > 0 && (
         <div 
-          className={`absolute top-full left-0 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
+          className={`absolute top-full left-0 z-50 mt-2 w-80 bg-white border-2 border-gray-200 shadow-[0px_20px_60px_rgba(31,57,109,0.2)] rounded-2xl transition-all duration-300 ring-1 ring-gray-200 overflow-visible ${
             isOpen ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-2'
           }`}
           onMouseEnter={onMouseEnter} 
@@ -124,7 +124,15 @@ export default function Dropdown({
           {/* Menu Items */}
           <div className="py-1 overflow-visible">
             {visibleItems.map((dropdownItem, index) => {
-              const isDropdownItemActive = pathname?.startsWith(createLocaleUrl(dropdownItem.href));
+              const isDropdownItemActive = (() => {
+                if (pathname?.startsWith(createLocaleUrl(dropdownItem.href))) return true;
+                if (dropdownItem.submenuItems?.length) {
+                  return dropdownItem.submenuItems.some((sub) =>
+                    pathname?.startsWith(createLocaleUrl(sub.href))
+                  );
+                }
+                return false;
+              })();
               const hasSubmenu = dropdownItem.hasSubmenu && dropdownItem.submenuItems;
               const isSubmenuOpen = openSubmenus[dropdownItem.key];
               

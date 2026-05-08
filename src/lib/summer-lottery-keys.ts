@@ -1,4 +1,20 @@
-/** Canonical lottery form keys — shared by summer camp page and lottery-success route. */
+/**
+ * Shared enums for summer camp “lottery” / guide funnel (API + success page query params).
+ * Keep in sync with `summerCamp.summercamp.interests` / `grades` in i18n and API body validation.
+ */
+
+export const LOTTERY_INTEREST_KEYS = [
+  'academic',
+  'game_development',
+  'coding',
+  'robotics',
+  'math_olympiad',
+  'ai',
+  'young_authors',
+] as const;
+
+export type LotteryInterestKey = (typeof LOTTERY_INTEREST_KEYS)[number];
+
 export const LOTTERY_GRADES = [
   '1',
   '2',
@@ -17,22 +33,10 @@ export const LOTTERY_GRADES = [
 
 export type LotteryGrade = (typeof LOTTERY_GRADES)[number];
 
-export const LOTTERY_INTERESTS = [
-  'academic',
-  'game_development',
-  'coding',
-  'robotics',
-  'math_olympiad',
-  'ai',
-  'young_authors',
-] as const;
-
-export type LotteryInterest = (typeof LOTTERY_INTERESTS)[number];
-
 export function isLotteryGrade(value: string): value is LotteryGrade {
   return (LOTTERY_GRADES as readonly string[]).includes(value);
 }
 
-export function isLotteryInterest(value: string): value is LotteryInterest {
-  return (LOTTERY_INTERESTS as readonly string[]).includes(value);
+export function isLotteryInterest(value: string): value is LotteryInterestKey {
+  return (LOTTERY_INTEREST_KEYS as readonly string[]).includes(value);
 }

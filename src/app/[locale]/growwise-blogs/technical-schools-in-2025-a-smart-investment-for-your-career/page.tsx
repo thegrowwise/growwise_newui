@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
+import { generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -30,11 +31,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   const { locale } = await params
   const baseUrl = getCanonicalSiteUrl()
   
-  const breadcrumbSchema = generateBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Blog', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
     { name: 'Technical Schools in 2025: A Smart Investment for Your Career', url: absoluteSiteUrl('/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career', locale, baseUrl) },
-  ])
+  ]
 
   const pageUrl = absoluteSiteUrl('/growwise-blogs/technical-schools-in-2025-a-smart-investment-for-your-career', locale, baseUrl)
   const articleSchema = generateArticleSchema({
@@ -49,10 +50,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <BreadcrumbSchema items={breadcrumbItems} />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -107,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
               </p>
 
               <p className="text-gray-700 mb-6 text-sm">
-                K–12 students can preview similar skills in our 
+                Grades 1–12 students can preview similar skills in our 
                 <Link href={publicPath('/camps/summer', locale)} className="text-[#1F396D] font-semibold underline hover:text-[#F16112]">
                   summer skill-building programs
                 </Link> before college.

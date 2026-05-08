@@ -331,7 +331,7 @@ const HighSchoolMathPage: React.FC = () => {
                 className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#d54f0a] hover:to-[#F16112] text-white rounded-full px-8 py-4 text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
               >
                 <Calculator className="mr-2 w-5 h-5" />
-                Book Free Assessment
+                Book a Free Assessment
               </Button>
               <Button 
                 onClick={() => {
@@ -668,7 +668,7 @@ const HighSchoolMathPage: React.FC = () => {
               onClick={() => setIsAssessmentModalOpen(true)}
               className="bg-gradient-to-r from-[#F16112] to-[#F1894F] hover:from-[#F1894F] hover:to-[#F16112] text-white px-10 py-4 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
             >
-              Book Free Assessment
+              Book a Free Assessment
               <ChevronRight className="ml-2 w-5 h-5" />
             </Button>
             <Button

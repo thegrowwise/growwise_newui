@@ -58,7 +58,7 @@ const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
     key: 'k12',
     value: [
       'Math Courses: Elementary Math, Middle School Math, DUSD Accelerated Math, High School Math (including Calculus)',
-      'ELA Courses: English Mastery K-12, Reading Enrichment, Grammar Boost',
+      'ELA Courses: English Mastery Grades 1-12, Reading Enrichment, Grammar Boost',
       'Writing Lab: Creative Writing, Essay Writing, Create & Reflect programs',
       'SAT/ACT Prep: Math Test Prep, Online SAT Test Prep, Online ACT Test Prep'
     ]
@@ -78,7 +78,7 @@ const KNOWLEDGE_BASE: KnowledgeBaseEntry[] = [
   {
     category: 'services',
     key: 'assessments',
-    value: 'FREE 60-minute assessment for K-12 programs',
+    value: 'FREE 60-minute assessment for Grades 1-12 programs',
   },
   {
     category: 'services',

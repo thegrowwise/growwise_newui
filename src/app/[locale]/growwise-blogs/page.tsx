@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -49,6 +49,15 @@ interface BlogPost {
 }
 
 const blogPosts: BlogPost[] = [
+  {
+    id: 'math-finals-2026',
+    category: 'academic',
+    title: 'High School Math Finals Prep in Dublin, CA: Algebra 1–AP Precalculus',
+    excerpt:
+      'How to prepare for Algebra 1, Algebra 2, Precalculus, and AP Precalculus finals—practice plans, what to review, and in-center finals prep in Dublin, CA.',
+    href: '/growwise-blogs/high-school-math-finals-prep-dublin-tri-valley',
+    readMore: 'Read article »',
+  },
   {
     id: '1',
     category: 'academic',
@@ -204,15 +213,15 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
   
   const baseUrl = getCanonicalSiteUrl()
   
-  const breadcrumbSchema = generateBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
-  ])
+    { name: 'Blog', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+  ]
 
   const collectionPageSchema = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "GrowWise Blog — Math, Coding & STEAM for K-12 Families",
+    "name": "GrowWise Blog — Math, Coding & STEAM for Grades 1-12 Families",
     "description": "Practical articles on tutoring, English, coding, and STEAM for Dublin and Tri-Valley families.",
     "url": absoluteSiteUrl('/growwise-blogs', locale, baseUrl),
     "publisher": {
@@ -228,10 +237,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionPageSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <BreadcrumbSchema items={breadcrumbItems} />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         {/* Hero Section */}
         <section className="bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-16 md:py-24 px-4 sm:px-6 lg:px-8">
@@ -240,7 +246,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
               GrowWise Blogs
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
-              Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for K–12 in Dublin, Pleasanton, and San Ramon.
+              Tips and blogs on math tutoring, English help, coding for kids, and STEAM Programs for Grades 1–12 in Dublin, Pleasanton, and San Ramon.
             </p>
             <p className="text-base md:text-lg text-gray-200/95 max-w-2xl mx-auto mt-4">
               Looking ahead to summer?{' '}
@@ -349,7 +355,7 @@ export default async function GrowWiseBlogsPage({ params, searchParams }: PagePr
         <section className="bg-gradient-to-r from-[#1F396D] to-[#F16112] text-white py-16 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Enroll Today to Unlock Learning Potential for K-12 Students!
+              Enroll Today to Unlock Learning Potential for Grades 1-12 Students!
             </h2>
             <Link
               href="/enroll"

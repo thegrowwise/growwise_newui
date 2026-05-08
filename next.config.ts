@@ -51,14 +51,18 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'], // Use modern image formats
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Allow both quality levels so next/image cache doesn't miss when quality=75 (default) or quality=85 is requested.
-    qualities: [75, 85],
+    // Include 70 for summer hero / program cards; 75 default; 85 where explicitly requested.
+    qualities: [70, 75, 85],
     // Short TTL in dev; longer in prod so repeat views hit the image optimizer cache more often.
     minimumCacheTTL: isProd ? 86_400 : 60,
   },
   
   // Experimental features for better performance
   experimental: {
+    // Inline route CSS into HTML in production to remove render-blocking stylesheet round-trips
+    // (helps mobile LCP/FCP; Tailwind-friendly per Next.js docs). Trade-off: larger HTML, experimental.
+    // https://nextjs.org/docs/app/api-reference/config/next-config-js/inlineCss
+    inlineCss: true,
     // Dev-only: avoid distDir lockfile acquisition (can ETIMEDOUT on iCloud/synced or slow disks).
     // Production builds keep the default lock behavior via NODE_ENV.
     ...(process.env.NODE_ENV === 'development' ? { lockDistDir: false as const } : {}),
@@ -67,6 +71,12 @@ const nextConfig: NextConfig = {
       'lucide-react',
       'next-intl',
       'recharts',
+      'embla-carousel-react',
+      '@stripe/react-stripe-js',
+      'react-day-picker',
+      'cmdk',
+      'input-otp',
+      'vaul',
       '@radix-ui/react-accordion',
       '@radix-ui/react-alert-dialog',
       '@radix-ui/react-aspect-ratio',
@@ -172,6 +182,13 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async rewrites() {
+    // Legacy camp guide POST path → canonical API route.
+    return [
+      { source: '/api/summer-camp-lottery', destination: '/api/summer-camp-summercamp' },
+    ];
+  },
+
   // Legacy `/camp/*` SEO landings → `/camps/*` (canonical namespace aligns with /camps/summer, /camps/winter).
   // `/en/camp/*` listed before `/en/:path*` so one redirect hop to `/camps/*`.
   async redirects() {
@@ -182,6 +199,11 @@ const nextConfig: NextConfig = {
       { source: '/en/camp/:slug', destination: '/camps/:slug', permanent: true },
       { source: '/en', destination: '/', permanent: true },
       { source: '/en/:path*', destination: '/:path*', permanent: true },
+      {
+        source: '/:locale/camps/summer/lottery-success',
+        destination: '/:locale/camps/summer/summercamp-success',
+        permanent: true,
+      },
     ];
   },
 };

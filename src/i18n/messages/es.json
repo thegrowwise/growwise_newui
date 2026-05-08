@@ -459,7 +459,7 @@
     "cta": {
       "title": "Ready to Excel in Academics?",
       "subtitle": "Join 325+ students who have improved their academic performance with our personalized programs.",
-      "primary": "Book Free Assessment",
+      "primary": "Book a Free Assessment",
       "secondary": "Learn More"
     },
     "modal": {
@@ -686,11 +686,10 @@
       "secondaryCta": "Guía completa del campamento →",
       "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
       "downloadBrochure": "Descargar folleto 2026",
-      "urgencyLine": "15% early bird hasta el 30 de abril · Plazas limitadas por semana",
-      "earlyBirdPromoBefore": "15% de descuento early bird en cualquier curso hasta el 30 de abril — Código: "
+      "urgencyLine": "Plazas limitadas por semana — las semanas populares se llenan primero"
     },
     "guideForm": {
-      "ariaLabel": "Solicitar guía del campamento y oferta early bird"
+      "ariaLabel": "Solicitar la guía PDF del campamento por correo"
     },
     "guideSuccess": {
       "title": "¡Tu guía del campamento está en camino!",
@@ -702,13 +701,13 @@
     },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird hasta el 30 de abril",
+      "earlyBirdBar": "Plazas limitadas cada semana",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Enter free lottery instead",
+      "summercampLink": "Enter free summercamp instead",
       "enrollNow": "Enroll Now",
-      "earlyBirdBadge": "Early bird — GWSUMMER15"
+      "earlyBirdBadge": "Guía por correo"
     },
-    "lottery": {
+    "summercamp": {
       "title": "Gana un lugar gratis en Summer Camp",
       "subtitle": "Entrada rápida: correo, interés en el campamento y grado. Te avisaremos si ganas.",
       "formAriaLabel": "Formulario del sorteo de plaza gratis",
@@ -738,6 +737,8 @@
       },
       "emailLabel": "Correo electrónico",
       "emailPlaceholder": "tu@ejemplo.com",
+      "phoneLabel": "Número de teléfono",
+      "phonePlaceholder": "+1 555 123 4567",
       "submit": "Participar en el sorteo",
       "submitting": "Enviando…",
       "successTitle": "¡Ya estás participando!",

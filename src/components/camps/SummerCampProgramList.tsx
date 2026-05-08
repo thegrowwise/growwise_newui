@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { Check } from 'lucide-react';
 import type { Program } from '@/lib/summer-camp-data';
-import { trackCampView } from '@/lib/meta-pixel';
 import {
   getSummerCampProgramTrack,
   orderProgramsBySummerCampTrack,
@@ -42,18 +41,18 @@ const SummerCampProgramPickCard = memo(function SummerCampProgramPickCard({
   onSelect,
   imageSizes,
   imageWrapperClassName,
-  imagePriority,
 }: {
   program: Program;
   isSelected: boolean;
   onSelect: (program: Program) => void;
   imageSizes: string;
   imageWrapperClassName: string;
-  imagePriority: boolean;
 }) {
   const t = useTranslations('summerCamp');
   const handleClick = useCallback(() => {
-    trackCampView(program.title, program.category);
+    void import('@/lib/meta-pixel').then(({ trackCampView }) =>
+      trackCampView(program.title, program.category)
+    );
     onSelect(program);
   }, [onSelect, program]);
 
@@ -76,8 +75,8 @@ const SummerCampProgramPickCard = memo(function SummerCampProgramPickCard({
           alt={`${program.title}: ${program.description}`}
           fill
           sizes={imageSizes}
-          quality={75}
-          priority={imagePriority}
+          quality={70}
+          decoding="async"
           className="object-cover transition-transform duration-500 min-[769px]:group-hover:scale-105"
           draggable={false}
           unoptimized={/^https?:\/\//i.test(program.image)}
@@ -122,11 +121,6 @@ export const ProgramList = memo(function ProgramList({
   const list = programs ?? [];
   const ordered = useMemo(() => orderProgramsBySummerCampTrack(list), [list]);
   const groups = useMemo(() => groupProgramsByTrack(ordered), [ordered]);
-  const globalIndexById = useMemo(() => {
-    const m = new Map<string, number>();
-    ordered.forEach((p, i) => m.set(p.id, i));
-    return m;
-  }, [ordered]);
 
   const sectionHeading = (track: SummerCampProgramTrack | 'unknown') => {
     switch (track) {
@@ -152,7 +146,6 @@ export const ProgramList = memo(function ProgramList({
             <ul className="grid grid-cols-1 gap-3 list-none p-0 m-0" aria-label={sectionHeading(group.track)}>
               {group.programs.map((program) => {
                 const isSelected = selectedProgramId === program.id;
-                const gIdx = globalIndexById.get(program.id) ?? 0;
                 const seo = getSummerCampProgramSeoLink(program.id);
                 return (
                   <li
@@ -165,7 +158,6 @@ export const ProgramList = memo(function ProgramList({
                       onSelect={onSelectProgram}
                       imageSizes="(max-width:768px) 96vw, 100vw"
                       imageWrapperClassName="aspect-[650/450]"
-                      imagePriority={gIdx < 2}
                     />
                     {seo ? (
                       <Link
@@ -184,10 +176,9 @@ export const ProgramList = memo(function ProgramList({
         <p className="text-center">
           <a
             href="#lead-capture"
-            className="text-[13px] font-medium"
-            style={{ color: '#0F6E56' }}
+            className="text-[13px] font-medium text-[#065f46]"
           >
-            {t('mobile.lotteryLink')}
+            {t('mobile.summercampLink')}
           </a>
         </p>
       </div>
@@ -206,7 +197,6 @@ export const ProgramList = memo(function ProgramList({
                 const isSelected = selectedProgramId === program.id;
                 const hasOddCount = group.programs.length % 2 !== 0;
                 const isLastAndAlone = hasOddCount && idx === group.programs.length - 1;
-                const gIdx = globalIndexById.get(program.id) ?? 0;
                 const seo = getSummerCampProgramSeoLink(program.id);
                 return (
                   <li
@@ -219,7 +209,6 @@ export const ProgramList = memo(function ProgramList({
                       onSelect={onSelectProgram}
                       imageSizes="(min-width: 1024px) 24vw, (min-width: 769px) 42vw, 100vw"
                       imageWrapperClassName={isLastAndAlone ? 'h-[200px]' : 'aspect-[650/450]'}
-                      imagePriority={gIdx < 2}
                     />
                     {seo ? (
                       <Link

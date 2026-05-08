@@ -1,6 +1,9 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLocale } from 'next-intl';
+import { publicPath } from '@/lib/publicPath';
 import { useChatbot } from '../../contexts/ChatbotContext';
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
@@ -42,6 +45,8 @@ import { CONTACT_INFO } from '@/lib/constants';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
 export default function Contact() {
+  const router = useRouter();
+  const locale = useLocale();
   const { openChatbot } = useChatbot();
   const t = useTranslations('contact');
   const dispatch = useAppDispatch();
@@ -61,7 +66,6 @@ export default function Contact() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [agreeToCommunications, setAgreeToCommunications] = useState(false);
@@ -119,7 +123,8 @@ export default function Contact() {
       });
 
       if (result.success) {
-        setIsSubmitted(true);
+        router.replace(publicPath('/contact/thank-you', locale));
+        return;
       } else {
         if (result.errors?.length) {
           const byField = result.errors.reduce<Record<string, string>>((acc, { field, message }) => {
@@ -165,39 +170,6 @@ export default function Contact() {
     googleMapsUrl: `https://maps.google.com/?q=${encodeURIComponent(CONTACT_INFO.address)}`,
     directionsUrl: `https://maps.google.com/?daddr=${encodeURIComponent(CONTACT_INFO.address)}`
   };
-
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-        <Card className="max-w-md w-full bg-white shadow-xl">
-          <CardContent className="p-8 text-center">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-8 h-8 text-green-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">{t('success.title')}</h1>
-            <p className="text-gray-600 mb-6">
-              {t('success.description')}
-            </p>
-            <div className="space-y-3">
-              <Button 
-                className="w-full bg-[#1F396D] hover:bg-[#29335C] text-white"
-                onClick={() => setIsSubmitted(false)}
-              >
-                Send Another Message
-              </Button>
-              <Button 
-                variant="outline"
-                className="w-full border-[#F16112] text-[#F16112] hover:bg-[#F16112] hover:text-white"
-              >
-                <Phone className="w-4 h-4 mr-2" />
-                Call {CONTACT_INFO.phone}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

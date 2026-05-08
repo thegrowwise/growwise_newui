@@ -43,7 +43,7 @@ export const mathCourses: MathCourse[] = [
     price: 280,
     priceRange: '$280–$1280',
     duration: '10 weeks',
-    level: 'Grades K-5',
+    level: 'Grades 1-5',
     gradeLevel: ['Elementary'],
     courseType: ['Core Math'],
     alignment: ['California Standards'],

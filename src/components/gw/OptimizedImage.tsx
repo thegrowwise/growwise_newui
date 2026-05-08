@@ -11,20 +11,33 @@ import Image from 'next/image'
 const ERROR_IMG_SRC =
   'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODgiIGhlaWdodD0iODgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjMDAwIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBvcGFjaXR5PSIuMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIzLjciPjxyZWN0IHg9IjE2IiB5PSIxNiIgd2lkdGg9IjU2IiBoZWlnaHQ9IjU2IiByeD0iNiIvPjxwYXRoIGQ9Im0xNiA1OCAxNi0xOCAzMiAzMiIvPjxjaXJjbGUgY3g9IjUzIiBjeT0iMzUiIHI9IjciLz48L3N2Zz4KCg=='
 
-interface OptimizedImageProps {
+/** GWA-192 / TC-03: every next/image use must have `fill` or explicit `width` + `height`. */
+type OptimizedImageCommon = {
   src: string
   alt: string
-  width?: number
-  height?: number
   className?: string
   style?: React.CSSProperties
-  fill?: boolean
-  sizes?: string
   priority?: boolean
   quality?: number
   objectFit?: 'contain' | 'cover' | 'fill' | 'none' | 'scale-down'
   objectPosition?: string
 }
+
+export type OptimizedImageProps = OptimizedImageCommon &
+  (
+    | {
+        fill: true
+        sizes?: string
+        width?: never
+        height?: never
+      }
+    | {
+        fill?: false
+        width: number
+        height: number
+        sizes?: string
+      }
+  )
 
 export function OptimizedImage({
   src,
@@ -96,16 +109,12 @@ export function OptimizedImage({
     )
   }
 
-  // Use width/height for non-fill images
-  const imageWidth = width || 800
-  const imageHeight = height || 600
-
   return (
     <Image
       src={imgSrc}
       alt={alt}
-      width={imageWidth}
-      height={imageHeight}
+      width={width}
+      height={height}
       className={className}
       style={style}
       priority={priority}

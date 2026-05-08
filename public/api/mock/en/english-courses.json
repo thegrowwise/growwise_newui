@@ -1,7 +1,7 @@
 {
   "hero": {
-    "title": "English Tutoring in Dublin, CA",
-    "subtitle": "Comprehensive English Language Arts programs for students in Grades K–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
+    "title": "English & Reading Classes in Dublin, CA — Grades 1–12",
+    "subtitle": "Comprehensive English Language Arts programs for students in Grades 1–12. From reading enrichment to advanced writing, develop strong communication skills with expert instruction aligned to Dublin and Pleasanton school district standards.",
     "badge": "Master English with Excellence"
   },
   "filters": {
@@ -64,7 +64,7 @@
       "grade": "7th Grade",
       "improvement": "Improved writing skills by 85% in one semester",
       "quote": "The English courses helped me find my voice and express my ideas clearly.",
-      "course": "English Mastery K-12",
+      "course": "English Mastery Grades 1-12",
       "image": "/assets/photos/photo-1494790108755-2616b612b786.jpg"
     },
     {
@@ -148,7 +148,7 @@
   ],
   "cta": {
     "title": "Ready to Excel in English?",
-    "subtitle": "Join hundreds of students who have transformed their writing and reading skills with GrowWise English programs.",
+    "subtitle": "Join 325+ students who have transformed their writing and reading skills with GrowWise English programs.",
     "primaryButton": "Get Started",
     "secondaryButton": "Contact Us"
   }

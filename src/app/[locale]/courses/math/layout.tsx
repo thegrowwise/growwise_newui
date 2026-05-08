@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
+import FAQSchema from '@/components/schema/FAQSchema'
+import { MATH_COURSE_MERGED_FAQ_JSONLD } from '@/lib/schema/course-hub-jsonld-faqs'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-
-/** Reduces dev static-path worker churn; mitigates `spawn EBADF` with Turbopack on some macOS setups. */
-export const dynamic = 'force-dynamic'
-import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import { generateCourseSchema } from '@/lib/seo/structuredData'
 import { absoluteSiteUrl } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
 
@@ -25,12 +25,12 @@ export default async function MathCoursesLayout({
   
   // Generate Course structured data with enhanced details
   const courseSchema = generateCourseSchema({
-    name: "K-12 Math Courses - Grade-Level, Accelerated & Integrated Math | Math Tutoring Dublin CA",
+    name: "Grades 1-12 Math Courses - Grade-Level, Accelerated & Integrated Math | Math Tutoring Dublin CA",
     description:
       "Math tutoring for grades 1–12 in Dublin, CA. Common Core aligned, small groups, placement support. Book a free assessment.",
     provider: "GrowWise",
     courseCode: "MATH-K12",
-    educationalLevel: "K-12",
+    educationalLevel: "Grades 1-12",
     teaches: [
       "Grade-Level Math (California Common Core Standards)",
       "Accelerated Math",
@@ -54,26 +54,27 @@ export default async function MathCoursesLayout({
     }
   })
 
-  // Generate Breadcrumb structured data
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Programs', url: absoluteSiteUrl('/programs', locale, baseUrl) },
-    { name: 'Academic', url: absoluteSiteUrl('/academic', locale, baseUrl) },
-    { name: 'Math Courses', url: absoluteSiteUrl('/courses/math', locale, baseUrl) },
-  ])
-
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      <BreadcrumbSchema
+        items={[
+          { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
+          {
+            name: 'Academic Programs',
+            url: absoluteSiteUrl('/academic', locale, baseUrl),
+          },
+          {
+            name: 'Math Courses',
+            url: absoluteSiteUrl('/courses/math', locale, baseUrl),
+          },
+        ]}
       />
+      <FAQSchema faqs={MATH_COURSE_MERGED_FAQ_JSONLD} />
       {children}
     </>
   )
 }
-

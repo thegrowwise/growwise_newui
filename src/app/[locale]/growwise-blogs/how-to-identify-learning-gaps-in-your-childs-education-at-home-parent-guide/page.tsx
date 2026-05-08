@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { generateMetadataFromPath } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema, generateArticleSchema } from '@/lib/seo/structuredData'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
+import { generateArticleSchema } from '@/lib/seo/structuredData'
 import Link from 'next/link'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { getS3ImageUrl } from '@/lib/constants'
@@ -33,11 +34,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
   
   const pageUrl = absoluteSiteUrl('/growwise-blogs/how-to-identify-learning-gaps-in-your-childs-education-at-home-parent-guide', locale, baseUrl)
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Blog', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
     { name: "How to Identify Learning Gaps in Your Child's Education at Home", url: pageUrl },
-  ])
+  ]
 
   const articleSchema = generateArticleSchema({
     headline: "How to Identify Learning Gaps in Your Child's Education at Home",
@@ -51,10 +52,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <BreadcrumbSchema items={breadcrumbItems} />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-[#1F396D] via-[#29335C] to-[#1F396D] text-white py-12 md:py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
@@ -375,7 +373,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                     <li><strong>Daily reading:</strong> Read local event flyers or books together to spot vocabulary or comprehension issues.</li>
                   </ul>
                   <p className="text-gray-700 mt-3">
-                    GrowWise provides <strong>English tutoring for K-12 Students</strong> to strengthen reading skills.
+                    GrowWise provides <strong>English tutoring for Grades 1-12 Students</strong> to strengthen reading skills.
                   </p>
                 </div>
 
@@ -443,7 +441,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
                   <h3 className="text-xl font-bold text-[#1F396D] mb-2">How do I register my child?</h3>
                   <p className="text-gray-700">
                     <Link href="/enroll" className="text-[#F16112] hover:underline font-semibold">
-                      Enroll Now-K-12-Courses
+                      Enroll Now-Grades-1-12-Courses
                     </Link>
                   </p>
                 </div>

@@ -121,6 +121,24 @@ export const FALLBACK_MENU_ITEMS: MenuItem[] = [
           icon: 'GraduationCap',
           href: '/courses/high-school-math',
           gradient: 'from-[#29335C] to-[#1F396D]',
+          hasSubmenu: true,
+          submenuHeaderSubtitle: 'Tutoring, curriculum, and finals prep',
+          submenuItems: [
+            {
+              title: 'High School Math',
+              description: 'Algebra I through Pre-Calculus — tutoring overview',
+              icon: 'GraduationCap',
+              href: '/courses/high-school-math',
+              gradient: 'from-[#29335C] to-[#1F396D]',
+            },
+            {
+              title: 'Math Finals Prep',
+              description: 'End-of-year finals support & structured prep program',
+              icon: 'Target',
+              href: '/math-finals-practice-session',
+              gradient: 'from-[#1F396D] to-[#F16112]',
+            },
+          ],
         },
         {
           key: 'satPrep',

@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Calculator, Brain, Gamepad2, Bot, Code2, Lightbulb, PenTool } from 'lucide-react';
 import enProgramsJson from '../../public/api/mock/en/summer-camp-programs.json';
+import { formatCampWeekSlotHeading } from '@/lib/summer-camp-week-calendar';
 
 export type Slot = {
   id: string;
@@ -32,6 +33,8 @@ export type ProgramDetails = {
   /** When set, used as the label instead of "Daily hours" (e.g. "Session hours"). */
   hoursLabel?: string;
   includes: string[];
+  /** Shown in Program Details modal (e.g. in-person only vs in-person or online). */
+  deliverySummary?: string;
 };
 
 export type Program = {
@@ -174,7 +177,7 @@ function expandSlotTemplate(template: SlotTemplate): Slot[] {
   const price = firstProgramPrices?.[template.defaultFormat] ?? 0;
   return Array.from({ length: template.count }).map((_, i) => ({
     id: `${template.slotIdPrefix}-w${i + 1}`,
-    label: `Week ${i + 1}`,
+    label: formatCampWeekSlotHeading(i),
     time,
     format: template.defaultFormat,
     price,
@@ -270,6 +273,39 @@ export function getDefaultSummerCampData(): ReturnType<typeof hydrateSummerCampD
     _defaultData = hydrateSummerCampData(enProgramsJson as SummerCampDataJson);
   }
   return _defaultData;
+}
+
+/**
+ * Lowest published USD price across default camp data (all slot prices, per-format prices, and Olympiad tiers).
+ * Used for Event JSON-LD `Offer.price` (e.g. GSC) so the value matches on-page pricing, not GTM or data layer.
+ */
+export function getMinimumPublishedSummerCampPriceUsd(): number {
+  const { programs, olympiadTierConfigs } = getDefaultSummerCampData();
+  const candidates: number[] = [];
+  for (const p of programs) {
+    if (p.startingPrice > 0) candidates.push(p.startingPrice);
+    for (const level of p.levels) {
+      for (const s of level.slots) {
+        if (s.price > 0) candidates.push(s.price);
+      }
+      if (level.priceByProgramAndFormat) {
+        for (const byFmt of Object.values(level.priceByProgramAndFormat)) {
+          for (const n of Object.values(byFmt)) {
+            if (n > 0) candidates.push(n);
+          }
+        }
+      }
+    }
+  }
+  for (const t of olympiadTierConfigs) {
+    for (const n of Object.values(t.priceByFormat)) {
+      if (n > 0) candidates.push(n);
+    }
+  }
+  if (candidates.length === 0) {
+    throw new Error('getMinimumPublishedSummerCampPriceUsd: no positive prices in camp data');
+  }
+  return Math.min(...candidates);
 }
 
 /** Fetches summer camp data from the mock API (same pattern as FAQ, academic, math, steam). Fallback to en if locale file missing. */

@@ -42,8 +42,8 @@
   "home": {
     "hero": {
       "title": "Empowering Young Minds for Tomorrow",
-      "subtitle": "Comprehensive K-12 Education & STEAM Programs",
-      "description": "Join 325+ students in our personalized learning journey with 98% satisfaction rate",
+      "subtitle": "Comprehensive Grades 1-12 Education & STEAM Programs",
+      "description": "Join 325+ students in our personalized learning journey with 98% parent satisfaction",
       "cta": "Start Your Journey"
     },
     "statistics": {
@@ -53,7 +53,7 @@
     },
     "programs": {
       "k12": {
-        "title": "K-12 Academic Programs",
+        "title": "Grades 1-12 Academic Programs",
         "subtitle": "Comprehensive academic support for all grade levels"
       }
     },
@@ -250,7 +250,7 @@
           "machineLearning": "Machine Learning Algorithms",
           "dataScience": "Data Science & Analytics"
         },
-        "cta": "Book Free Assessment"
+        "cta": "Book a Free Assessment"
       },
       "gameDev": {
         "title": "Game Development",
@@ -276,7 +276,7 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join 325+ students who are already building the future with our innovative programs",
-      "primaryCta": "Book Free Assessment",
+      "primaryCta": "Book a Free Assessment",
       "secondaryCta": "Join Free Saturday Workshop"
     },
     "mlAi": {
@@ -337,7 +337,7 @@
       "cta": {
         "title": "Ready to Build the Future with AI?",
         "subtitle": "Start your journey into artificial intelligence and machine learning today",
-        "primaryCta": "Book Free Assessment",
+        "primaryCta": "Book a Free Assessment",
         "secondaryCta": "View Curriculum"
       }
     },
@@ -452,7 +452,7 @@
     "cta": {
       "title": "Ready to Excel in Academics?",
       "subtitle": "Join 325+ students who have improved their academic performance with our personalized programs.",
-      "primary": "Book Free Assessment",
+      "primary": "Book a Free Assessment",
       "secondary": "Learn More"
     },
     "modal": {
@@ -481,7 +481,7 @@
   "about": {
     "hero": {
       "title": "About GrowWise",
-      "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized K-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
+      "subtitle": "Since 2024, GrowWise has been transforming education in Dublin, CA, through personalized Grades 1-12 instruction and innovative STEAM programs. We empower every student with the skills, knowledge, and confidence they need to succeed."
     },
     "foundation": { 
       "title": "Our Foundation",
@@ -601,12 +601,12 @@
       "titleHighlight": "Arts & Mathematics",
       "subtitle": "Prepare for the future with hands-on STEAM education. From coding and game development to AI and entrepreneurship, our programs combine creativity with cutting-edge technology.",
       "explorePrograms": "Explore Programs",
-      "bookFreeTrial": "Book Free Assessment"
+      "bookFreeTrial": "Book a Free Assessment"
     },
     "programs": {
       "title": "Our STEAM Programs",
       "subtitle": "Comprehensive programs designed to prepare students for the digital future",
-      "startLearning": "Book Free Assessment"
+      "startLearning": "Book a Free Assessment"
     },
     "gameDevelopment": {
       "title": "Game Development",
@@ -641,7 +641,7 @@
     "cta": {
       "title": "Ready to Start Your STEAM Journey?",
       "subtitle": "Join 325+ students learning cutting-edge technology skills",
-      "primaryCta": "Book Free Assessment",
+      "primaryCta": "Book a Free Assessment",
       "secondaryCta": "Join Free Saturday Workshop"
     }
   },
@@ -727,7 +727,10 @@
       "removeItem": "Remove item"
     },
     "infoModal": {
-      "detailsUnavailable": "Details are not available for this program."
+      "detailsUnavailable": "Details are not available for this program.",
+      "campDatesLabel": "Camp dates",
+      "seasonNoteLabel": "Calendar",
+      "deliveryLabel": "Format"
     },
     "filter": {
       "allCamps": "All Camps",
@@ -740,14 +743,13 @@
     },
     "hero": {
       "h1": "This summer, your child builds something real.",
-      "subhead": "Coding, AI, Robotics, Game Dev & Math Camps · Grades K–12 · Dublin CA · Limited seats",
+      "subhead": "Coding, AI, Robotics, Game Dev & Math Camps · Grades 1–12 · Dublin CA · Limited seats",
       "primaryCta": "Reserve a Spot →",
-      "secondaryCta": "Get Camp Guide (PDF, opens in new tab) →",
+      "secondaryCta": "Get Camp Guide →",
       "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
       "trustMicro": "98% parent satisfaction · Max 8 students per class · Expert instructors",
-      "urgencyLine": "15% early-bird ends April 30 · Limited seats per week",
-      "downloadBrochure": "View 2026 brochure PDF (new tab)",
-      "earlyBirdPromoBefore": "15% off for early bird on any course through April 30 — Use code: "
+      "urgencyLine": "Limited seats per week — popular weeks fill first",
+      "downloadBrochure": "View 2026 brochure PDF (new tab)"
     },
     "conversion": {
       "programGroupsHeading": "Start with one track",
@@ -794,24 +796,24 @@
       ],
       "trustProjectsCta": "See Student Projects →",
       "trustProjectsUrl": "https://thegrowwise.com/nextgen-hub/",
-      "guideModalTitle": "Get your camp guide + 15% off",
-      "guideModalSubtitle": "Tell us a bit about your child—we’ll email the PDF and early-bird details.",
+      "guideModalTitle": "Get your summer camp guide",
+      "guideModalSubtitle": "Tell us a bit about your child—we’ll email the PDF camp guide.",
       "parentNameLabel": "Parent name",
       "parentNamePlaceholder": "Your full name",
-      "guideSubmitCta": "Get Guide + 15% Off →",
+      "guideSubmitCta": "Email Me the Guide →",
       "finalHeading": "Still not sure which summer camp is right for your child?",
-      "finalSubtext": "Limited seats per batch · 15% early-bird ends April 30",
+      "finalSubtext": "Limited seats per batch — reserve early for your preferred week",
       "finalReserveCta": "Reserve a Spot →",
-      "finalGuidePdfCta": "Get guide + 15% off (by email) →",
+      "finalGuidePdfCta": "Get camp guide by email →",
       "bookingSectionTitle": "Choose your camp & reserve a week",
       "bookingSectionSub": "Pick a program, then select your week and checkout."
     },
     "guideForm": {
-      "ariaLabel": "Request camp guide and early-bird offer"
+      "ariaLabel": "Request the summer camp guide PDF by email"
     },
     "guideSuccess": {
       "title": "Your camp guide is on the way!",
-      "bodyEmail": "We’ve emailed your PDF camp guide and your 15% early-bird code (check inbox & spam).",
+      "bodyEmail": "We’ve emailed your PDF camp guide (check inbox & spam).",
       "bodyUrgency": "Reserve a week before your preferred dates fill up.",
       "reserveCta": "Reserve a Spot →",
       "viewOptionsCta": "View Camp Options →",
@@ -819,16 +821,16 @@
     },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "Early bird ends April 30",
+      "earlyBirdBar": "Limited seats each week",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Get camp guide instead",
+      "summercampLink": "Get camp guide instead",
       "enrollNow": "Enroll Now",
-      "earlyBirdBadge": "Early bird — GWSUMMER15"
+      "earlyBirdBadge": "Camp guide by email"
     },
-    "lottery": {
+    "summercamp": {
       "title": "Win a free Summer Camp spot",
       "subtitle": "Quick entry — email, camp interest, and grade. We’ll email you if you win.",
-      "formAriaLabel": "Free camp spot lottery entry",
+      "formAriaLabel": "Free camp spot summercamp entry",
       "childGradeLabel": "Child’s grade (2026–27)",
       "gradePlaceholder": "Select grade",
       "campInterestLabel": "Camp interest",
@@ -859,7 +861,9 @@
       },
       "emailLabel": "Email",
       "emailPlaceholder": "you@example.com",
-      "submit": "Enter lottery",
+      "phoneLabel": "Phone number",
+      "phonePlaceholder": "(555) 123-4567",
+      "submit": "Enter summercamp",
       "submitting": "Submitting…",
       "successTitle": "You’re entered!",
       "successBody": "Winner announced May 20th. Only 10 spots — results emailed directly.",
@@ -877,7 +881,7 @@
     },
     "highlights": {
       "heading": "Summer STEAM & Coding Camps",
-      "intro": "GrowWise summer STEAM camp Dublin CA 2026 — weekly sessions from June through August for grades K–12. Families across Dublin, Pleasanton, San Ramon, Danville, and Livermore trust our small-group, expert-led programs.",
+      "intro": "GrowWise summer STEAM camp Dublin CA 2026 — weekly sessions from June through August for grades 1–12. Families across Dublin, Pleasanton, San Ramon, Danville, and Livermore trust our small-group, expert-led programs.",
       "programs": [
         {
           "icon": "💻",
@@ -927,7 +931,7 @@
         {
           "icon": "📅",
           "title": "Flexible Scheduling",
-          "description": "Half-day and full-day sessions, June through August, with week-by-week enrollment and early bird savings."
+          "description": "Half-day and full-day sessions, June through August, with flexible week-by-week enrollment."
         },
         {
           "icon": "📍",
@@ -1020,8 +1024,8 @@
     }
   },
   "enrollnow": {
-    "h1": "Start Your Enrollment Today",
-    "metaDescription": "Enroll your child in GrowWise K-12 tutoring and STEAM programs. Choose from academic and STEM options. Fill out the form and we’ll guide you within 24 hours."
+    "h1": "Enroll at GrowWise School — Dublin, CA",
+    "metaDescription": "Enroll your child at GrowWise — grades 1–12 tutoring and STEAM programs in Dublin, CA. Fill out the form and we'll respond within 24 hours."
   },
   "notFound": {
     "title": "Page not found",

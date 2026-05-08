@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft, Download, MessageSquare } from 'lucide-react'
 import { generatePageMetadata } from '@/lib/seo/metadata'
-import { generateBreadcrumbSchema } from '@/lib/seo/structuredData'
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema'
 import { BlogImage } from '@/components/blogs/BlogImage'
 import { absoluteSiteUrl, publicPath } from '@/lib/publicPath'
 import { getCanonicalSiteUrl } from '@/lib/seo/siteUrl'
@@ -36,11 +36,11 @@ export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
   const baseUrl = getCanonicalSiteUrl()
   const pageUrl = absoluteSiteUrl(SLUG, locale, baseUrl)
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
+  const breadcrumbItems = [
     { name: 'Home', url: absoluteSiteUrl('/', locale, baseUrl) },
-    { name: 'Blogs', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
+    { name: 'Blog', url: absoluteSiteUrl('/growwise-blogs', locale, baseUrl) },
     { name: "Your Kids Aren't Distracted", url: pageUrl },
-  ])
+  ]
 
   const blogPostingSchema = {
     '@context': 'https://schema.org',
@@ -68,7 +68,7 @@ export default async function ThinkingGapBlogPostPage({ params }: PageProps) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <BreadcrumbSchema items={breadcrumbItems} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50">

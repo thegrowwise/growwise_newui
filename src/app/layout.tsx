@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConsentAndAnalytics } from '@/components/analytics/ConsentAndAnalytics';
 import { CartProvider } from '@/components/gw/CartContext';
+import LocalBusinessSchema from '@/components/seo/LocalBusinessSchema';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -12,9 +13,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GrowWise - Unbox Potential | K-12 Education & STEAM Programs",
-  description: "Empowering students through personalized K-12 education and innovative STEAM programs. Expert instruction, proven results, and flexible scheduling.",
-  keywords: "K-12 education, STEAM programs, tutoring, SAT prep, math courses, coding classes, personalized learning",
+  title: "Grades 1-12 Tutoring & STEAM | Dublin CA | GrowWise",
+  description: "GrowWise offers Grades 1-12 tutoring and STEAM programs in Dublin, CA. Expert instruction, personalized learning, and proven results.",
+  keywords: "Grades 1-12 education, tutoring Dublin CA, STEAM programs, SAT prep, math courses, coding classes, personalized learning",
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -41,6 +42,7 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://growwise-assets.s3.us-west-1.amazonaws.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://api.growwiseschool.org" />
+        <LocalBusinessSchema />
       </head>
       <body className={`${inter.variable} min-h-screen bg-background font-sans antialiased`} suppressHydrationWarning>
         <a href="#main-content" className="absolute -left-[9999px] focus:left-4 focus:top-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#1F396D] focus:text-white focus:rounded-md focus:no-underline">

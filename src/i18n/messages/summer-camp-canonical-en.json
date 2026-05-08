@@ -1,0 +1,69 @@
+{
+  "hero": {
+    "h1": "Summer STEAM Camps in Dublin, CA",
+    "subhead": "This summer, your child builds something real. Coding, AI, Robotics & Math · Grades 1–12 · Limited seats",
+    "primaryCta": "Reserve a Spot →",
+    "secondaryCta": "Get Camp Guide →",
+    "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
+    "trustMicro": "98% parent satisfaction · Max 8 students per class · Expert instructors",
+    "urgencyLine": "Limited seats per week — popular weeks fill first",
+    "downloadBrochure": "View 2026 brochure PDF (new tab)"
+  },
+  "conversion": {
+    "programGroupsHeading": "Start with one track",
+    "programGroupsSub": "Same programs as in the booking grid above—grouped by track with quick links to each camp page.",
+    "exploreProgramCta": "Explore Program →",
+    "programGroups": [
+      {
+        "title": "Academic Camp",
+        "outcome": "Math Olympiad (AMC8 / MOEMS) and High School Math—structured intensives that match how we run camps year-round.",
+        "ages": "Grades 3–12"
+      },
+      {
+        "title": "AI & Game Development",
+        "outcome": "AI coding, app development, Roblox, Scratch, and robotics-style builds—project-based camps led by expert instructors.",
+        "ages": "Grades 3–12"
+      },
+      {
+        "title": "Creative Writing",
+        "outcome": "Young Authors—craft stories and publish-ready pieces in a small, supportive cohort.",
+        "ages": "Grades 3–12"
+      }
+    ],
+    "trustBlockHeading": "Real Results Parents Trust",
+    "trustGoogleRatingLine": "Rated 4.9⭐ on Google · 40+ reviews",
+    "trustProofStrip": "325+ students enrolled · 98% parent satisfaction · 40+ student projects showcased",
+    "trustBullets": [
+      "Max 8 students per class — personalized attention",
+      "Experienced instructors in coding, math & robotics",
+      "Serving Dublin, Pleasanton, San Ramon & Tri-Valley families"
+    ],
+    "trustReviews": [
+      {
+        "quote": "GrowWise has been such a wonderful experience for my daughter. Her tutor has been incredibly patient, encouraging, and attentive to her individual learning needs. Since starting with GrowWise, I’ve noticed a big improvement in her confidence, focus, and overall understanding of subjects that used to be challenging for her. The lessons are engaging and tailored to her pace, which has made learning enjoyable instead of stressful. I’m truly grateful for the positive impact GrowWise has had on her academic growth and motivation.",
+        "byline": "— Parent · 5★ Google review"
+      },
+      {
+        "quote": "My son and I had a very positive experience with Growwise recently. My son attended the half-day python coding camp (Level 1 & 2), which was his first formal exposure to programming. Thanks to the small class size and the teacher's personalized approach, he was able to grasp the fundamentals of python and enjoyed working on the assignments and demo projects such as the Hangman game. The teacher provided prompt feedback after each session and offered helpful suggestions for future learning opportunities. I strongly recommend this program!",
+        "byline": "— Roger Jiang · Google review"
+      },
+      {
+        "quote": "My daughter joined Growwise to begin learning the basics of coding, starting with Roblox development. She had a fantastic experience throughout the program! The classes were engaging, and the teacher did a great job keeping the students interested and motivated. It was wonderful to see her enjoying herself while learning something so valuable.",
+        "byline": "— Parent · Google review"
+      }
+    ],
+    "trustProjectsCta": "See Student Projects →",
+    "trustProjectsUrl": "https://thegrowwise.com/nextgen-hub/",
+    "guideModalTitle": "Get your summer camp guide",
+    "guideModalSubtitle": "Tell us a bit about your child—we’ll email the PDF camp guide.",
+    "parentNameLabel": "Parent name",
+    "parentNamePlaceholder": "Your full name",
+    "guideSubmitCta": "Email Me the Guide →",
+    "finalHeading": "Still not sure which summer camp is right for your child?",
+    "finalSubtext": "Limited seats per batch — reserve early for your preferred week",
+    "finalReserveCta": "Reserve a Spot →",
+    "finalGuidePdfCta": "Get camp guide by email →",
+    "bookingSectionTitle": "Choose your camp & reserve a week",
+    "bookingSectionSub": "Pick a program, then select your week and checkout."
+  }
+}

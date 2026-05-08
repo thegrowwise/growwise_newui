@@ -19,6 +19,8 @@ interface PageMetadataOptions {
   type?: "website" | "article";
   publishedTime?: string;
   modifiedTime?: string;
+  /** If false, emit noindex,follow (conversion / thank-you pages). Defaults to true. */
+  indexable?: boolean;
 }
 
 /**
@@ -61,6 +63,7 @@ export function generatePageMetadata({
   type = "website",
   publishedTime,
   modifiedTime,
+  indexable = true,
 }: PageMetadataOptions): Metadata {
   const baseUrl = getCanonicalSiteUrl();
   const pathForUrl = path === "" ? "/" : path;
@@ -71,7 +74,7 @@ export function generatePageMetadata({
   // Default keywords if not provided
   const defaultKeywords = [
     "tutoring Dublin CA",
-    "K-12 education",
+    "Grades 1-12 education",
     "STEAM programs",
     "math tutor",
     "English tutor",
@@ -116,10 +119,10 @@ export function generatePageMetadata({
       canonical: url,
     },
     robots: {
-      index: true,
+      index: indexable,
       follow: true,
       googleBot: {
-        index: true,
+        index: indexable,
         follow: true,
         "max-video-preview": -1,
         "max-image-preview": "large",

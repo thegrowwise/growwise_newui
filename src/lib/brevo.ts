@@ -2,9 +2,10 @@
  * Brevo (Sendinblue) REST API v3 — transactional email + contacts/lists.
  * Env: BREVO_API_KEY, BREVO_SENDER_EMAIL, BREVO_SENDER_NAME (optional),
  * BREVO_LIST_LOTTERY (numeric list id — summer camp guide leads + Meta Lead Ads upsert; legacy env name).
+ * BREVO_LIST_MATH_FINALS (numeric list id — high school math finals practice form; triggers automations).
  */
 
-import type { SendEmailResult } from '@/lib/email';
+import type { EmailAttachment, SendEmailResult } from '@/lib/email';
 import type { NormalizedMetaLead } from '@/lib/meta-lead';
 
 const BREVO_API_BASE = 'https://api.brevo.com/v3';
@@ -58,6 +59,8 @@ export interface BrevoTransactionalEmailOptions {
   html: string;
   text: string;
   replyTo?: { email: string; name?: string };
+  /** Brevo expects base64 `content` per attachment (see POST /v3/smtp/email). */
+  attachments?: EmailAttachment[];
 }
 
 /** POST /v3/smtp/email — same logical inputs as Nodemailer send (html/text), mapped to Brevo field names. */
@@ -91,6 +94,14 @@ export async function sendBrevoTransactionalEmail(
         htmlContent: options.html,
         textContent: options.text,
         ...(options.replyTo ? { replyTo: options.replyTo } : {}),
+        ...(options.attachments?.length
+          ? {
+              attachment: options.attachments.map((a) => ({
+                name: a.filename,
+                content: a.content.toString('base64'),
+              })),
+            }
+          : {}),
       }),
     });
 
@@ -117,7 +128,7 @@ export async function sendBrevoTransactionalEmail(
 }
 
 /** POST /v3/contacts — add/update contact and attach to the summer camp guide / nurture list. */
-export async function addSummerCampLotteryContactToBrevoList(email: string): Promise<SendEmailResult> {
+export async function addSummerCampSummercampContactToBrevoList(email: string): Promise<SendEmailResult> {
   const sender = getBrevoSender();
   const listIdRaw = process.env.BREVO_LIST_LOTTERY?.trim();
 
@@ -168,15 +179,130 @@ export async function addSummerCampLotteryContactToBrevoList(email: string): Pro
 
     if (!res.ok) {
       const errMsg = parsed.message || raw || `HTTP ${res.status}`;
-      console.warn('[brevo] Lottery list contact failed:', errMsg);
+      console.warn('[brevo] Summer camp summercamp list contact failed:', errMsg);
       return { success: false, error: errMsg };
     }
 
     return { success: true };
   } catch (err) {
     const error = err instanceof Error ? err.message : 'List add failed';
-    console.warn('[brevo] Lottery list contact error:', error);
+    console.warn('[brevo] Summer camp summercamp list contact error:', error);
     return { success: false, error };
+  }
+}
+
+/** Same list + upsert behavior as {@link addSummerCampSummercampContactToBrevoList} (`BREVO_LIST_LOTTERY`). */
+export async function addSummerCampLotteryContactToBrevoList(
+  email: string,
+): Promise<SendEmailResult> {
+  return addSummerCampSummercampContactToBrevoList(email);
+}
+
+/** Math finals practice form — fields synced to Brevo for list-based automations. */
+export interface MathFinalsLeadBrevoInput {
+  email: string
+  interestKey: string
+  interestLabel: string
+  parentName: string
+  studentName: string
+  grade: string
+  school: string
+  subject: string
+  phone: string
+  notes: string
+  q4AgendaUploaded: boolean
+  submittedAtIso: string
+}
+
+/**
+ * POST /v3/contacts — upsert lead and attach to `BREVO_LIST_MATH_FINALS` for Brevo automations.
+ * In Brevo: create Text attributes to match the keys in `attributes` (SOURCE, MATH_INTEREST, …) or map in workflows.
+ */
+export async function upsertMathFinalsLeadInBrevo(lead: MathFinalsLeadBrevoInput): Promise<SendEmailResult> {
+  const apiKey = getBrevoApiKey()
+  if (!apiKey) {
+    console.warn('[brevo] BREVO_API_KEY not set; skipping math finals lead upsert.')
+    return { success: false, error: 'Brevo not configured' }
+  }
+
+  const listIdRaw = process.env.BREVO_LIST_MATH_FINALS?.trim()
+  if (!listIdRaw) {
+    console.warn('[brevo] BREVO_LIST_MATH_FINALS not set; skipping math finals list/automation sync.')
+    return { success: false, error: 'BREVO_LIST_MATH_FINALS not set' }
+  }
+
+  const listId = Number.parseInt(listIdRaw, 10)
+  if (!Number.isFinite(listId)) {
+    console.warn('[brevo] BREVO_LIST_MATH_FINALS must be a numeric list id.')
+    return { success: false, error: 'Invalid BREVO_LIST_MATH_FINALS' }
+  }
+
+  const listIds = filterAutomationListIds([listId])
+  if (!listIds) {
+    console.warn(
+      '[brevo] BREVO_LIST_MATH_FINALS is excluded from automation; upserting contact without listIds.',
+      { listId }
+    )
+  }
+
+  const email = lead.email.trim().toLowerCase()
+  if (!email) {
+    return { success: false, error: 'No email' }
+  }
+
+  const attributes: Record<string, string> = {
+    SOURCE: 'math_finals_practice',
+    MATH_INTEREST: lead.interestLabel,
+    MATH_INTEREST_KEY: lead.interestKey,
+    GRADE: lead.grade,
+    PHONE: lead.phone,
+    PARENT_NAME: lead.parentName,
+    STUDENT_NAME: lead.studentName,
+    SCHOOL: lead.school,
+    MATH_COURSE: lead.subject,
+    Q4_AGENDA_UPLOADED: lead.q4AgendaUploaded ? 'yes' : 'no',
+    SUBMITTED_AT: lead.submittedAtIso,
+  }
+  const notesTrim = lead.notes.trim()
+  if (notesTrim) {
+    attributes.FORM_NOTES = notesTrim.slice(0, 5000)
+  }
+
+  try {
+    const res = await fetchWithTimeout(`${BREVO_API_BASE}/contacts`, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        'api-key': apiKey,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        attributes,
+        ...(listIds ? { listIds } : {}),
+        updateEnabled: true,
+      }),
+    })
+
+    const raw = await res.text()
+    let parsed: { message?: string } = {}
+    try {
+      parsed = raw ? (JSON.parse(raw) as typeof parsed) : {}
+    } catch {
+      /* ignore */
+    }
+
+    if (!res.ok) {
+      const errMsg = parsed.message || raw || `HTTP ${res.status}`
+      console.warn('[brevo] Math finals contact upsert failed:', errMsg)
+      return { success: false, error: errMsg }
+    }
+
+    return { success: true }
+  } catch (err) {
+    const error = err instanceof Error ? err.message : 'Math finals Brevo upsert failed'
+    console.warn('[brevo] Math finals contact upsert error:', error)
+    return { success: false, error }
   }
 }
 

@@ -17,7 +17,7 @@ const footerSlice = createSlice({
   name: 'footer',
   initialState,
   reducers: {
-    fetchFooterRequested: (state) => {
+    fetchFooterRequested: (state, _action: PayloadAction<string | undefined>) => {
       state.loading = true;
       state.error = null;
     },

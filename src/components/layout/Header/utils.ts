@@ -40,10 +40,26 @@ export function getVariant(variant?: string): VariantStyles {
   return VARIANT_STYLES[(variant as keyof typeof VARIANT_STYLES) || 'blue'] || VARIANT_STYLES.blue;
 }
 
+function isDropdownItemPathActive(
+  dropdownItem: { href: string; hasSubmenu?: boolean; submenuItems?: { href: string }[] },
+  pathname: string | null,
+  locale: string
+): boolean {
+  if (pathname?.startsWith(createLocaleUrl(dropdownItem.href, locale))) {
+    return true;
+  }
+  if (dropdownItem.submenuItems?.length) {
+    return dropdownItem.submenuItems.some((sub) =>
+      pathname?.startsWith(createLocaleUrl(sub.href, locale))
+    );
+  }
+  return false;
+}
+
 export function isMenuItemActive(item: MenuItem, pathname: string | null, locale: string): boolean {
   if (item.type === 'dropdown' && item.dropdown) {
     return item.dropdown.items.some((dropdownItem) =>
-      pathname?.startsWith(createLocaleUrl(dropdownItem.href, locale)),
+      isDropdownItemPathActive(dropdownItem, pathname, locale)
     );
   }
   return pathname === createLocaleUrl(item.href, locale);

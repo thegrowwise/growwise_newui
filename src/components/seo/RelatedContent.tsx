@@ -29,7 +29,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
       id: 'math',
       href: publicPath('/courses/math', locale),
       title: 'Math Courses',
-      description: 'Comprehensive K-12 math courses: Grade-level, Accelerated, and Integrated Math programs.',
+      description: 'Comprehensive Grades 1-12 math courses: Grade-level, Accelerated, and Integrated Math programs.',
       icon: Calculator,
       gradient: 'from-blue-50 to-indigo-50',
       border: 'border-blue-100 hover:border-blue-300',
@@ -40,7 +40,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
       id: 'english',
       href: publicPath('/courses/english', locale),
       title: 'English Courses',
-      description: 'Comprehensive English Language Arts programs for K-12 students. Reading, writing, and grammar.',
+      description: 'Comprehensive English Language Arts programs for Grades 1-12 students. Reading, writing, and grammar.',
       icon: BookOpen,
       gradient: 'from-emerald-50 to-teal-50',
       border: 'border-emerald-100 hover:border-emerald-300',
@@ -73,7 +73,7 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
       id: 'academic',
       href: publicPath('/academic', locale),
       title: 'Academic Programs',
-      description: 'Explore all our K-12 academic programs aligned with DUSD & PUSD standards.',
+      description: 'Explore all our Grades 1-12 academic programs aligned with DUSD & PUSD standards.',
       icon: Award,
       gradient: 'from-green-50 to-emerald-50',
       border: 'border-green-100 hover:border-green-300',
@@ -108,13 +108,13 @@ export function RelatedContent({ locale, currentPage }: RelatedContentProps) {
   const relatedItems = allItems.filter(item => item.id !== currentPage).slice(0, 6)
 
   const anchorCta: Record<(typeof allItems)[number]['id'], string> = {
-    math: 'Book Free Assessment',
-    english: 'Book Free Assessment',
+    math: 'Book a Free Assessment',
+    english: 'Book a Free Assessment',
     'sat-prep': 'Book SAT Readiness Check',
-    'high-school-math': 'Book Free Assessment',
-    academic: 'Book Free Assessment',
-    steam: 'Book Free Assessment',
-    assessment: 'Book Free Assessment',
+    'high-school-math': 'Book a Free Assessment',
+    academic: 'Book a Free Assessment',
+    steam: 'Book a Free Assessment',
+    assessment: 'Book a Free Assessment',
   }
 
   return (

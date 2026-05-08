@@ -9,7 +9,7 @@ interface FooterSectionProps {
 export default function FooterSection({ section, createLocaleUrl }: FooterSectionProps) {
   return (
     <div className="flex flex-col">
-      <h2 className="text-gray-800 text-xl font-bold mb-6">{section.title}</h2>
+      <p className="text-gray-800 text-xl font-bold mb-6">{section.title}</p>
       <ul className="space-y-3 text-gray-600">
         {section.links.map((link, index) => (
           <li key={index}>

@@ -459,7 +459,7 @@
     "cta": {
       "title": "Ready to Excel in Academics?",
       "subtitle": "Join 325+ students who have improved their academic performance with our personalized programs.",
-      "primary": "Book Free Assessment",
+      "primary": "Book a Free Assessment",
       "secondary": "Learn More"
     },
     "modal": {
@@ -686,11 +686,10 @@
       "secondaryCta": "获取完整夏令营手册 →",
       "brochurePdf": "/assets/camps/SummerCampBrochure.pdf",
       "downloadBrochure": "下载2026年宣传册",
-      "urgencyLine": "早鸟15%优惠4月30日截止 · 每周名额有限",
-      "earlyBirdPromoBefore": "任意课程早鸟85折，4月30日截止 — 优惠码："
+      "urgencyLine": "每周名额有限 · 热门周次先到先得"
     },
     "guideForm": {
-      "ariaLabel": "索取夏令营手册与早鸟优惠"
+      "ariaLabel": "通过邮件索取夏令营手册PDF"
     },
     "guideSuccess": {
       "title": "夏令营手册即将发送到您的邮箱！",
@@ -702,13 +701,13 @@
     },
     "mobile": {
       "viewAllCamps": "View all camps ↑",
-      "earlyBirdBar": "早鸟优惠4月30日截止",
+      "earlyBirdBar": "每周名额有限",
       "winFreeSpot": "Win free spot",
-      "lotteryLink": "Enter free lottery instead",
+      "summercampLink": "Enter free summercamp instead",
       "enrollNow": "Enroll Now",
-      "earlyBirdBadge": "Early bird — GWSUMMER15"
+      "earlyBirdBadge": "邮件发送营地手册"
     },
-    "lottery": {
+    "summercamp": {
       "title": "赢取免费夏令营名额",
       "subtitle": "快速填写：邮箱、营地意向与年级。中奖后我们将邮件通知您。",
       "formAriaLabel": "免费夏令营名额抽奖报名表",
@@ -738,6 +737,8 @@
       },
       "emailLabel": "电子邮箱",
       "emailPlaceholder": "you@example.com",
+      "phoneLabel": "电话号码",
+      "phonePlaceholder": "+1 555 123 4567",
       "submit": "参与抽奖",
       "submitting": "提交中…",
       "successTitle": "您已成功报名！",
