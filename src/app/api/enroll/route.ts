@@ -7,9 +7,16 @@ import {
   isBrevoTransactionalReady,
   sendBrevoTransactionalEmail,
 } from '@/lib/brevo';
+import { clientIpFrom, isAllowed } from '@/lib/chatRateLimit';
+import { clip, exceedsMax, FIELD_MAX, isValidEmailShape } from '@/lib/inputLimits';
+import { honeypotTriggered, isOriginAllowed } from '@/lib/requestGuard';
 
 /** Serverless: allow Brevo HTTP + dual sends to finish (matches summer-camp-summercamp). */
 export const maxDuration = 60;
+
+/** Stripe payment payloads can exceed typical form JSON; inquiry branch uses stricter cap in-handler. */
+const MAX_ENROLL_BODY_BYTES = 256 * 1024;
+const MAX_INQUIRY_BODY_BYTES = 32 * 1024;
 
 function escapeHtml(s: string): string {
   return s
@@ -33,13 +40,38 @@ interface EnrollFormData {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as unknown;
+    if (!isAllowed('enroll', clientIpFrom(request))) {
+      return NextResponse.json(
+        { success: false, error: 'Too many submissions. Please try again later.' },
+        { status: 429 },
+      );
+    }
+    if (!isOriginAllowed(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid request' },
+        { status: 403 },
+      );
+    }
 
-    if (
+    const rawText = await request.text();
+    if (rawText.length > MAX_ENROLL_BODY_BYTES) {
+      return NextResponse.json({ success: false, error: 'Request too large' }, { status: 413 });
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch {
+      return NextResponse.json({ success: false, error: 'Invalid JSON' }, { status: 400 });
+    }
+
+    const body = parsed as Record<string, unknown>;
+    const isPayment =
       body &&
       typeof body === 'object' &&
-      ('payment_method_id' in body || 'stripe_payment_method_id' in body)
-    ) {
+      ('payment_method_id' in body || 'stripe_payment_method_id' in body);
+
+    if (isPayment) {
       const raw = body as Record<string, unknown>;
       const pm = raw.payment_method_id ?? raw.stripe_payment_method_id;
       if (!pm || typeof pm !== 'string') {
@@ -82,9 +114,24 @@ export async function POST(request: Request) {
           },
         });
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Upstream request failed';
-        return NextResponse.json({ success: false, error: message, message }, { status: 502 });
+        console.error('[enroll] payment proxy failed:', err);
+        return NextResponse.json(
+          {
+            success: false,
+            error: 'Upstream request failed',
+            message: 'Failed to process enrollment. Please try again.',
+          },
+          { status: 502 },
+        );
       }
+    }
+
+    if (rawText.length > MAX_INQUIRY_BODY_BYTES) {
+      return NextResponse.json({ success: false, error: 'Request too large' }, { status: 413 });
+    }
+
+    if (honeypotTriggered(body)) {
+      return NextResponse.json({ success: false, error: 'Invalid request' }, { status: 400 });
     }
 
     const {
@@ -97,7 +144,7 @@ export async function POST(request: Request) {
       course,
       level,
       agree,
-    }: EnrollFormData = body as EnrollFormData;
+    }: EnrollFormData = body as unknown as EnrollFormData;
 
     if (!fullName || !email || !mobile || !city || !postal || !level) {
       return NextResponse.json(
@@ -106,15 +153,32 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (
+      exceedsMax(fullName, FIELD_MAX.name) ||
+      exceedsMax(email, FIELD_MAX.email) ||
+      exceedsMax(mobile, FIELD_MAX.phone) ||
+      exceedsMax(city, FIELD_MAX.shortText) ||
+      exceedsMax(postal, FIELD_MAX.shortText) ||
+      exceedsMax(level, FIELD_MAX.shortText) ||
+      (typeof bootcamp === 'string' && exceedsMax(bootcamp, FIELD_MAX.shortText)) ||
+      (typeof course === 'string' && exceedsMax(course, FIELD_MAX.shortText))
+    ) {
+      return NextResponse.json(
+        { error: 'One or more fields are too long' },
+        { status: 400 },
+      );
+    }
+
+    const emailC = clip(email, FIELD_MAX.email).toLowerCase();
+    if (!isValidEmailShape(emailC)) {
       return NextResponse.json(
         { error: 'Invalid email format' },
         { status: 400 },
       );
     }
 
-    const phoneResult = validatePhoneSimple(mobile);
+    const mobileC = clip(mobile, FIELD_MAX.phone);
+    const phoneResult = validatePhoneSimple(mobileC);
     if (!phoneResult.isValid) {
       return NextResponse.json(
         { error: phoneResult.errorMessage },
@@ -130,26 +194,29 @@ export async function POST(request: Request) {
     }
 
     const enrollmentData = {
-      fullName: fullName.trim(),
-      email: email.trim().toLowerCase(),
-      mobile: mobile.trim(),
-      city: city.trim(),
-      postal: postal.trim(),
-      bootcamp: bootcamp?.trim() || 'None',
-      course: course?.trim() || 'None',
-      level: level.trim(),
+      fullName: clip(fullName, FIELD_MAX.name),
+      email: emailC,
+      mobile: mobileC,
+      city: clip(city, FIELD_MAX.shortText),
+      postal: clip(postal, FIELD_MAX.shortText),
+      bootcamp: clip(typeof bootcamp === 'string' ? bootcamp : 'None', FIELD_MAX.shortText) || 'None',
+      course: clip(typeof course === 'string' ? course : 'None', FIELD_MAX.shortText) || 'None',
+      level: clip(level, FIELD_MAX.shortText),
       agree,
       timestamp: new Date().toISOString(),
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown',
+      ip: clientIpFrom(request),
     };
 
     const emailResult = await sendEnrollmentEmails(enrollmentData);
 
     if (emailResult.success) {
-      console.log('Enrollment form submission:', {
-        ...enrollmentData,
-        emailsSent: true,
+      const at = enrollmentData.email.indexOf('@');
+      const emailDomain = at > 0 ? enrollmentData.email.slice(at + 1) : 'unknown';
+      console.log('[enroll] inquiry ok', {
+        emailDomain,
+        ip: enrollmentData.ip,
         emailIds: emailResult.emailIds,
+        userConfirmationSent: process.env.ENABLE_USER_CONFIRMATION_EMAIL === 'true',
       });
 
       const payload: Record<string, unknown> = {
@@ -167,11 +234,11 @@ export async function POST(request: Request) {
       throw new Error(emailResult.error || 'Failed to send emails');
     }
   } catch (error) {
-    console.error('Enrollment API Error:', error);
+    console.error('[enroll] POST failed:', error);
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'An unknown error occurred',
+        error: 'Server error',
         message: 'Failed to process your enrollment. Please try again or contact us directly.',
       },
       { status: 500 },
@@ -213,7 +280,11 @@ async function deliverEnrollmentEmail(options: {
 async function sendEnrollmentEmails(enrollmentData: EnrollmentPayload) {
   try {
     const businessEmailResult = await sendBusinessEnrollmentEmail(enrollmentData);
-    const userEmailResult = await sendUserConfirmationEmail(enrollmentData);
+
+    const sendUser = process.env.ENABLE_USER_CONFIRMATION_EMAIL === 'true';
+    const userEmailResult = sendUser
+      ? await sendUserConfirmationEmail(enrollmentData)
+      : { success: true as const, emailId: undefined as string | undefined };
 
     if (businessEmailResult.success && userEmailResult.success) {
       return {
@@ -230,7 +301,7 @@ async function sendEnrollmentEmails(enrollmentData: EnrollmentPayload) {
       error: `Business email: ${businessEmailResult.success ? 'sent' : 'failed'}, User email: ${userEmailResult.success ? 'sent' : 'failed'}`
     };
   } catch (error) {
-    console.error('Enrollment email sending error:', error);
+    console.error('[enroll] email send error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send emails'
@@ -249,10 +320,10 @@ async function sendBusinessEnrollmentEmail(
     text: generateBusinessEnrollmentEmailText(enrollmentData),
   });
   if (result.success) {
-    console.log('Business enrollment email sent:', { messageId: result.messageId });
+    console.log('[enroll] business email sent', { messageId: result.messageId });
     return { success: true, emailId: result.messageId };
   }
-  console.error('Business enrollment email failed:', result.error);
+  console.error('[enroll] business email failed:', result.error);
   return { success: false, error: result.error };
 }
 
@@ -266,10 +337,10 @@ async function sendUserConfirmationEmail(
     text: generateUserConfirmationEmailText(enrollmentData),
   });
   if (result.success) {
-    console.log('User enrollment confirmation sent:', { messageId: result.messageId });
+    console.log('[enroll] user confirmation sent', { messageId: result.messageId });
     return { success: true, emailId: result.messageId };
   }
-  console.error('User enrollment confirmation failed:', result.error);
+  console.error('[enroll] user confirmation failed:', result.error);
   return { success: false, error: result.error };
 }
 

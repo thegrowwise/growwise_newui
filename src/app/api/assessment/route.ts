@@ -6,8 +6,14 @@ import {
   isBrevoTransactionalReady,
   sendBrevoTransactionalEmail,
 } from '@/lib/brevo';
+import { clientIpFrom, isAllowed } from '@/lib/chatRateLimit';
+import { clip, exceedsMax, FIELD_MAX, isValidEmailShape } from '@/lib/inputLimits';
+import { honeypotTriggered, isOriginAllowed } from '@/lib/requestGuard';
 
 export const maxDuration = 60;
+
+const MAX_BODY_BYTES = 32 * 1024;
+const MAX_SUBJECT_TAGS = 24;
 
 function escapeHtml(s: string): string {
   return s
@@ -36,7 +42,35 @@ interface AssessmentFormData {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    if (!isAllowed('assessment', clientIpFrom(request))) {
+      return NextResponse.json(
+        { success: false, error: 'Too many submissions. Please try again later.' },
+        { status: 429 },
+      );
+    }
+    if (!isOriginAllowed(request)) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid request' },
+        { status: 403 },
+      );
+    }
+
+    const raw = await request.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return NextResponse.json({ success: false, error: 'Request too large' }, { status: 413 });
+    }
+
+    let body: Record<string, unknown>;
+    try {
+      body = JSON.parse(raw) as Record<string, unknown>;
+    } catch {
+      return NextResponse.json({ success: false, error: 'Invalid JSON' }, { status: 400 });
+    }
+
+    if (honeypotTriggered(body)) {
+      return NextResponse.json({ success: false, error: 'Invalid request' }, { status: 400 });
+    }
+
     const {
       parentName,
       email,
@@ -50,8 +84,14 @@ export async function POST(request: Request) {
       schedule,
       hearAboutUs,
       notes
-    }: AssessmentFormData = body;
-    const subjects = Array.isArray(subjectsRaw) ? subjectsRaw : [];
+    }: AssessmentFormData = body as unknown as AssessmentFormData;
+
+    const subjects = Array.isArray(subjectsRaw)
+      ? subjectsRaw
+          .filter((s): s is string => typeof s === 'string')
+          .slice(0, MAX_SUBJECT_TAGS)
+          .map((s) => clip(s, FIELD_MAX.shortText))
+      : [];
 
     // Validate required fields
     if (!parentName || !email || !phone || !studentName || !grade || !assessmentType || !mode || !schedule) {
@@ -64,9 +104,27 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (
+      exceedsMax(parentName, FIELD_MAX.name) ||
+      exceedsMax(email, FIELD_MAX.email) ||
+      exceedsMax(countryCode ?? '', FIELD_MAX.shortText) ||
+      exceedsMax(phone, FIELD_MAX.phone) ||
+      exceedsMax(studentName, FIELD_MAX.name) ||
+      exceedsMax(grade, FIELD_MAX.shortText) ||
+      exceedsMax(assessmentType, FIELD_MAX.shortText) ||
+      exceedsMax(mode, FIELD_MAX.shortText) ||
+      exceedsMax(schedule, FIELD_MAX.shortText) ||
+      (typeof hearAboutUs === 'string' && exceedsMax(hearAboutUs, FIELD_MAX.shortText)) ||
+      (typeof notes === 'string' && exceedsMax(notes, FIELD_MAX.longText))
+    ) {
+      return NextResponse.json(
+        { success: false, error: 'One or more fields are too long' },
+        { status: 400 },
+      );
+    }
+
+    const emailTrim = clip(email, FIELD_MAX.email).toLowerCase();
+    if (!isValidEmailShape(emailTrim)) {
       return NextResponse.json(
         { 
           success: false,
@@ -76,7 +134,8 @@ export async function POST(request: Request) {
       );
     }
 
-    const phoneResult = validatePhoneSimple(phone);
+    const phoneC = clip(phone, FIELD_MAX.phone);
+    const phoneResult = validatePhoneSimple(phoneC);
     if (!phoneResult.isValid) {
       return NextResponse.json(
         { 
@@ -89,31 +148,33 @@ export async function POST(request: Request) {
 
     // Prepare assessment data
     const assessmentData = {
-      parentName: parentName.trim(),
-      email: email.trim().toLowerCase(),
-      countryCode: countryCode.trim(),
-      phone: phone.trim(),
-      studentName: studentName.trim(),
-      grade: grade.trim(),
+      parentName: clip(parentName, FIELD_MAX.name),
+      email: emailTrim,
+      countryCode: clip(typeof countryCode === 'string' ? countryCode : '+1', FIELD_MAX.shortText),
+      phone: phoneC,
+      studentName: clip(studentName, FIELD_MAX.name),
+      grade: clip(grade, FIELD_MAX.shortText),
       subjects,
-      assessmentType: assessmentType.trim(),
-      mode: mode.trim(),
-      schedule: schedule.trim(),
-      hearAboutUs: (typeof hearAboutUs === 'string' ? hearAboutUs : '').trim(),
-      notes: notes?.trim() || '',
+      assessmentType: clip(assessmentType, FIELD_MAX.shortText),
+      mode: clip(mode, FIELD_MAX.shortText),
+      schedule: clip(schedule, FIELD_MAX.shortText),
+      hearAboutUs: clip(typeof hearAboutUs === 'string' ? hearAboutUs : '', FIELD_MAX.shortText),
+      notes: clip(typeof notes === 'string' ? notes : '', FIELD_MAX.longText),
       timestamp: new Date().toISOString(),
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+      ip: clientIpFrom(request),
     };
 
-    // Send emails to both receiver and sender
     const emailResult = await sendAssessmentEmails(assessmentData);
 
     if (emailResult.success) {
-      // Log the assessment submission (in production, save to database)
-      console.log('Assessment booking submission:', {
-        ...assessmentData,
-        emailsSent: true,
-        emailIds: emailResult.emailIds
+      const at = assessmentData.email.indexOf('@');
+      const emailDomain = at > 0 ? assessmentData.email.slice(at + 1) : 'unknown';
+      console.log('[assessment] submission ok', {
+        emailDomain,
+        grade: assessmentData.grade,
+        ip: assessmentData.ip,
+        emailIds: emailResult.emailIds,
+        userConfirmationSent: process.env.ENABLE_USER_CONFIRMATION_EMAIL === 'true',
       });
 
       const payload: Record<string, unknown> = {
@@ -133,11 +194,11 @@ export async function POST(request: Request) {
     }
 
   } catch (error) {
-    console.error('Assessment API Error:', error);
+    console.error('[assessment] POST failed:', error);
     return NextResponse.json(
       {
         success: false,
-        error: error instanceof Error ? error.message : 'An unknown error occurred',
+        error: 'Server error',
         message: 'Failed to process your assessment booking. Please try again or contact us directly.'
       },
       { status: 500 }
@@ -180,7 +241,12 @@ async function deliverAssessmentEmail(options: {
 async function sendAssessmentEmails(assessmentData: AssessmentPayload) {
   try {
     const businessEmailResult = await sendBusinessAssessmentEmail(assessmentData);
-    const userEmailResult = await sendUserAssessmentConfirmationEmail(assessmentData);
+
+    /** Auto-reply to user-provided email is off by default (email-as-a-service abuse). */
+    const sendUser = process.env.ENABLE_USER_CONFIRMATION_EMAIL === 'true';
+    const userEmailResult = sendUser
+      ? await sendUserAssessmentConfirmationEmail(assessmentData)
+      : { success: true as const, emailId: undefined as string | undefined };
 
     if (businessEmailResult.success && userEmailResult.success) {
       return {
@@ -197,7 +263,7 @@ async function sendAssessmentEmails(assessmentData: AssessmentPayload) {
       error: `Business email: ${businessEmailResult.success ? 'sent' : 'failed'}, User email: ${userEmailResult.success ? 'sent' : 'failed'}`,
     };
   } catch (error) {
-    console.error('Assessment email sending error:', error);
+    console.error('[assessment] email send error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Failed to send emails',
@@ -216,10 +282,10 @@ async function sendBusinessAssessmentEmail(
     text: generateBusinessAssessmentEmailText(assessmentData),
   });
   if (result.success) {
-    console.log('Business assessment email sent:', { messageId: result.messageId });
+    console.log('[assessment] business email sent', { messageId: result.messageId });
     return { success: true, emailId: result.messageId };
   }
-  console.error('Business assessment email failed:', result.error);
+  console.error('[assessment] business email failed:', result.error);
   return { success: false, error: result.error };
 }
 
@@ -233,10 +299,10 @@ async function sendUserAssessmentConfirmationEmail(
     text: generateUserAssessmentConfirmationEmailText(assessmentData),
   });
   if (result.success) {
-    console.log('User assessment confirmation sent:', { messageId: result.messageId });
+    console.log('[assessment] user confirmation sent', { messageId: result.messageId });
     return { success: true, emailId: result.messageId };
   }
-  console.error('User assessment confirmation failed:', result.error);
+  console.error('[assessment] user confirmation failed:', result.error);
   return { success: false, error: result.error };
 }
 
