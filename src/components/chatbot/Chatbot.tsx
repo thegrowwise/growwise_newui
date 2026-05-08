@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { X, Send, Bot, User } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -9,7 +8,15 @@ import { useChatbot } from '../../contexts/ChatbotContext';
 import ContactForm, { ContactFormData } from './ContactForm';
 import { contactService } from '../../lib/contactService';
 import { ChatMessageSkeleton } from '../ui/loading-skeletons';
-import { CONTACT_INFO } from '@/lib/constants';
+import {
+  buildChatbotContactReplyBody,
+  CHATBOT_BRAND_NAME,
+  formatChatbotApprovedCategoriesList,
+  chatbotAssessmentContactIntent,
+  chatbotGettingStartedContactIntent,
+  chatbotPricingContactIntent,
+  chatbotSchedulingContactIntent,
+} from '@/lib/chatbotScope';
 
 /** SSOT: default offset (px) and storage key for floating chat position. */
 const FLOATING_CHAT_CONFIG = {
@@ -57,13 +64,15 @@ function clampPosition(pos: FloatingPosition): FloatingPosition {
 export default function Chatbot() {
   const t = useTranslations();
   const { isOpen, openChatbot, closeChatbot } = useChatbot();
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<Message[]>(() => [
     {
       id: '1',
-      text: t('chatbot.responses.welcome'),
+      text: t('chatbot.responses.welcome', {
+        categories: formatChatbotApprovedCategoriesList(),
+      }),
       sender: 'bot',
-      timestamp: new Date()
-    }
+      timestamp: new Date(),
+    },
   ]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -83,7 +92,7 @@ export default function Chatbot() {
   openChatbotRef.current = openChatbot;
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
   };
 
   useEffect(() => {
@@ -323,64 +332,90 @@ export default function Chatbot() {
 
   const getBotResponse = (userInput: string): { text: string; showContactForm?: boolean } => {
     const input = userInput.toLowerCase();
-    
+    const scopeLine = `Approved program areas at ${CHATBOT_BRAND_NAME}: ${formatChatbotApprovedCategoriesList()}.`;
+
     // Greeting responses
     if (input.includes('hello') || input.includes('hi') || input.includes('hey')) {
-      return { text: "Hello! Welcome to GrowWise! 🎓 We're a leading educational platform serving Tri-Valley families with comprehensive Grades 1-12 academic programs and exciting STEAM courses. I'm here to help you learn about our programs, courses, and how we can support your child's learning journey. What would you like to know?" };
+      return {
+        text: `Hello! Welcome to ${CHATBOT_BRAND_NAME}! 🎓 ${scopeLine} I'm here to help you learn how we support Tri-Valley families and what might fit your child. What would you like to know?`,
+      };
     }
-    
-    // Grades 1-12 Academic Programs
+
+    // K-12 Academic Programs
     if (input.includes('k-12') || input.includes('academic') || input.includes('math') || input.includes('english') || input.includes('ela') || input.includes('writing') || input.includes('sat') || input.includes('act')) {
-      return { text: "Our Grades 1-12 Academic Programs include:\n\n📚 **Math Courses**: Elementary Math, Middle School Math, DUSD Accelerated Math, and High School Math (including Calculus)\n\n📖 **ELA Courses**: English Mastery Grades 1-12, Reading Enrichment, and Grammar Boost\n\n✏️ **Writing Lab**: Creative Writing, Essay Writing, and Create & Reflect programs\n\n🎯 **SAT/ACT Prep**: Math Test Prep, Online SAT Test Prep, and Online ACT Test Prep\n\nWe offer personalized 1:1 attention and small group learning. Would you like details about any specific program?" };
+      return {
+        text: `${scopeLine}\n\n📚 **Tutoring & Accelerated Math**: Elementary through high school math, including accelerated tracks and calculus readiness\n\n📖 **English and Writing**: Reading enrichment, grammar, essay writing, and reflective writing workshops\n\n🎯 **Test readiness**: SAT/ACT-focused math and verbal support\n\nWe combine tutoring, workshops, and camps where it fits your goals. Would you like details about any specific focus?`,
+      };
     }
-    
-    // STEAM Programs
-    if (input.includes('steam') || input.includes('coding') || input.includes('python') || input.includes('game') || input.includes('roblox') || input.includes('scratch') || input.includes('ai') || input.includes('ml') || input.includes('entrepreneur')) {
-      return { text: "Our STEAM Programs include:\n\n🎮 **Game Development**: Roblox Studio, Scratch visual programming, and Minecraft coding\n\n🐍 **Python Programming**: Python Kickstart (beginner), Python Power Up (intermediate), and Python Pro (advanced)\n\n💡 **Young Founders**: Youth CEO leadership program and I Am Brand personal branding\n\n🤖 **ML/Gen AI**: Prompt Engineering, AI for Everyone, and ML/AI for Highschoolers\n\nAll programs are hands-on and project-based. Which STEAM program interests you most?" };
+
+    // STEM / STEAM-style Programs (aligned to approved scope labels)
+    if (
+      input.includes('steam') ||
+      input.includes('stem') ||
+      input.includes('coding') ||
+      input.includes('python') ||
+      input.includes('game') ||
+      input.includes('roblox') ||
+      input.includes('scratch') ||
+      input.includes('ai') ||
+      input.includes('ml') ||
+      input.includes('robot') ||
+      input.includes('workshop') ||
+      input.includes('entrepreneur')
+    ) {
+      return {
+        text: `${scopeLine}\n\n🎮 **Coding & game building**: Scratch, Roblox Studio, and Python paths\n\n🤖 **AI & STEM enrichment**: Introductory AI/ML explorations and project-based labs\n\n🔧 **Robotics & workshops**: Seasonal intensives and hands-on builds\n\nPrograms are hands-on and designed for Tri-Valley learners. Which area sounds like the best fit?`,
+      };
     }
-    
+
     // Popular Courses
     if (input.includes('popular') || input.includes('course') || input.includes('program')) {
-      return { text: "Our most popular courses are:\n\n🐍 **Python Coding** - Project-based learning\n🧮 **Math Mastery** - 1:1 attention\n🤖 **AI Explorer** - Future-ready skills\n📚 **Reading Mastery** - Accelerated growth\n\nWe also offer comprehensive Grades 1-12 academic programs and exciting STEAM courses. Would you like to know more about any specific course or program?" };
-    }
-    
-    // Assessment and Trial Information
-    if (input.includes('assessment') || input.includes('trial') || input.includes('demo') || input.includes('free') || input.includes('evaluate') || input.includes('test')) {
-      return { 
-        text: "We offer FREE assessments and trial classes:\n\n🎓 **Grades 1-12 Programs**: 60-minute FREE assessment to evaluate your child's needs\n\n🚀 **STEAM Courses**: 30-minute trial class to experience our hands-on learning\n\nThese help us create a personalized learning plan for your child. To get started, I'll need some contact information to schedule your free assessment or trial class.",
-        showContactForm: true
+      return {
+        text: `${scopeLine}\n\nFamilies often start with **tutoring**, **Accelerated Math**, **English and Writing**, or **Coding / AI** tracks—and we run **workshops** and **camps** throughout the year. Tell me your child's grade or interests and I can narrow it down.`,
       };
     }
-    
+
+    // Assessment and Trial Information
+    if (chatbotAssessmentContactIntent(userInput)) {
+      return {
+        text: `We offer FREE assessments and trial experiences for many tracks:\n\n🎓 **Tutoring & academics**: a structured assessment to place the right plan\n\n🚀 **STEM / coding / workshops**: shorter trial-style sessions where offered\n\n${scopeLine} To schedule the right next step, I'll need a few contact details.`,
+        showContactForm: true,
+      };
+    }
+
     // Statistics and Trust
     if (input.includes('statistics') || input.includes('students') || input.includes('families') || input.includes('satisfaction') || input.includes('enrolled')) {
-      return { text: "GrowWise is trusted by Tri-Valley families:\n\n👥 **325+ Students Enrolled**\n📚 **25+ Courses Offered**\n👍 **98% Parent Satisfaction**\n\nWe're proud to serve the Tri-Valley community with proven results and expert instruction. Our students show measurable improvement within the first semester!" };
+      return {
+        text: `${CHATBOT_BRAND_NAME} is trusted by Tri-Valley families:\n\n👥 **325+ students** learning with us\n📚 **25+ course paths** across tutoring, STEM, and camps\n👍 **98% parent satisfaction** in recent surveys\n\nWe pair structured tutoring with modern STEM, AI, and robotics experiences.`,
+      };
     }
-    
+
     // Why Choose Us
     if (input.includes('why') || input.includes('choose') || input.includes('benefit') || input.includes('advantage')) {
-      return { text: "Why choose GrowWise?\n\n👨‍🏫 **Expert Instructors**: Certified teachers with years of Grades 1-12 and STEAM experience\n\n📈 **Proven Results**: 95% of students show measurable improvement in the first semester\n\n📋 **Comprehensive Curriculum**: Aligned with state standards and modern learning needs\n\n🔬 **Hands-on Learning**: Interactive labs and projects that make learning engaging\n\nWe provide personalized attention and innovative teaching methods that make us stand out!" };
+      return {
+        text: `Why families choose ${CHATBOT_BRAND_NAME}:\n\n👨‍🏫 **Expert instructors** with deep K-12 and STEM backgrounds\n\n📈 **Measurable growth** for most learners within the first semester\n\n📋 **Curriculum aligned** to California learning expectations\n\n🔬 **Hands-on STEM, coding, AI, and robotics** alongside tutoring and writing support\n\n${scopeLine}`,
+      };
     }
-    
+
     // Pricing
-    if (input.includes('price') || input.includes('cost') || input.includes('fee') || input.includes('payment')) {
-      return { 
-        text: "We offer competitive pricing for all our programs. For the most accurate pricing information, I'd recommend booking a free assessment where our team can provide detailed information based on your specific needs and program selection. To get personalized pricing, I'll need some contact information to schedule your free assessment.",
-        showContactForm: true
+    if (chatbotPricingContactIntent(userInput)) {
+      return {
+        text: `We offer fair, program-specific pricing across tutoring, accelerated courses, workshops, and camps. The fastest way to get accurate numbers is a quick consult after a free assessment. ${scopeLine} Share your contact information and our team will follow up with options tailored to your goals.`,
+        showContactForm: true,
       };
     }
-    
+
     // Scheduling and Booking
-    if (input.includes('schedule') || input.includes('book') || input.includes('appointment') || input.includes('register') || input.includes('enroll')) {
-      return { 
-        text: "I'd be happy to help you schedule an assessment or trial class! To get started, I'll need some contact information to book your appointment and send you personalized details about our programs.",
-        showContactForm: true
+    if (chatbotSchedulingContactIntent(userInput)) {
+      return {
+        text: `I'd be happy to help you schedule an assessment, workshop, or camp consultation. ${scopeLine} Leave your contact information and we'll coordinate timing and next steps.`,
+        showContactForm: true,
       };
     }
-    
+
     // Contact Information
     if (input.includes('contact') || input.includes('phone') || input.includes('email') || input.includes('address') || input.includes('location')) {
-      return { text: `You can reach us at:\n\n📞 Phone: ${CONTACT_INFO.phone}\n📧 Email: ${CONTACT_INFO.email}\n📍 Address: ${CONTACT_INFO.address}\n\nWe're here to answer any questions about our programs and help you get started on your learning journey! Our team is responsive and will get back to you within 24 hours.` };
+      return { text: buildChatbotContactReplyBody() };
     }
     
     // Testimonials
@@ -399,15 +434,17 @@ export default function Chatbot() {
     }
     
     // Interest in getting started
-    if (input.includes('start') || input.includes('begin') || input.includes('join') || input.includes('sign up') || input.includes('get started') || input.includes('interested')) {
-      return { 
-        text: "That's wonderful! I'd love to help you get started with GrowWise. To provide you with the most personalized information about our programs and create a learning plan for your child, I'll need some contact information.",
-        showContactForm: true
+    if (chatbotGettingStartedContactIntent(userInput)) {
+      return {
+        text: `That's wonderful! I'd love to help you get started with ${CHATBOT_BRAND_NAME}. ${scopeLine} To personalize a plan, I'll need a few contact details.`,
+        showContactForm: true,
       };
     }
 
     // Default response
-    return { text: "That's a great question! I'd be happy to help you with that. GrowWise offers comprehensive Grades 1-12 academic programs and exciting STEAM courses. Could you provide a bit more detail about what specific information you're looking for? I can help with course details, scheduling assessments, pricing, or any other questions about our programs!" };
+    return {
+      text: `That's a great question! ${CHATBOT_BRAND_NAME} offers tutoring, accelerated math, English and writing, STEM enrichment, coding, AI, robotics, workshops, and camps. What grade is your child in, or which topic should we explore first?`,
+    };
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -434,17 +471,10 @@ export default function Chatbot() {
           <Button
             onClick={handleStartChat}
             aria-label={t('chatbot.openChat')}
-            className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-0 bg-transparent p-0 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-3xl focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2"
-            size="lg"
+            className="h-12 rounded-full border-0 bg-gradient-to-br from-[#1F396D] to-[#29335C] px-4 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2 flex items-center gap-2"
           >
-            <Image
-              src="/assets/chat-float-icon.png"
-              alt=""
-              width={64}
-              height={64}
-              className="h-full w-full object-cover"
-              priority
-            />
+            <Bot className="h-5 w-5 text-white shrink-0" aria-hidden />
+            <span className="text-white text-sm font-semibold">{t('chatbot.title')}</span>
           </Button>
         </div>
       )}
@@ -463,9 +493,9 @@ export default function Chatbot() {
                   <Bot className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg">GrowWise Assistant</h3>
+                  <h3 className="font-bold text-lg">{t('chatbot.title')}</h3>
                   <p className="text-sm text-white/80">
-                    {isError ? 'Using fallback mode' : 'Online now'}
+                    {isError ? t('chatbot.status.fallback') : t('chatbot.status.online')}
                   </p>
                 </div>
               </div>
@@ -591,8 +621,9 @@ export default function Chatbot() {
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={(e) => setInputValue(e.target.value.slice(0, 600))}
                   onKeyPress={handleKeyPress}
+                  maxLength={600}
                   placeholder={t('chatbot.placeholder')}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#F16112] focus:border-transparent"
                 />

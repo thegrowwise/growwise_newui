@@ -8,6 +8,7 @@ import { Label } from '../ui/label';
 import { Card, CardContent } from '../ui/card';
 import { Mail, Phone, User, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import { PHONE_PLACEHOLDER } from '@/lib/constants';
+import { CHATBOT_PUBLIC_CONTACT_EMAIL } from '@/lib/chatbotScope';
 import { validatePhoneSimple } from '@/lib/phoneValidation';
 import FormPrivacyConsent from '@/components/form/FormPrivacyConsent';
 
@@ -33,6 +34,8 @@ export interface ContactFormData {
   gradeLevel?: string;
   preferredContact?: string;
   source?: string; // Where the form was submitted from
+  /** Honeypot — must stay empty (bots fill hidden fields). */
+  _hp?: string;
 }
 
 export default function ContactForm({
@@ -49,7 +52,8 @@ export default function ContactForm({
     email: '',
     phone: '',
     message: '',
-    source: 'chatbot'
+    source: 'chatbot',
+    _hp: '',
   });
 
   const [agreeToCommunications, setAgreeToCommunications] = useState(false);
@@ -126,12 +130,22 @@ export default function ContactForm({
   }
 
   return (
-    <Card className="bg-white/95 backdrop-blur-sm border-2 border-white/50">
+    <Card className="relative bg-white/95 backdrop-blur-sm border-2 border-white/50">
       <CardContent className="p-4">
         <div className="text-center mb-3">
           <h3 className="text-sm font-semibold text-gray-900 mb-1">Get Personalized Information</h3>
           <p className="text-xs text-gray-600">
             Please provide your contact details.
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            Prefer email? Reach us at{' '}
+            <a
+              href={`mailto:${CHATBOT_PUBLIC_CONTACT_EMAIL}`}
+              className="text-[#1F396D] underline underline-offset-2 hover:text-[#F16112]"
+            >
+              {CHATBOT_PUBLIC_CONTACT_EMAIL}
+            </a>
+            .
           </p>
         </div>
 
@@ -143,6 +157,21 @@ export default function ContactForm({
         )}
 
         <form onSubmit={handleSubmit} className="space-y-3">
+          {/* Honeypot: hidden from users; bots often fill every field */}
+          <div
+            className="absolute left-[-9999px] top-0 h-px w-px overflow-hidden"
+            aria-hidden
+          >
+            <label htmlFor="contact-form-hp">Company</label>
+            <input
+              id="contact-form-hp"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData._hp ?? ''}
+              onChange={(e) => handleInputChange('_hp', e.target.value)}
+            />
+          </div>
           <div>
             <Label htmlFor="name" className="text-sm font-medium text-gray-700">
               Name *
@@ -151,7 +180,8 @@ export default function ContactForm({
               id="name"
               type="text"
               value={formData.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
+              onChange={(e) => handleInputChange('name', e.target.value.slice(0, 100))}
+              maxLength={100}
               className={`mt-1 ${getFieldError('name') ? 'border-red-300 focus:border-red-500' : ''}`}
               placeholder="John Doe"
               disabled={isLoading}
@@ -171,7 +201,8 @@ export default function ContactForm({
                 id="email"
                 type="email"
                 value={formData.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
+                onChange={(e) => handleInputChange('email', e.target.value.slice(0, 254))}
+                maxLength={254}
                 className={`pl-10 ${getFieldError('email') ? 'border-red-300 focus:border-red-500' : ''}`}
                 placeholder="john@example.com"
                 disabled={isLoading}
@@ -192,7 +223,8 @@ export default function ContactForm({
                 id="phone"
                 type="tel"
                 value={formData.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
+                onChange={(e) => handleInputChange('phone', e.target.value.slice(0, 32))}
+                maxLength={32}
                 className={`pl-10 ${getFieldError('phone') ? 'border-red-300 focus:border-red-500' : ''}`}
                 placeholder={PHONE_PLACEHOLDER}
                 disabled={isLoading}

@@ -9,6 +9,11 @@ import {
   splitFullName,
   submitHubSpotForm,
 } from '@/lib/hubspot/submitForm';
+import { clientIpFrom, isAllowed } from '@/lib/chatRateLimit';
+import { clip, exceedsMax, FIELD_MAX, isValidEmailShape } from '@/lib/inputLimits';
+import { honeypotTriggered, isOriginAllowed } from '@/lib/requestGuard';
+
+const MAX_BODY_BYTES = 32 * 1024;
 
 const BREVO_RETRY_DELAY_MS = 450;
 
@@ -72,8 +77,45 @@ type ContactPayload = {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, email, phone, message, source }: ContactFormData = body;
+    if (!isAllowed('contact', clientIpFrom(request))) {
+      return NextResponse.json(
+        { success: false, message: 'Too many submissions. Please try again later.' },
+        { status: 429 },
+      );
+    }
+    if (!isOriginAllowed(request)) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid request' },
+        { status: 403 },
+      );
+    }
+
+    const raw = await request.text();
+    if (raw.length > MAX_BODY_BYTES) {
+      return NextResponse.json(
+        { success: false, message: 'Request too large' },
+        { status: 413 },
+      );
+    }
+
+    let body: Record<string, unknown>;
+    try {
+      body = JSON.parse(raw) as Record<string, unknown>;
+    } catch {
+      return NextResponse.json(
+        { success: false, message: 'Invalid JSON' },
+        { status: 400 },
+      );
+    }
+
+    if (honeypotTriggered(body)) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid request' },
+        { status: 400 },
+      );
+    }
+
+    const { name, email, phone, message, source }: ContactFormData = body as unknown as ContactFormData;
 
     // Validate required fields
     if (!name || !email || !phone) {
@@ -83,16 +125,33 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (
+      exceedsMax(name, FIELD_MAX.name) ||
+      exceedsMax(email, FIELD_MAX.email) ||
+      exceedsMax(phone, FIELD_MAX.phone) ||
+      (typeof message === 'string' && exceedsMax(message, FIELD_MAX.longText)) ||
+      (typeof source === 'string' && exceedsMax(source, FIELD_MAX.shortText))
+    ) {
+      return NextResponse.json(
+        { success: false, message: 'One or more fields are too long' },
+        { status: 400 },
+      );
+    }
+
+    const nameC = clip(name, FIELD_MAX.name);
+    const emailC = clip(email, FIELD_MAX.email).toLowerCase();
+    const phoneC = clip(phone, FIELD_MAX.phone);
+    const messageC = typeof message === 'string' ? clip(message, FIELD_MAX.longText) : '';
+    const sourceC = clip(typeof source === 'string' ? source : 'chatbot', FIELD_MAX.shortText) || 'chatbot';
+
+    if (!isValidEmailShape(emailC)) {
       return NextResponse.json(
         { success: false, message: 'Invalid email format', errors: [{ field: 'email', message: 'Please enter a valid email address' }] },
         { status: 400 }
       );
     }
 
-    const phoneResult = validatePhoneSimple(phone);
+    const phoneResult = validatePhoneSimple(phoneC);
     if (!phoneResult.isValid) {
       return NextResponse.json(
         { success: false, message: phoneResult.errorMessage, errors: [{ field: 'phone', message: phoneResult.errorMessage }] },
@@ -100,9 +159,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate message length (min 10 characters when provided)
-    const messageVal = typeof message === 'string' ? message.trim() : '';
-    if (messageVal.length > 0 && messageVal.length < 10) {
+    if (messageC.length > 0 && messageC.length < 10) {
       return NextResponse.json(
         {
           success: false,
@@ -114,22 +171,26 @@ export async function POST(request: Request) {
     }
 
     const contactData: ContactPayload = {
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      phone: phone.trim(),
-      message: message?.trim() || '',
-      source: source || 'chatbot',
+      name: nameC,
+      email: emailC,
+      phone: phoneC,
+      message: messageC,
+      source: sourceC,
       timestamp: new Date().toISOString(),
-      ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+      ip: clientIpFrom(request),
     };
 
     const emailResult = await sendContactEmail(contactData);
 
     if (emailResult.success) {
-      console.log('Contact form submission:', {
-        ...contactData,
-        emailSent: true,
-        messageId: emailResult.messageId
+      const at = contactData.email.indexOf('@');
+      const emailDomain = at > 0 ? contactData.email.slice(at + 1) : 'unknown';
+      console.log('[contact] submission ok', {
+        source: contactData.source,
+        emailDomain,
+        hasMessage: contactData.message.length > 0,
+        ip: contactData.ip,
+        messageId: emailResult.messageId,
       });
 
       // HubSpot CRM (server-only Forms API — same env as /api/hubspot-submit; does not load chat widget)
@@ -169,12 +230,12 @@ export async function POST(request: Request) {
 
     throw new Error(emailResult.error || 'Failed to send email');
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+    console.error('[contact] POST failed:', error);
     return NextResponse.json(
       {
         success: false,
-        message: errorMessage,
-        errors: [{ field: 'form', message: errorMessage }]
+        message: 'Something went wrong on our end. Please try again or email us directly.',
+        errors: [{ field: 'form', message: 'Something went wrong on our end. Please try again or email us directly.' }]
       },
       { status: 500 }
     );
