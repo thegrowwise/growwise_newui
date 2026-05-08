@@ -56,6 +56,7 @@ export class ContactService {
         gradeLevel: data.gradeLevel || '',
         preferredContact: data.preferredContact || 'email',
         recaptchaToken: recaptchaToken || undefined,
+        _hp: data._hp ?? '',
       };
 
       const response = await fetch(`${this.baseUrl}/api/contact`, {

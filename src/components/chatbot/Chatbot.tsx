@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { X, Send, Bot, User } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -93,7 +92,7 @@ export default function Chatbot() {
   openChatbotRef.current = openChatbot;
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'instant' });
   };
 
   useEffect(() => {
@@ -472,17 +471,10 @@ export default function Chatbot() {
           <Button
             onClick={handleStartChat}
             aria-label={t('chatbot.openChat')}
-            className="h-16 w-16 shrink-0 overflow-hidden rounded-full border-0 bg-transparent p-0 shadow-2xl transition-all duration-300 hover:scale-110 hover:shadow-3xl focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2"
-            size="lg"
+            className="h-12 rounded-full border-0 bg-gradient-to-br from-[#1F396D] to-[#29335C] px-4 shadow-2xl transition-all duration-300 hover:scale-105 hover:shadow-3xl focus-visible:ring-2 focus-visible:ring-[#F16112] focus-visible:ring-offset-2 flex items-center gap-2"
           >
-            <Image
-              src="/assets/chat-float-icon.png"
-              alt=""
-              width={64}
-              height={64}
-              className="h-full w-full object-cover"
-              priority
-            />
+            <Bot className="h-5 w-5 text-white shrink-0" aria-hidden />
+            <span className="text-white text-sm font-semibold">{t('chatbot.title')}</span>
           </Button>
         </div>
       )}
@@ -629,8 +621,9 @@ export default function Chatbot() {
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
+                  onChange={(e) => setInputValue(e.target.value.slice(0, 600))}
                   onKeyPress={handleKeyPress}
+                  maxLength={600}
                   placeholder={t('chatbot.placeholder')}
                   className="flex-1 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#F16112] focus:border-transparent"
                 />
