@@ -75,7 +75,6 @@ export default function EventSchema({
       availability: 'https://schema.org/InStock',
       validFrom: '2026-01-01',
     },
-    typicalAgeRange,
     inLanguage: 'en',
   }
 
