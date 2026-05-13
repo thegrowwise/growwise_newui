@@ -52,7 +52,8 @@ export const organizationSchema = {
   "foundingDate": "2024",
   "numberOfEmployees": {
     "@type": "QuantitativeValue",
-    "value": "10-50"
+    "minValue": 10,
+    "maxValue": 50
   }
 }
 
@@ -232,7 +233,6 @@ export function generateCourseSchema({
     ...(image && { "image": image }),
     "inLanguage": "en-US",
     "isAccessibleForFree": false,
-    "areaServed": [...TRI_VALLEY_AREA_SERVED],
     ...(offers && {
       "offers": {
         "@type": "Offer",
@@ -542,7 +542,10 @@ export function generateArticleSchema({
     "headline": headline,
     "description": description,
     "url": url,
-    "mainEntityOfPage": url,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": url,
+    },
     "publisher": {
       "@type": "Organization",
       "name": "GrowWise",

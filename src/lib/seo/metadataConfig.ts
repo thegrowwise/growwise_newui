@@ -105,7 +105,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/coding': {
     title: 'Coding Classes Kids | Dublin CA | GrowWise',
     description:
-      'Coding classes for ages 10–18 in Dublin, CA. Python, JavaScript, and web basics in small groups. Book a free trial.',
+      'Coding classes for ages 10–18 in Dublin, CA. Python, JavaScript, and web development basics in small groups with expert instructors. Book a free trial.',
     keywords:
       'coding classes Dublin CA, coding for kids Dublin, Python classes kids, JavaScript course kids, web development course Dublin, coding programs Grades 1-12, coding tutor Dublin, learn to code Dublin CA, kids coding near me, programming classes Dublin CA, coding classes near me',
     path: '/coding',
@@ -141,7 +141,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/steam/game-development': {
     title: 'Game Development Course | Dublin CA | GrowWise',
     description:
-      'Game development in Dublin, CA. Roblox, Scratch, and Python projects for Grades 1–12. Book a free trial.',
+      'Game development classes in Dublin, CA. Build real games with Roblox, Scratch, and Python for Grades 1–12. Small groups, expert coaches. Book a free trial.',
     keywords:
       'game development course Dublin CA, learn game development, coding games, game programming, game design course, kids game development, Roblox coding, Scratch programming, Python game development, game development classes, coding games for kids',
     path: '/steam/game-development',
@@ -159,7 +159,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/enroll-academic': {
     title: 'Academic Enrollment | Math & English | GrowWise',
     description:
-      'Enroll in GrowWise math and English programs. DUSD & PUSD aligned curriculum and small groups in Dublin, CA.',
+      'Enroll in GrowWise math and English programs in Dublin, CA. DUSD & PUSD aligned curriculum, small groups, and personalized pacing. Get started today.',
     keywords:
       'enroll academic programs, math enrollment, English enrollment, academic tutoring enrollment Dublin CA, Grades 1-12 enrollment',
     path: '/enroll-academic',
@@ -224,7 +224,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/camps/winter': {
     title: 'Winter Camp 2025 | Dublin CA | GrowWise',
     description:
-      'GrowWise Winter Camp: academic and STEAM workshops during winter break in Dublin, CA. Reserve your week.',
+      'GrowWise Winter Camp: academic and STEAM workshops during winter break in Dublin, CA. Coding, math, and writing for grades 1–12. Reserve your week.',
     keywords:
       'winter camp 2025, winter break programs, academic winter camp, STEAM winter camp, winter tutoring Dublin CA, December camp',
     path: '/camps/winter',
@@ -233,7 +233,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/camps/winter/calendar': {
     title: 'Winter Camp Schedule 2025 | GrowWise',
     description:
-      'Winter camp workshop schedule in Dublin, CA. View dates, times, and themes. Reserve your spot early.',
+      'Winter camp workshop schedule in Dublin, CA. View all dates, times, and weekly themes for coding, math, and STEAM. Reserve your spot early.',
     keywords:
       'winter camp schedule, winter camp calendar, workshop schedule, December camp schedule, winter break activities',
     path: '/camps/winter/calendar',
@@ -262,7 +262,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/growwise-blogs': {
     title: 'GrowWise Blog | Math, English & Coding Tips',
     description:
-      'Articles on tutoring, English, coding, and STEAM for Tri-Valley families. Practical tips from GrowWise educators.',
+      'Articles on math tutoring, English, coding, and STEAM for Tri-Valley families. Practical tips and guides from GrowWise educators in Dublin, CA.',
     keywords:
       'math tutoring tips, English tutoring advice, coding for kids, STEAM education, Grades 1-12 education blog, Dublin CA education, parenting tips, learning resources',
     path: '/growwise-blogs',
@@ -271,7 +271,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/workshop-calendar': {
     title: 'Free Workshop Calendar | GrowWise Dublin',
     description:
-      'Free Saturday workshops in Dublin, CA: reading, math, coding, and parent sessions. View dates and register.',
+      'Free Saturday workshops in Dublin, CA: reading, math, coding, AI studio, and parent webinars. View upcoming dates and register your spot at GrowWise.',
     keywords:
       'workshop calendar, free workshops, Saturday workshops, reading workshop, math olympiad, scratch coding, AI studio, parent webinar, Dublin CA',
     path: '/workshop-calendar',
@@ -280,7 +280,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/privacy-policy': {
     title: 'Privacy Policy | GrowWise',
     description:
-      'Read the GrowWise privacy policy. Learn how we collect, use, and protect your personal information.',
+      'Read the GrowWise privacy policy. Learn how we collect, use, store, and protect your personal information as a student or parent on our platform.',
     keywords: 'GrowWise privacy policy, data protection, personal information',
     path: '/privacy-policy',
   },
@@ -288,7 +288,7 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
   '/terms-conditions': {
     title: 'Terms & Conditions | GrowWise',
     description:
-      'Read the GrowWise terms and conditions governing use of our website, programs, and services.',
+      'Read the GrowWise terms and conditions governing use of our website, tutoring programs, STEAM classes, and camps. Applies to all students and parents.',
     keywords: 'GrowWise terms conditions, terms of service, website terms',
     path: '/terms-conditions',
   },
