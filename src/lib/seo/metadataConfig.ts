@@ -165,6 +165,15 @@ export const metadataConfig: Record<string, PageMetadataConfig> = {
     path: '/enroll-academic',
   },
 
+  '/self-check': {
+    title: 'Free Math & English Self-Check | GrowWise School',
+    description:
+      'Find out if your child has hidden math or English gaps. Free 5-minute quiz — get a personal Mistake-Pattern Report. No account needed.',
+    keywords:
+      'free math self-check, English gap test, child learning gaps, mistake pattern report, free quiz Dublin CA, math struggles, reading gaps',
+    path: '/self-check',
+  },
+
   '/book-assessment': {
     title: 'Free Academic Assessment in Dublin, CA | GrowWise',
     description:
