@@ -5,14 +5,14 @@ import { localePath } from '../localePath';
 
 const SESSION = 'test-session-abc123';
 
-/** Mock /api/self-check to return a fake WP magic-login redirect URL */
+/** Mock /api/self-check to return success (email-driven flow — no redirectUrl) */
 async function mockSelfCheckSuccess(page: Page) {
   await page.route('**/api/self-check', async (route: Route) => {
     if (route.request().method() !== 'POST') { await route.continue(); return; }
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ success: true, redirectUrl: `http://localhost:3000/mock-wp-login?session=${SESSION}` }),
+      body: JSON.stringify({ success: true }),
     });
   });
 }
@@ -96,8 +96,8 @@ async function fillAndSubmitForm(page: Page, grade = 'Grade 3') {
   await gradeTrigger.click({ force: true });
   await page.getByRole('option', { name: new RegExp(`^${grade}$`, 'i') }).click();
 
-  // Wait for predictions to appear, then tick one
-  await expect(page.getByText(/Detective Challenge/i)).toBeVisible({ timeout: 5000 });
+  // Wait for predictions to appear (the form label, not the page heading)
+  await expect(page.locator('label', { hasText: /Detective Challenge/i })).toBeVisible({ timeout: 5000 });
   await page.getByText(/Addition, Subtraction/i).click();
 
   await page.getByRole('button', { name: /Lock In My Prediction/i }).click();
@@ -143,14 +143,15 @@ test.describe('Self-Check funnel', () => {
     await expect(page).toHaveURL(/self-check/, { timeout: 3000 });
   });
 
-  // ── 4. Happy path — form submits and redirects ────────────────────────────
-  test('successful form submission redirects to WP login URL', async ({ page }) => {
+  // ── 4. Happy path — form submits and shows email confirmation ────────────
+  test('successful form submission shows email confirmation', async ({ page }) => {
     await mockSelfCheckSuccess(page);
     await goto(page, localePath('/self-check'));
     await fillAndSubmitForm(page, 'Grade 3');
 
-    // After redirect, URL should contain the session token we returned
-    await expect(page).toHaveURL(new RegExp(SESSION), { timeout: 15000 });
+    // Email-driven flow: shows confirmation message instead of redirecting
+    await expect(page.getByText(/Check your email/i)).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText(/test@example\.com/i)).toBeVisible();
   });
 
   // ── 5. Expired session banner ─────────────────────────────────────────────
@@ -177,116 +178,19 @@ test.describe('Self-Check funnel', () => {
 
 test.describe('Detective page', () => {
 
-  // ── 8. No session redirects to self-check ────────────────────────────────
-  test('redirects to /self-check?error=expired when no session', async ({ page }) => {
+  // ── 8. Detective page redirects to self-check (now a pass-through) ───────
+  test('redirects to /self-check', async ({ page }) => {
     await goto(page, localePath('/detective'));
-    await expect(page).toHaveURL(/self-check\?error=expired/, { timeout: 8000 });
-  });
-
-  // ── 9. Already predicted — skip to results ───────────────────────────────
-  test('skips to /results if student already predicted', async ({ page }) => {
-    await mockResultsCompleted(page);
-    await goto(page, localePath(`/detective?session=${SESSION}`));
-    await expect(page).toHaveURL(new RegExp(`/results.*session=${SESSION}`), { timeout: 10000 });
-  });
-
-  // ── 10. Prediction form renders and submits ───────────────────────────────
-  test('shows prediction form and submits to /results', async ({ page }) => {
-    // First call: no student_prediction yet (shows the form)
-    let callCount = 0;
-    await page.route('**/api/results**', async (route: Route) => {
-      callCount++;
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          status: 'completed',
-          student_name: 'Alex',
-          grade: 3,
-          subject: 'math',
-          patterns_confirmed: [],
-          patterns_possible: [],
-          overall_risk: 'NONE',
-          parent_prediction: [],
-          student_prediction: callCount === 1 ? '' : 'operations',
-          award_tier: 'keep_digging',
-        }),
-      });
-    });
-    await mockSavePrediction(page);
-
-    await goto(page, localePath(`/detective?session=${SESSION}`));
-    await expect(page.getByRole('heading', { name: /Detective Challenge/i })).toBeVisible({ timeout: 8000 });
-
-    await page.getByText(/Addition, Subtraction/i).click();
-    await page.getByRole('button', { name: /Reveal My Results/i }).click();
-
-    await expect(page).toHaveURL(new RegExp(`/results.*session=${SESSION}`), { timeout: 10000 });
+    await expect(page).toHaveURL(/self-check/, { timeout: 8000 });
   });
 });
 
 test.describe('Results page', () => {
 
-  // ── 11. No session redirects to self-check ────────────────────────────────
-  test('redirects to /self-check?error=expired when no session', async ({ page }) => {
+  // ── 11. Results page redirects to self-check (now a pass-through) ─────────
+  test('redirects to /self-check', async ({ page }) => {
     await goto(page, localePath('/results'));
-    await expect(page).toHaveURL(/self-check\?error=expired/, { timeout: 8000 });
-  });
-
-  // ── 12. Quiz not completed redirects to self-check ────────────────────────
-  test('redirects to /self-check?error=incomplete when quiz not done', async ({ page }) => {
-    await mockResultsNotCompleted(page);
-    await goto(page, localePath(`/results?session=${SESSION}`));
-    await expect(page).toHaveURL(/self-check\?error=incomplete/, { timeout: 10000 });
-  });
-
-  // ── 13. Completed results render correctly ────────────────────────────────
-  test('renders pattern cards and award badge on completed results', async ({ page }) => {
-    await mockResultsCompleted(page);
-    await goto(page, localePath(`/results?session=${SESSION}`));
-
-    await expect(page.getByText(/Here.*What We Found for Alex/i)).toBeVisible({ timeout: 10000 });
-    await expect(page.getByText(/Skipped Steps/i)).toBeVisible();
-    await expect(page.getByText(/Double Detective/i)).toBeVisible();
-    await expect(page.getByText(/Grade 3/i)).toBeVisible();
-  });
-
-  // ── 14. "Back to Self-Check" link present ─────────────────────────────────
-  test('shows Back to Self-Check link on results page', async ({ page }) => {
-    await mockResultsCompleted(page);
-    await goto(page, localePath(`/results?session=${SESSION}`));
-    await expect(page.getByText(/Here.*What We Found/i)).toBeVisible({ timeout: 10000 });
-
-    const backLink = page.getByRole('link', { name: /Back to Self-Check/i });
-    await backLink.scrollIntoViewIfNeeded();
-    await expect(backLink).toHaveAttribute('href', '/self-check');
-  });
-
-  // ── 15. No-patterns path shows positive card ──────────────────────────────
-  test('shows all-clear card when no patterns found', async ({ page }) => {
-    await page.route('**/api/results**', async (route: Route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          success: true,
-          status: 'completed',
-          student_name: 'Alex',
-          grade: 3,
-          subject: 'math',
-          patterns_confirmed: [],
-          patterns_possible: [],
-          overall_risk: 'NONE',
-          parent_prediction: [],
-          student_prediction: '',
-          award_tier: 'keep_digging',
-        }),
-      });
-    });
-
-    await goto(page, localePath(`/results?session=${SESSION}`));
-    await expect(page.getByText(/No major gaps found/i)).toBeVisible({ timeout: 10000 });
+    await expect(page).toHaveURL(/self-check/, { timeout: 8000 });
   });
 });
 

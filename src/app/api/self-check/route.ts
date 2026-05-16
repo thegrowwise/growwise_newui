@@ -79,8 +79,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Subject must be math, english, or both.' }, { status: 400 });
     }
 
-    // Grades 5–8 are not yet available — course IDs pending
-    const AVAILABLE_GRADES = new Set([3, 4]);
+    const AVAILABLE_GRADES = new Set([3, 4, 5, 6, 7, 8]);
     if (!AVAILABLE_GRADES.has(grade)) {
       return NextResponse.json(
         { success: false, error: 'grade_unavailable' },
@@ -144,7 +143,76 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, redirectUrl: wpData.login_url });
+    const adminEmail = process.env.GROWWISE_ADMIN_EMAIL || 'connect@thegrowwise.com';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+    const emailSubject = 'Your Mistake Detective Quiz Link';
+    const emailBody = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family:Arial,sans-serif;line-height:1.6;color:#333;background:#f5f5f5;margin:0;padding:20px">
+    <div style="max-width:600px;margin:0 auto;background:#fff;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);overflow:hidden">
+        <div style="background:linear-gradient(135deg, #1F396D 0%, #2d5a8f 100%);padding:2rem;text-align:center;color:#fff">
+            <h1 style="margin:0;font-size:1.8rem">Mistake Detective Challenge</h1>
+            <p style="margin:0.5rem 0 0;opacity:0.95">Time to find the gaps</p>
+        </div>
+
+        <div style="padding:2rem">
+            <p>Hi ${studentName}'s parent,</p>
+            <p>Your child's Mistake Detective quiz is ready! Click the button below to start the 8-question challenge.</p>
+
+            <div style="text-align:center;margin:2rem 0">
+                <a href="${wpData.login_url}" style="display:inline-block;background:#F16112;color:#fff;text-decoration:none;padding:12px 32px;border-radius:6px;font-weight:600;font-size:1rem">
+                    Start the Quiz →
+                </a>
+            </div>
+
+            <p style="margin:2rem 0 0;color:#666;font-size:0.9rem">
+                <strong>The quiz:</strong> 8 questions, takes about 10–15 minutes. We'll analyze the results for learning gaps and patterns.
+            </p>
+            <p style="margin:1rem 0 0;color:#666;font-size:0.9rem">
+                <strong>What's next:</strong> After completion, you'll get an instant diagnostic report with specific learning gaps. Book a free workshop to dive deeper.
+            </p>
+
+            <p style="margin-top:2rem;color:#666;font-size:0.9rem">Questions? Reply to this email or contact ${adminEmail}</p>
+        </div>
+
+        <div style="background:#f5f5f5;padding:1.5rem;text-align:center;font-size:0.85rem;color:#999;border-top:1px solid #ddd">
+            <p style="margin:0">© 2026 GrowWise School. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+
+    try {
+      const emailRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'accept': 'application/json',
+          'api-key': process.env.BREVO_API_KEY || '',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sender: { email: process.env.BREVO_SENDER_EMAIL || 'contact@growwiseschool.org', name: 'GrowWise School' },
+          to: [{ email: parentEmail, name: parentName }],
+          subject: emailSubject,
+          htmlContent: emailBody,
+        }),
+      });
+
+      if (!emailRes.ok) {
+        console.error('[self-check] Brevo email failed', emailRes.status);
+      }
+    } catch (emailErr) {
+      console.error('[self-check] Email sending error:', emailErr);
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error('[self-check] POST failed:', error);
     return NextResponse.json(
