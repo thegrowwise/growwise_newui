@@ -4,11 +4,15 @@ import React, { Suspense } from 'react';
 import { EnrollProvider } from '@/contexts/EnrollContext';
 import { GameDevHero } from '@/components/game-dev/GameDevHero';
 import { GameDevPrograms } from '@/components/game-dev/GameDevPrograms';
+import { generateMetadataFromPath } from '@/lib/seo/metadata';
 
-export const metadata: Metadata = {
-  title: 'Game Development for Kids | GrowWise School',
-  description: 'Scratch, Roblox, Minecraft, and Robotics journeys for kids aged 6–16.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return generateMetadataFromPath('/game-dev', locale) ?? {
+    title: 'Game Dev for Kids | Dublin CA | GrowWise',
+    description: 'Game dev for ages 6–16 in Dublin, CA. Scratch, Roblox, and project builds. Hands-on classes with expert coaches. Book a free trial.',
+  };
+}
 
 export default function GameDevPage() {
   return (
