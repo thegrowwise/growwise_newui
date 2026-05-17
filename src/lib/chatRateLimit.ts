@@ -2,7 +2,8 @@
  * In-memory sliding-window rate limiter for public JSON APIs (`/api/chat`, lead forms).
  *
  * Namespaces isolate budgets: `chat` vs `contact` vs `assessment` vs `enroll`.
- * Stopgap until Supabase / Upstash — each serverless instance has its own map.
+ * Uses Vercel's x-vercel-forwarded-for header (injected by Vercel, cannot be spoofed by client).
+ * Resets on cold start, but email deduplication (C-4) provides the real abuse protection.
  */
 
 export type RateLimitNamespace = 'chat' | 'contact' | 'assessment' | 'enroll';
@@ -65,12 +66,25 @@ export function isAllowed(namespace: RateLimitNamespace, clientIp: string): bool
 }
 
 export function clientIpFrom(req: Request): string {
+  // Use Vercel-injected x-vercel-forwarded-for (cannot be spoofed by client)
+  const vff = req.headers.get('x-vercel-forwarded-for');
+  if (vff) {
+    const first = vff.split(',')[0]?.trim();
+    if (first) return first;
+  }
+
+  // Fallback: x-real-ip from Vercel Functions
+  const xri = req.headers.get('x-real-ip');
+  if (xri) return xri.trim();
+
+  // Fallback: X-Forwarded-For (spoofable, but better than nothing)
   const xff = req.headers.get('x-forwarded-for');
   if (xff) {
     const first = xff.split(',')[0]?.trim();
     if (first) return first;
   }
-  return req.headers.get('x-real-ip')?.trim() || 'unknown';
+
+  return 'unknown';
 }
 
 export function __resetForTests(): void {

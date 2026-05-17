@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
 import { clip, exceedsMax, FIELD_MAX, isValidEmailShape } from '@/lib/inputLimits';
 import { honeypotTriggered, isOriginAllowed } from '@/lib/requestGuard';
 import { clientIpFrom, isAllowed } from '@/lib/chatRateLimit';
@@ -143,6 +144,53 @@ export async function POST(request: Request) {
       );
     }
 
+    // Deduplication: check if parent already received Email 1 within 24h
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
+    let shouldSendEmail = true;
+    if (supabaseUrl && supabaseKey) {
+      try {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        const { data: existing } = await supabase
+          .from('leads')
+          .select('id')
+          .eq('parent_email', parentEmail)
+          .eq('email_1_sent', true)
+          .gt('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+          .limit(1);
+        if (existing && existing.length > 0) {
+          shouldSendEmail = false;
+          console.log('[self-check] Duplicate submission within 24h, skipping email for:', parentEmail);
+        }
+      } catch (dedupeErr) {
+        console.error('[self-check] Dedup check error:', dedupeErr);
+        // Continue with send if dedup check fails
+      }
+    }
+
+    // Insert form submission into Supabase (best-effort, don't block on failure)
+    if (supabaseUrl && supabaseKey) {
+      try {
+        const supabase = createClient(supabaseUrl, supabaseKey);
+        await supabase.from('leads').insert([
+          {
+            parent_name: parentName,
+            parent_email: parentEmail,
+            student_name: studentName,
+            grade,
+            subject,
+            parent_prediction: parentPrediction,
+            session_token: sessionToken,
+            email_1_sent: shouldSendEmail,
+            status: 'form_submitted',
+          },
+        ]);
+      } catch (supabaseErr) {
+        console.error('[self-check] Supabase insert error:', supabaseErr);
+        // Don't block response on Supabase failure
+      }
+    }
+
     const adminEmail = process.env.GROWWISE_ADMIN_EMAIL || 'connect@thegrowwise.com';
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
@@ -189,27 +237,32 @@ export async function POST(request: Request) {
 </html>
     `;
 
-    try {
-      const emailRes = await fetch('https://api.brevo.com/v3/smtp/email', {
-        method: 'POST',
-        headers: {
-          'accept': 'application/json',
-          'api-key': process.env.BREVO_API_KEY || '',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          sender: { email: process.env.BREVO_SENDER_EMAIL || 'contact@growwiseschool.org', name: 'GrowWise School' },
-          to: [{ email: parentEmail, name: parentName }],
-          subject: emailSubject,
-          htmlContent: emailBody,
-        }),
-      });
+    if (shouldSendEmail) {
+      try {
+        const emailRes = await fetch('https://api.brevo.com/v3/smtp/email', {
+          method: 'POST',
+          headers: {
+            'accept': 'application/json',
+            'api-key': process.env.BREVO_API_KEY || '',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sender: { email: process.env.BREVO_SENDER_EMAIL || 'contact@growwiseschool.org', name: 'GrowWise School' },
+            to: [{ email: parentEmail, name: parentName }],
+            subject: emailSubject,
+            htmlContent: emailBody,
+            trackOpens: true,
+            trackClicks: true,
+            tags: ['email_1', `student_${studentName.replace(/\s+/g, '_').toLowerCase()}`],
+          }),
+        });
 
-      if (!emailRes.ok) {
-        console.error('[self-check] Brevo email failed', emailRes.status);
+        if (!emailRes.ok) {
+          console.error('[self-check] Brevo email failed', emailRes.status);
+        }
+      } catch (emailErr) {
+        console.error('[self-check] Email sending error:', emailErr);
       }
-    } catch (emailErr) {
-      console.error('[self-check] Email sending error:', emailErr);
     }
 
     return NextResponse.json({ success: true });
