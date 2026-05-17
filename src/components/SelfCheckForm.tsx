@@ -42,6 +42,29 @@ const GRADES = [
 ];
 
 const EMAIL_RE = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,24}$/;
+const SUBMISSION_COOLDOWN_MS = 30 * 60 * 1000; // 30 minutes
+const STORAGE_KEY_PREFIX = 'growwise_self_check_submit_';
+
+function getLastSubmissionTime(email: string): number | null {
+  if (typeof window === 'undefined') return null;
+  const key = STORAGE_KEY_PREFIX + email.toLowerCase().trim();
+  const stored = localStorage.getItem(key);
+  return stored ? parseInt(stored, 10) : null;
+}
+
+function setLastSubmissionTime(email: string): void {
+  if (typeof window === 'undefined') return;
+  const key = STORAGE_KEY_PREFIX + email.toLowerCase().trim();
+  localStorage.setItem(key, Date.now().toString());
+}
+
+function getTimeUntilCanSubmit(email: string): number {
+  const lastTime = getLastSubmissionTime(email);
+  if (!lastTime) return 0;
+  const elapsed = Date.now() - lastTime;
+  const remaining = SUBMISSION_COOLDOWN_MS - elapsed;
+  return remaining > 0 ? remaining : 0;
+}
 
 function validateField(field: keyof FormState, value: string): string | undefined {
   switch (field) {
@@ -113,6 +136,17 @@ export default function SelfCheckForm() {
       setTouched({ parentName: true, parentEmail: true, studentName: true, grade: true, parentPredictions: true });
       return;
     }
+
+    // Check email-based cooldown to prevent duplicate submissions
+    const remainingMs = getTimeUntilCanSubmit(form.parentEmail.trim().toLowerCase());
+    if (remainingMs > 0) {
+      const minutes = Math.ceil(remainingMs / 60000);
+      setSubmitErrors({
+        general: `You already submitted this email. Please wait ${minutes} minute${minutes !== 1 ? 's' : ''} before trying again.`
+      });
+      return;
+    }
+
     setSubmitErrors({});
     setLoading(true);
     try {
@@ -137,6 +171,8 @@ export default function SelfCheckForm() {
         setSubmitErrors({ general: data.error || 'Something went wrong. Please try again.' });
         return;
       }
+      // Record successful submission to enforce cooldown
+      setLastSubmissionTime(form.parentEmail.trim().toLowerCase());
       setSubmitted(true);
     } catch {
       setSubmitErrors({ general: 'Network error. Please check your connection and try again.' });
